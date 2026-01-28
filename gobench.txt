@@ -1,0 +1,3591 @@
+len bin2tests= 12
+len tests= 1
+len tests= 1
+len tests= 1
+len tests= 0
+len tests= 1
+len tests= 1
+len tests= 1
+len tests= 1
+len tests= 1
+len tests= 1
+len tests= 1
+len tests= 1
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.etimes= 1
+m.etimes= 1
+2025-05-01 21:03:46.962416177 +0800 CST m=+0.821807176 [WORKER] 2025-05-01 21:03:46.959401457 +0800 CST m=+0.818792455	[WORKER 1] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 1
+quit= 63
+m.etimes= 1
+m.etimes= 1
+quit= 63
+m.etimes= 1
+2025-05-01 21:03:47.073279675 +0800 CST m=+0.932670681 [WORKER] 2025-05-01 21:03:47.067221252 +0800 CST m=+0.926612249	[WORKER 2] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 2
+quit= 63
+m.etimes= 2
+quit= 62
+m.etimes= 2
+2025-05-01 21:03:47.156131395 +0800 CST m=+1.015522409 [WORKER] 2025-05-01 21:03:47.140867227 +0800 CST m=+1.000258237	[WORKER 3] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 3
+2025-05-01 21:03:47.176582778 +0800 CST m=+1.035973781 [WORKER] 2025-05-01 21:03:47.168020751 +0800 CST m=+1.027411762	[WORKER 4] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 3
+quit= 61
+m.etimes= 3
+quit= 60
+m.etimes= 4
+quit= 63
+m.etimes= 4
+quit= 63
+m.etimes= 1
+quit= 62
+m.etimes= 2
+quit= 63
+m.etimes= 2
+2025-05-01 21:03:47.332613097 +0800 CST m=+1.192004131 [WORKER] 2025-05-01 21:03:47.310267583 +0800 CST m=+1.169658602	[WORKER 5] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:47.347625658 +0800 CST m=+1.207016669 [WORKER] 2025-05-01 21:03:47.333485315 +0800 CST m=+1.192876338	[WORKER 6] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 3
+quit= 63
+m.etimes= 1
+quit= 62
+m.etimes= 2
+quit= 61
+m.etimes= 3
+quit= 61
+m.etimes= 3
+quit= 60
+m.etimes= 4
+m.etimes= 1
+m.etimes= 1
+quit= 63
+m.etimes= 2
+quit= 63
+m.etimes= 2
+quit= 62
+m.etimes= 3
+m.etimes= 3
+quit= 60
+m.etimes= 4
+quit= 62
+m.etimes= 2
+quit= 61
+m.etimes= 4
+quit= 61
+m.etimes= 4
+quit= 63
+m.etimes= 2
+quit= 61
+m.etimes= 3
+2025-05-01 21:03:47.584863545 +0800 CST m=+1.444254557 [WORKER] 2025-05-01 21:03:47.581868111 +0800 CST m=+1.441259127	[WORKER 7] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 60
+m.etimes= 4
+quit= 62
+m.etimes= 3
+quit= 63
+m.etimes= 4
+2025-05-01 21:03:47.690058255 +0800 CST m=+1.549449272 [WORKER] 2025-05-01 21:03:47.690038267 +0800 CST m=+1.549429282	[WORKER 8] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 61
+m.etimes= 4
+quit= 61
+m.etimes= 4
+quit= 62
+m.etimes= 5
+quit= 59
+m.etimes= 5
+quit= 60
+m.etimes= 5
+2025-05-01 21:03:47.80095124 +0800 CST m=+1.660342253 [WORKER] 2025-05-01 21:03:47.793536008 +0800 CST m=+1.652927012	[WORKER 9] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:47.836643659 +0800 CST m=+1.696034659 [WORKER] 2025-05-01 21:03:47.836511904 +0800 CST m=+1.695902914	[WORKER 10] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 60
+m.etimes= 5
+quit= 59
+m.etimes= 5
+quit= 59
+m.etimes= 6
+2025-05-01 21:03:47.893512149 +0800 CST m=+1.752903155 [WORKER] 2025-05-01 21:03:47.892410199 +0800 CST m=+1.751801213	[WORKER 11] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 5
+quit= 58
+m.etimes= 6
+m.etimes= 6
+quit= 58
+m.etimes= 7
+2025-05-01 21:03:48.008694284 +0800 CST m=+1.868085297 [WORKER] 2025-05-01 21:03:48.008004355 +0800 CST m=+1.867395371	[WORKER 12] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 57
+m.etimes= 7
+quit= 59
+m.etimes= 5
+quit= 58
+m.etimes= 6
+m.etimes= 7
+quit= 56
+m.etimes= 8
+quit= 59
+m.etimes= 6
+2025-05-01 21:03:48.11642014 +0800 CST m=+1.975811146 [WORKER] 2025-05-01 21:03:48.105635852 +0800 CST m=+1.965026869	[WORKER 13] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:48.123344104 +0800 CST m=+1.982735114 [WORKER] 2025-05-01 21:03:48.123288871 +0800 CST m=+1.982679885	[WORKER 14] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 58
+m.etimes= 7
+quit= 59
+m.etimes= 5
+quit= 58
+m.etimes= 6
+quit= 57
+m.etimes= 7
+quit= 57
+m.etimes= 7
+quit= 56
+m.etimes= 8
+quit= 60
+m.etimes= 5
+quit= 60
+m.etimes= 5
+quit= 61
+m.etimes= 6
+quit= 59
+m.etimes= 6
+quit= 56
+m.etimes= 8
+quit= 58
+m.etimes= 7
+quit= 60
+m.etimes= 7
+quit= 58
+m.etimes= 6
+quit= 57
+m.etimes= 8
+quit= 57
+m.etimes= 8
+quit= 57
+m.etimes= 7
+quit= 59
+m.etimes= 6
+quit= 58
+m.etimes= 7
+quit= 56
+m.etimes= 8
+m.etimes= 8
+2025-05-01 21:03:48.529704131 +0800 CST m=+2.389095145 [WORKER] 2025-05-01 21:03:48.48897127 +0800 CST m=+2.348362281	[WORKER 15] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 57
+m.etimes= 8
+quit= 59
+m.etimes= 8
+quit= 55
+m.etimes= 9
+quit= 56
+m.etimes= 9
+2025-05-01 21:03:48.539459823 +0800 CST m=+2.398850829 [WORKER] 2025-05-01 21:03:48.532896441 +0800 CST m=+2.392287458	[WORKER 16] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:48.539480126 +0800 CST m=+2.398871119 [WORKER] 2025-05-01 21:03:48.534538524 +0800 CST m=+2.393929543	[WORKER 17] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 58
+m.etimes= 9
+quit= 56
+m.etimes= 9
+2025-05-01 21:03:48.579031146 +0800 CST m=+2.438422157 [WORKER] 2025-05-01 21:03:48.578813249 +0800 CST m=+2.438204264	[WORKER 18] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 55
+m.etimes= 10
+2025-05-01 21:03:48.622312112 +0800 CST m=+2.481703122 [WORKER] 2025-05-01 21:03:48.622090465 +0800 CST m=+2.481481478	[WORKER 19] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 55
+m.etimes= 9
+m.etimes= 8
+m.etimes= 9
+quit= 54
+m.etimes= 10
+quit= 54
+m.etimes= 11
+2025-05-01 21:03:48.770012977 +0800 CST m=+2.629403985 [WORKER] 2025-05-01 21:03:48.757354266 +0800 CST m=+2.616745283	[WORKER 20] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 55
+m.etimes= 9
+quit= 54
+m.etimes= 10
+quit= 53
+m.etimes= 11
+m.etimes= 10
+quit= 55
+m.etimes= 9
+2025-05-01 21:03:48.933530703 +0800 CST m=+2.792921717 [WORKER] 2025-05-01 21:03:48.90474157 +0800 CST m=+2.764132582	[WORKER 21] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 55
+m.etimes= 10
+quit= 54
+m.etimes= 10
+quit= 56
+m.etimes= 9
+m.etimes= 9
+quit= 53
+m.etimes= 11
+quit= 54
+m.etimes= 11
+quit= 53
+m.etimes= 11
+quit= 52
+m.etimes= 12
+quit= 57
+m.etimes= 10
+2025-05-01 21:03:49.014503763 +0800 CST m=+2.873894772 [WORKER] 2025-05-01 21:03:48.996283537 +0800 CST m=+2.855674555	[WORKER 22] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 55
+m.etimes= 10
+quit= 52
+m.etimes= 12
+quit= 54
+m.etimes= 11
+quit= 56
+m.etimes= 11
+quit= 53
+m.etimes= 12
+quit= 54
+m.etimes= 10
+quit= 53
+m.etimes= 12
+quit= 53
+m.etimes= 11
+2025-05-01 21:03:49.172361507 +0800 CST m=+3.031752513 [WORKER] 2025-05-01 21:03:49.158259232 +0800 CST m=+3.017650251	[WORKER 23] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 10
+m.etimes= 11
+quit= 52
+m.etimes= 12
+m.etimes= 12
+quit= 55
+m.etimes= 12
+quit= 53
+m.etimes= 12
+quit= 51
+m.etimes= 13
+2025-05-01 21:03:49.295124707 +0800 CST m=+3.154515723 [WORKER] 2025-05-01 21:03:49.29146885 +0800 CST m=+3.150859869	[WORKER 24] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 52
+m.etimes= 13
+2025-05-01 21:03:49.324819445 +0800 CST m=+3.184210457 [WORKER] 2025-05-01 21:03:49.322027576 +0800 CST m=+3.181418594	[WORKER 25] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:49.364144897 +0800 CST m=+3.223535916 [WORKER] 2025-05-01 21:03:49.364128815 +0800 CST m=+3.223519829	[WORKER 26] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 52
+m.etimes= 13
+2025-05-01 21:03:49.364670149 +0800 CST m=+3.224061167 [WORKER] 2025-05-01 21:03:49.364654106 +0800 CST m=+3.224045119	[WORKER 27] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 51
+m.etimes= 14
+quit= 52
+m.etimes= 12
+quit= 63
+m.etimes= 11
+2025-05-01 21:03:49.454079163 +0800 CST m=+3.313470163 [WORKER] 2025-05-01 21:03:49.454051791 +0800 CST m=+3.313442807	[WORKER 28] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 50
+m.etimes= 15
+quit= 54
+m.etimes= 13
+quit= 51
+m.etimes= 13
+m.etimes= 12
+quit= 51
+m.etimes= 13
+quit= 50
+m.etimes= 14
+quit= 51
+m.etimes= 14
+quit= 50
+m.etimes= 14
+2025-05-01 21:03:49.727810467 +0800 CST m=+3.587201479 [WORKER] 2025-05-01 21:03:49.701765061 +0800 CST m=+3.561156081	[WORKER 29] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 13
+quit= 52
+m.etimes= 13
+quit= 51
+m.etimes= 13
+quit= 49
+m.etimes= 15
+m.etimes= 13
+quit= 53
+m.etimes= 14
+quit= 50
+m.etimes= 15
+2025-05-01 21:03:49.87145979 +0800 CST m=+3.730850809 [WORKER] 2025-05-01 21:03:49.870183753 +0800 CST m=+3.729574766	[WORKER 30] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 50
+m.etimes= 14
+quit= 49
+m.etimes= 15
+quit= 51
+m.etimes= 14
+quit= 52
+m.etimes= 15
+quit= 48
+m.etimes= 16
+quit= 50
+m.etimes= 15
+quit= 49
+m.etimes= 16
+quit= 50
+m.etimes= 14
+2025-05-01 21:03:50.060965851 +0800 CST m=+3.920356871 [WORKER] 2025-05-01 21:03:50.060918603 +0800 CST m=+3.920309613	[WORKER 31] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 49
+m.etimes= 16
+m.etimes= 14
+quit= 49
+m.etimes= 15
+quit= 48
+m.etimes= 16
+m.etimes= 15
+m.etimes= 16
+2025-05-01 21:03:50.244290055 +0800 CST m=+4.103681070 [WORKER] 2025-05-01 21:03:50.180001144 +0800 CST m=+4.039392156	[WORKER 32] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 49
+m.etimes= 16
+quit= 51
+m.etimes= 16
+2025-05-01 21:03:50.292666371 +0800 CST m=+4.152057382 [WORKER] 2025-05-01 21:03:50.288735248 +0800 CST m=+4.148126261	[WORKER 33] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:50.292989015 +0800 CST m=+4.152380015 [WORKER] 2025-05-01 21:03:50.290937565 +0800 CST m=+4.150328577	[WORKER 34] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 48
+m.etimes= 17
+quit= 48
+m.etimes= 17
+m.etimes= 14
+quit= 47
+m.etimes= 18
+2025-05-01 21:03:50.363571862 +0800 CST m=+4.222962868 [WORKER] 2025-05-01 21:03:50.357565644 +0800 CST m=+4.216956685	[WORKER 35] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 50
+m.etimes= 17
+quit= 63
+m.etimes= 15
+quit= 46
+m.etimes= 19
+quit= 47
+m.etimes= 17
+quit= 49
+m.etimes= 15
+quit= 47
+m.etimes= 18
+2025-05-01 21:03:50.419135348 +0800 CST m=+4.278526361 [WORKER] 2025-05-01 21:03:50.418619167 +0800 CST m=+4.278010170	[WORKER 36] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 46
+m.etimes= 18
+quit= 62
+m.etimes= 16
+quit= 45
+m.etimes= 19
+quit= 48
+m.etimes= 16
+quit= 48
+m.etimes= 17
+quit= 49
+m.etimes= 18
+m.etimes= 17
+quit= 47
+m.etimes= 17
+2025-05-01 21:03:50.62855556 +0800 CST m=+4.487946577 [WORKER] 2025-05-01 21:03:50.62853743 +0800 CST m=+4.487928445	[WORKER 37] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 46
+m.etimes= 19
+quit= 47
+m.etimes= 18
+quit= 48
+m.etimes= 19
+quit= 46
+m.etimes= 18
+quit= 46
+m.etimes= 19
+quit= 44
+m.etimes= 20
+quit= 47
+m.etimes= 17
+m.etimes= 20
+m.etimes= 18
+quit= 45
+m.etimes= 20
+2025-05-01 21:03:50.860778167 +0800 CST m=+4.720169181 [WORKER] 2025-05-01 21:03:50.847903369 +0800 CST m=+4.707294381	[WORKER 38] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 46
+m.etimes= 18
+quit= 45
+m.etimes= 19
+2025-05-01 21:03:50.936599937 +0800 CST m=+4.795990948 [WORKER] 2025-05-01 21:03:50.93648404 +0800 CST m=+4.795875056	[WORKER 39] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 45
+m.etimes= 20
+m.etimes= 19
+quit= 44
+m.etimes= 21
+m.etimes= 20
+quit= 44
+m.etimes= 21
+quit= 47
+m.etimes= 20
+2025-05-01 21:03:51.01537884 +0800 CST m=+4.874769849 [WORKER] 2025-05-01 21:03:50.960975895 +0800 CST m=+4.820366906	[WORKER 40] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:51.015417335 +0800 CST m=+4.874808334 [WORKER] 2025-05-01 21:03:51.011641028 +0800 CST m=+4.871032042	[WORKER 41] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:51.021999691 +0800 CST m=+4.881390713 [WORKER] 2025-05-01 21:03:51.02198085 +0800 CST m=+4.881371866	[WORKER 42] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 43
+m.etimes= 22
+m.etimes= 17
+quit= 46
+m.etimes= 21
+quit= 63
+m.etimes= 18
+quit= 48
+m.etimes= 16
+quit= 42
+m.etimes= 23
+quit= 43
+m.etimes= 21
+2025-05-01 21:03:51.17622811 +0800 CST m=+5.035619117 [WORKER] 2025-05-01 21:03:51.174488931 +0800 CST m=+5.033879945	[WORKER 43] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:51.206209529 +0800 CST m=+5.065600531 [WORKER] 2025-05-01 21:03:51.206185651 +0800 CST m=+5.065576669	[WORKER 44] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 43
+m.etimes= 22
+quit= 42
+m.etimes= 22
+quit= 63
+m.etimes= 21
+quit= 41
+m.etimes= 23
+m.etimes= 19
+quit= 45
+m.etimes= 19
+quit= 45
+m.etimes= 22
+2025-05-01 21:03:51.425872697 +0800 CST m=+5.285263697 [WORKER] 2025-05-01 21:03:51.425360963 +0800 CST m=+5.284751976	[WORKER 45] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 42
+m.etimes= 23
+quit= 44
+m.etimes= 20
+m.etimes= 21
+quit= 43
+m.etimes= 21
+quit= 44
+m.etimes= 23
+quit= 62
+m.etimes= 22
+quit= 61
+m.etimes= 23
+quit= 60
+m.etimes= 24
+quit= 44
+m.etimes= 20
+quit= 40
+m.etimes= 24
+m.etimes= 22
+quit= 43
+m.etimes= 21
+quit= 41
+m.etimes= 24
+2025-05-01 21:03:51.697978988 +0800 CST m=+5.557370005 [WORKER] 2025-05-01 21:03:51.694006931 +0800 CST m=+5.553397942	[WORKER 46] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 42
+m.etimes= 22
+m.etimes= 23
+2025-05-01 21:03:51.768078891 +0800 CST m=+5.627469911 [WORKER] 2025-05-01 21:03:51.768065474 +0800 CST m=+5.627456480	[WORKER 47] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 41
+m.etimes= 24
+2025-05-01 21:03:51.7733118 +0800 CST m=+5.632702817 [WORKER] 2025-05-01 21:03:51.773294209 +0800 CST m=+5.632685228	[WORKER 48] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 40
+m.etimes= 25
+quit= 43
+m.etimes= 24
+m.etimes= 24
+m.etimes= 20
+2025-05-01 21:03:51.883909064 +0800 CST m=+5.743300082 [WORKER] 2025-05-01 21:03:51.883892016 +0800 CST m=+5.743283030	[WORKER 49] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 40
+m.etimes= 25
+quit= 42
+m.etimes= 25
+quit= 39
+m.etimes= 26
+2025-05-01 21:03:51.899299066 +0800 CST m=+5.758690069 [WORKER] 2025-05-01 21:03:51.884965061 +0800 CST m=+5.744356076	[WORKER 50] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 21
+2025-05-01 21:03:51.95802954 +0800 CST m=+5.817420564 [WORKER] 2025-05-01 21:03:51.958015645 +0800 CST m=+5.817406650	[WORKER 51] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 38
+m.etimes= 27
+quit= 39
+m.etimes= 25
+m.etimes= 26
+quit= 39
+m.etimes= 26
+2025-05-01 21:03:52.115473914 +0800 CST m=+5.974864924 [WORKER] 2025-05-01 21:03:52.109501131 +0800 CST m=+5.968892151	[WORKER 52] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 27
+quit= 59
+m.etimes= 25
+m.etimes= 22
+quit= 41
+m.etimes= 26
+quit= 42
+m.etimes= 22
+quit= 41
+m.etimes= 23
+quit= 38
+m.etimes= 27
+m.etimes= 25
+quit= 40
+m.etimes= 27
+quit= 58
+m.etimes= 26
+2025-05-01 21:03:52.362792276 +0800 CST m=+6.222183288 [WORKER] 2025-05-01 21:03:52.356000383 +0800 CST m=+6.215391403	[WORKER 53] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 28
+2025-05-01 21:03:52.432561156 +0800 CST m=+6.291952169 [WORKER] 2025-05-01 21:03:52.432547785 +0800 CST m=+6.291938794	[WORKER 54] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 27
+quit= 63
+m.etimes= 28
+quit= 41
+m.etimes= 23
+m.etimes= 26
+quit= 37
+m.etimes= 28
+quit= 40
+m.etimes= 24
+2025-05-01 21:03:52.480881294 +0800 CST m=+6.340272308 [WORKER] 2025-05-01 21:03:52.475238607 +0800 CST m=+6.334629623	[WORKER 55] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 27
+2025-05-01 21:03:52.543640506 +0800 CST m=+6.403031503 [WORKER] 2025-05-01 21:03:52.541287967 +0800 CST m=+6.400678979	[WORKER 56] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 37
+m.etimes= 28
+2025-05-01 21:03:52.54582003 +0800 CST m=+6.405211045 [WORKER] 2025-05-01 21:03:52.545794034 +0800 CST m=+6.405185052	[WORKER 57] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 36
+m.etimes= 29
+quit= 39
+m.etimes= 28
+quit= 63
+m.etimes= 23
+quit= 38
+m.etimes= 29
+m.etimes= 28
+quit= 36
+m.etimes= 29
+2025-05-01 21:03:52.653350744 +0800 CST m=+6.512741758 [WORKER] 2025-05-01 21:03:52.649244528 +0800 CST m=+6.508635546	[WORKER 58] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 24
+2025-05-01 21:03:52.703562633 +0800 CST m=+6.562953639 [WORKER] 2025-05-01 21:03:52.695188575 +0800 CST m=+6.554579586	[WORKER 59] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 35
+m.etimes= 30
+quit= 61
+m.etimes= 29
+quit= 62
+m.etimes= 29
+2025-05-01 21:03:52.744815665 +0800 CST m=+6.604206680 [WORKER] 2025-05-01 21:03:52.744799809 +0800 CST m=+6.604190821	[WORKER 60] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 34
+m.etimes= 31
+quit= 60
+m.etimes= 30
+2025-05-01 21:03:52.754507654 +0800 CST m=+6.613898674 [WORKER] 2025-05-01 21:03:52.754483215 +0800 CST m=+6.613874232	[WORKER 61] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 35
+m.etimes= 30
+quit= 37
+m.etimes= 30
+quit= 59
+m.etimes= 31
+m.etimes= 25
+quit= 40
+m.etimes= 24
+2025-05-01 21:03:52.875039129 +0800 CST m=+6.734430143 [WORKER] 2025-05-01 21:03:52.872578427 +0800 CST m=+6.731969448	[WORKER 62] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 34
+m.etimes= 31
+m.etimes= 29
+quit= 36
+m.etimes= 31
+quit= 58
+m.etimes= 32
+quit= 61
+m.etimes= 30
+quit= 60
+m.etimes= 31
+quit= 59
+m.etimes= 32
+quit= 39
+m.etimes= 25
+m.etimes= 30
+2025-05-01 21:03:53.155741882 +0800 CST m=+7.015132895 [WORKER] 2025-05-01 21:03:53.130687171 +0800 CST m=+6.990078190	[WORKER 63] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 33
+m.etimes= 32
+quit= 33
+m.etimes= 32
+quit= 32
+m.etimes= 33
+2025-05-01 21:03:53.158241476 +0800 CST m=+7.017632483 [WORKER] 2025-05-01 21:03:53.155971819 +0800 CST m=+7.015362834	[WORKER 64] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:53.158269139 +0800 CST m=+7.017660136 [WORKER] 2025-05-01 21:03:53.157011241 +0800 CST m=+7.016402255	[WORKER 65] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 31
+quit= 35
+m.etimes= 32
+quit= 34
+m.etimes= 33
+m.etimes= 32
+2025-05-01 21:03:53.257471349 +0800 CST m=+7.116862347 [WORKER] 2025-05-01 21:03:53.257457681 +0800 CST m=+7.116848678	[WORKER 66] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 32
+m.etimes= 33
+quit= 63
+m.etimes= 26
+quit= 62
+m.etimes= 27
+2025-05-01 21:03:53.260340197 +0800 CST m=+7.119731195 [WORKER] 2025-05-01 21:03:53.260325052 +0800 CST m=+7.119716066	[WORKER 67] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 31
+m.etimes= 34
+quit= 58
+m.etimes= 33
+quit= 30
+m.etimes= 35
+2025-05-01 21:03:53.290828254 +0800 CST m=+7.150219269 [WORKER] 2025-05-01 21:03:53.290360436 +0800 CST m=+7.149751455	[WORKER 68] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 57
+m.etimes= 33
+quit= 33
+m.etimes= 34
+quit= 56
+m.etimes= 34
+2025-05-01 21:03:53.373088577 +0800 CST m=+7.232479583 [WORKER] 2025-05-01 21:03:53.373068322 +0800 CST m=+7.232459346	[WORKER 69] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 31
+m.etimes= 34
+m.etimes= 35
+2025-05-01 21:03:53.474875049 +0800 CST m=+7.334266060 [WORKER] 2025-05-01 21:03:53.47277888 +0800 CST m=+7.332169898	[WORKER 70] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 30
+m.etimes= 35
+quit= 39
+m.etimes= 25
+quit= 32
+m.etimes= 35
+quit= 63
+m.etimes= 36
+m.etimes= 33
+quit= 57
+m.etimes= 34
+quit= 56
+m.etimes= 35
+quit= 55
+m.etimes= 36
+quit= 38
+m.etimes= 26
+2025-05-01 21:03:53.78965906 +0800 CST m=+7.649050073 [WORKER] 2025-05-01 21:03:53.789623493 +0800 CST m=+7.649014506	[WORKER 71] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 34
+2025-05-01 21:03:53.877372137 +0800 CST m=+7.736763148 [WORKER] 2025-05-01 21:03:53.877352525 +0800 CST m=+7.736743542	[WORKER 72] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 29
+m.etimes= 36
+m.etimes= 35
+quit= 31
+m.etimes= 36
+m.etimes= 36
+2025-05-01 21:03:53.917404232 +0800 CST m=+7.776795242 [WORKER] 2025-05-01 21:03:53.902258443 +0800 CST m=+7.761649455	[WORKER 73] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 29
+m.etimes= 36
+quit= 28
+m.etimes= 37
+2025-05-01 21:03:53.976925502 +0800 CST m=+7.836316504 [WORKER] 2025-05-01 21:03:53.976136582 +0800 CST m=+7.835527606	[WORKER 74] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:53.977311361 +0800 CST m=+7.836702380 [WORKER] 2025-05-01 21:03:53.977301817 +0800 CST m=+7.836692826	[WORKER 75] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 27
+m.etimes= 38
+quit= 61
+m.etimes= 28
+quit= 60
+m.etimes= 29
+quit= 62
+m.etimes= 37
+2025-05-01 21:03:53.986350704 +0800 CST m=+7.845741707 [WORKER] 2025-05-01 21:03:53.9779389 +0800 CST m=+7.837329911	[WORKER 76] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 30
+m.etimes= 37
+quit= 28
+m.etimes= 37
+quit= 54
+m.etimes= 37
+quit= 29
+m.etimes= 38
+quit= 26
+m.etimes= 39
+2025-05-01 21:03:54.055433277 +0800 CST m=+7.914824279 [WORKER] 2025-05-01 21:03:54.009705254 +0800 CST m=+7.869096265	[WORKER 77] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 61
+m.etimes= 38
+quit= 60
+m.etimes= 39
+2025-05-01 21:03:54.160849505 +0800 CST m=+8.020240505 [WORKER] 2025-05-01 21:03:54.132043271 +0800 CST m=+7.991434286	[WORKER 78] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 27
+m.etimes= 38
+m.etimes= 37
+quit= 38
+m.etimes= 26
+2025-05-01 21:03:54.196855724 +0800 CST m=+8.056246727 [WORKER] 2025-05-01 21:03:54.193531284 +0800 CST m=+8.052922300	[WORKER 79] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 26
+m.etimes= 39
+quit= 28
+m.etimes= 39
+quit= 53
+m.etimes= 38
+quit= 59
+m.etimes= 40
+quit= 52
+m.etimes= 39
+quit= 51
+m.etimes= 40
+quit= 37
+m.etimes= 27
+m.etimes= 38
+m.etimes= 40
+quit= 25
+m.etimes= 40
+m.etimes= 39
+quit= 25
+m.etimes= 40
+2025-05-01 21:03:54.440286824 +0800 CST m=+8.299677836 [WORKER] 2025-05-01 21:03:54.433970009 +0800 CST m=+8.293361029	[WORKER 80] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:54.440316268 +0800 CST m=+8.299707274 [WORKER] 2025-05-01 21:03:54.43418117 +0800 CST m=+8.293572184	[WORKER 81] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:54.440322755 +0800 CST m=+8.299713763 [WORKER] 2025-05-01 21:03:54.434522748 +0800 CST m=+8.293913768	[WORKER 82] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 40
+quit= 24
+m.etimes= 41
+2025-05-01 21:03:54.48484894 +0800 CST m=+8.344239949 [WORKER] 2025-05-01 21:03:54.483815979 +0800 CST m=+8.343206978	[WORKER 83] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 23
+m.etimes= 42
+2025-05-01 21:03:54.49631198 +0800 CST m=+8.355702995 [WORKER] 2025-05-01 21:03:54.494962874 +0800 CST m=+8.354353875	[WORKER 84] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 58
+m.etimes= 41
+quit= 63
+m.etimes= 41
+2025-05-01 21:03:54.543778648 +0800 CST m=+8.403169664 [WORKER] 2025-05-01 21:03:54.543767265 +0800 CST m=+8.403158270	[WORKER 85] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 24
+m.etimes= 41
+m.etimes= 30
+quit= 50
+m.etimes= 41
+m.etimes= 31
+2025-05-01 21:03:54.633395375 +0800 CST m=+8.492786386 [WORKER] 2025-05-01 21:03:54.627740056 +0800 CST m=+8.487131065	[WORKER 86] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 22
+m.etimes= 43
+quit= 62
+m.etimes= 42
+2025-05-01 21:03:54.735087144 +0800 CST m=+8.594478154 [WORKER] 2025-05-01 21:03:54.735063172 +0800 CST m=+8.594454194	[WORKER 87] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 23
+m.etimes= 42
+m.etimes= 41
+quit= 37
+m.etimes= 27
+2025-05-01 21:03:54.771790307 +0800 CST m=+8.631181326 [WORKER] 2025-05-01 21:03:54.77177482 +0800 CST m=+8.631165818	[WORKER 88] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 22
+m.etimes= 43
+quit= 57
+m.etimes= 42
+quit= 56
+m.etimes= 43
+quit= 61
+m.etimes= 43
+quit= 49
+m.etimes= 42
+m.etimes= 42
+quit= 48
+m.etimes= 43
+quit= 47
+m.etimes= 44
+quit= 55
+m.etimes= 44
+quit= 21
+m.etimes= 44
+m.etimes= 43
+quit= 36
+m.etimes= 28
+2025-05-01 21:03:54.919220335 +0800 CST m=+8.778611344 [WORKER] 2025-05-01 21:03:54.916829155 +0800 CST m=+8.776220174	[WORKER 89] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 60
+m.etimes= 44
+2025-05-01 21:03:54.963876134 +0800 CST m=+8.823267155 [WORKER] 2025-05-01 21:03:54.963856548 +0800 CST m=+8.823247561	[WORKER 90] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 21
+m.etimes= 44
+m.etimes= 44
+quit= 20
+m.etimes= 45
+2025-05-01 21:03:54.989154267 +0800 CST m=+8.848545277 [WORKER] 2025-05-01 21:03:54.984744025 +0800 CST m=+8.844135044	[WORKER 91] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 20
+m.etimes= 45
+quit= 19
+m.etimes= 46
+2025-05-01 21:03:55.029096913 +0800 CST m=+8.888487914 [WORKER] 2025-05-01 21:03:55.017182686 +0800 CST m=+8.876573713	[WORKER 92] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:55.029121383 +0800 CST m=+8.888512380 [WORKER] 2025-05-01 21:03:55.027709371 +0800 CST m=+8.887100389	[WORKER 93] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 54
+m.etimes= 45
+quit= 59
+m.etimes= 45
+quit= 63
+m.etimes= 32
+m.etimes= 45
+quit= 18
+m.etimes= 47
+m.etimes= 45
+quit= 58
+m.etimes= 46
+quit= 62
+m.etimes= 33
+2025-05-01 21:03:55.16573973 +0800 CST m=+9.025130738 [WORKER] 2025-05-01 21:03:55.155991174 +0800 CST m=+9.015382188	[WORKER 94] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:55.165770978 +0800 CST m=+9.025161991 [WORKER] 2025-05-01 21:03:55.160134589 +0800 CST m=+9.019525596	[WORKER 95] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 19
+m.etimes= 46
+2025-05-01 21:03:55.17608015 +0800 CST m=+9.035471152 [WORKER] 2025-05-01 21:03:55.175982797 +0800 CST m=+9.035373820	[WORKER 96] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 36
+m.etimes= 28
+quit= 53
+m.etimes= 46
+quit= 18
+m.etimes= 47
+quit= 52
+m.etimes= 47
+2025-05-01 21:03:55.297861083 +0800 CST m=+9.157252096 [WORKER] 2025-05-01 21:03:55.282417557 +0800 CST m=+9.141808577	[WORKER 97] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 46
+m.etimes= 48
+quit= 17
+m.etimes= 48
+quit= 16
+m.etimes= 49
+quit= 57
+m.etimes= 47
+2025-05-01 21:03:55.397882657 +0800 CST m=+9.257273659 [WORKER] 2025-05-01 21:03:55.396501178 +0800 CST m=+9.255892246	[WORKER 98] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:55.397909096 +0800 CST m=+9.257300110 [WORKER] 2025-05-01 21:03:55.396939594 +0800 CST m=+9.256330616	[WORKER 99] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 35
+m.etimes= 29
+quit= 63
+m.etimes= 49
+m.etimes= 46
+quit= 56
+m.etimes= 48
+m.etimes= 47
+m.etimes= 48
+quit= 55
+m.etimes= 49
+m.etimes= 49
+quit= 17
+m.etimes= 48
+quit= 16
+m.etimes= 49
+2025-05-01 21:03:55.439056462 +0800 CST m=+9.298447487 [WORKER] 2025-05-01 21:03:55.406909453 +0800 CST m=+9.266300465	[WORKER 100] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:55.443153902 +0800 CST m=+9.302544901 [WORKER] 2025-05-01 21:03:55.41098537 +0800 CST m=+9.270376385	[WORKER 101] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:55.443163353 +0800 CST m=+9.302554362 [WORKER] 2025-05-01 21:03:55.411893813 +0800 CST m=+9.271284824	[WORKER 102] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 50
+quit= 61
+m.etimes= 34
+m.etimes= 47
+quit= 15
+m.etimes= 50
+quit= 63
+m.etimes= 48
+quit= 62
+m.etimes= 49
+quit= 14
+m.etimes= 51
+m.etimes= 35
+quit= 54
+m.etimes= 50
+2025-05-01 21:03:55.494839636 +0800 CST m=+9.354230644 [WORKER] 2025-05-01 21:03:55.490307363 +0800 CST m=+9.349698378	[WORKER 103] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:55.494868405 +0800 CST m=+9.354259403 [WORKER] 2025-05-01 21:03:55.490726482 +0800 CST m=+9.350117498	[WORKER 104] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 35
+m.etimes= 29
+quit= 61
+m.etimes= 51
+quit= 15
+m.etimes= 50
+quit= 14
+m.etimes= 51
+2025-05-01 21:03:55.528934044 +0800 CST m=+9.388325121 [WORKER] 2025-05-01 21:03:55.527780322 +0800 CST m=+9.387171339	[WORKER 105] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:55.534651049 +0800 CST m=+9.394042056 [WORKER] 2025-05-01 21:03:55.531546236 +0800 CST m=+9.390937252	[WORKER 106] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:55.56954758 +0800 CST m=+9.428938587 [WORKER] 2025-05-01 21:03:55.568634662 +0800 CST m=+9.428025675	[WORKER 107] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 13
+m.etimes= 52
+2025-05-01 21:03:55.569814087 +0800 CST m=+9.429205093 [WORKER] 2025-05-01 21:03:55.569804789 +0800 CST m=+9.429195807	[WORKER 108] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 50
+quit= 53
+m.etimes= 51
+quit= 34
+m.etimes= 30
+quit= 60
+m.etimes= 52
+quit= 59
+m.etimes= 53
+m.etimes= 50
+m.etimes= 51
+quit= 52
+m.etimes= 52
+m.etimes= 52
+quit= 51
+m.etimes= 53
+quit= 63
+m.etimes= 36
+m.etimes= 53
+2025-05-01 21:03:55.817045165 +0800 CST m=+9.676436170 [WORKER] 2025-05-01 21:03:55.817025939 +0800 CST m=+9.676416955	[WORKER 109] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 12
+m.etimes= 53
+quit= 58
+m.etimes= 54
+2025-05-01 21:03:55.822180859 +0800 CST m=+9.681571869 [WORKER] 2025-05-01 21:03:55.821574245 +0800 CST m=+9.680965264	[WORKER 110] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 13
+m.etimes= 52
+quit= 62
+m.etimes= 37
+quit= 50
+m.etimes= 54
+quit= 12
+m.etimes= 53
+2025-05-01 21:03:55.855314597 +0800 CST m=+9.714705611 [WORKER] 2025-05-01 21:03:55.840389396 +0800 CST m=+9.699780407	[WORKER 111] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 51
+m.etimes= 52
+2025-05-01 21:03:55.95228884 +0800 CST m=+9.811679853 [WORKER] 2025-05-01 21:03:55.926272846 +0800 CST m=+9.785663881	[WORKER 112] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:55.973533128 +0800 CST m=+9.832924150 [WORKER] 2025-05-01 21:03:55.97349935 +0800 CST m=+9.832890369	[WORKER 113] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 11
+m.etimes= 54
+quit= 34
+m.etimes= 30
+quit= 10
+m.etimes= 55
+2025-05-01 21:03:56.08221601 +0800 CST m=+9.941607012 [WORKER] 2025-05-01 21:03:56.082113321 +0800 CST m=+9.941504333	[WORKER 114] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 57
+m.etimes= 55
+quit= 9
+m.etimes= 56
+quit= 11
+m.etimes= 54
+quit= 63
+m.etimes= 53
+2025-05-01 21:03:56.11777234 +0800 CST m=+9.977163343 [WORKER] 2025-05-01 21:03:56.10732939 +0800 CST m=+9.966720400	[WORKER 115] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:56.118408589 +0800 CST m=+9.977799604 [WORKER] 2025-05-01 21:03:56.110312829 +0800 CST m=+9.969703842	[WORKER 116] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 10
+m.etimes= 55
+2025-05-01 21:03:56.129605245 +0800 CST m=+9.988996256 [WORKER] 2025-05-01 21:03:56.121043851 +0800 CST m=+9.980434863	[WORKER 117] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 56
+m.etimes= 56
+quit= 55
+m.etimes= 57
+quit= 33
+m.etimes= 31
+quit= 62
+m.etimes= 54
+quit= 49
+m.etimes= 55
+m.etimes= 54
+m.etimes= 55
+quit= 48
+m.etimes= 56
+quit= 47
+m.etimes= 57
+m.etimes= 56
+m.etimes= 57
+quit= 61
+m.etimes= 38
+quit= 46
+m.etimes= 58
+quit= 54
+m.etimes= 58
+quit= 9
+m.etimes= 56
+2025-05-01 21:03:56.444392638 +0800 CST m=+10.303783647 [WORKER] 2025-05-01 21:03:56.440808388 +0800 CST m=+10.300199400	[WORKER 118] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 61
+m.etimes= 55
+quit= 60
+m.etimes= 56
+2025-05-01 21:03:56.488694274 +0800 CST m=+10.348085287 [WORKER] 2025-05-01 21:03:56.484344291 +0800 CST m=+10.343735305	[WORKER 119] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 8
+m.etimes= 57
+2025-05-01 21:03:56.493773205 +0800 CST m=+10.353164212 [WORKER] 2025-05-01 21:03:56.493756154 +0800 CST m=+10.353147165	[WORKER 120] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 8
+m.etimes= 57
+quit= 7
+m.etimes= 58
+2025-05-01 21:03:56.499707761 +0800 CST m=+10.359098764 [WORKER] 2025-05-01 21:03:56.494841136 +0800 CST m=+10.354232148	[WORKER 121] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:56.499802809 +0800 CST m=+10.359193829 [WORKER] 2025-05-01 21:03:56.499788458 +0800 CST m=+10.359179473	[WORKER 122] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 7
+m.etimes= 58
+quit= 53
+m.etimes= 59
+2025-05-01 21:03:56.554887991 +0800 CST m=+10.414279011 [WORKER] 2025-05-01 21:03:56.554875728 +0800 CST m=+10.414266741	[WORKER 123] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 6
+m.etimes= 59
+quit= 33
+m.etimes= 31
+2025-05-01 21:03:56.576526992 +0800 CST m=+10.435918006 [WORKER] 2025-05-01 21:03:56.576512219 +0800 CST m=+10.435903234	[WORKER 124] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 5
+m.etimes= 60
+quit= 59
+m.etimes= 57
+quit= 58
+m.etimes= 58
+m.etimes= 58
+quit= 52
+m.etimes= 60
+quit= 6
+m.etimes= 59
+2025-05-01 21:03:56.603971295 +0800 CST m=+10.463362307 [WORKER] 2025-05-01 21:03:56.59886298 +0800 CST m=+10.458253975	[WORKER 125] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 32
+m.etimes= 32
+m.etimes= 59
+quit= 51
+m.etimes= 61
+quit= 45
+m.etimes= 59
+quit= 44
+m.etimes= 60
+quit= 43
+m.etimes= 61
+m.etimes= 60
+quit= 42
+m.etimes= 62
+m.etimes= 39
+quit= 50
+m.etimes= 62
+m.etimes= 61
+2025-05-01 21:03:56.8104307 +0800 CST m=+10.669821713 [WORKER] 2025-05-01 21:03:56.807977616 +0800 CST m=+10.667368631	[WORKER 126] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 5
+m.etimes= 60
+m.etimes= 59
+2025-05-01 21:03:56.843234951 +0800 CST m=+10.702625950 [WORKER] 2025-05-01 21:03:56.837405649 +0800 CST m=+10.696796658	[WORKER 127] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 60
+quit= 4
+m.etimes= 61
+quit= 4
+m.etimes= 61
+2025-05-01 21:03:56.89989147 +0800 CST m=+10.759282479 [WORKER] 2025-05-01 21:03:56.894517401 +0800 CST m=+10.753908413	[WORKER 128] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:56.899932836 +0800 CST m=+10.759323836 [WORKER] 2025-05-01 21:03:56.894553424 +0800 CST m=+10.753944426	[WORKER 129] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 3
+m.etimes= 62
+2025-05-01 21:03:56.915059096 +0800 CST m=+10.774450108 [WORKER] 2025-05-01 21:03:56.913162346 +0800 CST m=+10.772553358	[WORKER 130] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 3
+m.etimes= 62
+quit= 32
+m.etimes= 32
+m.etimes= 63
+quit= 2
+m.etimes= 63
+2025-05-01 21:03:56.959247835 +0800 CST m=+10.818638848 [WORKER] 2025-05-01 21:03:56.923349637 +0800 CST m=+10.782740657	[WORKER 131] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:56.959274791 +0800 CST m=+10.818665804 [WORKER] 2025-05-01 21:03:56.953182046 +0800 CST m=+10.812573067	[WORKER 132] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 62
+quit= 2
+m.etimes= 63
+2025-05-01 21:03:56.991908646 +0800 CST m=+10.851299659 [WORKER] 2025-05-01 21:03:56.97794562 +0800 CST m=+10.837336622	[WORKER 133] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 61
+quit= 61
+m.etimes= 62
+quit= 31
+m.etimes= 33
+quit= 1
+m.etimes= 64
+2025-05-01 21:03:57.036729203 +0800 CST m=+10.896120212 [WORKER] 2025-05-01 21:03:57.032517872 +0800 CST m=+10.891908888	[WORKER 134] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 64
+m.etimes= 63
+quit= 41
+m.etimes= 63
+quit= 40
+m.etimes= 64
+quit= 62
+m.etimes= 65
+m.etimes= 64
+quit= 39
+m.etimes= 65
+quit= 38
+m.etimes= 66
+2025-05-01 21:03:57.243915258 +0800 CST m=+11.103306266 [WORKER] 2025-05-01 21:03:57.242281831 +0800 CST m=+11.101672844	[WORKER 135] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 1
+m.etimes= 64
+m.etimes= 40
+m.etimes= 65
+quit= 61
+m.etimes= 66
+quit= 60
+m.etimes= 63
+quit= 59
+m.etimes= 64
+quit= 0
+cancel and return done
+cancel and return done
+cancel and return done
+exit loop
+cancel and return done
+2025-05-01 21:03:57.316961597 +0800 CST m=+11.176352609 [1/11]	TestMoby30408_1	PASS
+2025-05-01 21:03:57.317012867 +0800 CST m=+11.176403882 [WORKER] 2025-05-01 21:03:57.305599813 +0800 CST m=+11.164990849	[WORKER 136] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:03:57.356277488 +0800 CST m=+11.215668518 [WORKER] 2025-05-01 21:03:57.356250211 +0800 CST m=+11.215641226	[WORKER 137] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 0
+cancel and return done
+exit loop
+2025-05-01 21:03:57.356533474 +0800 CST m=+11.215924492 [2/11]	TestMoby29733_1	PASS
+cancel and return done
+cancel and return done
+cancel and return done
+quit= 31
+m.etimes= 33
+quit= 60
+m.etimes= 67
+m.etimes= 66
+quit= 58
+m.etimes= 65
+quit= 30
+m.etimes= 34
+quit= 57
+m.etimes= 66
+quit= 59
+m.etimes= 68
+quit= 37
+m.etimes= 67
+2025-05-01 21:03:57.556364826 +0800 CST m=+11.415755839 [WORKER] 2025-05-01 21:03:57.556328254 +0800 CST m=+11.415719256	[WORKER 138] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 67
+quit= 58
+m.etimes= 69
+quit= 36
+m.etimes= 68
+m.etimes= 68
+quit= 35
+m.etimes= 69
+quit= 34
+m.etimes= 70
+m.etimes= 41
+quit= 57
+m.etimes= 70
+quit= 56
+m.etimes= 67
+m.etimes= 69
+quit= 55
+m.etimes= 68
+quit= 56
+m.etimes= 71
+m.etimes= 70
+quit= 54
+m.etimes= 69
+quit= 55
+m.etimes= 72
+m.etimes= 71
+quit= 53
+m.etimes= 70
+quit= 29
+m.etimes= 35
+quit= 33
+m.etimes= 71
+quit= 54
+m.etimes= 73
+m.etimes= 72
+quit= 32
+m.etimes= 72
+quit= 31
+m.etimes= 73
+quit= 30
+m.etimes= 74
+quit= 53
+m.etimes= 74
+m.etimes= 42
+quit= 52
+m.etimes= 71
+m.etimes= 73
+quit= 51
+m.etimes= 72
+m.etimes= 74
+quit= 52
+m.etimes= 75
+quit= 50
+m.etimes= 73
+quit= 51
+m.etimes= 76
+m.etimes= 75
+quit= 49
+m.etimes= 74
+quit= 50
+m.etimes= 77
+quit= 29
+m.etimes= 75
+quit= 28
+m.etimes= 36
+m.etimes= 76
+quit= 49
+m.etimes= 78
+quit= 28
+m.etimes= 76
+quit= 27
+m.etimes= 77
+quit= 63
+m.etimes= 43
+quit= 26
+m.etimes= 78
+m.etimes= 77
+quit= 48
+m.etimes= 79
+m.etimes= 78
+quit= 48
+m.etimes= 75
+quit= 47
+m.etimes= 80
+quit= 47
+m.etimes= 76
+quit= 46
+m.etimes= 77
+m.etimes= 79
+quit= 46
+m.etimes= 81
+quit= 25
+m.etimes= 79
+quit= 45
+m.etimes= 78
+m.etimes= 80
+quit= 45
+m.etimes= 82
+quit= 44
+m.etimes= 83
+quit= 24
+m.etimes= 80
+quit= 23
+m.etimes= 81
+m.etimes= 81
+quit= 22
+m.etimes= 82
+quit= 44
+m.etimes= 79
+m.etimes= 82
+quit= 27
+m.etimes= 37
+quit= 43
+m.etimes= 80
+quit= 42
+m.etimes= 81
+quit= 41
+m.etimes= 82
+m.etimes= 84
+m.etimes= 83
+m.etimes= 84
+quit= 63
+m.etimes= 85
+quit= 21
+m.etimes= 83
+quit= 62
+m.etimes= 86
+quit= 61
+m.etimes= 87
+m.etimes= 85
+quit= 20
+m.etimes= 84
+quit= 19
+m.etimes= 85
+quit= 40
+m.etimes= 83
+quit= 18
+m.etimes= 86
+quit= 60
+m.etimes= 88
+quit= 26
+m.etimes= 38
+m.etimes= 86
+m.etimes= 87
+quit= 59
+m.etimes= 89
+quit= 39
+m.etimes= 84
+quit= 38
+m.etimes= 85
+quit= 37
+m.etimes= 86
+m.etimes= 88
+quit= 58
+m.etimes= 90
+m.etimes= 89
+quit= 17
+m.etimes= 87
+m.etimes= 91
+quit= 16
+m.etimes= 88
+quit= 15
+m.etimes= 89
+quit= 36
+m.etimes= 87
+quit= 14
+m.etimes= 90
+m.etimes= 90
+quit= 25
+m.etimes= 39
+m.etimes= 91
+m.etimes= 92
+2025-05-01 21:03:59.494066602 +0800 CST m=+13.353457615 [WORKER] 2025-05-01 21:03:59.494049891 +0800 CST m=+13.353440911	[WORKER 139] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+m.etimes= 88
+m.etimes= 93
+quit= 63
+m.etimes= 89
+quit= 62
+m.etimes= 90
+m.etimes= 92
+m.etimes= 93
+quit= 13
+m.etimes= 91
+quit= 12
+m.etimes= 92
+m.etimes= 94
+quit= 63
+m.etimes= 95
+quit= 61
+m.etimes= 91
+quit= 11
+m.etimes= 93
+m.etimes= 94
+quit= 24
+m.etimes= 40
+quit= 10
+m.etimes= 94
+m.etimes= 95
+quit= 62
+m.etimes= 96
+quit= 60
+m.etimes= 92
+quit= 61
+m.etimes= 97
+quit= 59
+m.etimes= 93
+m.etimes= 96
+quit= 58
+m.etimes= 94
+m.etimes= 97
+quit= 9
+m.etimes= 95
+quit= 8
+m.etimes= 96
+quit= 60
+m.etimes= 98
+quit= 59
+m.etimes= 99
+quit= 7
+m.etimes= 97
+quit= 57
+m.etimes= 95
+m.etimes= 98
+quit= 23
+m.etimes= 41
+m.etimes= 99
+quit= 6
+m.etimes= 98
+quit= 56
+m.etimes= 96
+m.etimes= 100
+quit= 55
+m.etimes= 97
+m.etimes= 100
+quit= 54
+m.etimes= 98
+[MUTATE] SWITCH TO MUTATION MODE, CURRENT INITCNT 100
+quit= 63
+m.etimes= 101
+quit= 5
+m.etimes= 99
+[MUTATE] SWITCH TO MUTATION MODE, CURRENT INITCNT 100
+m.etimes= 101
+quit= 4
+m.etimes= 100
+quit= 62
+m.etimes= 102
+quit= 61
+m.etimes= 103
+[MUTATE] SWITCH TO MUTATION MODE, CURRENT INITCNT 100
+quit= 3
+m.etimes= 101
+quit= 53
+m.etimes= 99
+quit= 63
+m.etimes= 102
+2025-05-01 21:04:00.722149657 +0800 CST m=+14.581540668 [WORKER] 2025-05-01 21:04:00.72212982 +0800 CST m=+14.581520836	[WORKER 140] CRASH [empty chain] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 103
+quit= 22
+m.etimes= 42
+quit= 2
+m.etimes= 102
+quit= 52
+m.etimes= 100
+[MUTATE] SWITCH TO MUTATION MODE, CURRENT INITCNT 100
+quit= 51
+m.etimes= 101
+quit= 60
+m.etimes= 104
+quit= 61
+m.etimes= 104
+quit= 50
+m.etimes= 102
+quit= 59
+m.etimes= 105
+quit= 60
+m.etimes= 105
+quit= 58
+m.etimes= 106
+quit= 1
+m.etimes= 103
+quit= 0
+exit loop
+cancel and return done
+cancel and return1
+cancel and return done
+cancel and return done
+2025-05-01 21:04:00.996767547 +0800 CST m=+14.856158550 [3/11]	TestKubernetes11298_1	PASS
+m.etimes= 106
+quit= 49
+m.etimes= 103
+quit= 57
+m.etimes= 107
+quit= 63
+m.etimes= 107
+quit= 21
+m.etimes= 43
+quit= 48
+m.etimes= 104
+quit= 47
+m.etimes= 105
+quit= 46
+m.etimes= 106
+quit= 56
+m.etimes= 108
+quit= 55
+m.etimes= 109
+m.etimes= 108
+quit= 63
+m.etimes= 109
+quit= 54
+m.etimes= 110
+quit= 53
+m.etimes= 111
+quit= 20
+m.etimes= 44
+quit= 45
+m.etimes= 107
+m.etimes= 108
+m.etimes= 109
+quit= 52
+m.etimes= 112
+2025-05-01 21:04:01.489384434 +0800 CST m=+15.348775443 [WORKER] 2025-05-01 21:04:01.47379841 +0800 CST m=+15.333189413	[WORKER 141] CRASH [({1005022347274}, {1005022347269})] 
+ all goroutines are asleep - deadlock!
+2025-05-01 21:04:01.539490557 +0800 CST m=+15.398881569 [WORKER] 2025-05-01 21:04:01.512959794 +0800 CST m=+15.372350810	[WORKER 142] CRASH [({1005022347273}, {1005022347270})] 
+ all goroutines are asleep - deadlock!
+quit= 51
+m.etimes= 113
+quit= 63
+m.etimes= 110
+quit= 50
+m.etimes= 114
+quit= 49
+m.etimes= 115
+quit= 62
+m.etimes= 111
+m.etimes= 112
+quit= 19
+m.etimes= 45
+quit= 48
+m.etimes= 116
+quit= 47
+m.etimes= 117
+quit= 46
+m.etimes= 118
+quit= 45
+m.etimes= 119
+quit= 44
+m.etimes= 120
+quit= 43
+m.etimes= 121
+m.etimes= 113
+2025-05-01 21:04:01.866353951 +0800 CST m=+15.725744964 [WORKER] 2025-05-01 21:04:01.83652085 +0800 CST m=+15.695911893	[WORKER 143] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+quit= 42
+m.etimes= 122
+quit= 18
+m.etimes= 46
+quit= 41
+m.etimes= 123
+quit= 40
+m.etimes= 124
+quit= 39
+m.etimes= 125
+quit= 38
+m.etimes= 126
+quit= 37
+m.etimes= 127
+quit= 36
+m.etimes= 128
+quit= 35
+m.etimes= 129
+quit= 17
+m.etimes= 47
+quit= 34
+m.etimes= 130
+quit= 33
+m.etimes= 131
+quit= 32
+m.etimes= 132
+quit= 16
+m.etimes= 48
+quit= 31
+m.etimes= 133
+quit= 30
+m.etimes= 134
+quit= 29
+m.etimes= 135
+quit= 28
+m.etimes= 136
+quit= 27
+m.etimes= 137
+quit= 15
+m.etimes= 49
+quit= 26
+m.etimes= 138
+quit= 25
+m.etimes= 139
+quit= 14
+m.etimes= 50
+quit= 24
+m.etimes= 140
+quit= 23
+m.etimes= 141
+quit= 22
+m.etimes= 142
+quit= 21
+m.etimes= 143
+quit= 13
+m.etimes= 51
+quit= 20
+m.etimes= 144
+quit= 19
+m.etimes= 145
+quit= 12
+m.etimes= 52
+quit= 18
+m.etimes= 146
+quit= 17
+m.etimes= 147
+quit= 11
+m.etimes= 53
+quit= 16
+m.etimes= 148
+quit= 15
+m.etimes= 149
+quit= 14
+m.etimes= 150
+quit= 13
+m.etimes= 151
+quit= 12
+m.etimes= 152
+quit= 10
+m.etimes= 54
+quit= 11
+m.etimes= 153
+quit= 10
+m.etimes= 154
+quit= 9
+m.etimes= 155
+quit= 8
+m.etimes= 156
+quit= 9
+m.etimes= 55
+quit= 7
+m.etimes= 157
+quit= 6
+m.etimes= 158
+quit= 5
+m.etimes= 159
+quit= 8
+m.etimes= 56
+quit= 4
+m.etimes= 160
+quit= 3
+m.etimes= 161
+quit= 2
+m.etimes= 162
+quit= 7
+m.etimes= 57
+quit= 1
+m.etimes= 163
+quit= 0
+exit loop
+cancel and return done
+cancel and return done
+cancel and return done
+cancel and return done
+2025-05-01 21:04:03.49774034 +0800 CST m=+17.357131347 [4/11]	TestMoby27782_1	PASS
+quit= 6
+m.etimes= 58
+quit= 5
+m.etimes= 59
+quit= 4
+m.etimes= 60
+quit= 3
+m.etimes= 61
+m.etimes= 44
+2025-05-01 21:04:04.015686233 +0800 CST m=+17.875077241 [WORKER] 2025-05-01 21:04:04.01014215 +0800 CST m=+17.869533191	[WORKER 144] CRASH [empty chain] 
+ === RUN   TestKubernetes58107_1
+    sched.go:303: found unexpected goroutines:
+        [Goroutine 8 in state semacquire, with sync.runtime_SemacquireMutex on top of the stack:
+        goroutine 8 [semacquire]:
+        sync.runtime_SemacquireMutex(0x0?, 0x0?, 0x0?)
+        	/usr/local/go/src/runtime/sema.go:77 +0x25
+        sync.(*RWMutex).Lock(0x0?)
+        	/usr/local/go/src/sync/rwmutex.go:160 +0x71
+        toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.(*ResourceQuotaController).Sync(0xc0000148c0)
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:97 +0x4f
+        created by toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.startResourceQuotaController
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:121 +0x1f7
+        
+         Goroutine 17 in state sync.Cond.Wait, with sync.runtime_notifyListWait on top of the stack:
+        goroutine 17 [sync.Cond.Wait]:
+        sync.runtime_notifyListWait(0xc000014850, 0x0)
+        	/usr/local/go/src/runtime/sema.go:517 +0x14c
+        sync.(*Cond).Wait(0xc000188010?)
+        	/usr/local/go/src/sync/cond.go:70 +0x8c
+        toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.(*Type).Get(0xc000012038)
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:54 +0xb1
+        toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.(*ResourceQuotaController).worker.func1()
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:77 +0xe2
+        toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.(*ResourceQuotaController).worker.func2()
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:82 +0x27
+        created by toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.(*ResourceQuotaController).Run
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:90 +0x37
+        
+         Goroutine 18 in state sync.Cond.Wait, with sync.runtime_notifyListWait on top of the stack:
+        goroutine 18 [sync.Cond.Wait]:
+        sync.runtime_notifyListWait(0xc000014890, 0x0)
+        	/usr/local/go/src/runtime/sema.go:517 +0x14c
+        sync.(*Cond).Wait(0xc000188000?)
+        	/usr/local/go/src/sync/cond.go:70 +0x8c
+        toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.(*Type).Get(0xc000012040)
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:54 +0xb1
+        toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.(*ResourceQuotaController).worker.func1()
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:77 +0xe2
+        toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.(*ResourceQuotaController).worker.func2()
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:82 +0x27
+        created by toolkit/testdata/gobench/src/goker/blocking/kubernetes/58107.(*ResourceQuotaController).Run
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/kubernetes/58107/kubernetes58107_test.go:91 +0x5a
+        ]
+--- FAIL: TestKubernetes58107_1 (16.92s)
+FAIL
+
+quit= 2
+m.etimes= 62
+quit= 63
+m.etimes= 45
+quit= 1
+m.etimes= 63
+quit= 0
+exit loop
+cancel and return done
+cancel and return done
+cancel and return done
+cancel and return done
+2025-05-01 21:04:04.262559022 +0800 CST m=+18.121950030 [5/11]	TestCockroach13755_1	PASS
+quit= 47
+m.etimes= 17
+2025-05-01 21:04:05.487168306 +0800 CST m=+19.346559321 [WORKER] 2025-05-01 21:04:05.477136784 +0800 CST m=+19.336527801	[WORKER 145] CRASH [empty chain] 
+ === RUN   TestCockroach13197_1
+    sched.go:303: found unexpected goroutines:
+        [Goroutine 7 in state chan receive, with toolkit/testdata/gobench/src/goker/blocking/cockroach/13197.(*Tx).awaitDone on top of the stack:
+        goroutine 7 [chan receive]:
+        toolkit/testdata/gobench/src/goker/blocking/cockroach/13197.(*Tx).awaitDone(0xc0000100c0)
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/cockroach/13197/cockroach13197_test.go:37 +0x65
+        created by toolkit/testdata/gobench/src/goker/blocking/cockroach/13197.(*DB).begin
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/cockroach/13197/cockroach13197_test.go:26 +0xd6
+        ]
+--- FAIL: TestCockroach13197_1 (16.84s)
+FAIL
+
+quit= 46
+m.etimes= 18
+quit= 45
+m.etimes= 19
+quit= 44
+m.etimes= 20
+quit= 43
+m.etimes= 21
+quit= 42
+m.etimes= 22
+quit= 41
+m.etimes= 23
+quit= 40
+m.etimes= 24
+2025-05-01 21:04:06.576597515 +0800 CST m=+20.435988534 [WORKER] 2025-05-01 21:04:06.576574987 +0800 CST m=+20.435966007	[WORKER 146] CRASH [empty chain] 
+ === RUN   TestMoby25384_1
+    sched.go:303: found unexpected goroutines:
+        [Goroutine 19 in state semacquire, with sync.runtime_Semacquire on top of the stack:
+        goroutine 19 [semacquire]:
+        sync.runtime_Semacquire(0xc000204000?)
+        	/usr/local/go/src/runtime/sema.go:62 +0x25
+        sync.(*WaitGroup).Wait(0x0?)
+        	/usr/local/go/src/sync/waitgroup.go:139 +0x52
+        toolkit/testdata/gobench/src/goker/blocking/moby/25384.(*Manager).init(0xc0000b80a8)
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/moby/25384/moby25384_test.go:34 +0x65
+        created by toolkit/testdata/gobench/src/goker/blocking/moby/25384.TestMoby25384_1
+        	/home/song2048/桌面/goProject/src/GoPie/testdata/gobench/src/goker/blocking/moby/25384/moby25384_test.go:53 +0xee
+        ]
+--- FAIL: TestMoby25384_1 (16.86s)
+FAIL
+
+quit= 30
+m.etimes= 34
+quit= 29
+m.etimes= 35
+quit= 28
+m.etimes= 36
+quit= 27
+m.etimes= 37
+quit= 26
+m.etimes= 38
+quit= 25
+m.etimes= 39
+quit= 24
+m.etimes= 40
+quit= 23
+m.etimes= 41
+quit= 39
+m.etimes= 25
+quit= 22
+m.etimes= 42
+quit= 38
+m.etimes= 26
+quit= 37
+m.etimes= 27
+quit= 36
+m.etimes= 28
+quit= 21
+m.etimes= 43
+quit= 35
+m.etimes= 29
+quit= 20
+m.etimes= 44
+2025-05-01 21:04:07.599683061 +0800 CST m=+21.459074081 [WORKER] 2025-05-01 21:04:07.599663536 +0800 CST m=+21.459054555	[WORKER 147] CRASH [({1005022347271}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 114
+quit= 19
+m.etimes= 45
+quit= 34
+m.etimes= 30
+quit= 18
+m.etimes= 46
+quit= 17
+m.etimes= 47
+2025-05-01 21:04:07.752306993 +0800 CST m=+21.611698006 [WORKER] 2025-05-01 21:04:07.747907541 +0800 CST m=+21.607298556	[WORKER 148] CRASH [({1005022347269}, {1005022347271})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 115
+quit= 33
+m.etimes= 31
+quit= 16
+m.etimes= 48
+m.etimes= 116
+2025-05-01 21:04:07.98759069 +0800 CST m=+21.846981704 [WORKER] 2025-05-01 21:04:07.968211001 +0800 CST m=+21.827602017	[WORKER 149] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+quit= 32
+m.etimes= 32
+quit= 15
+m.etimes= 49
+quit= 31
+m.etimes= 33
+quit= 14
+m.etimes= 50
+quit= 30
+m.etimes= 34
+quit= 13
+m.etimes= 51
+quit= 12
+m.etimes= 52
+quit= 29
+m.etimes= 35
+quit= 11
+m.etimes= 53
+quit= 28
+m.etimes= 36
+quit= 10
+m.etimes= 54
+quit= 27
+m.etimes= 37
+quit= 26
+quit= 9
+m.etimes= 55
+m.etimes= 38
+quit= 25
+m.etimes= 39
+quit= 8
+m.etimes= 56
+quit= 24
+m.etimes= 40
+quit= 23
+m.etimes= 41
+quit= 7
+m.etimes= 57
+quit= 22
+m.etimes= 42
+quit= 21
+m.etimes= 43
+quit= 20
+m.etimes= 44
+quit= 6
+m.etimes= 58
+quit= 19
+m.etimes= 45
+quit= 18
+m.etimes= 46
+quit= 5
+m.etimes= 59
+quit= 17
+m.etimes= 47
+quit= 16
+m.etimes= 48
+quit= 15
+m.etimes= 49
+quit= 4
+m.etimes= 60
+quit= 14
+m.etimes= 50
+quit= 13
+m.etimes= 51
+quit= 3
+m.etimes= 61
+quit= 2
+m.etimes= 62
+quit= 12
+m.etimes= 52
+quit= 11
+m.etimes= 53
+quit= 1
+m.etimes= 63
+quit= 10
+m.etimes= 54
+quit= 0
+cancel and return done
+cancel and return done
+cancel and return done
+exit loop
+2025-05-01 21:04:09.689793366 +0800 CST m=+23.549184376 [6/11]	TestMoby25384_1	PASS
+cancel and return done
+quit= 9
+m.etimes= 55
+quit= 8
+m.etimes= 56
+quit= 7
+m.etimes= 57
+quit= 6
+m.etimes= 58
+quit= 5
+m.etimes= 59
+quit= 4
+m.etimes= 60
+quit= 3
+m.etimes= 61
+quit= 2
+m.etimes= 62
+quit= 1
+m.etimes= 63
+quit= 0
+exit loop
+cancel and return done
+cancel and return done
+cancel and return done
+cancel and return done
+2025-05-01 21:04:10.23304244 +0800 CST m=+24.092433445 [7/11]	TestCockroach13197_1	PASS
+m.etimes= 46
+m.etimes= 47
+quit= 63
+m.etimes= 48
+m.etimes= 49
+m.etimes= 50
+m.etimes= 51
+quit= 63
+m.etimes= 52
+quit= 62
+m.etimes= 53
+quit= 61
+m.etimes= 54
+m.etimes= 55
+m.etimes= 56
+m.etimes= 57
+quit= 63
+m.etimes= 58
+m.etimes= 59
+quit= 63
+m.etimes= 60
+quit= 62
+m.etimes= 61
+m.etimes= 62
+m.etimes= 63
+quit= 63
+m.etimes= 64
+m.etimes= 65
+quit= 63
+m.etimes= 66
+m.etimes= 67
+m.etimes= 68
+m.etimes= 69
+quit= 63
+m.etimes= 70
+quit= 62
+m.etimes= 71
+m.etimes= 72
+quit= 63
+m.etimes= 73
+quit= 62
+m.etimes= 74
+quit= 61
+m.etimes= 75
+quit= 60
+m.etimes= 76
+quit= 59
+m.etimes= 77
+m.etimes= 78
+quit= 63
+m.etimes= 79
+m.etimes= 80
+quit= 63
+m.etimes= 81
+quit= 62
+m.etimes= 82
+quit= 61
+m.etimes= 83
+m.etimes= 84
+quit= 63
+m.etimes= 85
+m.etimes= 86
+quit= 63
+m.etimes= 87
+m.etimes= 88
+m.etimes= 89
+quit= 63
+m.etimes= 90
+m.etimes= 91
+quit= 63
+m.etimes= 92
+quit= 62
+m.etimes= 93
+m.etimes= 94
+quit= 63
+m.etimes= 95
+quit= 62
+m.etimes= 96
+quit= 61
+m.etimes= 97
+m.etimes= 98
+quit= 63
+m.etimes= 99
+quit= 62
+m.etimes= 100
+[MUTATE] SWITCH TO MUTATION MODE, CURRENT INITCNT 100
+m.etimes= 101
+quit= 63
+m.etimes= 102
+quit= 62
+m.etimes= 103
+quit= 61
+m.etimes= 104
+quit= 60
+m.etimes= 105
+quit= 59
+m.etimes= 106
+quit= 58
+m.etimes= 107
+quit= 57
+m.etimes= 108
+quit= 56
+m.etimes= 109
+m.etimes= 110
+m.etimes= 111
+quit= 63
+m.etimes= 112
+quit= 62
+m.etimes= 113
+quit= 61
+m.etimes= 114
+quit= 60
+m.etimes= 115
+quit= 59
+m.etimes= 116
+quit= 58
+m.etimes= 117
+m.etimes= 118
+quit= 63
+m.etimes= 119
+quit= 62
+m.etimes= 120
+quit= 61
+m.etimes= 121
+quit= 60
+m.etimes= 122
+quit= 59
+m.etimes= 123
+quit= 58
+m.etimes= 124
+quit= 57
+m.etimes= 125
+quit= 56
+m.etimes= 126
+quit= 55
+m.etimes= 127
+quit= 54
+m.etimes= 128
+quit= 53
+m.etimes= 129
+quit= 52
+m.etimes= 130
+m.etimes= 131
+quit= 63
+m.etimes= 132
+quit= 62
+m.etimes= 133
+quit= 61
+m.etimes= 134
+quit= 60
+m.etimes= 135
+m.etimes= 136
+quit= 62
+m.etimes= 110
+quit= 61
+m.etimes= 111
+quit= 63
+m.etimes= 137
+quit= 62
+m.etimes= 138
+quit= 61
+m.etimes= 139
+quit= 60
+m.etimes= 140
+quit= 59
+m.etimes= 141
+quit= 58
+m.etimes= 142
+quit= 57
+m.etimes= 143
+quit= 56
+m.etimes= 144
+quit= 55
+m.etimes= 145
+quit= 63
+m.etimes= 117
+quit= 54
+m.etimes= 146
+quit= 53
+m.etimes= 147
+quit= 52
+m.etimes= 148
+quit= 51
+m.etimes= 149
+quit= 50
+m.etimes= 150
+quit= 49
+m.etimes= 151
+quit= 48
+m.etimes= 152
+quit= 47
+m.etimes= 153
+quit= 46
+m.etimes= 154
+quit= 62
+m.etimes= 118
+quit= 45
+m.etimes= 155
+quit= 44
+m.etimes= 156
+quit= 43
+m.etimes= 157
+quit= 42
+m.etimes= 158
+quit= 41
+m.etimes= 159
+quit= 40
+m.etimes= 160
+quit= 39
+m.etimes= 161
+quit= 38
+m.etimes= 162
+quit= 37
+m.etimes= 163
+quit= 36
+m.etimes= 164
+quit= 35
+m.etimes= 165
+quit= 61
+m.etimes= 119
+2025-05-01 21:04:34.507318379 +0800 CST m=+48.366709395 [WORKER] 2025-05-01 21:04:34.507300982 +0800 CST m=+48.366692021	[WORKER 150] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347268})({1005022347268}, {1005022347267})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 120
+quit= 34
+m.etimes= 166
+quit= 33
+m.etimes= 167
+quit= 32
+m.etimes= 168
+quit= 31
+m.etimes= 169
+quit= 30
+m.etimes= 170
+quit= 29
+m.etimes= 171
+quit= 28
+m.etimes= 172
+quit= 27
+m.etimes= 173
+quit= 26
+m.etimes= 174
+quit= 25
+m.etimes= 175
+quit= 24
+m.etimes= 176
+quit= 23
+m.etimes= 177
+quit= 22
+m.etimes= 178
+quit= 21
+m.etimes= 179
+quit= 20
+m.etimes= 180
+quit= 19
+m.etimes= 181
+quit= 18
+m.etimes= 182
+quit= 17
+m.etimes= 183
+quit= 16
+m.etimes= 184
+quit= 15
+m.etimes= 185
+quit= 14
+m.etimes= 186
+quit= 63
+m.etimes= 121
+2025-05-01 21:04:38.110589686 +0800 CST m=+51.969980692 [WORKER] 2025-05-01 21:04:38.110571959 +0800 CST m=+51.969962975	[WORKER 151] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347271})({1005022347271}, {1005022347269})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 122
+m.etimes= 123
+quit= 63
+m.etimes= 124
+2025-05-01 21:04:40.633869048 +0800 CST m=+54.493260061 [WORKER] 2025-05-01 21:04:40.585185865 +0800 CST m=+54.444576880	[WORKER 152] CRASH [({1005022347267}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+quit= 60
+m.etimes= 112
+quit= 59
+m.etimes= 113
+quit= 58
+m.etimes= 114
+m.etimes= 115
+m.etimes= 116
+quit= 63
+m.etimes= 117
+quit= 62
+m.etimes= 118
+m.etimes= 119
+m.etimes= 120
+m.etimes= 121
+m.etimes= 122
+m.etimes= 123
+quit= 13
+m.etimes= 187
+quit= 12
+m.etimes= 188
+quit= 11
+m.etimes= 189
+quit= 10
+m.etimes= 190
+quit= 9
+m.etimes= 191
+quit= 8
+m.etimes= 192
+quit= 7
+m.etimes= 193
+quit= 6
+m.etimes= 194
+quit= 5
+m.etimes= 195
+quit= 4
+m.etimes= 196
+quit= 3
+m.etimes= 197
+quit= 2
+m.etimes= 198
+quit= 1
+m.etimes= 199
+quit= 0
+exit loop
+cancel and return done
+cancel and return done
+cancel and return done
+cancel and return done
+2025-05-01 21:04:44.823826021 +0800 CST m=+58.683217037 [8/11]	TestKubernetes58107_1	PASS
+quit= 62
+m.etimes= 125
+quit= 61
+m.etimes= 126
+quit= 60
+m.etimes= 127
+quit= 59
+m.etimes= 128
+quit= 63
+m.etimes= 124
+2025-05-01 21:05:14.422699574 +0800 CST m=+88.282090584 [WORKER] 2025-05-01 21:05:14.422247099 +0800 CST m=+88.281638116	[WORKER 153] CRASH [({1005022347266}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 129
+m.etimes= 130
+2025-05-01 21:05:20.485137528 +0800 CST m=+94.344528540 [WORKER] 2025-05-01 21:05:20.483006533 +0800 CST m=+94.342397549	[WORKER 154] CRASH [({1005022347269}, {1005022347268})({1005022347268}, {1005022347267})({1005022347267}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 125
+quit= 61
+m.etimes= 126
+quit= 60
+m.etimes= 127
+quit= 59
+m.etimes= 128
+m.etimes= 131
+2025-05-01 21:05:26.59784477 +0800 CST m=+100.457235781 [WORKER] 2025-05-01 21:05:26.586061403 +0800 CST m=+100.445452423	[WORKER 155] CRASH [({1005022347266}, {1005022347266})({1005022347266}, {1005022347266})({1005022347266}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 132
+quit= 62
+m.etimes= 133
+m.etimes= 134
+2025-05-01 21:05:33.112897701 +0800 CST m=+106.972288708 [WORKER] 2025-05-01 21:05:33.102426497 +0800 CST m=+106.961817507	[WORKER 156] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347267})({1005022347267}, {1005022347269})({1005022347269}, {1005022347271})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 135
+quit= 63
+m.etimes= 136
+m.etimes= 137
+quit= 58
+m.etimes= 129
+m.etimes= 130
+quit= 63
+m.etimes= 131
+quit= 62
+m.etimes= 132
+quit= 61
+m.etimes= 133
+quit= 60
+m.etimes= 134
+m.etimes= 135
+m.etimes= 136
+m.etimes= 137
+m.etimes= 138
+quit= 63
+m.etimes= 138
+quit= 62
+m.etimes= 139
+m.etimes= 140
+quit= 63
+m.etimes= 141
+2025-05-01 21:06:08.308108363 +0800 CST m=+142.167499380 [WORKER] 2025-05-01 21:06:08.308085609 +0800 CST m=+142.167476630	[WORKER 157] CRASH [({1005022347273}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 142
+quit= 63
+m.etimes= 143
+m.etimes= 144
+quit= 63
+m.etimes= 139
+m.etimes= 140
+quit= 63
+m.etimes= 141
+m.etimes= 142
+m.etimes= 143
+m.etimes= 144
+quit= 63
+m.etimes= 145
+quit= 63
+m.etimes= 145
+m.etimes= 146
+2025-05-01 21:06:26.865939339 +0800 CST m=+160.725330359 [WORKER] 2025-05-01 21:06:26.853269591 +0800 CST m=+160.712660634	[WORKER 158] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347268})({1005022347268}, {1005022347267})({1005022347267}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 146
+m.etimes= 147
+m.etimes= 148
+quit= 63
+m.etimes= 149
+quit= 63
+m.etimes= 147
+quit= 62
+m.etimes= 148
+quit= 61
+m.etimes= 149
+quit= 62
+m.etimes= 150
+quit= 61
+m.etimes= 151
+quit= 60
+m.etimes= 150
+quit= 60
+m.etimes= 152
+quit= 59
+m.etimes= 153
+quit= 58
+m.etimes= 154
+m.etimes= 155
+m.etimes= 156
+m.etimes= 157
+m.etimes= 158
+m.etimes= 159
+m.etimes= 160
+quit= 59
+m.etimes= 151
+m.etimes= 152
+2025-05-01 21:07:03.658527745 +0800 CST m=+197.517918758 [WORKER] 2025-05-01 21:07:03.654952058 +0800 CST m=+197.514343080	[WORKER 159] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347268})({1005022347268}, {1005022347267})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 153
+quit= 62
+m.etimes= 154
+quit= 63
+m.etimes= 161
+m.etimes= 162
+quit= 61
+m.etimes= 155
+2025-05-01 21:07:14.467354977 +0800 CST m=+208.326745988 [WORKER] 2025-05-01 21:07:14.44740875 +0800 CST m=+208.306799764	[WORKER 160] CRASH [({1005022347267}, {1005022347268})({1005022347268}, {1005022347267})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 156
+2025-05-01 21:07:16.919434705 +0800 CST m=+210.778825728 [WORKER] 2025-05-01 21:07:16.904953761 +0800 CST m=+210.764344783	[WORKER 161] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347266})({1005022347266}, {1005022347269})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 157
+quit= 63
+m.etimes= 158
+quit= 63
+m.etimes= 163
+quit= 62
+m.etimes= 159
+m.etimes= 160
+quit= 62
+m.etimes= 164
+quit= 61
+m.etimes= 165
+m.etimes= 166
+m.etimes= 167
+quit= 63
+m.etimes= 168
+quit= 62
+m.etimes= 169
+quit= 63
+m.etimes= 161
+quit= 62
+m.etimes= 162
+m.etimes= 163
+quit= 63
+m.etimes= 164
+quit= 61
+m.etimes= 170
+quit= 62
+m.etimes= 165
+quit= 61
+m.etimes= 166
+2025-05-01 21:08:10.235035444 +0800 CST m=+264.094426449 [WORKER] 2025-05-01 21:08:10.207102671 +0800 CST m=+264.066493689	[WORKER 162] CRASH [({1005022347267}, {1005022347268})({1005022347268}, {1005022347267})({1005022347267}, {1005022347268})({1005022347268}, {1005022347267})] 
+ all goroutines are asleep - deadlock!
+quit= 60
+m.etimes= 167
+quit= 59
+m.etimes= 168
+quit= 60
+m.etimes= 171
+quit= 58
+m.etimes= 169
+quit= 59
+m.etimes= 172
+quit= 58
+m.etimes= 173
+quit= 57
+m.etimes= 174
+m.etimes= 175
+quit= 57
+m.etimes= 170
+quit= 56
+m.etimes= 171
+m.etimes= 172
+2025-05-01 21:08:46.196152263 +0800 CST m=+300.055543286 [WORKER] 2025-05-01 21:08:46.191476519 +0800 CST m=+300.050867556	[WORKER 163] CRASH [({1005022347274}, {1005022347269})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 173
+quit= 63
+m.etimes= 176
+quit= 62
+m.etimes= 177
+m.etimes= 178
+quit= 62
+m.etimes= 174
+quit= 61
+m.etimes= 175
+quit= 60
+m.etimes= 176
+quit= 63
+m.etimes= 179
+quit= 62
+m.etimes= 180
+m.etimes= 181
+m.etimes= 182
+quit= 63
+m.etimes= 183
+quit= 62
+m.etimes= 184
+quit= 61
+m.etimes= 185
+m.etimes= 186
+quit= 63
+m.etimes= 187
+m.etimes= 188
+quit= 59
+m.etimes= 177
+quit= 58
+m.etimes= 178
+quit= 57
+m.etimes= 179
+quit= 63
+m.etimes= 189
+m.etimes= 190
+quit= 56
+m.etimes= 180
+quit= 63
+m.etimes= 191
+m.etimes= 192
+m.etimes= 193
+m.etimes= 194
+m.etimes= 195
+m.etimes= 196
+quit= 63
+m.etimes= 197
+m.etimes= 198
+quit= 63
+m.etimes= 199
+quit= 62
+m.etimes= 200
+m.etimes= 201
+quit= 55
+m.etimes= 181
+quit= 54
+m.etimes= 182
+quit= 63
+m.etimes= 202
+quit= 62
+m.etimes= 203
+m.etimes= 204
+quit= 53
+m.etimes= 183
+quit= 52
+m.etimes= 184
+quit= 51
+m.etimes= 185
+quit= 63
+m.etimes= 205
+m.etimes= 206
+m.etimes= 207
+quit= 63
+m.etimes= 208
+m.etimes= 209
+quit= 50
+m.etimes= 186
+quit= 49
+m.etimes= 187
+quit= 63
+m.etimes= 210
+quit= 62
+m.etimes= 211
+m.etimes= 212
+quit= 48
+m.etimes= 188
+quit= 47
+m.etimes= 189
+quit= 46
+m.etimes= 190
+quit= 63
+m.etimes= 213
+quit= 62
+m.etimes= 214
+quit= 45
+m.etimes= 191
+m.etimes= 192
+2025-05-01 21:10:46.666275838 +0800 CST m=+420.525666848 [WORKER] 2025-05-01 21:10:46.660102464 +0800 CST m=+420.519493483	[WORKER 164] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347266})({1005022347266}, {1005022347269})({1005022347269}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 215
+quit= 63
+m.etimes= 216
+m.etimes= 217
+m.etimes= 218
+quit= 63
+m.etimes= 219
+quit= 63
+m.etimes= 193
+m.etimes= 194
+quit= 63
+m.etimes= 195
+quit= 62
+m.etimes= 220
+m.etimes= 221
+quit= 62
+m.etimes= 196
+quit= 61
+m.etimes= 197
+quit= 60
+m.etimes= 198
+quit= 63
+m.etimes= 222
+quit= 59
+m.etimes= 199
+quit= 62
+m.etimes= 223
+quit= 61
+m.etimes= 224
+quit= 60
+m.etimes= 225
+quit= 59
+m.etimes= 226
+quit= 58
+m.etimes= 200
+quit= 57
+m.etimes= 201
+quit= 56
+m.etimes= 202
+quit= 58
+m.etimes= 227
+quit= 57
+m.etimes= 228
+quit= 55
+m.etimes= 203
+quit= 56
+m.etimes= 229
+m.etimes= 230
+m.etimes= 231
+quit= 63
+m.etimes= 232
+m.etimes= 233
+quit= 63
+m.etimes= 234
+m.etimes= 235
+quit= 63
+m.etimes= 236
+m.etimes= 237
+m.etimes= 238
+m.etimes= 239
+m.etimes= 240
+m.etimes= 241
+quit= 54
+m.etimes= 204
+quit= 53
+m.etimes= 205
+m.etimes= 206
+quit= 63
+m.etimes= 207
+quit= 63
+m.etimes= 242
+m.etimes= 243
+quit= 62
+m.etimes= 208
+quit= 61
+m.etimes= 209
+m.etimes= 210
+quit= 63
+m.etimes= 244
+quit= 62
+m.etimes= 245
+quit= 61
+m.etimes= 246
+m.etimes= 247
+quit= 63
+m.etimes= 248
+m.etimes= 249
+quit= 63
+m.etimes= 211
+quit= 62
+m.etimes= 212
+quit= 63
+m.etimes= 250
+m.etimes= 251
+quit= 61
+m.etimes= 213
+quit= 63
+m.etimes= 252
+m.etimes= 253
+m.etimes= 254
+m.etimes= 255
+quit= 60
+m.etimes= 214
+quit= 63
+m.etimes= 256
+quit= 62
+m.etimes= 257
+quit= 61
+m.etimes= 258
+quit= 59
+m.etimes= 215
+quit= 58
+m.etimes= 216
+2025-05-01 21:13:17.47914984 +0800 CST m=+571.338540858 [WORKER] 2025-05-01 21:13:17.451108704 +0800 CST m=+571.310499729	[WORKER 165] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347267})({1005022347267}, {1005022347269})({1005022347269}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 217
+quit= 63
+m.etimes= 218
+quit= 62
+m.etimes= 219
+quit= 61
+m.etimes= 220
+quit= 60
+m.etimes= 259
+quit= 59
+m.etimes= 260
+m.etimes= 261
+quit= 63
+m.etimes= 262
+quit= 62
+m.etimes= 263
+m.etimes= 264
+m.etimes= 265
+quit= 63
+m.etimes= 266
+m.etimes= 267
+m.etimes= 268
+quit= 60
+m.etimes= 221
+quit= 59
+m.etimes= 222
+quit= 63
+m.etimes= 269
+quit= 58
+m.etimes= 223
+quit= 57
+m.etimes= 224
+m.etimes= 225
+quit= 63
+m.etimes= 226
+quit= 62
+m.etimes= 270
+quit= 61
+m.etimes= 271
+quit= 62
+m.etimes= 227
+quit= 61
+m.etimes= 228
+quit= 60
+m.etimes= 229
+quit= 60
+m.etimes= 272
+m.etimes= 273
+m.etimes= 274
+quit= 63
+m.etimes= 275
+m.etimes= 276
+m.etimes= 277
+quit= 59
+m.etimes= 230
+quit= 63
+m.etimes= 278
+quit= 62
+m.etimes= 279
+m.etimes= 280
+quit= 58
+m.etimes= 231
+quit= 57
+m.etimes= 232
+quit= 56
+m.etimes= 233
+quit= 63
+m.etimes= 281
+quit= 62
+m.etimes= 282
+m.etimes= 283
+quit= 55
+m.etimes= 234
+2025-05-01 21:14:55.53802131 +0800 CST m=+669.397412323 [WORKER] 2025-05-01 21:14:55.527659731 +0800 CST m=+669.387050749	[WORKER 166] CRASH [({1005022347272}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+quit= 54
+m.etimes= 235
+quit= 63
+m.etimes= 284
+quit= 62
+m.etimes= 285
+quit= 61
+m.etimes= 286
+2025-05-01 21:15:11.112403656 +0800 CST m=+684.971794666 [WORKER] 2025-05-01 21:15:11.108886 +0800 CST m=+684.968277022	[WORKER 167] CRASH [({627065225224}, {627065225232})({627065225232}, {627065225224})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 287
+quit= 53
+m.etimes= 236
+quit= 52
+m.etimes= 237
+quit= 63
+m.etimes= 288
+quit= 62
+m.etimes= 289
+quit= 61
+m.etimes= 290
+m.etimes= 291
+quit= 51
+m.etimes= 238
+m.etimes= 239
+2025-05-01 21:15:25.851117609 +0800 CST m=+699.710508622 [WORKER] 2025-05-01 21:15:25.847485894 +0800 CST m=+699.706876895	[WORKER 168] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347271})({1005022347271}, {1005022347269})({1005022347269}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 240
+quit= 63
+m.etimes= 241
+quit= 63
+m.etimes= 292
+quit= 62
+m.etimes= 293
+quit= 62
+m.etimes= 242
+quit= 61
+m.etimes= 243
+m.etimes= 244
+2025-05-01 21:15:47.922913596 +0800 CST m=+721.782304607 [WORKER] 2025-05-01 21:15:47.914178058 +0800 CST m=+721.773569075	[WORKER 169] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347271})({1005022347271}, {1005022347269})({1005022347269}, {1005022347271})] 
+ all goroutines are asleep - deadlock!
+quit= 61
+m.etimes= 294
+quit= 60
+m.etimes= 295
+quit= 63
+m.etimes= 245
+quit= 62
+m.etimes= 246
+m.etimes= 247
+2025-05-01 21:15:59.946780059 +0800 CST m=+733.806171065 [WORKER] 2025-05-01 21:15:59.945709883 +0800 CST m=+733.805100931	[WORKER 170] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347267})({1005022347267}, {1005022347269})({1005022347269}, {1005022347267})] 
+ all goroutines are asleep - deadlock!
+quit= 59
+m.etimes= 296
+m.etimes= 297
+quit= 63
+m.etimes= 298
+m.etimes= 299
+quit= 63
+m.etimes= 300
+quit= 62
+m.etimes= 301
+m.etimes= 302
+quit= 63
+m.etimes= 248
+m.etimes= 249
+2025-05-01 21:16:16.751877936 +0800 CST m=+750.611268951 [WORKER] 2025-05-01 21:16:16.736854308 +0800 CST m=+750.596245328	[WORKER 171] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347268})({1005022347268}, {1005022347267})({1005022347267}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 250
+quit= 63
+m.etimes= 303
+quit= 62
+m.etimes= 304
+quit= 61
+m.etimes= 305
+m.etimes= 306
+m.etimes= 307
+quit= 62
+m.etimes= 251
+m.etimes= 252
+quit= 63
+m.etimes= 253
+quit= 63
+m.etimes= 308
+m.etimes= 309
+quit= 63
+m.etimes= 310
+quit= 62
+m.etimes= 254
+quit= 61
+m.etimes= 255
+quit= 62
+m.etimes= 311
+quit= 60
+m.etimes= 256
+m.etimes= 257
+quit= 63
+m.etimes= 258
+quit= 61
+m.etimes= 312
+quit= 60
+m.etimes= 313
+m.etimes= 314
+quit= 63
+m.etimes= 315
+m.etimes= 316
+quit= 63
+m.etimes= 317
+quit= 62
+m.etimes= 259
+quit= 61
+m.etimes= 260
+quit= 62
+m.etimes= 318
+quit= 61
+m.etimes= 319
+quit= 60
+m.etimes= 320
+m.etimes= 261
+2025-05-01 21:17:24.131868189 +0800 CST m=+817.991259199 [WORKER] 2025-05-01 21:17:24.124884028 +0800 CST m=+817.984275045	[WORKER 172] CRASH [({1005022347266}, {1005022347266})({1005022347266}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 262
+quit= 62
+m.etimes= 263
+quit= 59
+m.etimes= 321
+m.etimes= 322
+m.etimes= 323
+quit= 63
+m.etimes= 324
+quit= 61
+m.etimes= 264
+quit= 60
+m.etimes= 265
+quit= 62
+m.etimes= 325
+quit= 61
+m.etimes= 326
+quit= 59
+m.etimes= 266
+quit= 58
+m.etimes= 267
+quit= 57
+m.etimes= 268
+quit= 56
+m.etimes= 269
+quit= 60
+m.etimes= 327
+m.etimes= 328
+m.etimes= 329
+m.etimes= 330
+quit= 63
+m.etimes= 331
+m.etimes= 332
+quit= 63
+m.etimes= 333
+m.etimes= 334
+m.etimes= 335
+quit= 63
+m.etimes= 336
+quit= 62
+m.etimes= 337
+quit= 55
+m.etimes= 270
+quit= 61
+m.etimes= 338
+quit= 54
+m.etimes= 271
+quit= 53
+m.etimes= 272
+m.etimes= 273
+2025-05-01 21:18:26.575708557 +0800 CST m=+880.435099569 [WORKER] 2025-05-01 21:18:26.570606122 +0800 CST m=+880.429997165	[WORKER 173] CRASH [({1005022347273}, {1005022347269})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 274
+m.etimes= 275
+quit= 60
+m.etimes= 339
+quit= 59
+m.etimes= 340
+m.etimes= 341
+quit= 63
+m.etimes= 342
+quit= 62
+m.etimes= 343
+m.etimes= 344
+quit= 63
+m.etimes= 276
+quit= 63
+m.etimes= 345
+m.etimes= 346
+m.etimes= 347
+quit= 62
+m.etimes= 277
+quit= 61
+m.etimes= 278
+m.etimes= 279
+2025-05-01 21:18:57.252265563 +0800 CST m=+911.111656565 [WORKER] 2025-05-01 21:18:57.231096806 +0800 CST m=+911.090487830	[WORKER 174] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347267})({1005022347267}, {1005022347268})({1005022347268}, {1005022347269})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 280
+quit= 63
+m.etimes= 348
+m.etimes= 349
+m.etimes= 350
+quit= 63
+m.etimes= 351
+quit= 62
+m.etimes= 352
+m.etimes= 353
+m.etimes= 354
+m.etimes= 355
+quit= 62
+m.etimes= 281
+quit= 63
+m.etimes= 356
+quit= 61
+m.etimes= 282
+m.etimes= 283
+quit= 63
+m.etimes= 284
+quit= 62
+m.etimes= 285
+quit= 62
+m.etimes= 357
+quit= 61
+m.etimes= 358
+quit= 60
+m.etimes= 359
+quit= 59
+m.etimes= 360
+quit= 58
+m.etimes= 361
+quit= 61
+m.etimes= 286
+quit= 57
+m.etimes= 362
+m.etimes= 363
+m.etimes= 364
+quit= 60
+m.etimes= 287
+quit= 59
+m.etimes= 288
+quit= 58
+m.etimes= 289
+quit= 63
+m.etimes= 365
+quit= 62
+m.etimes= 366
+quit= 61
+m.etimes= 367
+m.etimes= 368
+quit= 63
+m.etimes= 369
+m.etimes= 370
+quit= 63
+m.etimes= 371
+quit= 57
+m.etimes= 290
+quit= 62
+m.etimes= 372
+quit= 61
+m.etimes= 373
+m.etimes= 374
+m.etimes= 375
+m.etimes= 376
+m.etimes= 291
+m.etimes= 292
+2025-05-01 21:20:24.946611763 +0800 CST m=+998.806002763 [WORKER] 2025-05-01 21:20:24.945081975 +0800 CST m=+998.804472991	[WORKER 175] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 293
+quit= 62
+m.etimes= 294
+quit= 63
+m.etimes= 377
+quit= 62
+m.etimes= 378
+quit= 61
+m.etimes= 379
+m.etimes= 380
+m.etimes= 381
+quit= 63
+m.etimes= 382
+quit= 62
+m.etimes= 383
+quit= 61
+m.etimes= 384
+quit= 61
+m.etimes= 295
+quit= 60
+m.etimes= 385
+quit= 60
+m.etimes= 296
+quit= 59
+m.etimes= 297
+quit= 58
+m.etimes= 298
+quit= 59
+m.etimes= 386
+quit= 58
+m.etimes= 387
+quit= 57
+m.etimes= 388
+quit= 56
+m.etimes= 389
+m.etimes= 390
+quit= 57
+m.etimes= 299
+quit= 63
+m.etimes= 391
+m.etimes= 392
+quit= 56
+m.etimes= 300
+quit= 55
+m.etimes= 301
+quit= 54
+m.etimes= 302
+quit= 53
+m.etimes= 303
+quit= 63
+m.etimes= 393
+m.etimes= 394
+quit= 63
+m.etimes= 395
+m.etimes= 396
+quit= 63
+m.etimes= 397
+m.etimes= 398
+m.etimes= 399
+m.etimes= 400
+m.etimes= 401
+quit= 63
+m.etimes= 402
+quit= 52
+m.etimes= 304
+m.etimes= 305
+quit= 62
+m.etimes= 403
+m.etimes= 404
+quit= 63
+m.etimes= 405
+quit= 63
+m.etimes= 306
+m.etimes= 307
+2025-05-01 21:21:58.077192914 +0800 CST m=+1091.936583937 [WORKER] 2025-05-01 21:21:58.077177185 +0800 CST m=+1091.936568215	[WORKER 176] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347270})({1005022347270}, {1005022347269})({1005022347269}, {1005022347271})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 308
+quit= 63
+m.etimes= 309
+quit= 62
+m.etimes= 406
+m.etimes= 407
+quit= 63
+m.etimes= 408
+quit= 62
+m.etimes= 409
+quit= 61
+m.etimes= 410
+quit= 62
+m.etimes= 310
+quit= 60
+m.etimes= 411
+m.etimes= 412
+quit= 61
+m.etimes= 311
+quit= 60
+m.etimes= 312
+quit= 59
+m.etimes= 313
+quit= 63
+m.etimes= 413
+quit= 62
+m.etimes= 414
+m.etimes= 415
+quit= 63
+m.etimes= 416
+quit= 62
+m.etimes= 417
+quit= 61
+m.etimes= 418
+m.etimes= 419
+m.etimes= 420
+m.etimes= 421
+quit= 58
+m.etimes= 314
+quit= 63
+m.etimes= 422
+m.etimes= 423
+quit= 57
+m.etimes= 315
+quit= 56
+m.etimes= 316
+quit= 55
+m.etimes= 317
+2025-05-01 21:23:02.454560373 +0800 CST m=+1156.313951388 [WORKER] 2025-05-01 21:23:02.454539726 +0800 CST m=+1156.313930770	[WORKER 177] CRASH [({1005022347266}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 318
+m.etimes= 319
+quit= 63
+m.etimes= 424
+m.etimes= 425
+m.etimes= 426
+quit= 63
+m.etimes= 427
+m.etimes= 428
+quit= 63
+m.etimes= 429
+m.etimes= 430
+m.etimes= 431
+m.etimes= 432
+quit= 63
+m.etimes= 320
+quit= 62
+m.etimes= 321
+quit= 63
+m.etimes= 433
+quit= 61
+m.etimes= 322
+quit= 62
+m.etimes= 434
+quit= 60
+m.etimes= 323
+quit= 59
+m.etimes= 324
+m.etimes= 325
+quit= 61
+m.etimes= 435
+quit= 60
+m.etimes= 436
+quit= 63
+m.etimes= 326
+m.etimes= 437
+quit= 62
+m.etimes= 327
+quit= 61
+m.etimes= 328
+quit= 60
+m.etimes= 329
+quit= 63
+m.etimes= 438
+quit= 62
+m.etimes= 439
+quit= 61
+m.etimes= 440
+quit= 60
+m.etimes= 441
+m.etimes= 442
+m.etimes= 443
+quit= 59
+m.etimes= 330
+quit= 63
+m.etimes= 444
+quit= 58
+m.etimes= 331
+quit= 62
+m.etimes= 445
+quit= 61
+m.etimes= 446
+m.etimes= 447
+m.etimes= 448
+quit= 63
+m.etimes= 449
+quit= 57
+m.etimes= 332
+m.etimes= 333
+m.etimes= 334
+quit= 63
+m.etimes= 335
+m.etimes= 336
+2025-05-01 21:24:32.602710409 +0800 CST m=+1246.462101417 [WORKER] 2025-05-01 21:24:32.59942868 +0800 CST m=+1246.458819700	[WORKER 178] CRASH [({1005022347273}, {1005022347269})({1005022347269}, {1005022347270})({1005022347270}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 337
+quit= 62
+m.etimes= 338
+quit= 62
+m.etimes= 450
+m.etimes= 451
+quit= 63
+m.etimes= 452
+quit= 61
+m.etimes= 339
+quit= 60
+m.etimes= 340
+quit= 62
+m.etimes= 453
+quit= 61
+m.etimes= 454
+m.etimes= 455
+quit= 63
+m.etimes= 456
+m.etimes= 457
+quit= 59
+m.etimes= 341
+m.etimes= 342
+quit= 63
+m.etimes= 343
+quit= 63
+m.etimes= 458
+quit= 62
+m.etimes= 459
+quit= 62
+m.etimes= 344
+quit= 61
+m.etimes= 460
+quit= 61
+m.etimes= 345
+quit= 60
+m.etimes= 346
+quit= 59
+m.etimes= 347
+m.etimes= 348
+2025-05-01 21:25:39.00307155 +0800 CST m=+1312.862462569 [WORKER] 2025-05-01 21:25:38.971527981 +0800 CST m=+1312.830919025	[WORKER 179] CRASH [({1005022347274}, {1005022347269})({1005022347269}, {1005022347268})({1005022347268}, {1005022347269})({1005022347269}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 349
+2025-05-01 21:25:39.111831532 +0800 CST m=+1312.971222542 [WORKER] 2025-05-01 21:25:39.104041094 +0800 CST m=+1312.963432134	[WORKER 180] CRASH [({1005022347273}, {1005022347269})({1005022347269}, {1005022347271})] 
+ all goroutines are asleep - deadlock!
+quit= 60
+m.etimes= 461
+quit= 59
+m.etimes= 462
+m.etimes= 463
+quit= 63
+m.etimes= 350
+m.etimes= 351
+2025-05-01 21:25:55.162144253 +0800 CST m=+1329.021535259 [WORKER] 2025-05-01 21:25:55.153019181 +0800 CST m=+1329.012410193	[WORKER 181] CRASH [({1005022347269}, {1005022347268})({1005022347268}, {1005022347267})({1005022347267}, {1005022347268})] 
+ all goroutines are asleep - deadlock!
+quit= 63
+m.etimes= 352
+quit= 63
+m.etimes= 464
+quit= 62
+m.etimes= 465
+quit= 61
+m.etimes= 466
+m.etimes= 467
+m.etimes= 468
+quit= 62
+m.etimes= 353
+2025-05-01 21:26:04.909814389 +0800 CST m=+1338.769205398 [WORKER] 2025-05-01 21:26:04.902974903 +0800 CST m=+1338.762365922	[WORKER 182] CRASH [({1005022347269}, {1005022347270})({1005022347270}, {1005022347273})({1005022347273}, {1005022347273})({1005022347273}, {1005022347270})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 354
+quit= 63
+m.etimes= 355
+quit= 63
+m.etimes= 469
+m.etimes= 470
+quit= 63
+m.etimes= 471
+quit= 62
+m.etimes= 472
+m.etimes= 473
+quit= 62
+m.etimes= 356
+quit= 61
+m.etimes= 357
+quit= 63
+m.etimes= 474
+m.etimes= 475
+m.etimes= 476
+m.etimes= 477
+quit= 63
+m.etimes= 478
+m.etimes= 479
+quit= 63
+m.etimes= 480
+m.etimes= 481
+quit= 60
+m.etimes= 358
+quit= 59
+m.etimes= 359
+quit= 58
+m.etimes= 360
+quit= 57
+m.etimes= 361
+quit= 63
+m.etimes= 482
+m.etimes= 483
+quit= 63
+m.etimes= 484
+m.etimes= 485
+quit= 63
+m.etimes= 486
+m.etimes= 487
+quit= 56
+m.etimes= 362
+quit= 55
+m.etimes= 363
+quit= 63
+m.etimes= 488
+quit= 62
+m.etimes= 489
+2025-05-01 21:27:12.370605605 +0800 CST m=+1406.229996613 [WORKER] 2025-05-01 21:27:12.36891627 +0800 CST m=+1406.228307289	[WORKER 183] CRASH [({627065225224}, {627065225232})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 490
+quit= 54
+m.etimes= 364
+quit= 53
+m.etimes= 365
+quit= 63
+m.etimes= 491
+quit= 52
+m.etimes= 366
+2025-05-01 21:27:35.094626983 +0800 CST m=+1428.954018004 [WORKER] 2025-05-01 21:27:35.09460979 +0800 CST m=+1428.954000807	[WORKER 184] CRASH [({1005022347273}, {1005022347269})({1005022347269}, {1005022347270})({1005022347270}, {1005022347269})({1005022347269}, {1005022347271})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 367
+quit= 63
+m.etimes= 368
+quit= 62
+m.etimes= 369
+m.etimes= 370
+2025-05-01 21:27:39.548908974 +0800 CST m=+1433.408299981 [WORKER] 2025-05-01 21:27:39.525081673 +0800 CST m=+1433.384472696	[WORKER 185] CRASH [({1005022347269}, {1005022347270})({1005022347270}, {1005022347273})({1005022347273}, {1005022347273})({1005022347273}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+quit= 62
+m.etimes= 492
+m.etimes= 371
+2025-05-01 21:27:45.631321882 +0800 CST m=+1439.490712891 [WORKER] 2025-05-01 21:27:45.611470421 +0800 CST m=+1439.470861442	[WORKER 186] CRASH [({1005022347273}, {1005022347270})({1005022347270}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+quit= 61
+m.etimes= 493
+quit= 60
+m.etimes= 494
+quit= 59
+m.etimes= 495
+2025-05-01 21:27:51.714871854 +0800 CST m=+1445.574262859 [WORKER] 2025-05-01 21:27:51.708479161 +0800 CST m=+1445.567870175	[WORKER 187] CRASH [({1005022347273}, {1005022347266})] 
+ all goroutines are asleep - deadlock!
+m.etimes= 372
+quit= 63
+m.etimes= 373
+quit= 62
+m.etimes= 374
+quit= 61
+m.etimes= 375
+quit= 58
+m.etimes= 496
+quit= 57
+m.etimes= 497
+quit= 56
+m.etimes= 498
+m.etimes= 499
+m.etimes= 500
+m.etimes= 376
+quit= 63
+m.etimes= 377
+quit= 62
+m.etimes= 378
+quit= 63
+m.etimes= 501
+m.etimes= 502
+quit= 61
+m.etimes= 379
+m.etimes= 503
+quit= 60
+m.etimes= 380
+quit= 63
+m.etimes= 504
+m.etimes= 505
+quit= 63
+m.etimes= 506
+m.etimes= 507
+quit= 59
+m.etimes= 381
+quit= 58
+m.etimes= 382
+quit= 63
+m.etimes= 508
+m.etimes= 509
+m.etimes= 510
+quit= 57
+m.etimes= 383
+m.etimes= 511
+m.etimes= 512
+m.etimes= 513
+m.etimes= 514
+quit= 56
+m.etimes= 384
+quit= 63
+m.etimes= 515
+m.etimes= 516
+quit= 55
+m.etimes= 385
+quit= 54
+m.etimes= 386
+quit= 53
+m.etimes= 387
+quit= 52
+m.etimes= 388
+quit= 63
+m.etimes= 517
+m.etimes= 518
+quit= 63
+m.etimes= 519
+quit= 51
+m.etimes= 389
+m.etimes= 520
+quit= 63
+m.etimes= 521
+quit= 50
+m.etimes= 390
+quit= 62
+m.etimes= 522
+quit= 49
+m.etimes= 391
+quit= 48
+m.etimes= 392
+quit= 61
+m.etimes= 523
+quit= 47
+m.etimes= 393
+m.etimes= 524
+quit= 63
+m.etimes= 525
+m.etimes= 526
+m.etimes= 527
+quit= 63
+m.etimes= 528
+quit= 62
+m.etimes= 529
+quit= 46
+m.etimes= 394
+m.etimes= 530
+quit= 63
+m.etimes= 531
+m.etimes= 532
+quit= 63
+m.etimes= 533
+quit= 45
+m.etimes= 395
+quit= 44
+m.etimes= 396
+quit= 43
+m.etimes= 397
+m.etimes= 534
+quit= 63
+m.etimes= 535
+m.etimes= 536
+m.etimes= 537
+m.etimes= 538
+m.etimes= 539
+quit= 63
+m.etimes= 540
+quit= 42
+m.etimes= 398
+quit= 62
+m.etimes= 541
+m.etimes= 399
+quit= 63
+m.etimes= 400
+quit= 61
+m.etimes= 542
+m.etimes= 543
+quit= 62
+m.etimes= 401
+m.etimes= 544
+quit= 63
+m.etimes= 545
+m.etimes= 546
+quit= 63
+m.etimes= 547
+m.etimes= 548
+quit= 61
+m.etimes= 402
+quit= 63
+m.etimes= 549
+m.etimes= 403
+quit= 63
+m.etimes= 404
+quit= 62
+m.etimes= 405
+quit= 62
+m.etimes= 550
+m.etimes= 551
+quit= 63
+m.etimes= 552
+m.etimes= 553
+quit= 61
+m.etimes= 406
