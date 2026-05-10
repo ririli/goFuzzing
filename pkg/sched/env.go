@@ -3,13 +3,15 @@ package sched
 import "sync"
 
 type Config struct {
-	waitmap      map[uint64]uint64
-	attackmap    map[uint64]uint64
-	active       map[uint64]struct{}
-	mu           sync.RWMutex
-	wait_queue   [][]uint64
-	attack_queue [][]uint64
+	waitmap map[uint64]uint64
+
+	active     map[uint64]struct{}
+	mu         sync.RWMutex
+	wait_queue [][]uint64
+
 	top          int32
+	attackmap    map[uint64]uint64
+	attack_queue [][]uint64
 }
 
 func NewConfig() *Config {

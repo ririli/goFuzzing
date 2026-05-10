@@ -6,13 +6,13 @@ import (
 	"log"
 	"os"
 	"runtime"
-	"sched/goleak"
 	"strconv"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
+	"toolkit/pkg/sched/goleak"
 )
 
 var event sync.Map

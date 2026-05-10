@@ -17,6 +17,8 @@ func main() {
 
 		for _, file := range files {
 			reg := inst.NewPassRegistry()
+
+			reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
 			// register passes
 			reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
 			reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
@@ -34,6 +36,7 @@ func main() {
 			log.Fatalf("Need source file")
 		}
 		reg := inst.NewPassRegistry()
+		reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
 		// register passes
 		reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
 		reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })

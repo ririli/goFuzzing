@@ -66,7 +66,7 @@ func (s *EtcdServer) Stop() {
 	<-s.done
 }
 
-func TestEtcd3077(t *testing.T) {
+func TestEtcd3077_1(t *testing.T) {
 	srv := &EtcdServer{
 		r: raftNode{},
 	}

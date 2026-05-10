@@ -2,8 +2,6 @@ package fuzzer
 
 import (
 	"fmt"
-	"log"
-	"net/http"
 	_ "net/http/pprof"
 	"strconv"
 	"strings"
@@ -35,7 +33,7 @@ type RunContext struct {
 var workerID uint32
 
 func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bool, []string) {
-	log.Println(http.ListenAndServe(":6060", nil))
+	//log.Println(http.ListenAndServe(":6060", nil))
 	if m.max == int32(0) {
 		m.max = int32(cfg.MaxExecution)
 	}
@@ -175,7 +173,8 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 		if ctx.Out.Err != nil {
 			// ignore normal test fail
 			if ctx.Out.Time < time.Duration(cfg.TimeOut)*time.Second &&
-				(strings.Contains(ctx.Out.O, "panic") || strings.Contains(ctx.Out.O, "found unexpected goroutines") || strings.Contains(ctx.Out.Trace, "all goroutines are asleep - deadlock!")) {
+				(strings.Contains(ctx.Out.O, "panic") || strings.Contains(ctx.Out.O, "found unexpected goroutines") ||
+					strings.Contains(ctx.Out.Trace, "all goroutines are asleep - deadlock!")) {
 				tfs := bug.TopF(ctx.Out.O)
 				exist := cfg.BugSet.Exist(tfs, cfg.Fn)
 				if !exist {
@@ -200,6 +199,19 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 						return true, detail
 					}
 				}
+			}
+			// ✅ 新增：专门处理 -race 输出的逻辑
+			if strings.Contains(ctx.Out.Trace, "WARNING: DATA RACE") {
+				raceReport := ctx.Out.Trace
+				if normal {
+					cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] RACE DETECTED [%v]\n%s", time.Now().String(), wid, atomic.LoadInt32(&m.etimes), raceReport)
+				}
+				if debug {
+					cfg.LogCh <- fmt.Sprintf("%s\t[RACE DEBUG] Full Trace:\n%s", time.Now().String(), raceReport)
+				}
+				// 如果希望发现 Race 就停止，可以取消下面的注释
+				// close(cancel)
+				// return true, []string{inputc, "DATA RACE", raceReport}
 			}
 		}
 		op_st, all := feedback.ParseLog(ctx.Out.Trace)

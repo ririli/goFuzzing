@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	flags "github.com/jessevdk/go-flags"
 	"os"
+
+	flags "github.com/jessevdk/go-flags"
 )
 
 var Opts struct {

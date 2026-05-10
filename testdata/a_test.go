@@ -1,9 +1,9 @@
 package testdata
 
 import (
-	sched "sched"
 	"sync"
 	"testing"
+	"toolkit/pkg/sched"
 )
 
 type Connection struct {
@@ -106,8 +106,7 @@ func TestKubernetes6632_1(t *testing.T) {
 	i := NewIdleAwareFramer()
 	ch := make(chan int)
 	go func() {
-		sched.
-			InstChBF(712964571140, i.conn.closeChan)
+		sched.InstChBF(712964571140, i.conn.closeChan)
 		sched.InstChBF(1005022347268, i.conn.closeChan)
 		i.conn.closeChan <- true
 		sched.InstChAF(1005022347268, i.conn.closeChan)

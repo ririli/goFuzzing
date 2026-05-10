@@ -94,6 +94,8 @@ func (e *Executor) Run(in Input) Output {
 	<-stdoutDone
 	<-stderrDone
 
+	stdoutContent := stdoutBuf.String()
+	stderrContent := stderrBuf.String()
 	//command.Stdout = &bytes.Buffer{}
 	//command.Stderr = &bytes.Buffer{}
 	//执行命令，直到命令结束
@@ -109,8 +111,8 @@ func (e *Executor) Run(in Input) Output {
 	// 直接使用缓冲区内容，无需操作 cmd.Stdout
 	return Output{
 		Err:   err,
-		O:     stdoutBuf.String(),
-		Trace: stderrBuf.String(),
+		O:     stdoutContent,
+		Trace: stderrContent,
 		Time:  time.Since(start),
 	}
 }

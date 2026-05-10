@@ -9,7 +9,8 @@ import (
 
 // FunctionCallNode 表示函数调用树中的一个节点
 type FunctionCallNode struct {
-	CallID        int64               // 调用唯一ID
+	FuncID        uint64              // 函数的唯一id，插桩时确认
+	CallID        uint64              // 调用唯一ID
 	FuncName      string              // 函数名
 	GoroutineID   int                 // 所在的goroutine ID
 	StartUnixNano int64               // 函数开始时间
@@ -22,9 +23,10 @@ type FunctionCallNode struct {
 // CallStackCollector 调用栈收集器
 type CallStackCollector struct {
 	mu           sync.RWMutex
-	callTrees    map[int]*FunctionCallNode   // goroutineID -> 当前调用树的活动根节点
-	nodePool     map[int64]*FunctionCallNode // 所有节点的全局池（按CallID索引）
-	nextCallID   int64
+	callTrees    map[int]*FunctionCallNode    // goroutineID -> 当前调用树的活动根节点
+	nodePool     map[uint64]*FunctionCallNode // 所有节点的全局池（按CallID索引）
+	funcIndex    map[uint64][]uint64          // FuncID -> CallID列表
+	nextCallID   uint64
 	callStackMap map[int][]*FunctionCallNode // goroutineID -> 当前调用栈（用于快速回溯）
 }
 
@@ -32,7 +34,8 @@ type CallStackCollector struct {
 func NewCallStackCollector() *CallStackCollector {
 	return &CallStackCollector{
 		callTrees:    make(map[int]*FunctionCallNode),
-		nodePool:     make(map[int64]*FunctionCallNode),
+		nodePool:     make(map[uint64]*FunctionCallNode),
+		funcIndex:    make(map[uint64][]uint64),
 		callStackMap: make(map[int][]*FunctionCallNode),
 		nextCallID:   1,
 	}
@@ -71,15 +74,15 @@ func getCurrentFuncName(skip int) string {
 }
 
 // EnterFunction 记录函数进入
-func (c *CallStackCollector) EnterFunction() *FunctionCallNode {
+func (c *CallStackCollector) EnterFunction(funcID uint64) *FunctionCallNode {
 	goroutineID := getCurrentGoroutineID()
-	funcName := getCurrentFuncName(3) // 跳过：runtime.Caller、getCurrentFuncName、EnterFunction
-
+	funcName := getCurrentFuncName(3)
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
 	// 创建新节点
 	node := &FunctionCallNode{
+		FuncID:        funcID,
 		CallID:        c.nextCallID,
 		FuncName:      funcName,
 		GoroutineID:   goroutineID,
@@ -87,9 +90,10 @@ func (c *CallStackCollector) EnterFunction() *FunctionCallNode {
 		Depth:         0,
 	}
 	c.nextCallID++
-
 	// 保存到节点池
 	c.nodePool[node.CallID] = node
+
+	c.funcIndex[funcID] = append(c.funcIndex[funcID], node.CallID)
 
 	// 获取当前goroutine的调用栈
 	stack := c.callStackMap[goroutineID]
@@ -146,7 +150,7 @@ func (c *CallStackCollector) ClearActiveStacks() {
 }
 
 // 清理不一致的调用栈
-func (c *CallStackCollector) cleanupStack(goroutineID int, callID int64) {
+func (c *CallStackCollector) cleanupStack(goroutineID int, callID uint64) {
 	stack := c.callStackMap[goroutineID]
 	for i := len(stack) - 1; i >= 0; i-- {
 		if stack[i].CallID == callID {
@@ -177,7 +181,7 @@ func (c *CallStackCollector) GetAllCallTrees() map[int]*FunctionCallNode {
 }
 
 // GetNodeByID 通过CallID获取节点
-func (c *CallStackCollector) GetNodeByID(callID int64) *FunctionCallNode {
+func (c *CallStackCollector) GetNodeByID(callID uint64) *FunctionCallNode {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
 

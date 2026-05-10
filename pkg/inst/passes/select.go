@@ -2,11 +2,12 @@ package passes
 
 import (
 	"go/ast"
-	"golang.org/x/tools/go/ast/astutil"
 	"io/ioutil"
 	"log"
 	"toolkit/pkg/inst"
 	"toolkit/pkg/utils/gofmt"
+
+	"golang.org/x/tools/go/ast/astutil"
 )
 
 // ChResPass, Channel Record Pass. This pass instrumented at

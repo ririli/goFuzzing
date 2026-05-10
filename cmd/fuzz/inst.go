@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	localPath = "C:\\Users\\Msk\\GolandProjects\\toolkit\\bin\\go_build_toolkit_cmd_inst.exe"
+	localPath = "D:\\Program Files\\goProjects\\src\\gopie\\bin\\inst.exe"
 	linuxPath = "./bin/inst"
 )
 

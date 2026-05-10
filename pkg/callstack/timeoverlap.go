@@ -6,21 +6,28 @@ import (
 	"strings"
 )
 
-// TimeOverlap 表示两个函数执行时间重叠的信息
+// TimeOverlap 表示ConPair两个函数执行时重叠的时间
 type TimeOverlap struct {
-	Func1           string // 函数1的名称
-	Func2           string // 函数2的名称
-	CallID1         int64  // 函数1的调用ID(用于快速定位节点)
-	CallID2         int64  // 函数2的调用ID(用于快速定位节点)
-	Goroutine1      int    // 函数1所在的goroutine ID
-	Goroutine2      int    // 函数2所在的goroutine ID
-	OverlapStart    int64  // 重叠开始时间
-	OverlapEnd      int64  // 重叠结束时间
-	OverlapDuration int64  // 重叠时长
-	Func1Start      int64  // 函数1开始时间
-	Func1End        int64  // 函数1结束时间
-	Func2Start      int64  // 函数2开始时间
-	Func2End        int64  // 函数2结束时间
+	OverlapStart    int64 // 重叠开始时间
+	OverlapEnd      int64 // 重叠结束时间
+	OverlapDuration int64 // 重叠时长
+	Func1Start      int64 // 函数1开始时间
+	Func1End        int64 // 函数1结束时间
+	Func2Start      int64 // 函数2开始时间
+	Func2End        int64 // 函数2结束时间
+}
+
+// ConPairFunc 表示两个函数执行时间重叠的信息
+type ConPairFunc struct {
+	Func1      string      // 函数1的名称
+	Func2      string      // 函数2的名称
+	FuncID1    uint64      // 函数1标识
+	FuncID2    uint64      // 函数2标识
+	CallID1    uint64      // 函数1的调用ID(用于快速定位节点)
+	CallID2    uint64      // 函数2的调用ID(用于快速定位节点)
+	Goroutine1 int         // 函数1所在的goroutine ID
+	Goroutine2 int         // 函数2所在的goroutine ID
+	Overlap    TimeOverlap //时间重叠信息
 }
 
 // OverlapAnalysis 时间重叠分析器
@@ -62,7 +69,7 @@ func isTimeRangeOverlap(start1, end1, start2, end2 int64) (bool, int64, int64) {
 }
 
 // DetectFunctionOverlaps 检测所有goroutine之间的函数时间重叠
-func (oa *OverlapAnalysis) DetectFunctionOverlaps() []TimeOverlap {
+func (oa *OverlapAnalysis) DetectFunctionOverlaps() []ConPairFunc {
 	// 获取所有goroutine的调用树
 	trees := oa.collector.GetAllCallTrees()
 
@@ -72,6 +79,7 @@ func (oa *OverlapAnalysis) DetectFunctionOverlaps() []TimeOverlap {
 		if tree == nil {
 			continue
 		}
+		// todo 递归调用如果过深，可能栈溢出
 		// 遍历树收集所有节点
 		oa.collectNodes(tree, &allNodes)
 	}
@@ -85,9 +93,9 @@ func (oa *OverlapAnalysis) DetectFunctionOverlaps() []TimeOverlap {
 	}
 
 	// 检测重叠
-	var overlaps []TimeOverlap
+	var overlaps []ConPairFunc
 	n := len(completedNodes)
-
+	// todo 时间复杂度很高，待后续优化
 	for i := 0; i < n; i++ {
 		for j := i + 1; j < n; j++ {
 			node1 := completedNodes[i]
@@ -107,20 +115,24 @@ func (oa *OverlapAnalysis) DetectFunctionOverlaps() []TimeOverlap {
 			if hasOverlap {
 				overlapDuration := overlapEnd - overlapStart
 
-				overlap := TimeOverlap{
-					Func1:           node1.FuncName,
-					Func2:           node2.FuncName,
-					CallID1:         node1.CallID,
-					CallID2:         node2.CallID,
-					Goroutine1:      node1.GoroutineID,
-					Goroutine2:      node2.GoroutineID,
-					OverlapStart:    overlapStart,
-					OverlapEnd:      overlapEnd,
-					OverlapDuration: overlapDuration,
-					Func1Start:      node1.StartUnixNano,
-					Func1End:        node1.EndUnixNano,
-					Func2Start:      node2.StartUnixNano,
-					Func2End:        node2.EndUnixNano,
+				overlap := ConPairFunc{
+					Func1:      node1.FuncName,
+					Func2:      node2.FuncName,
+					FuncID1:    node1.FuncID,
+					FuncID2:    node2.FuncID,
+					CallID1:    node1.CallID,
+					CallID2:    node2.CallID,
+					Goroutine1: node1.GoroutineID,
+					Goroutine2: node2.GoroutineID,
+					Overlap: TimeOverlap{
+						OverlapStart:    overlapStart,
+						OverlapEnd:      overlapEnd,
+						OverlapDuration: overlapDuration,
+						Func1Start:      node1.StartUnixNano,
+						Func1End:        node1.EndUnixNano,
+						Func2Start:      node2.StartUnixNano,
+						Func2End:        node2.EndUnixNano,
+					},
 				}
 
 				overlaps = append(overlaps, overlap)
@@ -130,7 +142,7 @@ func (oa *OverlapAnalysis) DetectFunctionOverlaps() []TimeOverlap {
 
 	// 按重叠时长降序排序
 	sort.Slice(overlaps, func(i, j int) bool {
-		return overlaps[i].OverlapDuration > overlaps[j].OverlapDuration
+		return overlaps[i].Overlap.OverlapDuration > overlaps[j].Overlap.OverlapDuration
 	})
 
 	return overlaps
@@ -227,11 +239,11 @@ func (oa *OverlapAnalysis) DetectGoroutineOverlaps() map[int][]int {
 }
 
 // FindConcurrentFunctionPairs 查找并发执行的函数对（按函数名分组）
-func (oa *OverlapAnalysis) FindConcurrentFunctionPairs() map[string][]TimeOverlap {
+func (oa *OverlapAnalysis) FindConcurrentFunctionPairs() map[string][]ConPairFunc {
 	overlaps := oa.DetectFunctionOverlaps()
 
 	// 按函数对分组
-	functionPairs := make(map[string][]TimeOverlap)
+	functionPairs := make(map[string][]ConPairFunc)
 
 	for _, overlap := range overlaps {
 		// 创建标准化的键（确保相同的函数对总是以相同的方式排序）
@@ -272,17 +284,17 @@ func (oa *OverlapAnalysis) PrintOverlapReport() {
 				overlap.Func2, overlap.Goroutine2, overlap.CallID2)
 
 			fmt.Printf("   重叠时间: %v ~ %v (时长: %v)\n",
-				overlap.OverlapStart,
-				overlap.OverlapEnd,
-				overlap.OverlapDuration)
+				overlap.Overlap.OverlapStart,
+				overlap.Overlap.OverlapEnd,
+				overlap.Overlap.OverlapDuration)
 
 			fmt.Printf("   函数1执行: %v ~ %v\n",
-				overlap.Func1Start,
-				overlap.Func1End)
+				overlap.Overlap.Func1Start,
+				overlap.Overlap.Func1End)
 
 			fmt.Printf("   函数2执行: %v ~ %v\n",
-				overlap.Func2Start,
-				overlap.Func2End)
+				overlap.Overlap.Func2Start,
+				overlap.Overlap.Func2End)
 
 			fmt.Println()
 		}
@@ -318,7 +330,7 @@ func (oa *OverlapAnalysis) PrintOverlapReport() {
 		// 计算平均重叠时长
 		var totalDuration int64
 		for _, o := range pairOverlaps {
-			totalDuration += o.OverlapDuration
+			totalDuration += o.Overlap.OverlapDuration
 		}
 		avgDuration := totalDuration / int64(len(pairOverlaps))
 
@@ -334,10 +346,10 @@ func PrintConcurrencyAnalysis(collector *CallStackCollector) {
 }
 
 // 检测特定函数的并发情况
-func (oa *OverlapAnalysis) AnalyzeFunctionConcurrency(funcName string) []TimeOverlap {
+func (oa *OverlapAnalysis) AnalyzeFunctionConcurrency(funcName string) []ConPairFunc {
 	allOverlaps := oa.DetectFunctionOverlaps()
 
-	var result []TimeOverlap
+	var result []ConPairFunc
 	for _, overlap := range allOverlaps {
 		if overlap.Func1 == funcName || overlap.Func2 == funcName {
 			result = append(result, overlap)
