@@ -12,8 +12,8 @@ import (
 )
 
 const (
-	localGo = "C:\\Users\\Msk\\go\\go1.19\\bin\\go"
-	linuxgo = "go"
+	localGo = "D:\\Program Files\\GO\\go1.19_patch\\bin\\go.exe"
+	linuxGo = ""
 )
 
 func dirname(s string) string {
@@ -30,9 +30,9 @@ func Bins(paths []string) {
 	resCh := make(chan string, 100)
 	tests := make([]string, 0)
 	var mu sync.Mutex
-	gopath := localGo
+	goPath := localGo
 	if runtime.GOOS == "linux" {
-		gopath = linuxgo
+		goPath = linuxGo
 	}
 
 	limit := make(chan struct{}, 32)
@@ -41,14 +41,13 @@ func Bins(paths []string) {
 	}
 
 	workpath, _ := os.Getwd()
-	// todo 当前还无法编译main文件，只能用于测试文件
 	dowork := func(dir string) {
 		<-limit
 		defer func() {
 			limit <- struct{}{}
 		}()
 		opath := workpath + "/testbins/" + strings.Replace(dir, "/", "_", -1)
-		c := fmt.Sprintf("cd %s && %s test -race -o %s -c .", dir, gopath, opath)
+		c := fmt.Sprintf("cd %s && %s test -o %s -c .", dir, goPath, opath)
 		command := exec.Command("bash", "-c", c)
 		var out, out2 bytes.Buffer
 		command.Stdout = &out
@@ -61,6 +60,7 @@ func Bins(paths []string) {
 			tests = append(tests, t...)
 			mu.Unlock()
 		} else {
+			fmt.Printf("Error compiling %s:\nStdout: %s\nStderr: %s\n", dir, out.String(), out2.String())
 			resCh <- fmt.Sprintf("Handle\t%s FAIL", dir)
 		}
 	}

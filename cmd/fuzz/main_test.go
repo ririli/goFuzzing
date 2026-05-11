@@ -3,5 +3,5 @@ package main
 import "testing"
 
 func TestLite(t *testing.T) {
-	Lite("C:\\Users\\Msk\\GolandProjects\\toolkit\\testdata\\testdata.test.exe", "", "debug", 5, 50, 32)
+	Lite("D:\\Program Files\\goProjects\\src\\gopie\\testdata\\gobench\\src\\goker\\nonblocking\\etcd\\3077\\3077.exe", "", "debug", 5, 50, 2)
 }

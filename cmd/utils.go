@@ -27,6 +27,7 @@ func ListFiles(d string, f func(s string) bool) []string {
 	return files
 }
 
+// ListTests 返回测试用例列表
 func ListTests(bin string) []string {
 	res := make([]string, 0)
 	command := exec.Command(bin, "-test.list", "_1")

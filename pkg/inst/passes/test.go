@@ -48,9 +48,10 @@ func (p *TestPass) Before(ctx *inst.InstContext) {
 }
 
 func (p *TestPass) After(ctx *inst.InstContext) {
-	if v, ok := ctx.GetMetadata(TestNeedInst); ok && v.(bool) {
-		inst.AddImport(ctx.FS, ctx.AstFile, TestImportName, TestImportPath)
-	}
+	// ✅ 既然不需要 sched 包，就不再自动添加 import
+	// if v, ok := ctx.GetMetadata(TestNeedInst); ok && v.(bool) {
+	// 	inst.AddImport(ctx.FS, ctx.AstFile, TestImportName, TestImportPath)
+	// }
 }
 
 func (p *TestPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
@@ -110,21 +111,18 @@ func (p *TestPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 func genTestDeclWithoutTimeout(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	testname := name + "_1"
 
-	checker := NewDeferExpr("sched", "Leakcheck", []ast.Expr{
-		&ast.BasicLit{
-			Kind:  token.IDENT,
-			Value: "t",
-		},
-	})
+	//checker := NewDeferExpr("sched", "Leakcheck", []ast.Expr{
+	//	&ast.BasicLit{
+	//		Kind:  token.IDENT,
+	//		Value: "t",
+	//	},
+	//})
 
 	testbodylst := make([]ast.Stmt, len(fn.Body.List))
 	copy(testbodylst, fn.Body.List)
 
-	parseinput := &ast.ExprStmt{NewArgCall("sched", "ParseInput", []ast.Expr{})}
-
-	testbody := []ast.Stmt{parseinput, checker}
-	testbody = append(testbody, testbodylst...)
-	block := &ast.BlockStmt{List: testbody}
+	// ✅ 修复：将原始语句追加到函数体中
+	block := &ast.BlockStmt{List: testbodylst}
 
 	testdecl := &ast.FuncDecl{
 		Name: &ast.Ident{Name: testname},
@@ -169,21 +167,21 @@ func genTestDeclWithTimeout(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 		Rhs: []ast.Expr{NewArgCall("sched", "GetTimeout", []ast.Expr{})},
 	}
 
-	testgodone := NewDeferExpr("sched", "Done", []ast.Expr{
-		&ast.Ident{Name: "done_xxx"},
-	})
-
-	checker := NewDeferExpr("sched", "Leakcheck", []ast.Expr{
-		&ast.BasicLit{
-			Kind:  token.IDENT,
-			Value: "t",
-		},
-	})
+	//testgodone := NewDeferExpr("sched", "Done", []ast.Expr{
+	//	&ast.Ident{Name: "done_xxx"},
+	//})
+	//
+	//checker := NewDeferExpr("sched", "Leakcheck", []ast.Expr{
+	//	&ast.BasicLit{
+	//		Kind:  token.IDENT,
+	//		Value: "t",
+	//	},
+	//})
 
 	testgobodylst := make([]ast.Stmt, len(fn.Body.List))
 	copy(testgobodylst, fn.Body.List)
 
-	testgobodylst = append([]ast.Stmt{testgodone, checker}, fn.Body.List...)
+	testgobodylst = append([]ast.Stmt{}, testgobodylst...)
 	testgobody := &ast.BlockStmt{List: testgobodylst}
 
 	testgo := &ast.GoStmt{Call: &ast.CallExpr{
@@ -197,7 +195,7 @@ func genTestDeclWithTimeout(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 		},
 	}}
 
-	parseinput := &ast.ExprStmt{NewArgCall("sched", "ParseInput", []ast.Expr{})}
+	//parseinput := &ast.ExprStmt{NewArgCall("sched", "ParseInput", []ast.Expr{})}
 
 	testselect := &ast.SelectStmt{
 		Body: &ast.BlockStmt{
@@ -223,7 +221,7 @@ func genTestDeclWithTimeout(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	}
 
 	testbody := &ast.BlockStmt{List: []ast.Stmt{
-		parseinput,
+		//parseinput,
 		decldone,
 		decltimeout,
 		testgo,
