@@ -50,6 +50,17 @@ func (p *FunctionPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor)
 
 				iCtx.SetMetadata(FunctionInstNeed, true)
 			}
+		case *ast.FuncLit:
+			// 检测到匿名函数（函数字面量），在函数体开始处插桩
+			if concrete.Body != nil && len(concrete.Body.List) > 0 {
+				id := iCtx.GetNewOpId()
+				Add(concrete.Pos(), id)
+
+				st := GenInstFunction(id)
+				concrete.Body.List = append([]ast.Stmt{st}, concrete.Body.List...)
+
+				iCtx.SetMetadata(FunctionInstNeed, true)
+			}
 		}
 
 		return true

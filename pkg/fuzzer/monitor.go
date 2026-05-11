@@ -200,6 +200,7 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 					}
 				}
 			}
+			// todo panic收集
 			// ✅ 新增：专门处理 -race 输出的逻辑
 			if strings.Contains(ctx.Out.Trace, "WARNING: DATA RACE") {
 				raceReport := ctx.Out.Trace

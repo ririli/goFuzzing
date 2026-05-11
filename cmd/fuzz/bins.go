@@ -13,7 +13,7 @@ import (
 
 const (
 	localGo = "D:\\Program Files\\GO\\go1.19_patch\\bin\\go.exe"
-	linuxGo = ""
+	linuxGo = "/home/lichang/local/go1.19.1/go/bin/go"
 )
 
 func dirname(s string) string {
@@ -47,18 +47,19 @@ func Bins(paths []string) {
 			limit <- struct{}{}
 		}()
 		opath := workpath + "/testbins/" + strings.Replace(dir, "/", "_", -1)
-		c := fmt.Sprintf("cd %s && %s test -o %s -c .", dir, goPath, opath)
+		c := fmt.Sprintf("cd %s && %s test -race -o %s -c .", dir, goPath, opath)
 		command := exec.Command("bash", "-c", c)
 		var out, out2 bytes.Buffer
 		command.Stdout = &out
 		command.Stderr = &out2
 		err := command.Run()
 		if err == nil {
-			resCh <- fmt.Sprintf("Handle\t%s OK", opath)
+
 			t := cmd.ListTests(opath)
 			mu.Lock()
 			tests = append(tests, t...)
 			mu.Unlock()
+			resCh <- fmt.Sprintf("Handle\t%s OK", opath)
 		} else {
 			fmt.Printf("Error compiling %s:\nStdout: %s\nStderr: %s\n", dir, out.String(), out2.String())
 			resCh <- fmt.Sprintf("Handle\t%s FAIL", dir)

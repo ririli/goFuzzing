@@ -9,7 +9,7 @@ import (
 
 const (
 	localPath = "D:\\Program Files\\goProjects\\src\\gopie\\bin\\inst.exe"
-	linuxPath = ""
+	linuxPath = "./bin/inst"
 )
 
 func Inst(paths []string, check_pos string) {

@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"bytes"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -30,6 +31,7 @@ func ListFiles(d string, f func(s string) bool) []string {
 // ListTests 返回测试用例列表
 func ListTests(bin string) []string {
 	res := make([]string, 0)
+	fmt.Println("bin = ", bin)
 	command := exec.Command(bin, "-test.list", "_1")
 	var out bytes.Buffer
 	command.Stdout = &out
