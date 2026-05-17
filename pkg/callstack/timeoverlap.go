@@ -19,15 +19,81 @@ type TimeOverlap struct {
 
 // ConPairFunc 表示两个函数执行时间重叠的信息
 type ConPairFunc struct {
-	Func1      string      // 函数1的名称
-	Func2      string      // 函数2的名称
-	FuncID1    uint64      // 函数1标识
-	FuncID2    uint64      // 函数2标识
-	CallID1    uint64      // 函数1的调用ID(用于快速定位节点)
-	CallID2    uint64      // 函数2的调用ID(用于快速定位节点)
-	Goroutine1 int         // 函数1所在的goroutine ID
-	Goroutine2 int         // 函数2所在的goroutine ID
-	Overlap    TimeOverlap //时间重叠信息
+	Node1   *FunctionCallNode // 第一个函数节点（直接指针访问）
+	Node2   *FunctionCallNode // 第二个函数节点（直接指针访问）
+	Overlap TimeOverlap       // 时间重叠信息
+}
+
+// GetFunc1Name 获取第一个函数名
+func (c ConPairFunc) GetFunc1Name() string {
+	if c.Node1 != nil {
+		return c.Node1.FuncName
+	}
+	return "unknown"
+}
+
+// GetFunc2Name 获取第二个函数名
+func (c ConPairFunc) GetFunc2Name() string {
+	if c.Node2 != nil {
+		return c.Node2.FuncName
+	}
+	return "unknown"
+}
+
+// GetCallID1 获取第一个调用ID
+func (c ConPairFunc) GetCallID1() uint64 {
+	if c.Node1 != nil {
+		return c.Node1.CallID
+	}
+	return 0
+}
+
+// GetCallID2 获取第二个调用ID
+func (c ConPairFunc) GetCallID2() uint64 {
+	if c.Node2 != nil {
+		return c.Node2.CallID
+	}
+	return 0
+}
+
+// GetGoroutine1 获取第一个goroutine ID
+func (c ConPairFunc) GetGoroutine1() int {
+	if c.Node1 != nil {
+		return c.Node1.GoroutineID
+	}
+	return 0
+}
+
+// GetGoroutine2 获取第二个goroutine ID
+func (c ConPairFunc) GetGoroutine2() int {
+	if c.Node2 != nil {
+		return c.Node2.GoroutineID
+	}
+	return 0
+}
+
+// GetFuncID1 获取第一个函数ID
+func (c ConPairFunc) GetFuncID1() uint64 {
+	if c.Node1 != nil {
+		return c.Node1.FuncID
+	}
+	return 0
+}
+
+// GetFuncID2 获取第二个函数ID
+func (c ConPairFunc) GetFuncID2() uint64 {
+	if c.Node2 != nil {
+		return c.Node2.FuncID
+	}
+	return 0
+}
+
+// String 返回字符串表示
+func (c ConPairFunc) String() string {
+	return fmt.Sprintf("%s@%d (CallID=%d) ↔ %s@%d (CallID=%d), Overlap=%dns",
+		c.GetFunc1Name(), c.GetGoroutine1(), c.GetCallID1(),
+		c.GetFunc2Name(), c.GetGoroutine2(), c.GetCallID2(),
+		c.Overlap.OverlapDuration)
 }
 
 // OverlapAnalysis 时间重叠分析器
@@ -115,15 +181,10 @@ func (oa *OverlapAnalysis) DetectFunctionOverlaps() []ConPairFunc {
 			if hasOverlap {
 				overlapDuration := overlapEnd - overlapStart
 
+				// 直接存储节点指针，不再需要逐个字段复制
 				overlap := ConPairFunc{
-					Func1:      node1.FuncName,
-					Func2:      node2.FuncName,
-					FuncID1:    node1.FuncID,
-					FuncID2:    node2.FuncID,
-					CallID1:    node1.CallID,
-					CallID2:    node2.CallID,
-					Goroutine1: node1.GoroutineID,
-					Goroutine2: node2.GoroutineID,
+					Node1: node1,
+					Node2: node2,
 					Overlap: TimeOverlap{
 						OverlapStart:    overlapStart,
 						OverlapEnd:      overlapEnd,
@@ -247,7 +308,7 @@ func (oa *OverlapAnalysis) FindConcurrentFunctionPairs() map[string][]ConPairFun
 
 	for _, overlap := range overlaps {
 		// 创建标准化的键（确保相同的函数对总是以相同的方式排序）
-		key := oa.normalizeFunctionPair(overlap.Func1, overlap.Func2)
+		key := oa.normalizeFunctionPair(overlap.GetFunc1Name(), overlap.GetFunc2Name())
 
 		functionPairs[key] = append(functionPairs[key], overlap)
 	}
@@ -280,8 +341,8 @@ func (oa *OverlapAnalysis) PrintOverlapReport() {
 
 		for i, overlap := range overlaps {
 			fmt.Printf("%d. %s (Goroutine-%d, CallID:%d) 与 %s (Goroutine-%d, CallID:%d)\n",
-				i+1, overlap.Func1, overlap.Goroutine1, overlap.CallID1,
-				overlap.Func2, overlap.Goroutine2, overlap.CallID2)
+				i+1, overlap.GetFunc1Name(), overlap.GetGoroutine1(), overlap.GetCallID1(),
+				overlap.GetFunc2Name(), overlap.GetGoroutine2(), overlap.GetCallID2())
 
 			fmt.Printf("   重叠时间: %v ~ %v (时长: %v)\n",
 				overlap.Overlap.OverlapStart,
@@ -351,7 +412,7 @@ func (oa *OverlapAnalysis) AnalyzeFunctionConcurrency(funcName string) []ConPair
 
 	var result []ConPairFunc
 	for _, overlap := range allOverlaps {
-		if overlap.Func1 == funcName || overlap.Func2 == funcName {
+		if overlap.GetFunc1Name() == funcName || overlap.GetFunc2Name() == funcName {
 			result = append(result, overlap)
 		}
 	}

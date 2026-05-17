@@ -2,7 +2,9 @@ package callstack
 
 import (
 	"fmt"
+	"path/filepath"
 	"runtime"
+	"strings"
 	"sync"
 	"time"
 )
@@ -12,6 +14,7 @@ type FunctionCallNode struct {
 	FuncID        uint64              // 函数的唯一id，插桩时确认
 	CallID        uint64              // 调用唯一ID
 	FuncName      string              // 函数名
+	CallLoc       CallLocation        // 调用位置信息（文件名、行号、调用者函数）
 	GoroutineID   int                 // 所在的goroutine ID
 	StartUnixNano int64               // 函数开始时间
 	EndUnixNano   int64               // 函数结束时间（调用结束时设置）
@@ -20,12 +23,25 @@ type FunctionCallNode struct {
 	Depth         int                 // 调用深度
 }
 
+// CallLocation 记录函数调用的具体位置
+type CallLocation struct {
+	File     string  // 调用发生的源文件路径
+	Line     int     // 调用发生的行号
+	FuncName string  // 调用者的函数名
+	PC       uintptr // 程序计数器地址（用于调试）
+}
+
+// String 返回调用位置的字符串表示
+func (cl *CallLocation) String() string {
+	return fmt.Sprintf("%s:%d in %s", cl.File, cl.Line, cl.FuncName)
+}
+
 // CallStackCollector 调用栈收集器
 type CallStackCollector struct {
 	mu           sync.RWMutex
 	callTrees    map[int]*FunctionCallNode    // goroutineID -> 当前调用树的活动根节点
 	nodePool     map[uint64]*FunctionCallNode // 所有节点的全局池（按CallID索引）
-	funcIndex    map[uint64][]uint64          // FuncID -> CallID列表
+	funcIndex    map[uint64][]uint64          // FuncID -> CallLoc列表
 	nextCallID   uint64
 	callStackMap map[int][]*FunctionCallNode // goroutineID -> 当前调用栈（用于快速回溯）
 }
@@ -53,30 +69,94 @@ func getCurrentGoroutineID() int {
 	return id
 }
 
-// 获取当前函数名（跳过指定层数）
-func getCurrentFuncName(skip int) string {
-	pc, _, _, ok := runtime.Caller(skip)
+// getCallInfo 获取调用信息（函数名、位置等）
+// skip: 跳过的栈帧层数，通常传 3（Trace -> defer闭包 -> 目标函数 -> 调用者）
+func getCallInfo(skip int) (funcName string, callLoc CallLocation) {
+	pc, file, line, ok := runtime.Caller(skip)
 	if !ok {
-		return "unknown"
-	}
-	fn := runtime.FuncForPC(pc)
-	if fn == nil {
-		return "unknown"
+		return "unknown", CallLocation{
+			File:     "unknown",
+			Line:     0,
+			FuncName: "unknown",
+			PC:       0,
+		}
 	}
 
-	//// 提取简化的函数名（去掉包路径）
-	//fullName := fn.Name()
-	//parts := strings.Split(fullName, ".")
-	//if len(parts) > 0 {
-	//	return parts[len(parts)-1]
-	//}
-	return fn.Name()
+	fn := runtime.FuncForPC(pc)
+	funcName = "unknown"
+	callerFunc := "unknown"
+
+	if fn != nil {
+		funcName = fn.Name()
+	}
+
+	// 获取调用者的信息
+	if callerFrames := runtime.CallersFrames([]uintptr{pc}); true {
+		frame, _ := callerFrames.Next()
+		callerFunc = frame.Function
+	}
+
+	// 将绝对路径转换为相对路径
+	relativeFile := convertToRelativePath(file)
+
+	callLoc = CallLocation{
+		File:     relativeFile,
+		Line:     line,
+		FuncName: callerFunc,
+		PC:       pc,
+	}
+
+	return funcName, callLoc
 }
+
+// convertToRelativePath 将绝对路径转换为相对路径
+// 例如：D:\Program Files\goProjects\src\gopie\testdata\myTest\instFunc_test.go
+// 转换为：gopie/testdata/myTest/instFunc_test.go
+func convertToRelativePath(absPath string) string {
+	// 查找 "gopie" 关键字的位置
+	// 支持 Windows 和 Unix 路径分隔符
+	keyDir := "gopie"
+
+	// 尝试找到 gopie 目录的位置
+	idx := strings.Index(absPath, keyDir)
+	if idx == -1 {
+		// 如果找不到 gopie，返回原始路径
+		return absPath
+	}
+
+	// 从 gopie 开始截取路径
+	relativePath := absPath[idx:]
+
+	// 统一使用正斜杠
+	relativePath = filepath.ToSlash(relativePath)
+
+	return relativePath
+}
+
+//// 获取当前函数名（跳过指定层数）
+//func getCurrentFuncName(skip int) string {
+//	pc, _, _, ok := runtime.Caller(skip)
+//	if !ok {
+//		return "unknown"
+//	}
+//	fn := runtime.FuncForPC(pc)
+//	if fn == nil {
+//		return "unknown"
+//	}
+//
+//	//// 提取简化的函数名（去掉包路径）
+//	//fullName := fn.Name()
+//	//parts := strings.Split(fullName, ".")
+//	//if len(parts) > 0 {
+//	//	return parts[len(parts)-1]
+//	//}
+//	return fn.Name()
+//}
 
 // EnterFunction 记录函数进入
 func (c *CallStackCollector) EnterFunction(funcID uint64) *FunctionCallNode {
 	goroutineID := getCurrentGoroutineID()
-	funcName := getCurrentFuncName(3)
+	funcName, callLoc := getCallInfo(3)
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
@@ -88,6 +168,7 @@ func (c *CallStackCollector) EnterFunction(funcID uint64) *FunctionCallNode {
 		GoroutineID:   goroutineID,
 		StartUnixNano: time.Now().UnixNano(),
 		Depth:         0,
+		CallLoc:       callLoc,
 	}
 	c.nextCallID++
 	// 保存到节点池

@@ -22,6 +22,7 @@ func Full(path string, llevel string, feature string, maxworker int) {
 		limit <- struct{}{}
 	}
 
+	// 二进制文件对应的测试函数
 	bin2tests := make(map[string][]string)
 
 	bugset := bug.NewBugSet()
@@ -39,9 +40,9 @@ func Full(path string, llevel string, feature string, maxworker int) {
 	}
 
 	go func() {
-		fmt.Println("len bin2tests=", len(bin2tests))
+		fmt.Println("----len bin2tests=", len(bin2tests))
 		for bin, tests := range bin2tests {
-			fmt.Println("len tests=", len(tests))
+			fmt.Println("--len tests=", len(tests))
 			for _, test := range tests {
 				cfg := fuzzer.DefaultConfig()
 				// shared bugset
@@ -93,7 +94,7 @@ func Full(path string, llevel string, feature string, maxworker int) {
 		select {
 		case v := <-resCh:
 			fmt.Printf("%v [%v/%v]\t%s", time.Now().String(), cnt+1, total, v)
-			cnt += 1
+			cnt++
 			if cnt == total {
 				return
 			}

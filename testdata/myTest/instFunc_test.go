@@ -54,6 +54,8 @@ func TestA(t *testing.T) {
 	time.Sleep(1 * time.Second)
 }
 func TestA_1(t *testing.T) {
+	// todo 加一个输出到控制台的函数
+	defer callstack.PrintConPairs()
 	defer callstack.Trace(420906795014)()
 	go AB()
 

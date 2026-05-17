@@ -2,6 +2,7 @@ package callstack
 
 import (
 	"fmt"
+	"os"
 	"sync"
 	"time"
 )
@@ -24,9 +25,50 @@ func init() {
 	cfg = NewConfig()
 	timeout = 500 * time.Millisecond
 	oa.collector = collector
-	conPairs = oa.DetectFunctionOverlaps()
+	conPairs = oa.DetectFunctionOverlaps() //一开始收集不了函数栈
+	// 的，一开始初始化应该接收上次fuzzing的结果
 	cfg.LoadSusPairs(conPairs)
 	cfg.LoadInfo()
+}
+
+// ParseInput 解析输入
+func ParseInput() {
+	input_susPairs := os.Getenv("Input")
+	if input_susPairs != "" {
+		ParseSusPairs(input_susPairs)
+	}
+}
+
+// ParseSusPairs 解析输入的函数对
+func ParseSusPairs(s string) {
+	cfg.mu.Lock()
+	defer cfg.mu.Unlock()
+
+}
+
+// PrintConPairs 打印所有并发函数对到stderr
+// 格式：[CONPAIR] node1:funcId = xxx,callloc = xxx;node2:funcid = xxx,callloc = xxx;
+func PrintConPairs() {
+	// 重新检测并发函数对（在测试结束时调用，此时所有函数都已执行完毕）
+	pairs := oa.DetectFunctionOverlaps()
+
+	if len(pairs) == 0 {
+		return
+	}
+
+	// 遍历所有并发对并输出
+	for _, pair := range pairs {
+		if pair.Node1 == nil || pair.Node2 == nil {
+			continue
+		}
+
+		// 使用 print 输出到 stderr
+		print("[CONPAIR] node1:funcId = ", pair.Node1.FuncID,
+			",callloc = ", pair.Node1.CallLoc.String(),
+			";node2:funcId = ", pair.Node2.FuncID,
+			",callloc = ", pair.Node2.CallLoc.String(),
+			";\n")
+	}
 }
 
 // Trace 自动插桩函数，在函数开始处调用 用法：defer Trace(funcID)()
@@ -140,11 +182,6 @@ func completeOperation(id uint64) {
 		close(done)
 		waiters.LoadOrStore(id, done)
 	}
-}
-
-// GetCollector 获取收集器实例
-func GetCollector() *CallStackCollector {
-	return collector
 }
 
 func PrintTrees() {

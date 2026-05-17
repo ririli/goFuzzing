@@ -158,7 +158,7 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 			close(cancel)
 			return false, []string{}
 		}
-		ctx := <-ch
+		ctx := <-ch // 接收worker的执行结果
 		atomic.AddInt32(&m.etimes, 1)
 		var inputc string
 		if ctx.In.c != nil {
