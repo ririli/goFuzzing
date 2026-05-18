@@ -69,10 +69,12 @@ func getCurrentGoroutineID() int {
 	return id
 }
 
-// getCallInfo 获取调用信息（函数名、位置等）
-// skip: 跳过的栈帧层数，通常传 3（Trace -> defer闭包 -> 目标函数 -> 调用者）
-func getCallInfo(skip int) (funcName string, callLoc CallLocation) {
-	pc, file, line, ok := runtime.Caller(skip)
+// getCallInfo 记录被插桩函数的name以及其被调用位置信息
+func getCallInfo() (funcName string, callLoc CallLocation) {
+	// 获取当前函数(被插桩函数)的信息
+	// level=3: runtime.Caller -> getCallInfo -> EnterFunction -> Trace -> defer闭包 -> 目标函数
+	level := 3
+	pc, selfFile, selfLine, ok := runtime.Caller(level)
 	if !ok {
 		return "unknown", CallLocation{
 			File:     "unknown",
@@ -82,31 +84,63 @@ func getCallInfo(skip int) (funcName string, callLoc CallLocation) {
 		}
 	}
 
+	// 获取当前函数名
 	fn := runtime.FuncForPC(pc)
-	funcName = "unknown"
-	callerFunc := "unknown"
-
 	if fn != nil {
 		funcName = fn.Name()
+	} else {
+		funcName = "unknown"
 	}
 
-	// 获取调用者的信息
-	if callerFrames := runtime.CallersFrames([]uintptr{pc}); true {
-		frame, _ := callerFrames.Next()
-		callerFunc = frame.Function
+	// 尝试获取调用者信息
+	callerPC, callerFile, callerLine, ok := runtime.Caller(level + 1)
+
+	var finalFile string
+	var finalLine int
+	var tag string // 用于标记 (Test) 或 (go)
+
+	if ok {
+		// 检查调用者是否是标准库
+		callerFn := runtime.FuncForPC(callerPC)
+		if callerFn != nil {
+			// 判断是否是标准库或 runtime（通过文件路径判断）
+			if isStandardLibrary(callerFile) {
+				// 调用者在标准库中，使用被插桩函数自身的位置
+				finalFile = selfFile
+				finalLine = selfLine
+				//fmt.Println(callerFile)
+				// 添加标记区分 Test 函数和 go 关键字启动的函数
+				if strings.Contains(callerFile, "src/testing") {
+					tag = " (Test)"
+				} else if strings.Contains(callerFile, "src/runtime") {
+					tag = " (go)"
+				}
+				finalFile += tag
+			} else {
+				// 调用者是用户代码，使用调用者的位置
+				finalFile = callerFile
+				finalLine = callerLine
+			}
+		}
+		// 将绝对路径转换为相对路径
+		relativeFile := convertToRelativePath(finalFile)
+
+		// 记录被插桩函数的位置信息
+		callLoc = CallLocation{
+			File:     relativeFile,
+			Line:     finalLine,
+			FuncName: callerFn.Name(),
+			PC:       pc,
+		}
+		return funcName, callLoc
+	} else {
+		return "unknown", CallLocation{
+			File:     "unknown",
+			Line:     0,
+			FuncName: "unknown",
+			PC:       0,
+		}
 	}
-
-	// 将绝对路径转换为相对路径
-	relativeFile := convertToRelativePath(file)
-
-	callLoc = CallLocation{
-		File:     relativeFile,
-		Line:     line,
-		FuncName: callerFunc,
-		PC:       pc,
-	}
-
-	return funcName, callLoc
 }
 
 // convertToRelativePath 将绝对路径转换为相对路径
@@ -133,6 +167,51 @@ func convertToRelativePath(absPath string) string {
 	return relativePath
 }
 
+// isStandardLibrary 判断是否是标准库或 runtime 的代码
+func isStandardLibrary(filePath string) bool {
+	// 常见的标准库前缀
+	standardPrefixes := []string{
+		"runtime.",
+		"internal/",
+		"sync.",
+		"time.",
+		"testing.",
+		"fmt.",
+		"os.",
+		"io.",
+		"context.",
+		"reflect.",
+	}
+
+	for _, prefix := range standardPrefixes {
+		if len(filePath) >= len(prefix) && filePath[:len(prefix)] == prefix {
+			return true
+		}
+	}
+
+	// 检查路径中是否包含标准库的特征路径
+	standardPaths := []string{
+		"/src/runtime/",
+		"/src/internal/",
+		"/src/testing/",
+		"/src/sync/",
+		"/src/time/",
+		"\\src\\runtime\\",
+		"\\src\\internal\\",
+		"\\src\\testing\\",
+		"\\src\\sync\\",
+		"\\src\\time\\",
+	}
+
+	for _, path := range standardPaths {
+		if strings.Contains(filePath, path) {
+			return true
+		}
+	}
+
+	return false
+}
+
 //// 获取当前函数名（跳过指定层数）
 //func getCurrentFuncName(skip int) string {
 //	pc, _, _, ok := runtime.Caller(skip)
@@ -156,7 +235,7 @@ func convertToRelativePath(absPath string) string {
 // EnterFunction 记录函数进入
 func (c *CallStackCollector) EnterFunction(funcID uint64) *FunctionCallNode {
 	goroutineID := getCurrentGoroutineID()
-	funcName, callLoc := getCallInfo(3)
+	funcName, callLoc := getCallInfo()
 	c.mu.Lock()
 	defer c.mu.Unlock()
 

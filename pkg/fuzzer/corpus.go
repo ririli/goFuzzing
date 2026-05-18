@@ -180,7 +180,8 @@ func (cp *Corpus) Get() (*Chain, *Chain) {
 			if rand.Int()%100 > allowDup {
 				continue
 			}
-		} /*
+		}
+		/*
 			for _, p := range v.item {
 				if rand.Int()%100 < AttackP {
 					ht := cp.HTGet(p.Next.Opid)
