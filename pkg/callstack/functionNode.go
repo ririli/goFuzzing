@@ -41,7 +41,7 @@ type CallStackCollector struct {
 	mu           sync.RWMutex
 	callTrees    map[int]*FunctionCallNode    // goroutineID -> 当前调用树的活动根节点
 	nodePool     map[uint64]*FunctionCallNode // 所有节点的全局池（按CallID索引）
-	funcIndex    map[uint64][]uint64          // FuncID -> CallLoc列表
+	funcIndex    map[uint64][]uint64          // FuncID -> CallID列表（目前未使用，预留）
 	nextCallID   uint64
 	callStackMap map[int][]*FunctionCallNode // goroutineID -> 当前调用栈（用于快速回溯）
 }
@@ -57,7 +57,7 @@ func NewCallStackCollector() *CallStackCollector {
 	}
 }
 
-// 获取当前goroutine ID（性能优化版本）
+// getCurrentGoroutineID 获取当前goroutine ID（性能优化版本）
 func getCurrentGoroutineID() int {
 	buf := make([]byte, 64)
 	n := runtime.Stack(buf, false)

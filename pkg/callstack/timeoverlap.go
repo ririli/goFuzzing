@@ -135,7 +135,7 @@ func isTimeRangeOverlap(start1, end1, start2, end2 int64) (bool, int64, int64) {
 }
 
 // DetectFunctionOverlaps 检测所有goroutine之间的函数时间重叠
-func (oa *OverlapAnalysis) DetectFunctionOverlaps() []ConPairFunc {
+func (oa *OverlapAnalysis) DetectFunctionOverlaps() []*ConPairFunc {
 	// 获取所有goroutine的调用树
 	trees := oa.collector.GetAllCallTrees()
 
@@ -159,7 +159,7 @@ func (oa *OverlapAnalysis) DetectFunctionOverlaps() []ConPairFunc {
 	}
 
 	// 检测重叠
-	var overlaps []ConPairFunc
+	var overlaps []*ConPairFunc
 	n := len(completedNodes)
 	// todo 时间复杂度很高，待后续优化
 	for i := 0; i < n; i++ {
@@ -196,7 +196,7 @@ func (oa *OverlapAnalysis) DetectFunctionOverlaps() []ConPairFunc {
 					},
 				}
 
-				overlaps = append(overlaps, overlap)
+				overlaps = append(overlaps, &overlap)
 			}
 		}
 	}
@@ -300,11 +300,11 @@ func (oa *OverlapAnalysis) DetectGoroutineOverlaps() map[int][]int {
 }
 
 // FindConcurrentFunctionPairs 查找并发执行的函数对（按函数名分组）
-func (oa *OverlapAnalysis) FindConcurrentFunctionPairs() map[string][]ConPairFunc {
+func (oa *OverlapAnalysis) FindConcurrentFunctionPairs() map[string][]*ConPairFunc {
 	overlaps := oa.DetectFunctionOverlaps()
 
 	// 按函数对分组
-	functionPairs := make(map[string][]ConPairFunc)
+	functionPairs := make(map[string][]*ConPairFunc)
 
 	for _, overlap := range overlaps {
 		// 创建标准化的键（确保相同的函数对总是以相同的方式排序）
@@ -407,10 +407,10 @@ func PrintConcurrencyAnalysis(collector *CallStackCollector) {
 }
 
 // 检测特定函数的并发情况
-func (oa *OverlapAnalysis) AnalyzeFunctionConcurrency(funcName string) []ConPairFunc {
+func (oa *OverlapAnalysis) AnalyzeFunctionConcurrency(funcName string) []*ConPairFunc {
 	allOverlaps := oa.DetectFunctionOverlaps()
 
-	var result []ConPairFunc
+	var result []*ConPairFunc
 	for _, overlap := range allOverlaps {
 		if overlap.GetFunc1Name() == funcName || overlap.GetFunc2Name() == funcName {
 			result = append(result, overlap)

@@ -18,7 +18,7 @@ var (
 	timeout       time.Duration
 	timeoutGlobal time.Duration
 	oa            OverlapAnalysis
-	conPairs      []ConPairFunc
+	conPairs      []*ConPairFunc
 )
 
 func init() {
@@ -48,26 +48,22 @@ func ParseSusPairs(s string) {
 
 // PrintConPairs 打印所有并发函数对到stderr
 // 格式：[CONPAIR] node1:funcId = xxx,callloc = xxx;node2:funcid = xxx,callloc = xxx;
-func PrintConPairs() {
+func PrintSusConPairs() {
 	// 重新检测并发函数对（在测试结束时调用，此时所有函数都已执行完毕）
 	pairs := oa.DetectFunctionOverlaps()
 
 	if len(pairs) == 0 {
+		print("No concurrent function pairs found.\n")
 		return
+	} else {
+		print("Concurrent function pairs found:\n")
 	}
 
-	// 遍历所有并发对并输出
-	for _, pair := range pairs {
-		if pair.Node1 == nil || pair.Node2 == nil {
-			continue
-		}
+	susPairs := InferSuspiciousPairs(pairs)
 
-		// 使用 print 输出到 stderr
-		print("[CONPAIR] node1:funcId = ", pair.Node1.FuncID,
-			",callloc = ", pair.Node1.CallLoc.String(),
-			";node2:funcId = ", pair.Node2.FuncID,
-			",callloc = ", pair.Node2.CallLoc.String(),
-			";\n")
+	for _, pair := range susPairs {
+		info := pair.String()
+		print(info)
 	}
 }
 

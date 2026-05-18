@@ -25,7 +25,7 @@ func NewConfig() *Config {
 }
 
 // LoadSusPairs 加载一组可疑的并发对
-func (c *Config) LoadSusPairs(conPairs []ConPairFunc) {
+func (c *Config) LoadSusPairs(conPairs []*ConPairFunc) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
 
