@@ -44,7 +44,7 @@ func Full(path string, llevel string, feature string, maxworker int) {
 		for bin, tests := range bin2tests {
 			fmt.Println("--len tests=", len(tests))
 			for _, test := range tests {
-				cfg := fuzzer.DefaultConfig()
+				cfg := fuzzer.DefaultConfig() //fuzzing Config
 				// shared bugset
 				cfg.BugSet = bugset
 				cfg.Bin = bin
