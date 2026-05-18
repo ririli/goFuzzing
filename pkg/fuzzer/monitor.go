@@ -48,6 +48,9 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 	}
 	var fncov *feedback.Cov
 	var corpus *Corpus
+	// todo 实现输入和输出
+	var corpusPair *CorpusPair
+	corpusPair.NewCorpusPair()
 	var maxscore *int32
 
 	if visitor.V_cov == nil {
@@ -200,20 +203,21 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 					}
 				}
 			}
-			// todo panic收集
-			// ✅ 新增：专门处理 -race 输出的逻辑
-			if strings.Contains(ctx.Out.Trace, "WARNING: DATA RACE") {
-				raceReport := ctx.Out.Trace
-				if normal {
-					cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] RACE DETECTED [%v]\n%s", time.Now().String(), wid, atomic.LoadInt32(&m.etimes), raceReport)
-				}
-				if debug {
-					cfg.LogCh <- fmt.Sprintf("%s\t[RACE DEBUG] Full Trace:\n%s", time.Now().String(), raceReport)
-				}
-				// 如果希望发现 Race 就停止，可以取消下面的注释
-				// close(cancel)
-				// return true, []string{inputc, "DATA RACE", raceReport}
+
+		}
+		// todo panic收集
+		// ✅ 新增：专门处理 -race 输出的逻辑
+		if strings.Contains(ctx.Out.Trace, "WARNING: DATA RACE") {
+			raceReport := ctx.Out.Trace
+			if normal {
+				cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] RACE DETECTED [%v]\n%s", time.Now().String(), wid, atomic.LoadInt32(&m.etimes), raceReport)
 			}
+			if debug {
+				cfg.LogCh <- fmt.Sprintf("%s\t[RACE DEBUG] Full Trace:\n%s", time.Now().String(), raceReport)
+			}
+			// 如果希望发现 Race 就停止，可以取消下面的注释
+			// close(cancel)
+			// return true, []string{inputc, "DATA RACE", raceReport}
 		}
 		op_st, all := feedback.ParseLog(ctx.Out.Trace)
 		schedcov := feedback.ParseCovered(ctx.Out.O)
