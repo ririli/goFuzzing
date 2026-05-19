@@ -3,6 +3,7 @@ package callstack
 import (
 	"fmt"
 	"os"
+	"strings"
 	"sync"
 	"time"
 )
@@ -18,17 +19,12 @@ var (
 	timeout       time.Duration
 	timeoutGlobal time.Duration
 	oa            OverlapAnalysis
-	conPairs      []*ConPairFunc
 )
 
 func init() {
 	cfg = NewConfig()
 	timeout = 500 * time.Millisecond
-	oa.collector = collector
-	conPairs = oa.DetectFunctionOverlaps() //一开始收集不了函数栈
-	// 的，一开始初始化应该接收上次fuzzing的结果
-	cfg.LoadSusPairs(conPairs)
-	cfg.LoadInfo()
+
 }
 
 // ParseInput 解析输入
@@ -40,10 +36,39 @@ func ParseInput() {
 }
 
 // ParseSusPairs 解析输入的函数对
+// 格式: (id1,id2)(id3,id4)(id5,id6)...
 func ParseSusPairs(s string) {
 	cfg.mu.Lock()
 	defer cfg.mu.Unlock()
 
+	// 逐对解析 (id1,id2) 格式
+	for len(s) > 0 {
+		// 查找左括号
+		left := strings.Index(s, "(")
+		if left == -1 {
+			break
+		}
+		// 查找右括号
+		right := strings.Index(s[left:], ")")
+		if right == -1 {
+			break
+		}
+		right += left // 调整为绝对位置
+
+		// 提取括号内的内容
+		pairStr := s[left+1 : right]
+
+		// 解析两个 ID
+		var id1, id2 uint64
+		_, err := fmt.Sscanf(pairStr, "%d,%d", &id1, &id2)
+		if err == nil {
+			// TODO: 处理提取出的 id1 和 id2
+			// 这里可以调用后续的处理函数
+		}
+
+		// 移动到下一对
+		s = s[right+1:]
+	}
 }
 
 // PrintConPairs 打印所有并发函数对到stderr

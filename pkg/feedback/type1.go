@@ -18,6 +18,26 @@ type SuspiciousPairInfo struct {
 	SourceType string           // 来源类型: "observed", "inferred_parent1", "inferred_child1", "inferred_parent2", "inferred_child2"
 	IsObserved bool             // 是否为直接观测到的（Confidence == 1.0）
 }
+type InputPair struct {
+	TryPair []*SuspiciousPairInfo
+}
+
+// ToString 返回字符串表示
+func (p *InputPair) ToString() string {
+	if p == nil || len(p.TryPair) == 0 {
+		return ""
+	}
+
+	var result string
+	for _, pair := range p.TryPair {
+		if pair == nil {
+			continue
+		}
+		// 格式化为 (FuncID1,FuncID2)
+		result += fmt.Sprintf("(%d,%d)", pair.FuncID1, pair.FuncID2)
+	}
+	return result
+}
 
 // String 返回字符串表示（与 callstack 包中的格式一致）
 func (s *SuspiciousPairInfo) String() string {

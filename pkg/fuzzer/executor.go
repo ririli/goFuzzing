@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"sync"
 	"time"
+	"toolkit/pkg/feedback"
 )
 
 type Executor struct {
@@ -29,6 +30,8 @@ type Input struct {
 	args           []string
 	timeout        int
 	recovertimeout int
+	//
+	tryPair *feedback.InputPair
 }
 
 // 复用缓冲区的全局池（按需调整初始容量）
@@ -63,10 +66,17 @@ func (e *Executor) Run(in Input) Output {
 	if in.c == nil {
 		instr = "Input="
 	} else {
-		instr = "Input=" + in.c.ToString()
+		//instr = "Input=" + in.c.ToString()
 	}
 
-	command.Env = append(os.Environ(), instr, htstr)
+	var strPair string
+	if in.tryPair == nil {
+		strPair = "Input="
+	} else {
+		strPair = "Input=" + in.tryPair.ToString()
+	}
+
+	command.Env = append(os.Environ(), strPair, instr, htstr)
 	if in.timeout != 0 {
 		command.Env = append(command.Env, fmt.Sprintf("TIMEOUT=%v", in.timeout))
 	}

@@ -89,16 +89,18 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 			}
 			var c, ht *Chain
 			c, ht = corpus.Get()
+			tryPair := corpusPair.Get()
 			if !cfg.UseMutate || atomic.LoadUint32(&m.doinit) == uint32(1) { // if no feedback, no seed and mutation
 				c = nil
 				ht = nil
 			}
 			e := Executor{}
 			in := Input{
-				c:    c,
-				ht:   ht,
-				cmd:  cfg.Bin,
-				args: []string{"-test.v", "-test.run", cfg.Fn},
+				tryPair: tryPair,
+				c:       c,
+				ht:      ht,
+				cmd:     cfg.Bin,
+				args:    []string{"-test.v", "-test.run", cfg.Fn},
 				// args:           []string{"-test.v", "-test.run", cfg.Fn, "-test.timeout", "30s"},
 				timeout:        cfg.TimeOut,
 				recovertimeout: cfg.RecoverTimeOut,
@@ -223,6 +225,10 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 		schedcov := feedback.ParseCovered(ctx.Out.O)
 		schedres, coveredinput := ColorCovered(ctx.Out.O, ctx.In.c)
 
+		pair_st, err := feedback.ParseStdPairs(ctx.Out.Trace)
+		if err != nil {
+			corpusPair.AddPair(pair_st)
+		}
 		cov := feedback.Log2Cov(op_st, all)
 		score := cov.Score(cfg.UseStates)
 		// if len(schedcov) != 0 && cfg.UseCoveredSched {
