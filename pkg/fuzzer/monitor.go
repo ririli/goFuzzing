@@ -50,7 +50,7 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 	var corpus *Corpus
 	// todo 实现输入和输出
 	var corpusPair *CorpusPair
-	corpusPair.NewCorpusPair()
+	corpusPair = NewCorpusPair()
 	var maxscore *int32
 
 	if visitor.V_cov == nil {

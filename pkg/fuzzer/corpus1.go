@@ -57,11 +57,13 @@ func (p *CorpusPair) Get() *feedback.InputPair {
 }
 
 // NewCorpusPair 初始化CorpusPair
-func (p *CorpusPair) NewCorpusPair() {
+func NewCorpusPair() *CorpusPair {
+	p := CorpusPair{}
 	p.CoveredConPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	p.SusConPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	p.TryPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	p.FeedbackPair = make(map[string]*feedback.SuspiciousPairInfo)
+	return &p
 }
 
 // AddPair 添加并发对，按可信度分类并自动去重
