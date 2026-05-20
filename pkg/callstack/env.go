@@ -7,30 +7,19 @@ import (
 type Config struct {
 	mu sync.RWMutex
 	//funcPair          []ConPairFunc              // 当前运行收集的并发调用对
-	suspiciousConPair []SuspiciousConcurrentPair //推测出可能的调用对，后续用断点控制进行验证
-	preFuncMap        map[uint64][]uint64        // 记录两个函数的前驱
-	activeFunc        map[uint64]struct{}        // 需要验证的函数
-	waitMap           map[uint64]int32           // 记录需要等待的函数,value 表示等待的preFunc数量
+	//suspiciousConPair []SuspiciousConcurrentPair //推测出可能的调用对，后续用断点控制进行验证
+	preFuncMap map[uint64][]uint64 // 记录两个函数的前驱
+	activeFunc map[uint64]struct{} // 需要验证的函数
+	waitMap    map[uint64]int32    // 记录需要等待的函数,value 表示等待的preFunc数量
 
 }
 
 func NewConfig() *Config {
 	cfg := Config{}
 	//cfg.funcPair = make([]ConPairFunc, 0)
-	cfg.suspiciousConPair = make([]SuspiciousConcurrentPair, 0)
+	//cfg.suspiciousConPair = make([]SuspiciousConcurrentPair, 0)
 	cfg.preFuncMap = make(map[uint64][]uint64)
 	cfg.activeFunc = make(map[uint64]struct{})
 	cfg.waitMap = make(map[uint64]int32)
 	return &cfg
-}
-
-// LoadSusPairs 加载一组可疑的并发对
-func (c *Config) LoadSusPairs(conPairs []*ConPairFunc) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-
-}
-
-func (c *Config) LoadInfo() {
-
 }

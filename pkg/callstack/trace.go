@@ -62,8 +62,10 @@ func ParseSusPairs(s string) {
 		var id1, id2 uint64
 		_, err := fmt.Sscanf(pairStr, "%d,%d", &id1, &id2)
 		if err == nil {
-			// TODO: 处理提取出的 id1 和 id2
-			// 这里可以调用后续的处理函数
+			cfg.activeFunc[id1] = struct{}{}
+			cfg.activeFunc[id2] = struct{}{}
+			cfg.preFuncMap[id2] = append(cfg.preFuncMap[id2], id1)
+			cfg.waitMap[id2]++
 		}
 
 		// 移动到下一对
@@ -71,8 +73,8 @@ func ParseSusPairs(s string) {
 	}
 }
 
-// PrintConPairs 打印所有并发函数对到stderr
-// 格式：[CONPAIR] node1:funcId = xxx,callloc = xxx;node2:funcid = xxx,callloc = xxx;
+// PrintSusConPairs 打印所有并发函数对到stderr
+// 格式：[CONPAIR] node1:funcId = xxx,callloc = xxx;node2:funcid = xxx,callloc = xxx
 func PrintSusConPairs() {
 	// 重新检测并发函数对（在测试结束时调用，此时所有函数都已执行完毕）
 	pairs := oa.DetectFunctionOverlaps()
@@ -137,9 +139,9 @@ func pointControl(funcId uint64) {
 				select {
 				case <-waiter:
 					cfg.waitMapDec(funcId)
-					fmt.Printf("[COVERED] {%v, %v}\n", preId, funcId)
+					fmt.Printf("{COVERED} {%v, %v}\n", preId, funcId)
 				case <-time.After(timeout):
-					fmt.Printf("[TIMEOUT] {%v, %v}\n", preId, funcId)
+					fmt.Printf("{TIMEOUT} {%v, %v}\n", preId, funcId)
 				}
 			}
 		}
