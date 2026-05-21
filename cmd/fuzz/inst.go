@@ -13,6 +13,12 @@ const (
 )
 
 func Inst(paths []string, check_pos string) {
+	// 检查是否有文件需要处理
+	if len(paths) == 0 {
+		fmt.Println("No Go files found in the specified path")
+		return
+	}
+
 	resCh := make(chan string, 100)
 	var toolpath = localPath
 	if runtime.GOOS == "linux" {

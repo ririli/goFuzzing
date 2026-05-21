@@ -21,6 +21,7 @@ var opts struct {
 	Fn        string `long:"func" description:"function"`
 	Feature   string `long:"feature" description:"[full, fb (without feedback), mu (without mutation)]"`
 	LeakCheck string `long:"check" description:"the position of leakcheck [inside, outside]"`
+	Output    string `long:"output" short:"o" description:"output directory for binary files"`
 }
 
 func ParseFlags() {
@@ -75,7 +76,7 @@ func main() {
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
 			return strings.HasSuffix(s, ".go")
 		})
-		Bins(paths)
+		Bins(paths, opts.Output)
 	default:
 		fmt.Println("error argument" + " " + opts.TASK)
 	}

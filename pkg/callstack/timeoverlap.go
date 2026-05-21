@@ -136,6 +136,8 @@ func isTimeRangeOverlap(start1, end1, start2, end2 int64) (bool, int64, int64) {
 
 // DetectFunctionOverlaps 检测所有goroutine之间的函数时间重叠
 func (oa *OverlapAnalysis) DetectFunctionOverlaps() []*ConPairFunc {
+	mu.Lock()
+	defer mu.Unlock()
 	// 获取所有goroutine的调用树
 	trees := oa.collector.GetAllCallTrees()
 
