@@ -4,6 +4,7 @@ import (
 	"context"
 	"sync"
 	"testing"
+	callstack "toolkit/pkg/callstack"
 )
 
 type HostPriorityList []int
@@ -11,6 +12,7 @@ type HostPriorityList []int
 type DoWorkPieceFunc func(piece int)
 
 func ParallelizeUntil(ctx context.Context, workers, pieces int, doWorkPiece DoWorkPieceFunc) {
+	defer callstack.Trace(901943132161)()
 	var stop <-chan struct{}
 	if ctx != nil {
 		stop = ctx.Done()
@@ -30,6 +32,7 @@ func ParallelizeUntil(ctx context.Context, workers, pieces int, doWorkPiece DoWo
 	wg.Add(workers)
 	for i := 0; i < workers; i++ {
 		go func() {
+			defer callstack.Trace(901943132162)()
 			defer wg.Done()
 			for piece := range toProcess {
 				select {
@@ -45,6 +48,7 @@ func ParallelizeUntil(ctx context.Context, workers, pieces int, doWorkPiece DoWo
 }
 
 func TestKubernetes70892(t *testing.T) {
+	defer callstack.Trace(901943132163)()
 	priorityConfigs := append([]int{}, 1, 2, 3)
 	results := make([]HostPriorityList, len(priorityConfigs), len(priorityConfigs))
 
@@ -52,6 +56,25 @@ func TestKubernetes70892(t *testing.T) {
 		results[i] = make(HostPriorityList, 2)
 	}
 	processNode := func(index int) {
+		defer callstack.Trace(901943132164)()
+		for i := range priorityConfigs {
+			if results[i][0] != 4 {
+				results[i] = HostPriorityList{7, 8, 9}
+			}
+		}
+	}
+	ParallelizeUntil(context.Background(), 2, 2, processNode)
+}
+func TestKubernetes70892_1(t *testing.T) {
+	defer callstack.Trace(901943132163)()
+	priorityConfigs := append([]int{}, 1, 2, 3)
+	results := make([]HostPriorityList, len(priorityConfigs), len(priorityConfigs))
+
+	for i := range priorityConfigs {
+		results[i] = make(HostPriorityList, 2)
+	}
+	processNode := func(index int) {
+		defer callstack.Trace(901943132164)()
 		for i := range priorityConfigs {
 			if results[i][0] != 4 {
 				results[i] = HostPriorityList{7, 8, 9}

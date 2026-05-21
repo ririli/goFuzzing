@@ -226,7 +226,8 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 		schedres, coveredinput := ColorCovered(ctx.Out.O, ctx.In.c)
 
 		pair_st, err := feedback.ParseStdPairs(ctx.Out.Trace)
-		if err != nil {
+		if err == nil && len(pair_st) > 0 {
+
 			corpusPair.AddPair(pair_st)
 		}
 		cov := feedback.Log2Cov(op_st, all)

@@ -32,7 +32,7 @@ func ParseStdPairs(s string) ([]*SuspiciousPairInfo, error) {
 			results = append(results, pair)
 		}
 	}
-
+	fmt.Println("ParseStdPairs", results)
 	return results, nil
 }
 

@@ -24,7 +24,7 @@ var (
 func init() {
 	cfg = NewConfig()
 	timeout = 500 * time.Millisecond
-
+	oa = *NewOverlapAnalysis(collector) // 初始化重叠分析器
 }
 
 // ParseInput 解析输入

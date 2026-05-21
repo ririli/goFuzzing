@@ -122,4 +122,26 @@ func (p *CorpusPair) AddPair(feedPair []*feedback.SuspiciousPairInfo) {
 	for key := range intersection {
 		delete(p.SusConPairs, key)
 	}
+
+	p.UpdateTryPairs()
+}
+
+// UpdateTryPairs 从 SusConPairs 中增量添加最多5个可疑并发对到 TryPairs
+// 不会清空 TryPairs，只添加不存在的新项
+func (p *CorpusPair) UpdateTryPairs() {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	// 从 SusConPairs 中增量添加最多5个到 TryPairs
+	count := 0
+	for key, pair := range p.SusConPairs {
+		if count >= 5 {
+			break
+		}
+		// 只添加 TryPairs 中不存在的
+		if _, ok := p.TryPairs[key]; !ok {
+			p.TryPairs[key] = pair
+			count++
+		}
+	}
 }

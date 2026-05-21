@@ -11,29 +11,30 @@ var (
 )
 
 func all() {
-	defer callstack.Trace(420906795008)()
+	defer callstack.Trace(330712481793)()
+
 	sum++
 }
 func ab() {
-	defer callstack.Trace(420906795009)()
+	defer callstack.Trace(330712481794)()
 
 	sum++
 	bc()
 	all()
 }
 func bc() {
-	defer callstack.Trace(420906795010)()
+	defer callstack.Trace(330712481795)()
 
 	sum++
 	cd()
 }
 func cd() {
-	defer callstack.Trace(420906795011)()
+	defer callstack.Trace(330712481796)()
 
 	sum++
 }
 func AB() {
-	defer callstack.Trace(420906795012)()
+	defer callstack.Trace(330712481797)()
 
 	sum++
 	BC()
@@ -41,7 +42,7 @@ func AB() {
 	time.Sleep(1 * time.Second)
 }
 func BC() {
-	defer callstack.Trace(420906795013)()
+	defer callstack.Trace(330712481798)()
 
 	sum++
 
@@ -49,7 +50,7 @@ func BC() {
 }
 
 func TestA(t *testing.T) {
-	defer callstack.Trace(420906795014)()
+	defer callstack.Trace(330712481799)()
 
 	go AB()
 
@@ -58,15 +59,12 @@ func TestA(t *testing.T) {
 	time.Sleep(1 * time.Second)
 }
 func TestA_1(t *testing.T) {
+	callstack.ParseInput()
 	defer callstack.PrintSusConPairs()
-	//defer func() {
-	//	callstack.PrintTrees()
-	//	callstack.PrintSusConPairs()
-	//}()
-	defer callstack.Trace(420906795014)()
+	defer callstack.Trace(330712481799)()
 	go AB()
 
 	go ab()
 
-	time.Sleep(3 * time.Second)
+	time.Sleep(1 * time.Second)
 }
