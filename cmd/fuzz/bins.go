@@ -5,34 +5,21 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"runtime"
 	"strings"
 	"sync"
 	"toolkit/cmd"
 )
 
-const (
-	localGo = "D:\\Program Files\\GO\\go1.19_patch\\bin\\go.exe"
-	linuxGo = "/home/lichang/local/go1.19.1/go/bin/go"
-)
-
-func dirname(s string) string {
-	if strings.Contains(s, ".go") {
-		idx := strings.LastIndex(s, "/")
-		if idx != -1 {
-			return s[0:idx]
-		}
-	}
-	return ""
-}
-
 func Bins(paths []string, outputDir string) {
 	resCh := make(chan string, 100)
 	tests := make([]string, 0)
 	var mu sync.Mutex
-	goPath := localGo
-	if runtime.GOOS == "linux" {
-		goPath = linuxGo
+	goPath, err := exec.LookPath("go")
+	if err != nil {
+		fmt.Println("Error: go compiler not found in PATH")
+		return
 	}
 
 	limit := make(chan struct{}, 32)
@@ -48,7 +35,7 @@ func Bins(paths []string, outputDir string) {
 	}
 
 	// 确保输出目录存在，如果不存在则创建
-	outputPath := workpath + "/" + outputDir
+	outputPath := filepath.Join(workpath, outputDir)
 	if err := os.MkdirAll(outputPath, 0755); err != nil {
 		fmt.Printf("Error creating output directory %s: %v\n", outputPath, err)
 		return
@@ -60,9 +47,16 @@ func Bins(paths []string, outputDir string) {
 		defer func() {
 			limit <- struct{}{}
 		}()
-		opath := workpath + "/" + outputDir + "/" + strings.Replace(dir, "/", "_", -1)
-		c := fmt.Sprintf("cd %s && %s test -race -o %s -c .", dir, goPath, opath)
-		command := exec.Command("bash", "-c", c)
+		replacer := strings.NewReplacer(":", "_", "\\", "_", "/", "_")
+		opath := filepath.Join(workpath, outputDir, replacer.Replace(dir))
+		// On Windows the go tool will produce a .exe file. Make the output
+		// filename explicitly include the suffix so downstream callers that
+		// try to execute the binary can find it reliably.
+		if runtime.GOOS == "windows" {
+			opath = opath + ".exe"
+		}
+		command := exec.Command(goPath, "test", "-race", "-o", opath, "-c", ".")
+		command.Dir = dir
 		var out, out2 bytes.Buffer
 		command.Stdout = &out
 		command.Stderr = &out2
@@ -83,7 +77,7 @@ func Bins(paths []string, outputDir string) {
 	m := make(map[string]struct{})
 	dirs := make([]string, 0)
 	for _, path := range paths {
-		dir := dirname(path)
+		dir := filepath.Dir(path)
 		if _, ok := m[dir]; !ok && dir != "" {
 			dirs = append(dirs, dir)
 			m[dir] = struct{}{}
@@ -94,6 +88,10 @@ func Bins(paths []string, outputDir string) {
 	}
 
 	all := len(dirs)
+	if all == 0 {
+		fmt.Println("No directories to process")
+		return
+	}
 	for {
 		select {
 		case v := <-resCh:

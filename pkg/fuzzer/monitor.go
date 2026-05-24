@@ -207,7 +207,24 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 			}
 
 		}
-		// todo panic收集
+		// panic收集：捕获 Go runtime panic 并输出完整堆栈
+		if strings.Contains(ctx.Out.O, "panic:") || strings.Contains(ctx.Out.Trace, "panic:") {
+			// 优先从 stdout 取，否则从 stderr 取
+			panicOutput := ctx.Out.O
+			if !strings.Contains(panicOutput, "panic:") {
+				panicOutput = ctx.Out.Trace
+			}
+			// 截取从 "panic:" 开始的所有内容（包含完整堆栈）
+			if idx := strings.Index(panicOutput, "panic:"); idx != -1 {
+				panicMsg := panicOutput[idx:]
+				if normal {
+					cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] PANIC [%v]\n%s", time.Now().String(), wid, atomic.LoadInt32(&m.etimes), panicMsg)
+				}
+				if debug {
+					cfg.LogCh <- fmt.Sprintf("%s\t[PANIC DEBUG] Full Trace:\n%s", time.Now().String(), panicMsg)
+				}
+			}
+		}
 		// ✅ 新增：专门处理 -race 输出的逻辑
 		if strings.Contains(ctx.Out.Trace, "WARNING: DATA RACE") {
 			raceReport := ctx.Out.Trace

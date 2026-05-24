@@ -18,13 +18,13 @@ var (
 	cfg           *Config
 	timeout       time.Duration
 	timeoutGlobal time.Duration
-	oa            OverlapAnalysis
+	oa            *OverlapAnalysis
 )
 
 func init() {
 	cfg = NewConfig()
-	timeout = 500 * time.Millisecond
-	oa = *NewOverlapAnalysis(collector) // 初始化重叠分析器
+	timeout = 1000 * time.Millisecond
+	oa = NewOverlapAnalysis(collector) // 初始化重叠分析器
 }
 
 // ParseInput 解析输入
@@ -76,6 +76,7 @@ func ParseSusPairs(s string) {
 // PrintSusConPairs 打印所有并发函数对到stderr
 // 格式：[CONPAIR] node1:funcId = xxx,callloc = xxx;node2:funcid = xxx,callloc = xxx
 func PrintSusConPairs() {
+	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
 	// 重新检测并发函数对（在测试结束时调用，此时所有函数都已执行完毕）
 	pairs := oa.DetectFunctionOverlaps()
 
@@ -99,14 +100,14 @@ func Trace(funcID uint64) func() {
 
 	pointControl(funcID)
 
-	mu.Lock()
+	//mu.Lock()
 	node := collector.EnterFunction(funcID)
-	mu.Unlock()
+	//mu.Unlock()
 
 	// 返回的闭包将在defer时执行
 	return func() {
-		mu.Lock()
-		defer mu.Unlock()
+		//mu.Lock()
+		//defer mu.Unlock()
 		collector.ExitFunction(node)
 	}
 }

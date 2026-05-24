@@ -255,7 +255,7 @@ func (c *CallStackCollector) EnterFunction(funcID uint64) *FunctionCallNode {
 
 	c.funcIndex[funcID] = append(c.funcIndex[funcID], node.CallID)
 
-	// 获取当前goroutine的调用栈
+	// 获取当前Goroutine的调用栈
 	stack := c.callStackMap[goroutineID]
 
 	if len(stack) == 0 {
@@ -281,11 +281,9 @@ func (c *CallStackCollector) ExitFunction(node *FunctionCallNode) {
 		return
 	}
 
-	node.EndUnixNano = time.Now().UnixNano()
-
 	c.mu.Lock()
 	defer c.mu.Unlock()
-
+	node.EndUnixNano = time.Now().UnixNano()
 	goroutineID := node.GoroutineID
 
 	// 从调用栈中弹出

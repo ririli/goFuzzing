@@ -5,7 +5,6 @@ import (
 	"os"
 	"strconv"
 	"strings"
-
 	"toolkit/cmd"
 
 	"github.com/jessevdk/go-flags"

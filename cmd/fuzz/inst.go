@@ -3,14 +3,29 @@ package main
 import (
 	"bytes"
 	"fmt"
+	"os"
 	"os/exec"
-	"runtime"
+	"path/filepath"
 )
 
-const (
-	localPath = "D:\\Program Files\\goProjects\\src\\gopie\\bin\\inst.exe"
-	linuxPath = "./bin/inst"
-)
+// getInstPath 查找 inst 工具路径，优先在可执行文件同目录下查找，
+// 失败时回退到 ./bin/inst（适用于 go run 场景）
+func getInstPath() string {
+	// 先尝试相对于可执行文件的路径
+	if exePath, err := os.Executable(); err == nil {
+		exeDir := filepath.Dir(exePath)
+		instPath := filepath.Join(exeDir, "inst")
+		if _, err := os.Stat(instPath); err == nil {
+			return instPath
+		}
+		// Windows 平台也检查 .exe 后缀
+		if _, err := os.Stat(instPath + ".exe"); err == nil {
+			return instPath + ".exe"
+		}
+	}
+	// 回退：相对于当前工作目录
+	return filepath.Join("bin", "inst")
+}
 
 func Inst(paths []string, check_pos string) {
 	// 检查是否有文件需要处理
@@ -20,10 +35,7 @@ func Inst(paths []string, check_pos string) {
 	}
 
 	resCh := make(chan string, 100)
-	var toolpath = localPath
-	if runtime.GOOS == "linux" {
-		toolpath = linuxPath
-	}
+	toolpath := getInstPath()
 	// ✅ 新增：限制最大并发数为 16
 	maxWorkers := 16
 	limit := make(chan struct{}, maxWorkers)
