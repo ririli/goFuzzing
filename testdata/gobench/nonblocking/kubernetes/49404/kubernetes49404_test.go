@@ -1,0 +1,192 @@
+package kubernetes49404
+
+import (
+	"fmt"
+	"sync"
+	"testing"
+	"time"
+	callstack "toolkit/pkg/callstack"
+)
+
+type Handler interface {
+	ServeHTTP()
+}
+
+type websocket_Handler func()
+
+func (h websocket_Handler) ServeHTTP() {
+	defer callstack.Trace(609885356033)()
+	h()
+}
+
+type muxEntry struct {
+	h Handler
+}
+
+type ServeMux struct {
+	es []muxEntry
+}
+
+func (mux *ServeMux) match() Handler {
+	defer callstack.Trace(609885356034)()
+	for _, e := range mux.es {
+		return e.h
+	}
+	return nil
+}
+
+func (mux *ServeMux) handler() (h Handler) {
+	defer callstack.Trace(609885356035)()
+	h = mux.match()
+	return
+}
+
+func (mux *ServeMux) Handler() Handler {
+	defer callstack.Trace(609885356036)()
+	return mux.handler()
+}
+
+func (mux *ServeMux) Handle(handler Handler) {
+	defer callstack.Trace(609885356037)()
+	e := muxEntry{h: handler}
+	mux.es = appendSorted(mux.es, e)
+}
+
+func (mux *ServeMux) ServeHTTP() {
+	defer callstack.Trace(609885356038)()
+	h := mux.Handler()
+	h.ServeHTTP()
+}
+
+func appendSorted(es []muxEntry, e muxEntry) []muxEntry {
+	defer callstack.Trace(609885356039)()
+	n := len(es)
+	i := 0
+	if i == n {
+		return append(es, e)
+	}
+	es = append(es, muxEntry{})
+	copy(es[i+1:], es[i:])
+	es[i] = e
+	return es
+}
+
+func NewServeMux() *ServeMux {
+	defer callstack.Trace(609885356040)()
+	return new(ServeMux)
+}
+
+type Server struct {
+	Config *http_Server
+	wg     sync.WaitGroup
+}
+
+func (s *Server) StartTLS() {
+	defer callstack.Trace(609885356041)()
+	s.goServe()
+}
+
+func (s *Server) goServe() {
+	defer callstack.Trace(609885356042)()
+	s.wg.Add(1)
+	go func() {
+		defer callstack.Trace(609885356043)()
+		defer s.wg.Done()
+		s.Config.Serve()
+	}()
+}
+
+type conn struct {
+	server *http_Server
+}
+
+func (c *conn) serve() {
+	defer callstack.Trace(609885356044)()
+	serverHandler{c.server}.ServeHTTP()
+}
+
+type serverHandler struct {
+	srv *http_Server
+}
+
+func (sh serverHandler) ServeHTTP() {
+	defer callstack.Trace(609885356045)()
+	handler := sh.srv.Handler
+	handler.ServeHTTP()
+}
+
+type http_Server struct {
+	Handler Handler
+}
+
+func (srv *http_Server) Serve() {
+	defer callstack.Trace(609885356046)()
+	c := srv.newConn()
+	go c.serve()
+}
+
+func (srv *http_Server) newConn() *conn {
+	defer callstack.Trace(609885356047)()
+	c := &conn{
+		server: srv,
+	}
+	return c
+}
+
+func NewUnstartedServer(handler Handler) *Server {
+	defer callstack.Trace(609885356048)()
+	return &Server{Config: &http_Server{Handler: handler}}
+}
+
+func TestKubernetes49404(t *testing.T) {
+	defer callstack.Trace(609885356049)()
+	ExpectCalled := true
+	called := false
+	func() {
+		defer callstack.Trace(609885356050)()
+		backendHandler := NewServeMux()
+		backendHandler.Handle(websocket_Handler(func() {
+			defer callstack.Trace(609885356051)()
+			called = true
+		}))
+
+		backendServer := NewUnstartedServer(backendHandler)
+
+		backendServer.StartTLS()
+
+		defer func() {
+			defer callstack.Trace(609885356052)()
+			if called != ExpectCalled {
+				_ = fmt.Sprintf("Error")
+			}
+		}()
+	}()
+	time.Sleep(10 * time.Millisecond)
+}
+func TestKubernetes49404_1(t *testing.T) {
+	callstack.ParseInput()
+	defer callstack.PrintSusConPairs()
+	defer callstack.Trace(609885356049)()
+	ExpectCalled := true
+	called := false
+	func() {
+		defer callstack.Trace(609885356050)()
+		backendHandler := NewServeMux()
+		backendHandler.Handle(websocket_Handler(func() {
+			defer callstack.Trace(609885356051)()
+			called = true
+		}))
+
+		backendServer := NewUnstartedServer(backendHandler)
+
+		backendServer.StartTLS()
+
+		defer func() {
+			defer callstack.Trace(609885356052)()
+			if called != ExpectCalled {
+				_ = fmt.Sprintf("Error")
+			}
+		}()
+	}()
+	time.Sleep(10 * time.Millisecond)
+}
