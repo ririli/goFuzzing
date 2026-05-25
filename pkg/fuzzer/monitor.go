@@ -124,14 +124,6 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 				fmt.Println("cancel and return done")
 				return
 			}
-			//select {
-			//case <-done:
-			//case <-timeout:
-			//	istimeout = true
-			//}
-			// if ok {
-			//	ticket <- struct{}{}
-			//}
 			if o == nil {
 				continue
 			}
@@ -145,14 +137,9 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 			default:
 				ch <- RunContext{In: in, Out: *o, timeout: istimeout}
 			}
-			//ch <- RunContext{In: in, Out: *o, timeout: istimeout}
-			//select {
-			//case <-cancel:
-			//	break
-			//default:
-			//}
 		}
 	}
+	cfg.MaxWorker = 2
 	for i := 0; i < cfg.MaxWorker; i++ {
 		go dowork()
 	}
@@ -243,6 +230,7 @@ func (m *Monitor) Start(cfg *Config, visitor *Visitor, ticket chan struct{}) (bo
 		schedres, coveredinput := ColorCovered(ctx.Out.O, ctx.In.c)
 
 		pair_st, err := feedback.ParseStdPairs(ctx.Out.Trace)
+		//pair_st, err := feedback.ParseStdPairs("[SUSPECT] 987842478097,987842478084|gopie/testdata/gobench/nonblocking/grpc/1748/grpc1748_test.go:184,gopie/testdata/gobench/nonblocking/grpc/1748/grpc1748_test.go (Test):171|0.50|inferred_child1;\n]")
 		if err == nil && len(pair_st) > 0 {
 
 			corpusPair.AddPair(pair_st)

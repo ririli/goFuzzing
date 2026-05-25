@@ -30,12 +30,19 @@ func pairKey(pair *feedback.SuspiciousPairInfo) string {
 }
 
 type CorpusPair struct {
-	mu              sync.Mutex
+	mu              sync.RWMutex
+	isReverse       bool                                    // 是否反转pair
+	cnt             uint32                                  // 运行次数
 	done            uint32                                  // 是否是第一次
 	CoveredConPairs map[string]*feedback.SuspiciousPairInfo // 已覆盖的并发对 (key -> pair)
 	SusConPairs     map[string]*feedback.SuspiciousPairInfo // 可疑的并发对 (key -> pair)
 	TryPairs        map[string]*feedback.SuspiciousPairInfo // 上次fuzzing输入的并发对 (key -> pair)
 	FeedbackPair    map[string]*feedback.SuspiciousPairInfo // fuzzing结束反馈的并发对 (key -> pair)
+	// 稳定性追踪：连续 N 轮 pair 集合不变后停止记录调用栈
+	stableCount     uint32 // 连续未变化轮次
+	stableThreshold uint32 // 稳定判定阈值
+	isStable        bool   // 当前是否稳定
+	prevPairCount   int    // 上一轮的总 pair 数
 }
 
 // Get 获取 TryPairs
@@ -43,8 +50,8 @@ func (p *CorpusPair) Get() *feedback.InputPair {
 	if atomic.LoadUint32(&p.done) == uint32(0) {
 		return nil
 	}
-	p.mu.Lock()
-	defer p.mu.Unlock()
+	p.mu.RLock()
+	defer p.mu.RUnlock()
 
 	// 将 TryPairs 中的 map 转换为 slice
 	result := make([]*feedback.SuspiciousPairInfo, 0, len(p.TryPairs))
@@ -52,13 +59,18 @@ func (p *CorpusPair) Get() *feedback.InputPair {
 		result = append(result, pair)
 	}
 	return &feedback.InputPair{
-		TryPair: result,
+		TryPair:     result,
+		RecordStack: !p.isStable,
 	}
 }
 
 // NewCorpusPair 初始化CorpusPair
 func NewCorpusPair() *CorpusPair {
 	p := CorpusPair{}
+	p.cnt = 0
+	p.done = 0
+	p.isReverse = true
+	p.stableThreshold = 2
 	p.CoveredConPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	p.SusConPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	p.TryPairs = make(map[string]*feedback.SuspiciousPairInfo)
@@ -123,6 +135,24 @@ func (p *CorpusPair) AddPair(feedPair []*feedback.SuspiciousPairInfo) {
 		delete(p.SusConPairs, key)
 	}
 
+	// 第七步：稳定性判定
+	currentCount := len(p.SusConPairs) + len(p.CoveredConPairs)
+	if currentCount == p.prevPairCount && currentCount > 0 {
+		p.stableCount++
+	} else {
+		p.stableCount = 0
+		p.isStable = false
+	}
+	p.prevPairCount = currentCount
+	if p.stableCount >= p.stableThreshold {
+		p.isStable = true
+	}
+
+	// todo：运行20次直接稳定
+	if atomic.LoadUint32(&p.done) > 20 {
+		p.isStable = true
+	}
+
 	p.UpdateTryPairs()
 }
 
@@ -131,7 +161,7 @@ func (p *CorpusPair) AddPair(feedPair []*feedback.SuspiciousPairInfo) {
 func (p *CorpusPair) UpdateTryPairs() {
 	p.mu.Lock()
 	defer p.mu.Unlock()
-
+	p.cnt++
 	// 从 SusConPairs 中增量添加最多5个到 TryPairs
 	count := 0
 	for key, pair := range p.SusConPairs {
@@ -142,6 +172,15 @@ func (p *CorpusPair) UpdateTryPairs() {
 		if _, ok := p.TryPairs[key]; !ok {
 			p.TryPairs[key] = pair
 			count++
+		}
+	}
+	if p.isReverse && p.cnt%2 == 0 {
+		// 反转 TryPairs 中所有 pair 的 FuncID 和 CallLoc
+		// 当 pre 函数结束过快导致没有并发执行时，通过反转顺序
+		// 让原本的 next 先执行、原本的 pre 后执行，交替尝试创造时间重叠
+		for _, pair := range p.TryPairs {
+			pair.FuncID1, pair.FuncID2 = pair.FuncID2, pair.FuncID1
+			pair.CallLoc1, pair.CallLoc2 = pair.CallLoc2, pair.CallLoc1
 		}
 	}
 }

@@ -53,7 +53,7 @@ func Full(path string, llevel string, feature string, maxworker int) {
 				cfg.TimeOut = 30
 				cfg.RecoverTimeOut = 200
 				cfg.LogCh = logCh
-				cfg.MaxQuit = 64
+				cfg.MaxQuit = 200 // 推出循环次数
 				cfg.MaxExecution = 10000
 				cfg.LogLevel = llevel
 				if feature == "mu" {
@@ -89,6 +89,10 @@ func Full(path string, llevel string, feature string, maxworker int) {
 	}()
 
 	defer fmt.Printf("%v [Fuzzer] Finish\n", time.Now().String())
+	if total == 0 {
+		fmt.Println("no tests found")
+		return
+	}
 	cnt := 0
 	for {
 		select {

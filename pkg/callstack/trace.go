@@ -76,6 +76,9 @@ func ParseSusPairs(s string) {
 // PrintSusConPairs 打印所有并发函数对到stderr
 // 格式：[CONPAIR] node1:funcId = xxx,callloc = xxx;node2:funcid = xxx,callloc = xxx
 func PrintSusConPairs() {
+	if os.Getenv("RECORD_STACK") == "1" {
+		return
+	}
 	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
 	// 重新检测并发函数对（在测试结束时调用，此时所有函数都已执行完毕）
 	pairs := oa.DetectFunctionOverlaps()
@@ -99,6 +102,11 @@ func PrintSusConPairs() {
 func Trace(funcID uint64) func() {
 
 	pointControl(funcID)
+
+	// RECORD_STACK=0 时跳过调用栈记录，仅保留断点控制
+	if os.Getenv("RECORD_STACK") == "1" {
+		return func() {}
+	}
 
 	//mu.Lock()
 	node := collector.EnterFunction(funcID)
@@ -198,14 +206,23 @@ func getWaiter(id uint64) chan struct{} {
 
 // completeOperation 标记操作完成，通知所有等待者
 func completeOperation(id uint64) {
-	if val, ok := waiters.Load(id); ok {
+	if val, ok := waiters.LoadAndDelete(id); ok {
 		ch := val.(chan struct{})
-		close(ch) // 关闭 channel，所有等待者都会收到信号
-	} else {
-		done := make(chan struct{})
-		close(done)
-		waiters.LoadOrStore(id, done)
+		// 安全关闭：使用 select 检测 channel 是否已被关闭
+		// LoadAndDelete 保证原子删除，但 channel 可能已被 else 分支预先关闭
+		select {
+		case <-ch:
+			// channel 已关闭，无需重复关闭
+		default:
+			close(ch)
+		}
+		return
 	}
+	// 向前引用：completeOperation 发生在任何 getWaiter 之前
+	// 创建一个预先关闭的 channel，后续 getWaiter 会直接返回
+	done := make(chan struct{})
+	close(done)
+	waiters.LoadOrStore(id, done)
 }
 
 func PrintTrees() {

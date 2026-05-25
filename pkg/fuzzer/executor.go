@@ -84,6 +84,10 @@ func (e *Executor) Run(in Input) Output {
 	if in.recovertimeout != 0 {
 		command.Env = append(command.Env, fmt.Sprintf("RECOVER_TIMEOUT=%v", in.recovertimeout))
 	}
+	// 传递是否记录调用栈的标志
+	if in.tryPair != nil && !in.tryPair.RecordStack {
+		command.Env = append(command.Env, "RECORD_STACK=1")
+	}
 
 	// 4. 使用管道流式读取输出（避免全量加载）
 	stdoutPipe, _ := command.StdoutPipe()

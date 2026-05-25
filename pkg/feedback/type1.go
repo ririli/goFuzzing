@@ -19,7 +19,8 @@ type SuspiciousPairInfo struct {
 	IsObserved bool             // 是否为直接观测到的（Confidence == 1.0）
 }
 type InputPair struct {
-	TryPair []*SuspiciousPairInfo
+	TryPair     []*SuspiciousPairInfo
+	RecordStack bool // true: 记录调用栈; false: 仅断点控制
 }
 
 // ToString 返回字符串表示
