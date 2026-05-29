@@ -5,7 +5,6 @@ import (
 	"time"
 	"toolkit/cmd"
 	"toolkit/pkg/bug"
-	"toolkit/pkg/feedback"
 	"toolkit/pkg/fuzzer"
 )
 
@@ -63,19 +62,13 @@ func Full(path string, llevel string, feature string, maxworker int) {
 					cfg.UseFeedBack = false
 				}
 
-				cov := feedback.NewCov()
-				corpus := fuzzer.NewCorpus()
-				v := &fuzzer.Visitor{
-					V_cov:    cov,
-					V_corpus: corpus,
-				}
 				<-limit
-				go func(v *fuzzer.Visitor, cfg *fuzzer.Config) {
+				go func(cfg *fuzzer.Config) {
 					defer func() {
 						limit <- struct{}{}
 					}()
 					m := &fuzzer.Monitor{}
-					ok, detail := m.Start(cfg, v, limit)
+					ok, detail := m.Start(cfg, limit)
 					var res string
 					if ok {
 						res = fmt.Sprintf("%s\tFAIL\t%s\n", cfg.Fn, detail[1])
@@ -83,7 +76,7 @@ func Full(path string, llevel string, feature string, maxworker int) {
 						res = fmt.Sprintf("%s\tPASS\n", cfg.Fn)
 					}
 					resCh <- res
-				}(v, cfg)
+				}(cfg)
 			}
 		}
 	}()

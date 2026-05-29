@@ -24,8 +24,6 @@ type Output struct {
 }
 
 type Input struct {
-	c              *Chain
-	ht             *Chain
 	cmd            string
 	args           []string
 	timeout        int
@@ -61,13 +59,6 @@ func (e *Executor) Run(in Input) Output {
 	command := exec.CommandContext(ctx, in.cmd, in.args...)
 
 	//command := exec.Command(in.cmd, in.args...) origin
-	var instr, htstr string
-
-	if in.c == nil {
-		instr = "Input="
-	} else {
-		//instr = "Input=" + in.c.ToString()
-	}
 
 	var strPair string
 	if in.tryPair == nil {
@@ -77,7 +68,7 @@ func (e *Executor) Run(in Input) Output {
 	}
 	fmt.Println("=====strPair====")
 	fmt.Println(strPair)
-	command.Env = append(os.Environ(), strPair, instr, htstr)
+	command.Env = append(os.Environ(), strPair)
 	if in.timeout != 0 {
 		command.Env = append(command.Env, fmt.Sprintf("TIMEOUT=%v", in.timeout))
 	}
