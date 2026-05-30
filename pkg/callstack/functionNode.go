@@ -74,6 +74,7 @@ func getCallInfo() (funcName string, callLoc CallLocation) {
 	// 获取当前函数(被插桩函数)的信息
 	// level=3: runtime.Caller -> getCallInfo -> EnterFunction -> Trace -> defer闭包 -> 目标函数
 	level := 3
+	// todo 多次调用runtime
 	pc, selfFile, selfLine, ok := runtime.Caller(level)
 	if !ok {
 		return "unknown", CallLocation{

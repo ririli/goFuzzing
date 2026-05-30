@@ -5,6 +5,7 @@ import (
 	"os"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -32,6 +33,9 @@ func ParseInput() {
 	input_susPairs := os.Getenv("Input")
 	if input_susPairs != "" {
 		ParseSusPairs(input_susPairs)
+	}
+	if len(cfg.activeFunc) > 0 {
+		atomic.StoreUint32(&cfg.hasActive, 1)
 	}
 }
 
@@ -65,7 +69,8 @@ func ParseSusPairs(s string) {
 			cfg.activeFunc[id1] = struct{}{}
 			cfg.activeFunc[id2] = struct{}{}
 			cfg.preFuncMap[id2] = append(cfg.preFuncMap[id2], id1)
-			cfg.waitMap[id2]++
+			actual, _ := cfg.waitMap.LoadOrStore(id2, new(atomic.Int32))
+			actual.(*atomic.Int32).Add(1)
 		}
 
 		// 移动到下一对
@@ -102,7 +107,9 @@ func PrintSusConPairs() {
 func Trace(funcID uint64) func() {
 
 	pointControl(funcID)
+	return func() {
 
+	}
 	// RECORD_STACK=0 时跳过调用栈记录，仅保留断点控制
 	if os.Getenv("RECORD_STACK") == "1" {
 		return func() {}
@@ -122,9 +129,6 @@ func Trace(funcID uint64) func() {
 
 // findPrev 查找指定 funcId 的前驱 ID
 func (c *Config) findPrev(funcId uint64) []uint64 {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-
 	if prevId, ok := c.preFuncMap[funcId]; ok {
 		return prevId
 	}
@@ -134,7 +138,9 @@ func (c *Config) findPrev(funcId uint64) []uint64 {
 // todo
 // pointControl 实现函数对之间的断点控制
 func pointControl(funcId uint64) {
-
+	if atomic.LoadUint32(&cfg.hasActive) == 0 {
+		return
+	}
 	if !cfg.isActive(funcId) {
 		return
 	}
@@ -160,31 +166,26 @@ func pointControl(funcId uint64) {
 
 // isActive 判断函数是否处于活动状态
 func (c *Config) isActive(funcId uint64) bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
+
 	_, ok := c.activeFunc[funcId]
 	return ok
 }
 
 // doWait 判断函数是否需要等待
 func (c *Config) doWait(funcId uint64) bool {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	if value, ok := c.waitMap[funcId]; ok {
-		return value > 0
+	if value, ok := c.waitMap.Load(funcId); ok {
+		return value.(*atomic.Int32).Load() > 0
 	}
 	return false
 }
 
 // waitMapDec 减少指定函数 ID 的等待计数
 func (c *Config) waitMapDec(funcId uint64) {
-	c.mu.Lock()
-	defer c.mu.Unlock()
-	if v, ok := c.waitMap[funcId]; ok {
-		if v <= 1 {
-			delete(c.waitMap, funcId)
-		} else {
-			c.waitMap[funcId]--
+
+	if val, ok := c.waitMap.Load(funcId); ok {
+		newVal := val.(*atomic.Int32).Add(-1)
+		if newVal <= 0 {
+			c.waitMap.Delete(funcId)
 		}
 	}
 }

@@ -9,6 +9,7 @@ import (
 )
 
 func Full(path string, llevel string, feature string, maxworker int) {
+	startTime := time.Now()
 	resCh := make(chan string, 100000)
 	logCh := make(chan string, 100000)
 	// control
@@ -39,9 +40,9 @@ func Full(path string, llevel string, feature string, maxworker int) {
 	}
 
 	go func() {
-		fmt.Println("----len bin2tests=", len(bin2tests))
+		fmt.Println("----len bin2tests=", len(bin2tests)) // 测试文件的数量
 		for bin, tests := range bin2tests {
-			fmt.Println("--len tests=", len(tests))
+			fmt.Println("--len tests=", len(tests)) // 单个文件测试函数的数量
 			for _, test := range tests {
 				cfg := fuzzer.DefaultConfig() //fuzzing Config
 				// shared bugset
@@ -81,7 +82,9 @@ func Full(path string, llevel string, feature string, maxworker int) {
 		}
 	}()
 
-	defer fmt.Printf("%v [Fuzzer] Finish\n", time.Now().String())
+	defer func() {
+		fmt.Printf("%v [Fuzzer] Finish, elapsed: %v\n", time.Now().String(), time.Since(startTime).Round(time.Millisecond))
+	}()
 	if total == 0 {
 		fmt.Println("no tests found")
 		return

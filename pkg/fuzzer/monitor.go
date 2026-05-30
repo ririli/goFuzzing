@@ -116,9 +116,9 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	for i := 0; i < cfg.MaxWorker; i++ {
 		go dowork()
 	}
-	fmt.Println("m.max=", m.max)
+	fmt.Println("m.max=", m.max) // 最大运行次数上限
 	for {
-		fmt.Println("m.etimes=", m.etimes)
+		fmt.Println("m.etimes=", m.etimes) // 已执行的轮次
 		if m.etimes > m.max {
 			close(cancel)
 			return false, []string{}
