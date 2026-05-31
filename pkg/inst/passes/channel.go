@@ -17,10 +17,18 @@ import (
 var (
 	ChannelNeedInst   = "ChannelNeedInst"
 	ChannelImportName = "sched"
-	ChannelImportPath = "sched"
+	ChannelImportPath = "toolkit/pkg/sched"
 )
 
 type ChRecPass struct {
+	funcIdStack []uint64
+}
+
+func (p *ChRecPass) currentFuncId() uint64 {
+	if len(p.funcIdStack) > 0 {
+		return p.funcIdStack[len(p.funcIdStack)-1]
+	}
+	return 0
 }
 
 func RunChannelPass(in, out string) error {
@@ -56,7 +64,15 @@ func (p *ChRecPass) After(iCtx *inst.InstContext) {
 }
 
 func (p *ChRecPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
-	return nil
+	return func(c *astutil.Cursor) bool {
+		switch c.Node().(type) {
+		case *ast.FuncDecl, *ast.FuncLit:
+			if len(p.funcIdStack) > 0 {
+				p.funcIdStack = p.funcIdStack[:len(p.funcIdStack)-1]
+			}
+		}
+		return true
+	}
 }
 
 func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
@@ -69,14 +85,25 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 
 		switch concrete := c.Node().(type) {
 
+		// 追踪函数边界，维护 funcId 栈
+		case *ast.FuncDecl:
+			if fid, ok := Find(concrete.Pos()); ok {
+				p.funcIdStack = append(p.funcIdStack, fid)
+			}
+		case *ast.FuncLit:
+			if fid, ok := Find(concrete.Pos()); ok {
+				p.funcIdStack = append(p.funcIdStack, fid)
+			}
+
 		// channel send operation
 		case *ast.SendStmt:
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
 			ch := concrete.Chan
-			before := GenInstCall("InstChBF", ch, id)
+			fid := p.currentFuncId()
+			before := GenInstCallWithType("InstChBF", ch, id, fid, "send")
 			c.InsertBefore(before)
-			after := GenInstCall("InstChAF", ch, id)
+			after := GenInstCallWithType("InstChAF", ch, id, fid, "send")
 			c.InsertAfter(after)
 
 			iCtx.SetMetadata(ChannelNeedInst, true)
@@ -88,10 +115,11 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 					id := iCtx.GetNewOpId()
 					Add(concrete.Pos(), id)
 					ch := unaryExpr.X
-					before := GenInstCall("InstChBF", ch, id)
+					fid := p.currentFuncId()
+					before := GenInstCallWithType("InstChBF", ch, id, fid, "recv")
 					c.InsertBefore(before)
 
-					after := GenInstCall("InstChAF", ch, id)
+					after := GenInstCallWithType("InstChAF", ch, id, fid, "recv")
 					c.InsertAfter(after)
 					iCtx.SetMetadata(ChannelNeedInst, true)
 				}
@@ -104,11 +132,11 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 						args := callExpr.Args
 						if len(args) == 1 {
 							if ch, ok := args[0].(*ast.Ident); ok {
-
-								before := GenInstCall("InstChBF", ch, id)
+								fid := p.currentFuncId()
+								before := GenInstCallWithType("InstChBF", ch, id, fid, "close")
 								c.InsertBefore(before)
 
-								after := GenInstCall("InstChAF", ch, id)
+								after := GenInstCallWithType("InstChAF", ch, id, fid, "close")
 								c.InsertAfter(after)
 
 								iCtx.SetMetadata(ChannelNeedInst, true)
@@ -127,8 +155,9 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 					args := callExpr.Args
 					if len(args) == 1 {
 						if ch, ok := args[0].(*ast.Ident); ok {
-							before := GenInstCall("InstChBF", ch, id)
-							after := GenInstCall("InstChAF", ch, id)
+							fid := p.currentFuncId()
+							before := GenInstCallWithType("InstChBF", ch, id, fid, "close")
+							after := GenInstCallWithType("InstChAF", ch, id, fid, "close")
 
 							body := &ast.BlockStmt{List: []ast.Stmt{
 								before,

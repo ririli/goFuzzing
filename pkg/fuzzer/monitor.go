@@ -164,7 +164,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			// close(cancel)
 			// return true, []string{inputc, "DATA RACE", raceReport}
 		}
-
+		// 输出台收集信息
 		pair_st, err := feedback.ParseStdPairs(ctx.Out.Trace)
 		//pair_st, err := feedback.ParseStdPairs("[SUSPECT] 987842478097,987842478084|gopie/testdata/gobench/nonblocking/grpc/1748/grpc1748_test.go:184,gopie/testdata/gobench/nonblocking/grpc/1748/grpc1748_test.go (Test):171|0.50|inferred_child1;\n]")
 		if err == nil && len(pair_st) > 0 {

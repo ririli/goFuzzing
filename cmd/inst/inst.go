@@ -20,8 +20,9 @@ func main() {
 
 			reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
 			// register passes
-			//reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
+			reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
 			//reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
+			reg.Register("waitgroup", func() inst.InstPass { return &passes.WgPass{} })
 			//reg.Register("lock", func() inst.InstPass { return &passes.LockPass{} })
 			//reg.Register("fuzz", func() inst.InstPass { return &passes.FuzzPass{} })
 			reg.Register("test", func() inst.InstPass { return &passes.TestPass{Pos: cmd.Opts.Pos} })
@@ -38,8 +39,9 @@ func main() {
 		reg := inst.NewPassRegistry()
 		reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
 		// register passes
-		//reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
-		//reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
+		reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
+		reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
+		reg.Register("waitgroup", func() inst.InstPass { return &passes.WgPass{} })
 		//reg.Register("lock", func() inst.InstPass { return &passes.LockPass{} })
 		// reg.Register("fuzz", func() inst.InstPass { return &passes.FuzzPass{} })
 		reg.Register("test", func() inst.InstPass { return &passes.TestPass{Pos: cmd.Opts.Pos} })

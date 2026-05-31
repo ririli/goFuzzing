@@ -1,15 +1,11 @@
 package sched
 
 import (
-	"bufio"
 	"fmt"
-	"log"
 	"os"
-	"runtime"
+	"reflect"
 	"strconv"
-	"strings"
 	"sync"
-	"sync/atomic"
 	"testing"
 	"time"
 	"toolkit/pkg/sched/goleak"
@@ -47,81 +43,24 @@ func init() {
 }
 
 // find sender with current wait ID
-func (c *Config) findPrev(i uint64) uint64 {
+func (c *Config) findPrev(opId uint64) []uint64 {
 	c.mu.RLock()
 	defer c.mu.RUnlock()
-	if int(c.top) < len(c.wait_queue) && i == c.wait_queue[c.top][1] {
-		return c.wait_queue[c.top][0]
+	if prevId, ok := c.preOpMap[opId]; ok {
+		return prevId
 	}
-	return 0
-}
-
-// find waiter with current send ID
-func (c *Config) findNext(i uint64) uint64 {
-	c.mu.RLock()
-	defer c.mu.RUnlock()
-	if int(c.top) < len(c.wait_queue) && i == c.wait_queue[c.top][0] {
-		return c.wait_queue[c.top][1]
-	}
-	return 0
+	return nil
 }
 
 // 1. add the pairs to wait_queue
 // 2. add to the active
 // 3. add the next IDs to waitmap with a counter
 func ParsePair(s string) {
-	config.mu.Lock()
-	defer config.mu.Unlock()
-	var prev, next uint64
-	for {
-		left := strings.Index(s, "(")
-		right := strings.Index(s, ")")
-		if left < right {
-			_, err := fmt.Sscanf(s[left:right+1], "({%v}, {%v})", &prev, &next)
-			if err == nil {
-				if _, ok := config.waitmap[next]; !ok {
-					config.waitmap[next] = 0
-				}
-				config.waitmap[next] += 1
-				config.wait_queue = append(config.wait_queue, []uint64{prev, next})
-				config.active[prev] = struct{}{}
-				config.active[next] = struct{}{}
-			}
-		}
-		if right+1 < len(s) {
-			s = s[right+1 : len(s)]
-		} else {
-			break
-		}
-	}
-}
 
-func ParseAttackPair(s string) {
-	config.mu.Lock()
-	defer config.mu.Unlock()
-	var prev, next uint64
-	for {
-		left := strings.Index(s, "(")
-		right := strings.Index(s, ")")
-		if left < right {
-			_, err := fmt.Sscanf(s[left:right+1], "({%v}, {%v})", &prev, &next)
-			if err == nil {
-				config.attackmap[next] = prev
-				config.attack_queue = append(config.wait_queue, []uint64{prev, next})
-				config.active[prev] = struct{}{}
-				config.active[next] = struct{}{}
-			}
-		}
-		if right+1 < len(s) {
-			s = s[right+1 : len(s)]
-		} else {
-			break
-		}
-	}
 }
 
 func ParseInput() {
-	input_pairs := os.Getenv("Input")
+	input_pairs := os.Getenv("Input_op")
 	if input_pairs != "" {
 		ParsePair(input_pairs)
 	}
@@ -137,10 +76,8 @@ func (c *Config) doWait(id uint64) (wait bool) {
 	if _, ok := c.active[id]; !ok {
 		return false
 	}
-	if v, ok := c.waitmap[id]; ok {
-		if v <= 0 {
-			return false
-		} else {
+	if v, ok := c.waitMap[id]; ok {
+		if v >= 1 {
 			return true
 		}
 	}
@@ -150,96 +87,89 @@ func (c *Config) doWait(id uint64) (wait bool) {
 func (c *Config) waitDec(id uint64) {
 	c.mu.Lock()
 	defer c.mu.Unlock()
-	if v, ok := c.waitmap[id]; ok {
+	if v, ok := c.waitMap[id]; ok {
 		if v <= 1 {
-			delete(config.waitmap, id)
+			delete(c.waitMap, id)
 		}
 		if v > 1 {
-			c.waitmap[id] -= 1
+			c.waitMap[id]--
 		}
 	}
 }
 
-func InstChBF[T any | chan T | <-chan T | chan<- T](id uint64, o T) {
-	var wait bool
-	if wait = config.doWait(id); !wait {
+// InstChBF channel 操作前拦截，根据调度配置决定是否等待前置 opId 完成
+func InstChBF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uint64, opType string) {
+
+	if !config.doWait(opId) {
 		return
 	}
-	pid := config.findPrev(id)
-	if pid == 0 {
+	preIds := config.findPrev(opId)
+	if len(preIds) == 0 {
 		return
 	}
-	timer := time.After(timeout / 5)
-	for {
-		if _, ok := event.LoadAndDelete(pid); ok {
-			atomic.AddInt32(&config.top, 1)
-			config.waitDec(id)
-			fmt.Printf("[COVERED] {%v, %v}\n", pid, id)
-			return
-		}
-		select {
-		case <-cancel:
-			return
-		case <-timer:
-			return
-		default:
+	for _, preId := range preIds {
+		timer := time.After(timeout / 5)
+		for {
+			if _, ok := event.LoadAndDelete(preId); ok {
+				config.waitDec(opId)
+				fmt.Printf("[COVERED] {%v, %v}\n", preId, opId)
+				break
+			}
+			select {
+			case <-cancel:
+				return
+			case <-timer:
+				return
+			default:
+			}
 		}
 	}
 }
 
-func InstChAF[T any | chan T | <-chan T | chan<- T](id uint64, o T) {
+// InstChAF channel 操作后记录，用于通知等待者并输出 ObjectID 日志
+func InstChAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uint64, opType string) {
 	if debugSched {
-		print("[FB] chan: obj=", o, "; id=", id, ";\n")
+		addr := uint64(reflect.ValueOf(o).Pointer())
+		print("[FB]chan: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; op=", opType, ";\n")
 	}
-	event.Store(id, struct{}{})
+	event.Store(opId, struct{}{})
 }
 
-func InstMutexBF(id uint64, o any) {
-	var wait bool
-	if wait = config.doWait(id); !wait {
+// InstWgBF WaitGroup 操作前拦截（Add/Done/Wait）
+func InstWgBF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
+	if !config.doWait(opId) {
 		return
 	}
-	for {
-		pid := config.findPrev(id)
-		if pid == 0 {
-			time.Sleep(recovertimeout)
-		}
-		if _, ok := event.LoadAndDelete(pid); ok {
-			atomic.AddInt32(&config.top, 1)
-			config.waitDec(id)
-			fmt.Printf("[COVERED] {%v, %v}\n", pid, id)
-			return
-		}
-		select {
-		case <-cancel:
-			return
-		default:
+	preIds := config.findPrev(opId)
+	if len(preIds) == 0 {
+		return
+	}
+	for _, preId := range preIds {
+		timer := time.After(timeout / 5)
+		for {
+			if _, ok := event.LoadAndDelete(preId); ok {
+				config.waitDec(opId)
+				fmt.Printf("[COVERED] {%v, %v}\n", preId, opId)
+				break
+			}
+			select {
+			case <-cancel:
+				return
+			case <-timer:
+				return
+			default:
+			}
 		}
 	}
-	return
 }
 
-func InstMutexAF(id uint64, o any) {
+// InstWgAF WaitGroup 操作后记录
+func InstWgAF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
 	if debugSched {
-		var islocked int
-		var locked bool
-		var mid uint64
-		switch mu := o.(type) {
-		case *sync.Mutex:
-			locked = mu.IsLocked()
-			mid = mu.ID()
-		case *sync.RWMutex:
-			locked = mu.IsLocked()
-			mid = mu.ID()
-		}
-		if locked {
-			islocked = 1
-		} else {
-			islocked = 0
-		}
-		print("[FB] mutex: obj=", mid, "; id=", id, "; locked=", islocked, "; gid=", runtime.Goid(), "\n")
+		addr := uint64(reflect.ValueOf(wg).Pointer())
+		print("[FB]wg: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; op=", opType, ";\n")
 	}
-	event.Store(id, struct{}{})
+	event.Store(opId, struct{}{})
 }
 
 func GetDone() chan struct{} {
@@ -252,37 +182,6 @@ func GetTimeout() <-chan time.Time {
 
 func Done(ch chan struct{}) {
 	close(ch)
-}
-
-func Leakcheck(t *testing.T) {
-	once.Do(func() {
-		close(cancel)
-		baseCheck(t)
-	})
-}
-
-func readlines(filename string) []string {
-	res := make([]string, 0)
-	if _, err := os.Stat(filename); err != nil {
-		return res
-	}
-	f, err := os.Open(filename)
-	if err != nil {
-		log.Fatalf("open file error: %v\n", err.Error())
-		return []string{}
-	}
-	// remember to close the file at the end of the program
-	defer f.Close()
-	// read the file line by line using scanner
-	scanner := bufio.NewScanner(f)
-	for scanner.Scan() {
-		// do something with a line
-		res = append(res, scanner.Text())
-	}
-	if err := scanner.Err(); err != nil {
-		return res
-	}
-	return res
 }
 
 func baseCheck(t *testing.T) {

@@ -17,10 +17,18 @@ import (
 var (
 	SelectInstNeed   = "SelectNeedInst"
 	SelectImportName = "sched"
-	SelectImportPath = "sched"
+	SelectImportPath = "toolkit/pkg/sched"
 )
 
 type SelectPass struct {
+	funcIdStack []uint64
+}
+
+func (p *SelectPass) currentFuncId() uint64 {
+	if len(p.funcIdStack) > 0 {
+		return p.funcIdStack[len(p.funcIdStack)-1]
+	}
+	return 0
 }
 
 func RunSelectPass(in, out string) error {
@@ -56,7 +64,15 @@ func (p *SelectPass) After(iCtx *inst.InstContext) {
 }
 
 func (p *SelectPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
-	return nil
+	return func(c *astutil.Cursor) bool {
+		switch c.Node().(type) {
+		case *ast.FuncDecl, *ast.FuncLit:
+			if len(p.funcIdStack) > 0 {
+				p.funcIdStack = p.funcIdStack[:len(p.funcIdStack)-1]
+			}
+		}
+		return true
+	}
 }
 
 func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
@@ -68,6 +84,16 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 		}()
 
 		switch concrete := c.Node().(type) {
+
+		// 追踪函数边界，维护 funcId 栈
+		case *ast.FuncDecl:
+			if fid, ok := Find(concrete.Pos()); ok {
+				p.funcIdStack = append(p.funcIdStack, fid)
+			}
+		case *ast.FuncLit:
+			if fid, ok := Find(concrete.Pos()); ok {
+				p.funcIdStack = append(p.funcIdStack, fid)
+			}
 
 		// channel send operation
 		case *ast.SelectStmt:
@@ -83,7 +109,7 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 					unaryExpr, _ := concrete.X.(*ast.UnaryExpr)
 					ch := unaryExpr.X
 					Add(concrete.Pos(), id)
-					newCall := GenInstCall("InstChAF", ch, id)
+					newCall := GenInstCallWithType("InstChAF", ch, id, p.currentFuncId(), "recv")
 					comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
 					iCtx.SetMetadata(SelectInstNeed, true)
 				case *ast.AssignStmt:
@@ -97,7 +123,7 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 					if unaryExpr != nil {
 						ch := unaryExpr.X
 						Add(concrete.Pos(), id)
-						newCall := GenInstCall("InstChAF", ch, id)
+						newCall := GenInstCallWithType("InstChAF", ch, id, p.currentFuncId(), "recv")
 						comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
 						iCtx.SetMetadata(SelectInstNeed, true)
 					}
@@ -105,7 +131,7 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 					id := iCtx.GetNewOpId()
 					Add(concrete.Pos(), id)
 					ch := concrete.Chan
-					newCall := GenInstCall("InstChAF", ch, id)
+					newCall := GenInstCallWithType("InstChAF", ch, id, p.currentFuncId(), "send")
 					comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
 					iCtx.SetMetadata(SelectInstNeed, true)
 				}
