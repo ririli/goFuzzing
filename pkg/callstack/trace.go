@@ -24,7 +24,7 @@ var (
 
 func init() {
 	cfg = NewConfig()
-	timeout = 1000 * time.Millisecond
+	timeout = 200 * time.Millisecond
 	oa = NewOverlapAnalysis(collector) // 初始化重叠分析器
 }
 
@@ -84,7 +84,7 @@ func PrintSusConPairs() {
 	if os.Getenv("RECORD_STACK") == "1" {
 		return
 	}
-	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
+	time.Sleep(200 * time.Millisecond) // 等待子goroutine执行完毕
 	// 重新检测并发函数对（在测试结束时调用，此时所有函数都已执行完毕）
 	pairs := oa.DetectFunctionOverlaps()
 
@@ -107,9 +107,7 @@ func PrintSusConPairs() {
 func Trace(funcID uint64) func() {
 
 	pointControl(funcID)
-	return func() {
 
-	}
 	// RECORD_STACK=0 时跳过调用栈记录，仅保留断点控制
 	if os.Getenv("RECORD_STACK") == "1" {
 		return func() {}

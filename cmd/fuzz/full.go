@@ -83,7 +83,7 @@ func Full(path string, llevel string, feature string, maxworker int) {
 	}()
 
 	defer func() {
-		fmt.Printf("%v [Fuzzer] Finish, elapsed: %v\n", time.Now().String(), time.Since(startTime).Round(time.Millisecond))
+		fmt.Printf("%v [Fuzzer] Finish, elapsed: %.3fs\n", time.Now().String(), time.Since(startTime).Seconds())
 	}()
 	if total == 0 {
 		fmt.Println("no tests found")
