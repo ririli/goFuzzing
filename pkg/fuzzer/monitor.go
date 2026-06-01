@@ -47,10 +47,11 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 		info = true
 	default:
 	}
-	// todo 实现输入和输出
+
 	var corpusPair *CorpusPair
 	corpusPair = NewCorpusPair()
-
+	var corpusOp *CorpusOp
+	corpusOp = NewCorpusOp()
 	wid := atomic.AddUint32(&workerID, 1)
 	ch := make(chan RunContext)
 	cancel := make(chan struct{})
@@ -68,12 +69,13 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			}
 
 			tryPair := corpusPair.Get()
-
+			tryOpPair := corpusOp.Get(corpusPair)
 			e := Executor{}
 			in := Input{
-				tryPair: tryPair,
-				cmd:     cfg.Bin,
-				args:    []string{"-test.v", "-test.run", cfg.Fn},
+				tryPair:   tryPair,
+				tryOpPair: tryOpPair,
+				cmd:       cfg.Bin,
+				args:      []string{"-test.v", "-test.run", cfg.Fn},
 				// args:           []string{"-test.v", "-test.run", cfg.Fn, "-test.timeout", "30s"},
 				timeout:        cfg.TimeOut,
 				recovertimeout: cfg.RecoverTimeOut,
@@ -165,11 +167,15 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			// return true, []string{inputc, "DATA RACE", raceReport}
 		}
 		// 输出台收集信息
-		pair_st, err := feedback.ParseStdPairs(ctx.Out.Trace)
+		pair_st, opInfos, err := feedback.ParseStdPairs(ctx.Out.Trace)
 		//pair_st, err := feedback.ParseStdPairs("[SUSPECT] 987842478097,987842478084|gopie/testdata/gobench/nonblocking/grpc/1748/grpc1748_test.go:184,gopie/testdata/gobench/nonblocking/grpc/1748/grpc1748_test.go (Test):171|0.50|inferred_child1;\n]")
-		if err == nil && len(pair_st) > 0 {
-
-			corpusPair.AddPair(pair_st)
+		if err == nil {
+			if len(pair_st) > 0 {
+				corpusPair.AddPair(pair_st)
+			}
+			if len(opInfos) > 0 {
+				corpusOp.Add(opInfos)
+			}
 		}
 
 		// if len(schedcov) != 0 && cfg.UseCoveredSched {

@@ -5,10 +5,9 @@ import (
 	"os"
 	"reflect"
 	"strconv"
+	"strings"
 	"sync"
-	"testing"
 	"time"
-	"toolkit/pkg/sched/goleak"
 )
 
 var event sync.Map
@@ -28,18 +27,6 @@ func init() {
 	cancel = make(chan struct{})
 	timeout = time.Second * 20
 	recovertimeout = time.Second * 1
-	if s := os.Getenv("TIMEOUT"); s != "" {
-		t, err := strconv.ParseInt(s, 10, 32)
-		if err == nil {
-			timeout = time.Duration(t) * time.Second
-		}
-	}
-	if s := os.Getenv("RECOVER_TIMEOUT"); s != "" {
-		t, err := strconv.ParseInt(s, 10, 32)
-		if err == nil {
-			recovertimeout = time.Duration(t) * time.Millisecond
-		}
-	}
 }
 
 // find sender with current wait ID
@@ -52,22 +39,49 @@ func (c *Config) findPrev(opId uint64) []uint64 {
 	return nil
 }
 
-// 1. add the pairs to wait_queue
-// 2. add to the active
-// 3. add the next IDs to waitmap with a counter
 func ParsePair(s string) {
+	config.mu.Lock()
+	defer config.mu.Unlock()
 
-}
+	for len(s) > 0 {
+		left := strings.Index(s, "(")
+		if left == -1 {
+			break
+		}
+		right := strings.Index(s[left:], ")")
+		if right == -1 {
+			break
+		}
+		right += left
 
-func ParseInput() {
-	input_pairs := os.Getenv("Input_op")
-	if input_pairs != "" {
-		ParsePair(input_pairs)
+		pairStr := s[left+1 : right]
+		ids := strings.Split(pairStr, ",")
+		if len(ids) != 2 {
+			s = s[right+1:]
+			continue
+		}
+
+		preId, err1 := strconv.ParseUint(strings.TrimSpace(ids[0]), 10, 64)
+		nextId, err2 := strconv.ParseUint(strings.TrimSpace(ids[1]), 10, 64)
+		if err1 != nil || err2 != nil {
+			s = s[right+1:]
+			continue
+		}
+
+		config.active[preId] = struct{}{}
+		config.active[nextId] = struct{}{}
+		config.preOpMap[nextId] = append(config.preOpMap[nextId], preId)
+		config.waitMap[nextId]++
+
+		s = s[right+1:]
 	}
 }
 
-func SetTimeout(s int) {
-	timeout = time.Second * time.Duration(s)
+func ParseInput() {
+	input_pairs := os.Getenv("InputOp")
+	if input_pairs != "" {
+		ParsePair(input_pairs)
+	}
 }
 
 func (c *Config) doWait(id uint64) (wait bool) {
@@ -170,34 +184,4 @@ func InstWgAF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
 		print("[FB]wg: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; op=", opType, ";\n")
 	}
 	event.Store(opId, struct{}{})
-}
-
-func GetDone() chan struct{} {
-	return make(chan struct{})
-}
-
-func GetTimeout() <-chan time.Time {
-	return time.After(timeout)
-}
-
-func Done(ch chan struct{}) {
-	close(ch)
-}
-
-func baseCheck(t *testing.T) {
-	opts := []goleak.Option{
-		goleak.IgnoreTopFunction("time.Sleep"),
-		goleak.IgnoreTopFunction("testing.(*F).Fuzz.func1"),
-		goleak.IgnoreTopFunction("testing.runFuzzTests"),
-		goleak.IgnoreTopFunction("testing.runFuzzing"),
-		goleak.IgnoreTopFunction("os/signal.NotifyContext.func1"),
-		goleak.IgnoreTopFunction("testing.tRunner.func1"),
-		goleak.IgnoreTopFunction("github.com/ethereum/go-ethereum/metrics.(*meterArbiter).tick"),
-		goleak.IgnoreTopFunction("github.com/ethereum/go-ethereum/core.(*txSenderCacher).cache"),
-		goleak.IgnoreTopFunction("github.com/ethereum/go-ethereum/consensus/ethash.(*remoteSealer).loop"),
-		goleak.MaxRetryAttempts(24),
-		goleak.MaxSleepInterval(10 * time.Second),
-	}
-
-	goleak.VerifyNone(t, opts...)
 }

@@ -29,7 +29,8 @@ type Input struct {
 	timeout        int
 	recovertimeout int
 	//
-	tryPair *feedback.InputPair
+	tryPair   *feedback.InputPair
+	tryOpPair *feedback.InputOpPair
 }
 
 // 复用缓冲区的全局池（按需调整初始容量）
@@ -66,9 +67,15 @@ func (e *Executor) Run(in Input) Output {
 	} else {
 		strPair = "Input=" + in.tryPair.ToString()
 	}
+	var strOpPair string
+	if in.tryOpPair == nil {
+		strOpPair = "InputOp="
+	} else {
+		strOpPair = "InputOp=" + in.tryOpPair.ToString()
+	}
 	fmt.Println("=====strPair====")
 	fmt.Println(strPair)
-	command.Env = append(os.Environ(), strPair)
+	command.Env = append(os.Environ(), strPair, strOpPair)
 	if in.timeout != 0 {
 		command.Env = append(command.Env, fmt.Sprintf("TIMEOUT=%v", in.timeout))
 	}

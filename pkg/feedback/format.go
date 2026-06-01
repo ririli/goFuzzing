@@ -6,13 +6,16 @@ import (
 	"strings"
 )
 
-// ParseStdPairs 从字符串中解析可疑并发对信息
+// ParseStdPairs 从字符串中解析可疑并发对信息和 [FB] 操作日志
 // 支持的格式：
 //
 //	[COVERED] FuncID1,FuncID2|File1:Line1,File2:Line2|Confidence|SourceType;
 //	[SUSPECT] FuncID1,FuncID2|File1:Line1,File2:Line2|Confidence|SourceType;
-func ParseStdPairs(s string) ([]*SuspiciousPairInfo, error) {
+//	[FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+//	[FB]wg: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+func ParseStdPairs(s string) ([]*SuspiciousPairInfo, []*OpInfo, error) {
 	var results []*SuspiciousPairInfo
+	var ops []*OpInfo
 
 	// 按行分割
 	lines := strings.Split(s, "\n")
@@ -20,6 +23,14 @@ func ParseStdPairs(s string) ([]*SuspiciousPairInfo, error) {
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
 		if line == "" {
+			continue
+		}
+
+		// 先尝试解析 [FB] 操作日志
+		if strings.HasPrefix(line, "[FB]") {
+			if op, err := parseFBOp(line); err == nil && op != nil {
+				ops = append(ops, op)
+			}
 			continue
 		}
 
@@ -33,7 +44,7 @@ func ParseStdPairs(s string) ([]*SuspiciousPairInfo, error) {
 		}
 	}
 	fmt.Println("ParseStdPairs\n", results)
-	return results, nil
+	return results, ops, nil
 }
 
 // parseSinglePair 解析单行可疑对信息
@@ -134,4 +145,71 @@ func parseLocation(locStr string) (CallLocationInfo, error) {
 		File: file,
 		Line: line,
 	}, nil
+}
+
+// parseFBOp 解析 [FB] 格式的操作日志
+// 格式: [FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+//
+//	[FB]wg: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+func parseFBOp(line string) (*OpInfo, error) {
+	// 去除 [FB] 前缀
+	content := strings.TrimPrefix(line, "[FB]")
+
+	// 提取 objKind: "chan:" 或 "wg:"
+	var objKind OpKind
+	if strings.HasPrefix(content, "chan:") {
+		objKind = OpKindChannel
+		content = strings.TrimPrefix(content, "chan:")
+	} else if strings.HasPrefix(content, "wg:") {
+		objKind = OpKindWaitGroup
+		content = strings.TrimPrefix(content, "wg:")
+	} else {
+		return nil, fmt.Errorf("unknown FB object kind: %s", content)
+	}
+
+	// 去除末尾分号
+	content = strings.TrimSpace(content)
+	content = strings.TrimSuffix(content, ";")
+
+	// 按 ";" 分割 key=value 对
+	pairs := strings.Split(content, ";")
+	op := &OpInfo{ObjKind: objKind}
+
+	for _, pair := range pairs {
+		pair = strings.TrimSpace(pair)
+		if pair == "" {
+			continue
+		}
+		kv := strings.SplitN(pair, "=", 2)
+		if len(kv) != 2 {
+			continue
+		}
+		key := strings.TrimSpace(kv[0])
+		val := strings.TrimSpace(kv[1])
+
+		switch key {
+		case "obj":
+			v, err := strconv.ParseUint(val, 10, 64)
+			if err != nil {
+				return nil, fmt.Errorf("invalid obj: %v", err)
+			}
+			op.ObjAddr = v
+		case "opId":
+			v, err := strconv.ParseUint(val, 10, 64)
+			if err != nil {
+				return nil, fmt.Errorf("invalid opId: %v", err)
+			}
+			op.OpId = v
+		case "funcId":
+			v, err := strconv.ParseUint(val, 10, 64)
+			if err != nil {
+				return nil, fmt.Errorf("invalid funcId: %v", err)
+			}
+			op.FuncId = v
+		case "op":
+			op.OpType = OpType(val)
+		}
+	}
+
+	return op, nil
 }

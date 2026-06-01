@@ -1,298 +1,357 @@
 package feedback
 
 import (
+	"strings"
 	"testing"
 )
 
-func TestParseStdPairs(t *testing.T) {
-	tests := []struct {
-		name        string
-		input       string
-		expectCount int
-		expectError bool
+func TestParseFBOp_ChannelSend(t *testing.T) {
+	line := "[FB]chan: obj=1234; opId=5; funcId=10; op=send;"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if op.ObjKind != OpKindChannel {
+		t.Errorf("ObjKind = %q, want %q", op.ObjKind, OpKindChannel)
+	}
+	if op.ObjAddr != 1234 {
+		t.Errorf("ObjAddr = %d, want %d", op.ObjAddr, 1234)
+	}
+	if op.OpId != 5 {
+		t.Errorf("OpId = %d, want %d", op.OpId, 5)
+	}
+	if op.FuncId != 10 {
+		t.Errorf("FuncId = %d, want %d", op.FuncId, 10)
+	}
+	if op.OpType != OpTypeSend {
+		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeSend)
+	}
+}
+
+func TestParseFBOp_ChannelRecv(t *testing.T) {
+	line := "[FB]chan: obj=9999; opId=3; funcId=7; op=recv;"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if op.ObjKind != OpKindChannel {
+		t.Errorf("ObjKind = %q, want %q", op.ObjKind, OpKindChannel)
+	}
+	if op.ObjAddr != 9999 {
+		t.Errorf("ObjAddr = %d, want %d", op.ObjAddr, 9999)
+	}
+	if op.OpId != 3 {
+		t.Errorf("OpId = %d, want %d", op.OpId, 3)
+	}
+	if op.FuncId != 7 {
+		t.Errorf("FuncId = %d, want %d", op.FuncId, 7)
+	}
+	if op.OpType != OpTypeRecv {
+		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeRecv)
+	}
+}
+
+func TestParseFBOp_ChannelClose(t *testing.T) {
+	line := "[FB]chan: obj=42; opId=1; funcId=2; op=close;"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if op.ObjKind != OpKindChannel {
+		t.Errorf("ObjKind = %q, want %q", op.ObjKind, OpKindChannel)
+	}
+	if op.OpType != OpTypeClose {
+		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeClose)
+	}
+}
+
+func TestParseFBOp_WaitGroupAdd(t *testing.T) {
+	line := "[FB]wg: obj=5678; opId=8; funcId=12; op=add;"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if op.ObjKind != OpKindWaitGroup {
+		t.Errorf("ObjKind = %q, want %q", op.ObjKind, OpKindWaitGroup)
+	}
+	if op.ObjAddr != 5678 {
+		t.Errorf("ObjAddr = %d, want %d", op.ObjAddr, 5678)
+	}
+	if op.OpId != 8 {
+		t.Errorf("OpId = %d, want %d", op.OpId, 8)
+	}
+	if op.FuncId != 12 {
+		t.Errorf("FuncId = %d, want %d", op.FuncId, 12)
+	}
+	if op.OpType != OpTypeAdd {
+		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeAdd)
+	}
+}
+
+func TestParseFBOp_WaitGroupDone(t *testing.T) {
+	line := "[FB]wg: obj=7777; opId=9; funcId=15; op=done;"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if op.ObjKind != OpKindWaitGroup {
+		t.Errorf("ObjKind = %q, want %q", op.ObjKind, OpKindWaitGroup)
+	}
+	if op.OpType != OpTypeDone {
+		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeDone)
+	}
+}
+
+func TestParseFBOp_WaitGroupWait(t *testing.T) {
+	line := "[FB]wg: obj=8888; opId=11; funcId=20; op=wait;"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if op.ObjKind != OpKindWaitGroup {
+		t.Errorf("ObjKind = %q, want %q", op.ObjKind, OpKindWaitGroup)
+	}
+	if op.OpType != OpTypeWait {
+		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeWait)
+	}
+}
+
+func TestParseFBOp_LargeIDs(t *testing.T) {
+	line := "[FB]chan: obj=987842478084; opId=987842478097; funcId=987842478084; op=send;"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if op.ObjAddr != 987842478084 {
+		t.Errorf("ObjAddr = %d, want %d", op.ObjAddr, 987842478084)
+	}
+	if op.OpId != 987842478097 {
+		t.Errorf("OpId = %d, want %d", op.OpId, 987842478097)
+	}
+	if op.FuncId != 987842478084 {
+		t.Errorf("FuncId = %d, want %d", op.FuncId, 987842478084)
+	}
+	if op.OpType != OpTypeSend {
+		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeSend)
+	}
+}
+
+func TestParseFBOp_NoTrailingSemicolon(t *testing.T) {
+	// 无尾部分号，容许解析
+	line := "[FB]chan: obj=100; opId=1; funcId=2; op=recv"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if op.OpType != OpTypeRecv {
+		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeRecv)
+	}
+	if op.OpId != 1 {
+		t.Errorf("OpId = %d, want %d", op.OpId, 1)
+	}
+}
+
+func TestParseFBOp_InvalidObjKind(t *testing.T) {
+	line := "[FB]unknown: obj=100; opId=1; funcId=2; op=send;"
+	_, err := parseFBOp(line)
+	if err == nil {
+		t.Error("expected error for unknown object kind, got nil")
+	}
+}
+
+func TestParseFBOp_NotFBPrefix(t *testing.T) {
+	line := "[COVERED] 1,2|a.go:10,b.go:20|1.00|observed;"
+	_, err := parseFBOp(line)
+	if err == nil {
+		t.Error("expected error for non-FB line, got nil")
+	}
+}
+
+func TestParseStdPairs_OnlyCovered(t *testing.T) {
+	input := "[COVERED] 100,200|gopie/testdata/my.go:10,gopie/testdata/my.go:20|1.00|observed;"
+	pairs, ops, err := ParseStdPairs(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(pairs) != 1 {
+		t.Fatalf("len(pairs) = %d, want 1", len(pairs))
+	}
+	if len(ops) != 0 {
+		t.Fatalf("len(ops) = %d, want 0", len(ops))
+	}
+	p := pairs[0]
+	if !p.IsObserved {
+		t.Error("IsObserved should be true for [COVERED]")
+	}
+	if p.FuncID1 != 100 || p.FuncID2 != 200 {
+		t.Errorf("FuncIDs = (%d,%d), want (100,200)", p.FuncID1, p.FuncID2)
+	}
+	if p.CallLoc1.File != "gopie/testdata/my.go" || p.CallLoc1.Line != 10 {
+		t.Errorf("CallLoc1 = %s:%d", p.CallLoc1.File, p.CallLoc1.Line)
+	}
+	if p.CallLoc2.File != "gopie/testdata/my.go" || p.CallLoc2.Line != 20 {
+		t.Errorf("CallLoc2 = %s:%d", p.CallLoc2.File, p.CallLoc2.Line)
+	}
+	if p.Confidence != 1.00 {
+		t.Errorf("Confidence = %.2f, want 1.00", p.Confidence)
+	}
+	if p.SourceType != "observed" {
+		t.Errorf("SourceType = %q, want %q", p.SourceType, "observed")
+	}
+}
+
+func TestParseStdPairs_OnlySuspect(t *testing.T) {
+	input := "[SUSPECT] 300,400|a/b/c.go:50, x/y/z.go:99|0.75|inferred_child1;"
+	pairs, ops, err := ParseStdPairs(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(pairs) != 1 {
+		t.Fatalf("len(pairs) = %d, want 1", len(pairs))
+	}
+	if len(ops) != 0 {
+		t.Fatalf("len(ops) = %d, want 0", len(ops))
+	}
+	p := pairs[0]
+	if p.IsObserved {
+		t.Error("IsObserved should be false for [SUSPECT]")
+	}
+	if p.FuncID1 != 300 || p.FuncID2 != 400 {
+		t.Errorf("FuncIDs = (%d,%d), want (300,400)", p.FuncID1, p.FuncID2)
+	}
+	if p.Confidence != 0.75 {
+		t.Errorf("Confidence = %.2f, want 0.75", p.Confidence)
+	}
+	if p.SourceType != "inferred_child1" {
+		t.Errorf("SourceType = %q, want %q", p.SourceType, "inferred_child1")
+	}
+}
+
+func TestParseStdPairs_OnlyFBOps(t *testing.T) {
+	input := "[FB]chan: obj=111; opId=1; funcId=10; op=send;\n[FB]wg: obj=222; opId=2; funcId=20; op=add;"
+	pairs, ops, err := ParseStdPairs(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(pairs) != 0 {
+		t.Fatalf("len(pairs) = %d, want 0", len(pairs))
+	}
+	if len(ops) != 2 {
+		t.Fatalf("len(ops) = %d, want 2", len(ops))
+	}
+
+	if ops[0].ObjKind != OpKindChannel || ops[0].OpType != OpTypeSend {
+		t.Errorf("ops[0] = %+v", ops[0])
+	}
+	if ops[1].ObjKind != OpKindWaitGroup || ops[1].OpType != OpTypeAdd {
+		t.Errorf("ops[1] = %+v", ops[1])
+	}
+}
+
+func TestParseStdPairs_MixedContent(t *testing.T) {
+	input := strings.Join([]string{
+		"[COVERED] 100,200|a.go:10,b.go:20|1.00|observed;",
+		"[FB]chan: obj=111; opId=1; funcId=10; op=send;",
+		"[SUSPECT] 300,400|c.go:30,d.go:40|0.50|inferred_child1;",
+		"[FB]wg: obj=222; opId=2; funcId=20; op=done;",
+		"[FB]chan: obj=333; opId=3; funcId=30; op=close;",
+	}, "\n")
+
+	pairs, ops, err := ParseStdPairs(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(pairs) != 2 {
+		t.Fatalf("len(pairs) = %d, want 2", len(pairs))
+	}
+	if len(ops) != 3 {
+		t.Fatalf("len(ops) = %d, want 3", len(ops))
+	}
+
+	// 验证 pairs
+	if pairs[0].FuncID1 != 100 || !pairs[0].IsObserved {
+		t.Errorf("pairs[0] = %+v", pairs[0])
+	}
+	if pairs[1].FuncID1 != 300 || pairs[1].IsObserved {
+		t.Errorf("pairs[1] = %+v", pairs[1])
+	}
+
+	// 验证 ops
+	expectedOps := []struct {
+		kind OpKind
+		typ  OpType
 	}{
-		{
-			name:        "解析 COVERED 格式",
-			input:       `[COVERED] 100,200|gopie/testdata/main.go:10,worker.go:20|1.00|observed;`,
-			expectCount: 1,
-			expectError: false,
-		},
-		{
-			name:        "解析 SUSPECT 格式",
-			input:       `[SUSPECT] 100,300|main.go:10,handler.go:30|0.60|inferred_parent1;`,
-			expectCount: 1,
-			expectError: false,
-		},
-		{
-			name: "解析多行混合格式",
-			input: `[COVERED] 100,200|main.go:10,worker.go:20|1.00|observed;
-[SUSPECT] 100,300|main.go:10,handler.go:30|0.60|inferred_parent1;
-[SUSPECT] 200,400|worker.go:20,service.go:40|0.50|inferred_child2;`,
-			expectCount: 3,
-			expectError: false,
-		},
-		{
-			name:        "解析带 Windows 路径的格式",
-			input:       `[COVERED] 100,200|D:\gopath\src\gopie\main.go:10,D:\gopath\src\gopie\worker.go:20|1.00|observed;`,
-			expectCount: 1,
-			expectError: false,
-		},
-		{
-			name:        "空输入",
-			input:       "",
-			expectCount: 0,
-			expectError: false,
-		},
-		{
-			name: "包含无效行",
-			input: `[COVERED] 100,200|main.go:10,worker.go:20|1.00|observed;
-invalid line here
-[SUSPECT] 300,400|test.go:5,prod.go:15|0.80|inferred_parent2;`,
-			expectCount: 2, // 应该跳过无效行，解析出2个有效对
-			expectError: false,
-		},
+		{OpKindChannel, OpTypeSend},
+		{OpKindWaitGroup, OpTypeDone},
+		{OpKindChannel, OpTypeClose},
 	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			results, err := ParseStdPairs(tt.input)
-
-			if tt.expectError && err == nil {
-				t.Errorf("期望错误但没有收到错误")
-			}
-
-			if !tt.expectError && err != nil {
-				t.Errorf("不期望错误但收到错误: %v", err)
-			}
-
-			if len(results) != tt.expectCount {
-				t.Errorf("期望解析 %d 个结果，实际得到 %d 个", tt.expectCount, len(results))
-			}
-
-			// 打印解析结果用于调试
-			for i, result := range results {
-				t.Logf("[%d] FuncID1=%d, FuncID2=%d, CallLoc1=%s:%d, CallLoc2=%s:%d, Confidence=%.2f, SourceType=%s, IsObserved=%v",
-					i,
-					result.FuncID1,
-					result.FuncID2,
-					result.CallLoc1.File,
-					result.CallLoc1.Line,
-					result.CallLoc2.File,
-					result.CallLoc2.Line,
-					result.Confidence,
-					result.SourceType,
-					result.IsObserved,
-				)
-			}
-		})
+	for i, exp := range expectedOps {
+		if ops[i].ObjKind != exp.kind || ops[i].OpType != exp.typ {
+			t.Errorf("ops[%d] = {%s, %s}, want {%s, %s}",
+				i, ops[i].ObjKind, ops[i].OpType, exp.kind, exp.typ)
+		}
 	}
 }
 
-func TestParseStdPairs_VerifyFields(t *testing.T) {
-	input := `[COVERED] 123,456|pkg/test.go:42,pkg/handler.go:88|1.00|observed;
-[SUSPECT] 789,101|pkg/service.go:15,pkg/controller.go:99|0.60|inferred_parent1;`
-
-	results, err := ParseStdPairs(input)
+func TestParseStdPairs_EmptyString(t *testing.T) {
+	pairs, ops, err := ParseStdPairs("")
 	if err != nil {
-		t.Fatalf("解析失败: %v", err)
+		t.Fatalf("unexpected error: %v", err)
 	}
-
-	if len(results) != 2 {
-		t.Fatalf("期望2个结果，实际得到 %d 个", len(results))
+	if len(pairs) != 0 {
+		t.Errorf("len(pairs) = %d, want 0", len(pairs))
 	}
-
-	// 验证第一个结果（COVERED）
-	covered := results[0]
-	if covered.FuncID1 != 123 {
-		t.Errorf("第一个结果 FuncID1 期望 123，实际 %d", covered.FuncID1)
-	}
-	if covered.FuncID2 != 456 {
-		t.Errorf("第一个结果 FuncID2 期望 456，实际 %d", covered.FuncID2)
-	}
-	if covered.CallLoc1.File != "pkg/test.go" {
-		t.Errorf("第一个结果 CallLoc1.File 期望 'pkg/test.go'，实际 '%s'", covered.CallLoc1.File)
-	}
-	if covered.CallLoc1.Line != 42 {
-		t.Errorf("第一个结果 CallLoc1.Line 期望 42，实际 %d", covered.CallLoc1.Line)
-	}
-	if covered.CallLoc2.File != "pkg/handler.go" {
-		t.Errorf("第一个结果 CallLoc2.File 期望 'pkg/handler.go'，实际 '%s'", covered.CallLoc2.File)
-	}
-	if covered.CallLoc2.Line != 88 {
-		t.Errorf("第一个结果 CallLoc2.Line 期望 88，实际 %d", covered.CallLoc2.Line)
-	}
-	if covered.Confidence != 1.00 {
-		t.Errorf("第一个结果 Confidence 期望 1.00，实际 %.2f", covered.Confidence)
-	}
-	if covered.SourceType != "observed" {
-		t.Errorf("第一个结果 SourceType 期望 'observed'，实际 '%s'", covered.SourceType)
-	}
-	if !covered.IsObserved {
-		t.Errorf("第一个结果 IsObserved 期望 true，实际 %v", covered.IsObserved)
-	}
-
-	// 验证第二个结果（SUSPECT）
-	suspect := results[1]
-	if suspect.FuncID1 != 789 {
-		t.Errorf("第二个结果 FuncID1 期望 789，实际 %d", suspect.FuncID1)
-	}
-	if suspect.FuncID2 != 101 {
-		t.Errorf("第二个结果 FuncID2 期望 101，实际 %d", suspect.FuncID2)
-	}
-	if suspect.CallLoc1.File != "pkg/service.go" {
-		t.Errorf("第二个结果 CallLoc1.File 期望 'pkg/service.go'，实际 '%s'", suspect.CallLoc1.File)
-	}
-	if suspect.CallLoc1.Line != 15 {
-		t.Errorf("第二个结果 CallLoc1.Line 期望 15，实际 %d", suspect.CallLoc1.Line)
-	}
-	if suspect.CallLoc2.File != "pkg/controller.go" {
-		t.Errorf("第二个结果 CallLoc2.File 期望 'pkg/controller.go'，实际 '%s'", suspect.CallLoc2.File)
-	}
-	if suspect.CallLoc2.Line != 99 {
-		t.Errorf("第二个结果 CallLoc2.Line 期望 99，实际 %d", suspect.CallLoc2.Line)
-	}
-	if suspect.Confidence != 0.60 {
-		t.Errorf("第二个结果 Confidence 期望 0.60，实际 %.2f", suspect.Confidence)
-	}
-	if suspect.SourceType != "inferred_parent1" {
-		t.Errorf("第二个结果 SourceType 期望 'inferred_parent1'，实际 '%s'", suspect.SourceType)
-	}
-	if suspect.IsObserved {
-		t.Errorf("第二个结果 IsObserved 期望 false，实际 %v", suspect.IsObserved)
+	if len(ops) != 0 {
+		t.Errorf("len(ops) = %d, want 0", len(ops))
 	}
 }
 
-func TestParseStdPairs_WindowsPath(t *testing.T) {
-	// 测试 Windows 路径解析（包含多个冒号）
-	input := `[COVERED] 100,200|D:\gopath\src\gopie\pkg\test.go:42,C:\project\handler.go:88|1.00|observed;`
-
-	results, err := ParseStdPairs(input)
+func TestParseStdPairs_BlankLines(t *testing.T) {
+	input := "\n\n[FB]chan: obj=1; opId=1; funcId=1; op=send;\n\n"
+	pairs, ops, err := ParseStdPairs(input)
 	if err != nil {
-		t.Fatalf("解析失败: %v", err)
+		t.Fatalf("unexpected error: %v", err)
 	}
-
-	if len(results) != 1 {
-		t.Fatalf("期望1个结果，实际得到 %d 个", len(results))
+	if len(pairs) != 0 {
+		t.Errorf("len(pairs) = %d, want 0", len(pairs))
 	}
-
-	result := results[0]
-
-	// Windows 路径应该正确解析，最后一个冒号后面是行号
-	expectedFile1 := "D:\\gopath\\src\\gopie\\pkg\\test.go"
-	if result.CallLoc1.File != expectedFile1 {
-		t.Errorf("CallLoc1.File 期望 '%s'，实际 '%s'", expectedFile1, result.CallLoc1.File)
-	}
-	if result.CallLoc1.Line != 42 {
-		t.Errorf("CallLoc1.Line 期望 42，实际 %d", result.CallLoc1.Line)
-	}
-
-	expectedFile2 := "C:\\project\\handler.go"
-	if result.CallLoc2.File != expectedFile2 {
-		t.Errorf("CallLoc2.File 期望 '%s'，实际 '%s'", expectedFile2, result.CallLoc2.File)
-	}
-	if result.CallLoc2.Line != 88 {
-		t.Errorf("CallLoc2.Line 期望 88，实际 %d", result.CallLoc2.Line)
+	if len(ops) != 1 {
+		t.Errorf("len(ops) = %d, want 1", len(ops))
 	}
 }
 
-func TestSuspiciousPairInfo_String(t *testing.T) {
-	tests := []struct {
-		name     string
-		info     *SuspiciousPairInfo
-		expected string
-	}{
-		{
-			name: "COVERED 格式输出",
-			info: &SuspiciousPairInfo{
-				FuncID1:    100,
-				FuncID2:    200,
-				CallLoc1:   CallLocationInfo{File: "main.go", Line: 10},
-				CallLoc2:   CallLocationInfo{File: "worker.go", Line: 20},
-				Confidence: 1.00,
-				SourceType: "observed",
-				IsObserved: true,
-			},
-			expected: "[COVERED] 100,200|main.go:10,worker.go:20|1.00|observed;\n",
-		},
-		{
-			name: "SUSPECT 格式输出",
-			info: &SuspiciousPairInfo{
-				FuncID1:    100,
-				FuncID2:    300,
-				CallLoc1:   CallLocationInfo{File: "main.go", Line: 10},
-				CallLoc2:   CallLocationInfo{File: "handler.go", Line: 30},
-				Confidence: 0.60,
-				SourceType: "inferred_parent1",
-				IsObserved: false,
-			},
-			expected: "[SUSPECT] 100,300|main.go:10,handler.go:30|0.60|inferred_parent1;\n",
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			result := tt.info.String()
-			if result != tt.expected {
-				t.Errorf("期望 '%s'，实际 '%s'", tt.expected, result)
-			}
-		})
-	}
-}
-
-func TestParseStdPairs_RoundTrip(t *testing.T) {
-	// 测试序列化和反序列化的一致性
-	original := &SuspiciousPairInfo{
-		FuncID1:    123,
-		FuncID2:    456,
-		CallLoc1:   CallLocationInfo{File: "pkg/test.go", Line: 42},
-		CallLoc2:   CallLocationInfo{File: "pkg/handler.go", Line: 88},
-		Confidence: 0.75,
-		SourceType: "inferred_child2",
-		IsObserved: false,
-	}
-
-	// 序列化为字符串
-	str := original.String()
-	t.Logf("序列化结果: %s", str)
-
-	// 反序列化
-	results, err := ParseStdPairs(str)
+func TestParseStdPairs_SkipsInvalidLines(t *testing.T) {
+	input := "this is garbage\n[UNKNOWN] something\njust text\n[FB]chan: obj=1; opId=1; funcId=1; op=send;"
+	pairs, ops, err := ParseStdPairs(input)
 	if err != nil {
-		t.Fatalf("反序列化失败: %v", err)
+		t.Fatalf("unexpected error: %v", err)
 	}
+	if len(pairs) != 0 {
+		t.Errorf("len(pairs) = %d, want 0", len(pairs))
+	}
+	if len(ops) != 1 {
+		t.Errorf("len(ops) = %d, want 1", len(ops))
+	}
+}
 
-	if len(results) != 1 {
-		t.Fatalf("期望1个结果，实际得到 %d 个", len(results))
+func TestParseStdPairs_WindowsPathWithColon(t *testing.T) {
+	// 确保"文件路径中可能包含盘符 D:\..." 能正确解析行号
+	input := "[COVERED] 1,2|D:\\gopie\\testdata\\my.go:10,E:\\other\\file.go:99|0.80|observed;"
+	pairs, ops, err := ParseStdPairs(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
 	}
-
-	parsed := results[0]
-
-	// 验证所有字段是否一致
-	if parsed.FuncID1 != original.FuncID1 {
-		t.Errorf("FuncID1 不一致: 原始=%d, 解析后=%d", original.FuncID1, parsed.FuncID1)
+	if len(pairs) != 1 {
+		t.Fatalf("len(pairs) = %d, want 1", len(pairs))
 	}
-	if parsed.FuncID2 != original.FuncID2 {
-		t.Errorf("FuncID2 不一致: 原始=%d, 解析后=%d", original.FuncID2, parsed.FuncID2)
+	p := pairs[0]
+	if p.CallLoc1.File != "D:\\gopie\\testdata\\my.go" || p.CallLoc1.Line != 10 {
+		t.Errorf("CallLoc1 = %s:%d", p.CallLoc1.File, p.CallLoc1.Line)
 	}
-	if parsed.CallLoc1.File != original.CallLoc1.File {
-		t.Errorf("CallLoc1.File 不一致: 原始=%s, 解析后=%s", original.CallLoc1.File, parsed.CallLoc1.File)
+	if p.CallLoc2.File != "E:\\other\\file.go" || p.CallLoc2.Line != 99 {
+		t.Errorf("CallLoc2 = %s:%d", p.CallLoc2.File, p.CallLoc2.Line)
 	}
-	if parsed.CallLoc1.Line != original.CallLoc1.Line {
-		t.Errorf("CallLoc1.Line 不一致: 原始=%d, 解析后=%d", original.CallLoc1.Line, parsed.CallLoc1.Line)
-	}
-	if parsed.CallLoc2.File != original.CallLoc2.File {
-		t.Errorf("CallLoc2.File 不一致: 原始=%s, 解析后=%s", original.CallLoc2.File, parsed.CallLoc2.File)
-	}
-	if parsed.CallLoc2.Line != original.CallLoc2.Line {
-		t.Errorf("CallLoc2.Line 不一致: 原始=%d, 解析后=%d", original.CallLoc2.Line, parsed.CallLoc2.Line)
-	}
-	if parsed.Confidence != original.Confidence {
-		t.Errorf("Confidence 不一致: 原始=%.2f, 解析后=%.2f", original.Confidence, parsed.Confidence)
-	}
-	if parsed.SourceType != original.SourceType {
-		t.Errorf("SourceType 不一致: 原始=%s, 解析后=%s", original.SourceType, parsed.SourceType)
-	}
-	if parsed.IsObserved != original.IsObserved {
-		t.Errorf("IsObserved 不一致: 原始=%v, 解析后=%v", original.IsObserved, parsed.IsObserved)
+	if len(ops) != 0 {
+		t.Errorf("len(ops) = %d, want 0", len(ops))
 	}
 }
