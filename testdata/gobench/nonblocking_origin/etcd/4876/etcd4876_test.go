@@ -4,8 +4,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-
-	"github.com/timmyyuan/gobench/gobench/goker/inst"
 )
 
 var ProgressReportInterval = 10 * time.Second
@@ -32,7 +30,6 @@ type WatchServer interface {
 type serverWatchStream struct{}
 
 func (sws *serverWatchStream) sendLoop() {
-	inst.WaitTimeout(500 * time.Millisecond)
 	_ = time.NewTicker(ProgressReportInterval)
 }
 
@@ -51,7 +48,6 @@ func TestEtcd4876(t *testing.T) {
 		defer wg.Done()
 		w := &watchServer{}
 		go func() {
-			inst.WaitTimeout(500 * time.Millisecond)
 			defer wg.Done()
 			testInterval := 3 * time.Second
 			ProgressReportInterval = testInterval

@@ -84,7 +84,7 @@ func PrintSusConPairs() {
 	if os.Getenv("RECORD_STACK") == "1" {
 		return
 	}
-	time.Sleep(200 * time.Millisecond) // 等待子goroutine执行完毕
+	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
 	// 重新检测并发函数对（在测试结束时调用，此时所有函数都已执行完毕）
 	pairs := oa.DetectFunctionOverlaps()
 
