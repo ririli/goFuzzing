@@ -24,7 +24,7 @@ var (
 
 func init() {
 	cfg = NewConfig()
-	timeout = 200 * time.Millisecond
+	timeout = 40 * time.Millisecond
 	oa = NewOverlapAnalysis(collector) // 初始化重叠分析器
 }
 
