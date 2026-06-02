@@ -21,6 +21,7 @@ func main() {
 			reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
 			// register passes
 			reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
+			reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
 			reg.Register("waitgroup", func() inst.InstPass { return &passes.WgPass{} })
 			reg.Register("test", func() inst.InstPass { return &passes.TestPass{Pos: cmd.Opts.Pos} })
 			err := cmd.HandleSrcFile(file, reg, reg.ListOfPassNames())
@@ -37,6 +38,7 @@ func main() {
 		reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
 		// register passes
 		reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
+		reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
 		reg.Register("waitgroup", func() inst.InstPass { return &passes.WgPass{} })
 		reg.Register("test", func() inst.InstPass { return &passes.TestPass{Pos: cmd.Opts.Pos} })
 		cmd.HandleSrcFile(cmd.Opts.File, reg, reg.ListOfPassNames())

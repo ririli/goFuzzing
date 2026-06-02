@@ -40,11 +40,12 @@ func (d DangerType) String() string { return string(d) }
 
 // OpInfo 表示单个操作的信息（从 sched 日志解析）
 type OpInfo struct {
-	OpId    uint64 // 编译期唯一操作 ID
-	FuncId  uint64 // 所在函数 ID
-	ObjAddr uint64 // 运行时对象地址（channel 指针或 wg 指针）
-	OpType  OpType // 操作类型
-	ObjKind OpKind // 操作对象类型
+	OpId     uint64 // 编译期唯一操作 ID
+	FuncId   uint64 // 所在函数 ID
+	ObjAddr  uint64 // 运行时对象地址（channel 指针或 wg 指针）
+	OpType   OpType // 操作类型
+	ObjKind  OpKind // 操作对象类型
+	IsSelect bool   // 是否来自 select 分支（select 中的操作无 BF，只能做 Op1/pre）
 }
 
 // OpPair 表示一对操作同一对象且可能触发 panic 的配对

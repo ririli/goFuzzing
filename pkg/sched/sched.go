@@ -149,6 +149,16 @@ func InstChAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uin
 	event.Store(opId, struct{}{})
 }
 
+// InstChSelectAF select 中的 channel 操作后记录（仅 AF，无 BF）
+// 与 InstChAF 的区别：输出 select=1 标记，fuzzer 据此限制该操作只能做 Op1（pre）
+func InstChSelectAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uint64, opType string) {
+	if debugSched {
+		addr := uint64(reflect.ValueOf(o).Pointer())
+		print("[FB]chan: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; op=", opType, "; select=1;\n")
+	}
+	event.Store(opId, struct{}{})
+}
+
 // InstWgBF WaitGroup 操作前拦截（Add/Done/Wait）
 func InstWgBF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
 	if !config.doWait(opId) {

@@ -83,6 +83,17 @@ func genTestDeclWithParseInput(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 		},
 	}
 
+	// 创建 sched.ParseInput() 调用语句（解析 InputOp 环境变量，使操作对调度生效）
+	schedParseInputCall := &ast.ExprStmt{
+		X: &ast.CallExpr{
+			Fun: &ast.SelectorExpr{
+				X:   &ast.Ident{Name: "sched"},
+				Sel: &ast.Ident{Name: "ParseInput"},
+			},
+			Args: []ast.Expr{},
+		},
+	}
+
 	// 创建 defer callstack.PrintSusConPairs() 调用语句
 	printSusConPairsCall := &ast.DeferStmt{
 		Call: &ast.CallExpr{
@@ -98,9 +109,9 @@ func genTestDeclWithParseInput(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	testbodylst := make([]ast.Stmt, len(fn.Body.List))
 	copy(testbodylst, fn.Body.List)
 
-	// 在函数体开头插入 callstack.ParseInput() 和 defer callstack.PrintSusConPairs()
+	// 在函数体开头插入 callstack.ParseInput()、sched.ParseInput() 和 defer callstack.PrintSusConPairs()
 	block := &ast.BlockStmt{
-		List: append([]ast.Stmt{parseInputCall, printSusConPairsCall}, testbodylst...),
+		List: append([]ast.Stmt{parseInputCall, schedParseInputCall, printSusConPairsCall}, testbodylst...),
 	}
 
 	testdecl := &ast.FuncDecl{

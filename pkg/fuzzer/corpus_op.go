@@ -25,6 +25,8 @@ func NewCorpusOp() *CorpusOp {
 
 // Add 批量添加 OpInfo，按 OpId 自动去重，并建立 FuncId 索引
 func (co *CorpusOp) Add(opInfos []*feedback.OpInfo) {
+	co.mu.Lock()
+	defer co.mu.Unlock()
 
 	for _, op := range opInfos {
 		if op == nil {
@@ -63,18 +65,23 @@ func (co *CorpusOp) Get(cp *CorpusPair) *feedback.InputOpPair {
 		for _, op1 := range ops1 {
 			for _, op2 := range ops2 {
 				// 尝试两个方向的匹配（顺序决定 Danger 类型语义）
-				if opPair := feedback.MatchOpPair(op1, op2); opPair != nil {
-					key := opPairKey(opPair)
-					if _, exists := seen[key]; !exists {
-						seen[key] = struct{}{}
-						results = append(results, opPair)
+				// 注意：select 中的操作无 BF 钩子，只能做 Op1（pre），不能做 Op2（next）
+				if !op2.IsSelect {
+					if opPair := feedback.MatchOpPair(op1, op2); opPair != nil {
+						key := opPairKey(opPair)
+						if _, exists := seen[key]; !exists {
+							seen[key] = struct{}{}
+							results = append(results, opPair)
+						}
 					}
 				}
-				if opPair := feedback.MatchOpPair(op2, op1); opPair != nil {
-					key := opPairKey(opPair)
-					if _, exists := seen[key]; !exists {
-						seen[key] = struct{}{}
-						results = append(results, opPair)
+				if !op1.IsSelect {
+					if opPair := feedback.MatchOpPair(op2, op1); opPair != nil {
+						key := opPairKey(opPair)
+						if _, exists := seen[key]; !exists {
+							seen[key] = struct{}{}
+							results = append(results, opPair)
+						}
 					}
 				}
 			}

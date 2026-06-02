@@ -109,7 +109,7 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 					unaryExpr, _ := concrete.X.(*ast.UnaryExpr)
 					ch := unaryExpr.X
 					Add(concrete.Pos(), id)
-					newCall := GenInstCallWithType("InstChAF", ch, id, p.currentFuncId(), "recv")
+					newCall := GenInstCallWithType("InstChSelectAF", ch, id, p.currentFuncId(), "recv")
 					comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
 					iCtx.SetMetadata(SelectInstNeed, true)
 				case *ast.AssignStmt:
@@ -123,7 +123,7 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 					if unaryExpr != nil {
 						ch := unaryExpr.X
 						Add(concrete.Pos(), id)
-						newCall := GenInstCallWithType("InstChAF", ch, id, p.currentFuncId(), "recv")
+						newCall := GenInstCallWithType("InstChSelectAF", ch, id, p.currentFuncId(), "recv")
 						comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
 						iCtx.SetMetadata(SelectInstNeed, true)
 					}
@@ -131,7 +131,7 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 					id := iCtx.GetNewOpId()
 					Add(concrete.Pos(), id)
 					ch := concrete.Chan
-					newCall := GenInstCallWithType("InstChAF", ch, id, p.currentFuncId(), "send")
+					newCall := GenInstCallWithType("InstChSelectAF", ch, id, p.currentFuncId(), "send")
 					comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
 					iCtx.SetMetadata(SelectInstNeed, true)
 				}

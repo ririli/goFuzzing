@@ -44,6 +44,7 @@ func ParseStdPairs(s string) ([]*SuspiciousPairInfo, []*OpInfo, error) {
 		}
 	}
 	fmt.Println("ParseStdPairs\n", results)
+	fmt.Println("\nParseStdOps\n", ops)
 	return results, ops, nil
 }
 
@@ -151,6 +152,10 @@ func parseLocation(locStr string) (CallLocationInfo, error) {
 // 格式: [FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
 //
 //	[FB]wg: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+//
+// select 中的操作额外带 select=1:
+//
+//	[FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE; select=1;
 func parseFBOp(line string) (*OpInfo, error) {
 	// 去除 [FB] 前缀
 	content := strings.TrimPrefix(line, "[FB]")
@@ -208,6 +213,8 @@ func parseFBOp(line string) (*OpInfo, error) {
 			op.FuncId = v
 		case "op":
 			op.OpType = OpType(val)
+		case "select":
+			op.IsSelect = val == "1"
 		}
 	}
 

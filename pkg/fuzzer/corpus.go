@@ -45,6 +45,20 @@ type CorpusPair struct {
 	execCount       uint32 // Get() 调用次数，用于交替反转，独立于反馈周期
 }
 
+// NewCorpusPair 初始化CorpusPair
+func NewCorpusPair() *CorpusPair {
+	p := CorpusPair{}
+	p.done = 0
+	p.execCount = 0
+	p.isReverse = true
+	p.stableThreshold = 2
+	p.CoveredConPairs = make(map[string]*feedback.SuspiciousPairInfo)
+	p.SusConPairs = make(map[string]*feedback.SuspiciousPairInfo)
+	p.TryPairs = make(map[string]*feedback.SuspiciousPairInfo)
+	p.FeedbackPair = make(map[string]*feedback.SuspiciousPairInfo)
+	return &p
+}
+
 // Get 获取 TryPairs
 func (p *CorpusPair) Get() *feedback.InputPair {
 	if atomic.LoadUint32(&p.done) == uint32(0) {
@@ -81,26 +95,15 @@ func (p *CorpusPair) Get() *feedback.InputPair {
 	}
 }
 
-// NewCorpusPair 初始化CorpusPair
-func NewCorpusPair() *CorpusPair {
-	p := CorpusPair{}
-	p.done = 0
-	p.execCount = 0
-	p.isReverse = true
-	p.stableThreshold = 2
-	p.CoveredConPairs = make(map[string]*feedback.SuspiciousPairInfo)
-	p.SusConPairs = make(map[string]*feedback.SuspiciousPairInfo)
-	p.TryPairs = make(map[string]*feedback.SuspiciousPairInfo)
-	p.FeedbackPair = make(map[string]*feedback.SuspiciousPairInfo)
-	return &p
-}
-
 // AddPair 添加并发对，按可信度分类并自动去重
 // 1. 将 feedPair 分为 covered 和 suspicious
 // 2. 找出 covered 和 TryPairs 的交集 a
 // 3. 从 TryPairs 和 SusConPairs 中删除交集 a
 // 4. 将 covered 加入 CoveredConPairs
 func (p *CorpusPair) AddPair(feedPair []*feedback.SuspiciousPairInfo) {
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
 	defer func() {
 		atomic.AddUint32(&p.done, 1)
 	}()
@@ -175,9 +178,8 @@ func (p *CorpusPair) AddPair(feedPair []*feedback.SuspiciousPairInfo) {
 
 // UpdateTryPairs 从 SusConPairs 中增量添加最多5个可疑并发对到 TryPairs
 // 不会清空 TryPairs，只添加不存在的新项
+// 注意：调用方（AddPair）已持有 p.mu 写锁，此处不再加锁
 func (p *CorpusPair) UpdateTryPairs() {
-	p.mu.Lock()
-	defer p.mu.Unlock()
 	// 从 SusConPairs 中增量添加最多5个到 TryPairs
 	count := 0
 	for key, pair := range p.SusConPairs {
