@@ -104,29 +104,6 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 				}
 				comm, _ := x.(*ast.CommClause)
 				switch concrete := comm.Comm.(type) {
-				case *ast.ExprStmt: // recv
-					id := iCtx.GetNewOpId()
-					unaryExpr, _ := concrete.X.(*ast.UnaryExpr)
-					ch := unaryExpr.X
-					Add(concrete.Pos(), id)
-					newCall := GenInstCallWithType("InstChSelectAF", ch, id, p.currentFuncId(), "recv")
-					comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
-					iCtx.SetMetadata(SelectInstNeed, true)
-				case *ast.AssignStmt:
-					id := iCtx.GetNewOpId()
-					var unaryExpr *ast.UnaryExpr
-					for _, rhs := range concrete.Rhs {
-						if v, ok := rhs.(*ast.UnaryExpr); ok {
-							unaryExpr = v
-						}
-					}
-					if unaryExpr != nil {
-						ch := unaryExpr.X
-						Add(concrete.Pos(), id)
-						newCall := GenInstCallWithType("InstChSelectAF", ch, id, p.currentFuncId(), "recv")
-						comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
-						iCtx.SetMetadata(SelectInstNeed, true)
-					}
 				case *ast.SendStmt: // send
 					id := iCtx.GetNewOpId()
 					Add(concrete.Pos(), id)

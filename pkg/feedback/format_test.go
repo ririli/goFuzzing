@@ -28,29 +28,6 @@ func TestParseFBOp_ChannelSend(t *testing.T) {
 	}
 }
 
-func TestParseFBOp_ChannelRecv(t *testing.T) {
-	line := "[FB]chan: obj=9999; opId=3; funcId=7; op=recv;"
-	op, err := parseFBOp(line)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if op.ObjKind != OpKindChannel {
-		t.Errorf("ObjKind = %q, want %q", op.ObjKind, OpKindChannel)
-	}
-	if op.ObjAddr != 9999 {
-		t.Errorf("ObjAddr = %d, want %d", op.ObjAddr, 9999)
-	}
-	if op.OpId != 3 {
-		t.Errorf("OpId = %d, want %d", op.OpId, 3)
-	}
-	if op.FuncId != 7 {
-		t.Errorf("FuncId = %d, want %d", op.FuncId, 7)
-	}
-	if op.OpType != OpTypeRecv {
-		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeRecv)
-	}
-}
-
 func TestParseFBOp_ChannelClose(t *testing.T) {
 	line := "[FB]chan: obj=42; opId=1; funcId=2; op=close;"
 	op, err := parseFBOp(line)
@@ -102,20 +79,6 @@ func TestParseFBOp_WaitGroupDone(t *testing.T) {
 	}
 }
 
-func TestParseFBOp_WaitGroupWait(t *testing.T) {
-	line := "[FB]wg: obj=8888; opId=11; funcId=20; op=wait;"
-	op, err := parseFBOp(line)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	if op.ObjKind != OpKindWaitGroup {
-		t.Errorf("ObjKind = %q, want %q", op.ObjKind, OpKindWaitGroup)
-	}
-	if op.OpType != OpTypeWait {
-		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeWait)
-	}
-}
-
 func TestParseFBOp_LargeIDs(t *testing.T) {
 	line := "[FB]chan: obj=987842478084; opId=987842478097; funcId=987842478084; op=send;"
 	op, err := parseFBOp(line)
@@ -138,13 +101,13 @@ func TestParseFBOp_LargeIDs(t *testing.T) {
 
 func TestParseFBOp_NoTrailingSemicolon(t *testing.T) {
 	// 无尾部分号，容许解析
-	line := "[FB]chan: obj=100; opId=1; funcId=2; op=recv"
+	line := "[FB]chan: obj=100; opId=1; funcId=2; op=send"
 	op, err := parseFBOp(line)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if op.OpType != OpTypeRecv {
-		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeRecv)
+	if op.OpType != OpTypeSend {
+		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeSend)
 	}
 	if op.OpId != 1 {
 		t.Errorf("OpId = %d, want %d", op.OpId, 1)

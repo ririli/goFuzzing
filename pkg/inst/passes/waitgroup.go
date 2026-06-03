@@ -92,8 +92,6 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 				opType = "add"
 			case "Done":
 				opType = "done"
-			case "Wait":
-				opType = "wait"
 			default:
 				return true
 			}
@@ -130,8 +128,6 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 				opType = "add"
 			case "Done":
 				opType = "done"
-			case "Wait":
-				opType = "wait"
 			default:
 				return true
 			}

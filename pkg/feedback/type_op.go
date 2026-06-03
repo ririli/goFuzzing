@@ -17,11 +17,9 @@ type OpType string
 
 const (
 	OpTypeSend  OpType = "send"
-	OpTypeRecv  OpType = "recv"
 	OpTypeClose OpType = "close"
 	OpTypeAdd   OpType = "add"
 	OpTypeDone  OpType = "done"
-	OpTypeWait  OpType = "wait"
 )
 
 func (t OpType) String() string { return string(t) }
@@ -33,7 +31,6 @@ const (
 	DangerCloseBeforeSend  DangerType = "close-before-send"
 	DangerCloseBeforeClose DangerType = "close-before-close"
 	DangerDoneBeforeAdd    DangerType = "done-before-add"
-	DangerWaitBeforeAdd    DangerType = "wait-before-add"
 )
 
 func (d DangerType) String() string { return string(d) }
@@ -90,10 +87,6 @@ func matchWgPair(a, b *OpInfo) *OpPair {
 	// a=done, b=add → waitgroup counter 变负
 	if a.OpType == OpTypeDone && b.OpType == OpTypeAdd {
 		return &OpPair{Op1: a, Op2: b, Danger: DangerDoneBeforeAdd}
-	}
-	// a=wait, b=add → 死锁（wait 不等还没 add 的）
-	if a.OpType == OpTypeWait && b.OpType == OpTypeAdd {
-		return &OpPair{Op1: a, Op2: b, Danger: DangerWaitBeforeAdd}
 	}
 	return nil
 }

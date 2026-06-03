@@ -2,12 +2,12 @@ package passes
 
 import (
 	"go/ast"
-	"go/token"
-	"golang.org/x/tools/go/ast/astutil"
 	"io/ioutil"
 	"log"
 	"toolkit/pkg/inst"
 	"toolkit/pkg/utils/gofmt"
+
+	"golang.org/x/tools/go/ast/astutil"
 )
 
 // ChResPass, Channel Record Pass. This pass instrumented at
@@ -108,22 +108,8 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 
 			iCtx.SetMetadata(ChannelNeedInst, true)
 
-		// channel recv operation
 		case *ast.ExprStmt:
-			if unaryExpr, ok := concrete.X.(*ast.UnaryExpr); ok {
-				if unaryExpr.Op == token.ARROW { // This is a receive operation
-					id := iCtx.GetNewOpId()
-					Add(concrete.Pos(), id)
-					ch := unaryExpr.X
-					fid := p.currentFuncId()
-					before := GenInstCallWithType("InstChBF", ch, id, fid, "recv")
-					c.InsertBefore(before)
-
-					after := GenInstCallWithType("InstChAF", ch, id, fid, "recv")
-					c.InsertAfter(after)
-					iCtx.SetMetadata(ChannelNeedInst, true)
-				}
-			} else if callExpr, ok := concrete.X.(*ast.CallExpr); ok { // like `close(ch)` or `mu.Lock()`
+			if callExpr, ok := concrete.X.(*ast.CallExpr); ok { // like `close(ch)` or `mu.Lock()`
 				if funcIdent, ok := callExpr.Fun.(*ast.Ident); ok { // like `close(ch)`
 					// channel close operation
 					if funcIdent.Name == "close" {
