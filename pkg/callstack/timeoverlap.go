@@ -109,14 +109,15 @@ func NewOverlapAnalysis(collector *CallStackCollector) *OverlapAnalysis {
 }
 
 // 检测两个时间区间是否重叠
+// 使用 <= 而非 <，确保零时长（start==end）的瞬时调用也能被检测到并发
+// 场景：多个goroutine中的函数在同一纳秒内完成，start1==end1==start2==end2 时仍需判定为并发
 func isTimeRangeOverlap(start1, end1, start2, end2 int64) (bool, int64, int64) {
-	// 检查是否重叠：start1 < end2 && start2 < end1
 	if end1 == 0 || end2 == 0 {
 		// 如果任一区间还没有结束，暂时视为不重叠或特殊处理
 		return false, 0, 0
 	}
 
-	if start1 < end2 && start2 < end1 {
+	if start1 <= end2 && start2 <= end1 {
 		// 计算重叠区间
 		overlapStart := start1
 		if start2 > overlapStart {

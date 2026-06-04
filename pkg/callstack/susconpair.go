@@ -54,24 +54,32 @@ func InferSuspiciousPairs(observedPairs []*ConPairFunc) []*SuspiciousConcurrentP
 		// 规则0：直接观测到的并发对（最高置信度）
 		addSuspect(observed.Node1, observed.Node2, 1.0, "observed")
 
-		// 规则1：Node1的父节点 × Node2
+		// 规则1：Node1的父节点 × Node2（调用栈中直接相邻，高置信度）
 		if observed.Node1.Parent != nil {
-			addSuspect(observed.Node1.Parent, observed.Node2, 0.6, "inferred_parent1")
+			addSuspect(observed.Node1.Parent, observed.Node2, 0.7, "inferred_parent1")
 		}
 
-		// 规则2：Node1的子节点 × Node2
-		for _, child := range observed.Node1.Children {
-			addSuspect(child, observed.Node2, 0.5, "inferred_child1")
+		// 规则2：Node1的子节点 × Node2（第一个子节点紧邻Node1，置信度更高）
+		for i, child := range observed.Node1.Children {
+			if i == 0 {
+				addSuspect(child, observed.Node2, 0.7, "inferred_child1")
+			} else {
+				addSuspect(child, observed.Node2, 0.5, "inferred_child1")
+			}
 		}
 
-		// 规则3：Node1 × Node2的父节点
+		// 规则3：Node1 × Node2的父节点（调用栈中直接相邻，高置信度）
 		if observed.Node2.Parent != nil {
-			addSuspect(observed.Node1, observed.Node2.Parent, 0.6, "inferred_parent2")
+			addSuspect(observed.Node1, observed.Node2.Parent, 0.7, "inferred_parent2")
 		}
 
-		// 规则4：Node1 × Node2的子节点
-		for _, child := range observed.Node2.Children {
-			addSuspect(observed.Node1, child, 0.5, "inferred_child2")
+		// 规则4：Node1 × Node2的子节点（第一个子节点紧邻Node2，置信度更高）
+		for i, child := range observed.Node2.Children {
+			if i == 0 {
+				addSuspect(observed.Node1, child, 0.7, "inferred_child2")
+			} else {
+				addSuspect(observed.Node1, child, 0.5, "inferred_child2")
+			}
 		}
 	}
 

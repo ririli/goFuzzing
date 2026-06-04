@@ -29,6 +29,29 @@ func pairKey(pair *feedback.SuspiciousPairInfo) string {
 		loc2.File, loc2.Line)
 }
 
+type CoolDownState int
+
+const (
+	StateHot  CoolDownState = iota // 每轮收集
+	StateWarm                      // 每 2 轮收集一次
+	StateCool                      // 每 4 轮收集一次
+	StateCold                      // 每 8 轮收集一次，永不彻底停止
+)
+
+func (s CoolDownState) String() string {
+	switch s {
+	case StateHot:
+		return "HOT"
+	case StateWarm:
+		return "WARM"
+	case StateCool:
+		return "COOL"
+	case StateCold:
+		return "COLD"
+	}
+	return "UNKNOWN"
+}
+
 type CorpusPair struct {
 	mu              sync.RWMutex
 	isReverse       bool                                    // 是否反转pair
@@ -37,12 +60,14 @@ type CorpusPair struct {
 	SusConPairs     map[string]*feedback.SuspiciousPairInfo // 可疑的并发对 (key -> pair)
 	TryPairs        map[string]*feedback.SuspiciousPairInfo // 上次fuzzing输入的并发对 (key -> pair)
 	FeedbackPair    map[string]*feedback.SuspiciousPairInfo // fuzzing结束反馈的并发对 (key -> pair)
-	// 稳定性追踪：连续 N 轮 pair 集合不变后停止记录调用栈
-	stableCount     uint32 // 连续未变化轮次
-	stableThreshold uint32 // 稳定判定阈值
-	isStable        bool   // 当前是否稳定
-	prevPairCount   int    // 上一轮的总 pair 数
-	execCount       uint32 // Get() 调用次数，用于交替反转，独立于反馈周期
+	// 稳定性追踪：渐进冷却 + 定期重探测
+	coolState           CoolDownState // 当前冷却状态
+	coolStateRounds     int           // 当前冷却状态持续轮次（pair 集合未变的轮次）
+	coolSkipCount       int           // 冷却采样计数器
+	roundsSinceLastFull int           // 距上次全量收集的轮次
+	reProbeInterval     int           // 重探测间隔，默认 25
+	prevPairCount       int           // 上一轮的总 pair 数
+	execCount           uint32        // Get() 调用次数，用于交替反转，独立于反馈周期
 }
 
 // NewCorpusPair 初始化CorpusPair
@@ -51,7 +76,8 @@ func NewCorpusPair() *CorpusPair {
 	p.done = 0
 	p.execCount = 0
 	p.isReverse = true
-	p.stableThreshold = 2
+	p.coolState = StateHot
+	p.reProbeInterval = 25
 	p.CoveredConPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	p.SusConPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	p.TryPairs = make(map[string]*feedback.SuspiciousPairInfo)
@@ -64,8 +90,8 @@ func (p *CorpusPair) Get() *feedback.InputPair {
 	if atomic.LoadUint32(&p.done) == uint32(0) {
 		return nil
 	}
-	p.mu.RLock()
-	defer p.mu.RUnlock()
+	p.mu.Lock()
+	defer p.mu.Unlock()
 
 	// 将 TryPairs 中的 map 转换为 slice
 	result := make([]*feedback.SuspiciousPairInfo, 0, len(p.TryPairs))
@@ -91,7 +117,7 @@ func (p *CorpusPair) Get() *feedback.InputPair {
 
 	return &feedback.InputPair{
 		TryPair:     result,
-		RecordStack: !p.isStable,
+		RecordStack: p.shouldRecord(),
 	}
 }
 
@@ -155,24 +181,40 @@ func (p *CorpusPair) AddPair(feedPair []*feedback.SuspiciousPairInfo) {
 		delete(p.SusConPairs, key)
 	}
 
-	// 第七步：稳定性判定
+	// 第七步：渐进冷却判定
 	currentCount := len(p.SusConPairs) + len(p.CoveredConPairs)
-	if currentCount == p.prevPairCount && currentCount > 0 {
-		p.stableCount++
-	} else {
-		p.stableCount = 0
-		p.isStable = false
+	if currentCount != p.prevPairCount && currentCount > 0 {
+		// 发现新 pair，立即回到 HOT
+		if p.coolState != StateHot {
+			fmt.Printf("[cooldown] new pairs discovered, reset: %v → HOT\n", p.coolState)
+		}
+		p.coolState = StateHot
+		p.coolStateRounds = 0
+		p.coolSkipCount = 0
+		p.roundsSinceLastFull = 0
+	} else if currentCount > 0 {
+		// 集合未变，推进冷却
+		p.coolStateRounds++
+		// 每 3 轮不变则降一级
+		if p.coolStateRounds >= 3 {
+			switch p.coolState {
+			case StateHot:
+				p.coolState = StateWarm
+				p.coolSkipCount = 0
+				fmt.Println("[cooldown] HOT → WARM")
+			case StateWarm:
+				p.coolState = StateCool
+				p.coolSkipCount = 0
+				fmt.Println("[cooldown] WARM → COOL")
+			case StateCool:
+				p.coolState = StateCold
+				p.coolSkipCount = 0
+				fmt.Println("[cooldown] COOL → COLD")
+			}
+			p.coolStateRounds = 0
+		}
 	}
 	p.prevPairCount = currentCount
-	if p.stableCount >= p.stableThreshold {
-		p.isStable = true
-	}
-
-	// todo：运行20次直接稳定
-	if atomic.LoadUint32(&p.done) > 20 {
-		p.isStable = true
-	}
-
 	p.UpdateTryPairs()
 }
 
@@ -192,4 +234,32 @@ func (p *CorpusPair) UpdateTryPairs() {
 			count++
 		}
 	}
+}
+
+// shouldRecord 根据冷却状态和重探测周期决定本轮是否记录调用栈
+func (p *CorpusPair) shouldRecord() bool {
+	p.coolSkipCount++
+	p.roundsSinceLastFull++
+
+	// 定期重探测：每 reProbeInterval 轮强制全量收集
+	if p.roundsSinceLastFull >= p.reProbeInterval {
+		p.roundsSinceLastFull = 0
+		if p.coolState != StateHot {
+			fmt.Printf("[re-probe] force full collection at state %v\n", p.coolState)
+		}
+		return true
+	}
+
+	// 渐进冷却采样
+	switch p.coolState {
+	case StateHot:
+		return true
+	case StateWarm:
+		return p.coolSkipCount%2 == 0
+	case StateCool:
+		return p.coolSkipCount%4 == 0
+	case StateCold:
+		return p.coolSkipCount%8 == 0
+	}
+	return true
 }

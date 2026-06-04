@@ -149,6 +149,7 @@ func pointControl(funcId uint64) {
 			for _, preId := range preIds {
 				waiter := getWaiter(preId)
 
+				// todo 待收集
 				select {
 				case <-waiter:
 					cfg.waitMapDec(funcId)

@@ -151,8 +151,8 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 				if debug {
 					cfg.LogCh <- fmt.Sprintf("%s\t[PANIC DEBUG] Full Trace:\n%s", time.Now().String(), panicMsg)
 				}
-				close(cancel)
-				return true, []string{inputc, "DATA RACE", ""}
+				//close(cancel)
+				//return true, []string{inputc, "DATA RACE", ""}
 			}
 		}
 		// ✅ 新增：专门处理 -race 输出的逻辑
@@ -165,8 +165,8 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 				cfg.LogCh <- fmt.Sprintf("%s\t[RACE DEBUG] Full Trace:\n%s", time.Now().String(), raceReport)
 			}
 			// 如果希望发现 Race 就停止，可以取消下面的注释
-			close(cancel)
-			return true, []string{inputc, "DATA RACE", raceReport}
+			//close(cancel)
+			//return true, []string{inputc, "DATA RACE", raceReport}
 		}
 		// 输出台收集信息
 		pair_st, opInfos, err := feedback.ParseStdPairs(ctx.Out.Trace)
