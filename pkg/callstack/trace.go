@@ -153,7 +153,7 @@ func pointControl(funcId uint64) {
 				select {
 				case <-waiter:
 					cfg.waitMapDec(funcId)
-					fmt.Printf("{COVERED} {%v, %v}\n", preId, funcId)
+					fmt.Printf("{COVERED} {%v, %v}\n", preId, funcId) //作为冷却时期的反馈
 				case <-time.After(timeout):
 					fmt.Printf("{TIMEOUT} {%v, %v}\n", preId, funcId)
 				}
