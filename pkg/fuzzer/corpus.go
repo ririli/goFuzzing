@@ -29,6 +29,14 @@ func pairKey(pair *feedback.SuspiciousPairInfo) string {
 		loc2.File, loc2.Line)
 }
 
+// signalKey 生成调度信号的查找键（仅基于 FuncID，不含 CallLoc）
+func signalKey(preID, nextID uint64) string {
+	if preID <= nextID {
+		return fmt.Sprintf("%d-%d", preID, nextID)
+	}
+	return fmt.Sprintf("%d-%d", nextID, preID)
+}
+
 type CoolDownState int
 
 const (
@@ -61,13 +69,14 @@ type CorpusPair struct {
 	TryPairs        map[string]*feedback.SuspiciousPairInfo // 上次fuzzing输入的并发对 (key -> pair)
 	FeedbackPair    map[string]*feedback.SuspiciousPairInfo // fuzzing结束反馈的并发对 (key -> pair)
 	// 稳定性追踪：渐进冷却 + 定期重探测
-	coolState           CoolDownState // 当前冷却状态
-	coolStateRounds     int           // 当前冷却状态持续轮次（pair 集合未变的轮次）
-	coolSkipCount       int           // 冷却采样计数器
-	roundsSinceLastFull int           // 距上次全量收集的轮次
-	reProbeInterval     int           // 重探测间隔，默认 25
-	prevPairCount       int           // 上一轮的总 pair 数
-	execCount           uint32        // Get() 调用次数，用于交替反转，独立于反馈周期
+	coolState           CoolDownState  // 当前冷却状态
+	coolStateRounds     int            // 当前冷却状态持续轮次（pair 集合未变的轮次）
+	coolSkipCount       int            // 冷却采样计数器
+	roundsSinceLastFull int            // 距上次全量收集的轮次
+	reProbeInterval     int            // 重探测间隔，默认 25
+	prevPairCount       int            // 上一轮的总 pair 数
+	execCount           uint32         // Get() 调用次数，用于交替反转，独立于反馈周期
+	consecutiveTimeouts map[string]int // signalKey -> 连续超时次数
 }
 
 // NewCorpusPair 初始化CorpusPair
@@ -82,6 +91,7 @@ func NewCorpusPair() *CorpusPair {
 	p.SusConPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	p.TryPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	p.FeedbackPair = make(map[string]*feedback.SuspiciousPairInfo)
+	p.consecutiveTimeouts = make(map[string]int)
 	return &p
 }
 
@@ -232,6 +242,56 @@ func (p *CorpusPair) UpdateTryPairs() {
 		if _, ok := p.TryPairs[key]; !ok {
 			p.TryPairs[key] = pair
 			count++
+		}
+	}
+}
+
+// ApplySignals 应用调度有效性信号（从 stdout 解析的轻量反馈）
+// 仅处理 func 级别信号；op 级别信号（COVERED_OP/TIMEOUT_OP）暂不处理
+//
+// {COVERED} → 该 pair 调度成功，重置超时计数
+// {TIMEOUT} → 该 pair 调度失败，累计连续超时次数
+//   连续超时 >= maxTimeouts 则从 TryPairs 移除（降级回 SusConPairs）
+func (p *CorpusPair) ApplySignals(signals []*feedback.CoverageSignal) {
+	const maxTimeouts = 10 // 连续超时阈值
+
+	p.mu.Lock()
+	defer p.mu.Unlock()
+
+	for _, sig := range signals {
+		if sig == nil {
+			continue
+		}
+		// 只处理 func 级别信号
+		if sig.Kind != feedback.SignalFuncCovered && sig.Kind != feedback.SignalFuncTimeout {
+			continue
+		}
+
+		key := signalKey(sig.PreID, sig.NextID)
+
+		if sig.Success {
+			// 调度成功：重置超时计数
+			delete(p.consecutiveTimeouts, key)
+		} else {
+			// 调度超时：累计并检查阈值
+			p.consecutiveTimeouts[key]++
+			if p.consecutiveTimeouts[key] >= maxTimeouts {
+				// 从 TryPairs 中移除匹配的 pair（按 FuncID 匹配）
+				p.removeFromTryByFuncIDs(sig.PreID, sig.NextID)
+				delete(p.consecutiveTimeouts, key)
+				fmt.Printf("[signal] pair %v-%v removed from TryPairs after %d timeouts\n", sig.PreID, sig.NextID, maxTimeouts)
+			}
+		}
+	}
+}
+
+// removeFromTryByFuncIDs 从 TryPairs 中移除匹配指定 FuncID 对的条目
+func (p *CorpusPair) removeFromTryByFuncIDs(id1, id2 uint64) {
+	for key, pair := range p.TryPairs {
+		if (pair.FuncID1 == id1 && pair.FuncID2 == id2) ||
+			(pair.FuncID1 == id2 && pair.FuncID2 == id1) {
+			delete(p.TryPairs, key)
+			return
 		}
 	}
 }

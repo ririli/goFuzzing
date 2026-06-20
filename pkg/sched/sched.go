@@ -18,15 +18,16 @@ var cancel chan struct{}
 
 var once sync.Once
 
-const (
-	debugSched = true
-)
+var debugSched bool
 
 func init() {
 	config = NewConfig()
 	cancel = make(chan struct{})
 	timeout = time.Second * 20
 	recovertimeout = time.Second * 1
+
+	// SCHED_DEBUG=1 时关闭操作详情日志（fuzzing执行阶段）
+	debugSched = os.Getenv("SCHED_DEBUG") != "1"
 }
 
 // find sender with current wait ID
@@ -126,13 +127,14 @@ func InstChBF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uin
 		for {
 			if _, ok := event.LoadAndDelete(preId); ok {
 				config.waitDec(opId)
-				fmt.Printf("[COVERED] {%v, %v}\n", preId, opId)
+				fmt.Printf("{COVERED_OP} {%v, %v}\n", preId, opId)
 				break
 			}
 			select {
 			case <-cancel:
 				return
 			case <-timer:
+				fmt.Printf("{TIMEOUT_OP} {%v, %v}\n", preId, opId)
 				return
 			default:
 			}
@@ -173,13 +175,14 @@ func InstWgBF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
 		for {
 			if _, ok := event.LoadAndDelete(preId); ok {
 				config.waitDec(opId)
-				fmt.Printf("[COVERED] {%v, %v}\n", preId, opId)
+				fmt.Printf("{COVERED_OP} {%v, %v}\n", preId, opId)
 				break
 			}
 			select {
 			case <-cancel:
 				return
 			case <-timer:
+				fmt.Printf("{TIMEOUT_OP} {%v, %v}\n", preId, opId)
 				return
 			default:
 			}

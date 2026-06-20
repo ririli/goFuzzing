@@ -6,6 +6,87 @@ import (
 	"strings"
 )
 
+// ParseSignals 从 stdout 中解析调度有效性信号（轻量，无需调用栈）
+// 返回 func 和 op 两份独立的信号切片
+//
+// 支持格式：
+//
+//	{COVERED} {funcId1, funcId2}
+//	{TIMEOUT} {funcId1, funcId2}
+//	{COVERED_OP} {opId1, opId2}
+//	{TIMEOUT_OP} {opId1, opId2}
+func ParseSignals(s string) (funcSignals, opSignals []*CoverageSignal) {
+	lines := strings.Split(s, "\n")
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+		sig := parseSignal(line)
+		if sig == nil {
+			continue
+		}
+		switch sig.Kind {
+		case SignalFuncCovered, SignalFuncTimeout:
+			funcSignals = append(funcSignals, sig)
+		case SignalOpCovered, SignalOpTimeout:
+			opSignals = append(opSignals, sig)
+		}
+	}
+	return
+}
+
+// parseSignal 解析单行调度信号
+// 格式: {PREFIX} {id1, id2}
+func parseSignal(line string) *CoverageSignal {
+	var success bool
+	var kind SignalKind
+
+	switch {
+	case strings.HasPrefix(line, "{COVERED_OP}"):
+		success = true
+		kind = SignalOpCovered
+		line = strings.TrimPrefix(line, "{COVERED_OP}")
+	case strings.HasPrefix(line, "{TIMEOUT_OP}"):
+		success = false
+		kind = SignalOpTimeout
+		line = strings.TrimPrefix(line, "{TIMEOUT_OP}")
+	case strings.HasPrefix(line, "{COVERED}"):
+		success = true
+		kind = SignalFuncCovered
+		line = strings.TrimPrefix(line, "{COVERED}")
+	case strings.HasPrefix(line, "{TIMEOUT}"):
+		success = false
+		kind = SignalFuncTimeout
+		line = strings.TrimPrefix(line, "{TIMEOUT}")
+	default:
+		return nil
+	}
+
+	// 解析 {id1, id2}
+	line = strings.TrimSpace(line)
+	line = strings.TrimPrefix(line, "{")
+	line = strings.TrimSuffix(line, "}")
+
+	ids := strings.Split(line, ",")
+	if len(ids) != 2 {
+		return nil
+	}
+
+	preID, err1 := strconv.ParseUint(strings.TrimSpace(ids[0]), 10, 64)
+	nextID, err2 := strconv.ParseUint(strings.TrimSpace(ids[1]), 10, 64)
+	if err1 != nil || err2 != nil {
+		return nil
+	}
+
+	return &CoverageSignal{
+		PreID:   preID,
+		NextID:  nextID,
+		Success: success,
+		Kind:    kind,
+	}
+}
+
 // ParseStdPairs 从字符串中解析可疑并发对信息和 [FB] 操作日志
 // 支持的格式：
 //

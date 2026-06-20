@@ -169,14 +169,25 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			//return true, []string{inputc, "DATA RACE", raceReport}
 		}
 		// 输出台收集信息
+		// stderr → 种子信息（仅 RecordStack=false 时产出）
 		pair_st, opInfos, err := feedback.ParseStdPairs(ctx.Out.Trace)
-		//pair_st, err := feedback.ParseStdPairs("[SUSPECT] 987842478097,987842478084|gopie/testdata/gobench/nonblocking/grpc/1748/grpc1748_test.go:184,gopie/testdata/gobench/nonblocking/grpc/1748/grpc1748_test.go (Test):171|0.50|inferred_child1;\n]")
 		if err == nil {
 			if len(pair_st) > 0 {
 				corpusPair.AddPair(pair_st)
 			}
 			if len(opInfos) > 0 {
 				corpusOp.Add(opInfos)
+			}
+		}
+
+		// stdout → 调度有效性信号（每轮都有，无需调用栈）
+		funcSignals, opSignals := feedback.ParseSignals(ctx.Out.O)
+		if cfg.UseMutate {
+			if len(funcSignals) > 0 {
+				corpusPair.ApplySignals(funcSignals)
+			}
+			if len(opSignals) > 0 {
+				corpusOp.ApplySignals(opSignals)
 			}
 		}
 

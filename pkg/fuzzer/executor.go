@@ -85,8 +85,8 @@ func (e *Executor) Run(in Input) Output {
 	// 传递是否记录调用栈的标志
 	if in.tryPair != nil && !in.tryPair.RecordStack {
 		command.Env = append(command.Env, "RECORD_STACK=1")
+		command.Env = append(command.Env, "SCHED_DEBUG=1")
 	}
-
 	// 4. 使用管道流式读取输出（避免全量加载）
 	stdoutPipe, _ := command.StdoutPipe()
 	stderrPipe, _ := command.StderrPipe()
