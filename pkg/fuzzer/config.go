@@ -20,10 +20,11 @@ type Config struct {
 	UseMutate       bool
 	UseGuide        bool
 
-	TimeOut        int
-	RecoverTimeOut int
-	InitTurnCnt    int
-	MaxQuit        int
+	TimeOut         int
+	RecoverTimeOut  int
+	InitTurnCnt     int
+	MaxQuit         int
+	MaxPreExecRound int // 预执行轮次上限
 
 	BugSet *bug.BugSet
 }
@@ -44,6 +45,7 @@ func DefaultConfig() *Config {
 		RecoverTimeOut:  100,
 		InitTurnCnt:     100,
 		MaxQuit:         500,
+		MaxPreExecRound: 30,
 	}
 	return c
 }

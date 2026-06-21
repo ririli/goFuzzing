@@ -169,7 +169,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			//return true, []string{inputc, "DATA RACE", raceReport}
 		}
 		// 输出台收集信息
-		// stderr → 种子信息（仅 RecordStack=false 时产出）
+		// stderr → 种子信息（预执行和 fuzzing 全程收集）
 		pair_st, opInfos, err := feedback.ParseStdPairs(ctx.Out.Trace)
 		if err == nil {
 			if len(pair_st) > 0 {
@@ -180,7 +180,17 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			}
 		}
 
-		// stdout → 调度有效性信号（每轮都有，无需调用栈）
+		// 预执行阶段判断
+		if atomic.LoadUint32(&corpusPair.done) == 0 {
+			if corpusPair.TryEndPreExec(cfg.MaxPreExecRound) {
+				fmt.Printf("[PRESTAGE] Pre-execution finished, total pairs: cover=%d, sus=%d\n",
+					len(corpusPair.CoveredConPairs), len(corpusPair.SusConPairs))
+			}
+			//continue
+		}
+
+		// --- fuzzing 阶段 ---
+		// stdout → 调度有效性信号
 		funcSignals, opSignals := feedback.ParseSignals(ctx.Out.O)
 		if cfg.UseMutate {
 			if len(funcSignals) > 0 {
@@ -191,17 +201,6 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			}
 		}
 
-		// if len(schedcov) != 0 && cfg.UseCoveredSched {
-		//	score += (len(schedcov) / (ctx.In.c.Len())) * len(schedcov) * 10
-		// }
-
-		init := atomic.LoadUint32(&m.doinit) == 1
-		if init && atomic.LoadInt32(&m.etimes) > int32(cfg.InitTurnCnt) {
-			atomic.StoreUint32(&m.doinit, 0)
-			if cfg.UseMutate {
-				fmt.Printf("[MUTATE] SWITCH TO MUTATION MODE, CURRENT INITCNT %v\n", cfg.InitTurnCnt)
-			}
-		}
 		// todo 有价值就继续fuzzing，不减quit
 		quit -= 1
 		fmt.Println("quit=", quit)
