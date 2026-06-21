@@ -29,8 +29,7 @@ type Input struct {
 	timeout        int
 	recovertimeout int
 	//
-	tryPair   *feedback.InputPair
-	tryOpPair *feedback.InputOpPair
+	gortPair *feedback.InputGortPair // goroutine对
 }
 
 // 复用缓冲区的全局池（按需调整初始容量）
@@ -59,23 +58,16 @@ func (e *Executor) Run(in Input) Output {
 	// 3. 执行命令并绑定上下文
 	command := exec.CommandContext(ctx, in.cmd, in.args...)
 
-	//command := exec.Command(in.cmd, in.args...) origin
-
 	var strPair string
-	if in.tryPair == nil {
+	if in.gortPair == nil {
 		strPair = "Input="
 	} else {
-		strPair = "Input=" + in.tryPair.ToString()
+		strPair = "Input=" + in.gortPair.ToString()
 	}
-	var strOpPair string
-	if in.tryOpPair == nil {
-		strOpPair = "InputOp="
-	} else {
-		strOpPair = "InputOp=" + in.tryOpPair.ToString()
-	}
+	// OP级别调度已禁用，InputOp始终为空
 	fmt.Println("=====strPair====")
 	fmt.Println(strPair)
-	command.Env = append(os.Environ(), strPair, strOpPair)
+	command.Env = append(os.Environ(), strPair, "InputOp=")
 	if in.timeout != 0 {
 		command.Env = append(command.Env, fmt.Sprintf("TIMEOUT=%v", in.timeout))
 	}
@@ -83,7 +75,7 @@ func (e *Executor) Run(in Input) Output {
 		command.Env = append(command.Env, fmt.Sprintf("RECOVER_TIMEOUT=%v", in.recovertimeout))
 	}
 	// 传递是否记录调用栈的标志
-	if in.tryPair != nil && !in.tryPair.RecordStack {
+	if in.gortPair != nil && !in.gortPair.RecordStack {
 		command.Env = append(command.Env, "RECORD_STACK=1")
 		command.Env = append(command.Env, "SCHED_DEBUG=1")
 	}
@@ -109,19 +101,6 @@ func (e *Executor) Run(in Input) Output {
 
 	stdoutContent := stdoutBuf.String()
 	stderrContent := stderrBuf.String()
-	//command.Stdout = &bytes.Buffer{}
-	//command.Stderr = &bytes.Buffer{}
-	//执行命令，直到命令结束
-	//start := time.Now()
-	//err := command.Run()
-	//打印命令行的标准输出
-	//return Output{
-	//	err,
-	//	command.Stdout.(*bytes.Buffer).String(),
-	//	command.Stderr.(*bytes.Buffer).String(),
-	//	time.Since(start),
-	//}
-	// 直接使用缓冲区内容，无需操作 cmd.Stdout
 	return Output{
 		Err:   err,
 		O:     stdoutContent,

@@ -292,6 +292,12 @@ func parseFBOp(line string) (*OpInfo, error) {
 				return nil, fmt.Errorf("invalid funcId: %v", err)
 			}
 			op.FuncId = v
+		case "gid":
+			v, err := strconv.ParseUint(val, 10, 64)
+			if err != nil {
+				return nil, fmt.Errorf("invalid gid: %v", err)
+			}
+			op.Gid = v
 		case "op":
 			op.OpType = OpType(val)
 		case "select":
@@ -300,4 +306,87 @@ func parseFBOp(line string) (*OpInfo, error) {
 	}
 
 	return op, nil
+}
+
+// ParseGortPairs 从stderr解析goroutine并发对信息和[FB]操作日志
+// 对标 ParseStdPairs，但返回 GortPairInfo 而非 SuspiciousPairInfo
+func ParseGortPairs(s string) ([]*GortPairInfo, []*OpInfo, error) {
+	var results []*GortPairInfo
+	var ops []*OpInfo
+
+	lines := strings.Split(s, "\n")
+
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+
+		if strings.HasPrefix(line, "[FB]") {
+			if op, err := parseFBOp(line); err == nil && op != nil {
+				ops = append(ops, op)
+			}
+			continue
+		}
+
+		pair, err := parseGortPair(line)
+		if err != nil {
+			continue
+		}
+		if pair != nil {
+			results = append(results, pair)
+		}
+	}
+	return results, ops, nil
+}
+
+// parseGortPair 解析单行goroutine对信息，返回 GortPairInfo
+func parseGortPair(line string) (*GortPairInfo, error) {
+	var isObserved bool
+	if strings.HasPrefix(line, "[COVERED]") {
+		isObserved = true
+		line = strings.TrimPrefix(line, "[COVERED]")
+	} else if strings.HasPrefix(line, "[SUSPECT]") {
+		isObserved = false
+		line = strings.TrimPrefix(line, "[SUSPECT]")
+	} else {
+		return nil, fmt.Errorf("invalid prefix: %s", line)
+	}
+
+	line = strings.TrimSpace(line)
+	line = strings.TrimSuffix(line, ";")
+
+	parts := strings.Split(line, "|")
+	if len(parts) != 4 {
+		return nil, fmt.Errorf("invalid format: expected 4 parts, got %d", len(parts))
+	}
+
+	ids := strings.Split(parts[0], ",")
+	if len(ids) != 2 {
+		return nil, fmt.Errorf("invalid goroutine IDs format: %s", parts[0])
+	}
+
+	gid1, _ := strconv.ParseUint(strings.TrimSpace(ids[0]), 10, 64)
+	gid2, _ := strconv.ParseUint(strings.TrimSpace(ids[1]), 10, 64)
+
+	locations := strings.Split(parts[1], ",")
+	if len(locations) != 2 {
+		return nil, fmt.Errorf("invalid locations format: %s", parts[1])
+	}
+
+	callLoc1, _ := parseLocation(locations[0])
+	callLoc2, _ := parseLocation(locations[1])
+
+	confidence, _ := strconv.ParseFloat(strings.TrimSpace(parts[2]), 64)
+	sourceType := strings.TrimSpace(parts[3])
+
+	return &GortPairInfo{
+		Gid1:       gid1,
+		Gid2:       gid2,
+		CallLoc1:   callLoc1,
+		CallLoc2:   callLoc2,
+		Confidence: confidence,
+		SourceType: sourceType,
+		IsObserved: isObserved,
+	}, nil
 }

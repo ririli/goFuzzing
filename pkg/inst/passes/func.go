@@ -7,59 +7,39 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
-var (
-	FunctionInstNeed   = "FunctionNeedInst" //用于记录是否已经插桩了
-	FunctionImportName = "callstack"
-	FunctionImportPath = "toolkit/pkg/callstack"
-)
+// FunctionPass 现在仅负责分配funcID（供channel/wg/select等pass使用）
+// 不再生成 defer callstack.Trace(funcID)() 调用
+// goroutine级别的追踪由 GoroutinePass 在 go 语句处实现
 
 type FunctionPass struct{}
 
-func runFunctionPass(in, out string) error {
-	return nil
-}
 func (p *FunctionPass) Before(iCtx *inst.InstContext) {
-
-	iCtx.SetMetadata(FunctionInstNeed, false)
+	// 仅分配funcID，不做任何代码插桩
 }
+
 func (p *FunctionPass) After(iCtx *inst.InstContext) {
-	need, _ := iCtx.GetMetadata(FunctionInstNeed)
-	needinst := need.(bool)
-	if needinst {
-		inst.AddImport(iCtx.FS, iCtx.AstFile, FunctionImportName, FunctionImportPath)
-	}
+	// 无需添加import（不再生成 callstack.Trace 调用）
 }
 
 func (p *FunctionPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
 	return func(c *astutil.Cursor) bool {
 		defer func() {
 			if r := recover(); r != nil { // This is allowed. If we insert node into nodes not in slice, we will meet a panic
-				// For example, we may identified a receive in select and wanted to insert a function call before it, then this function will panic
 			}
 		}()
 
 		switch concrete := c.Node().(type) {
 		case *ast.FuncDecl:
-			// 检测到函数声明，在函数体开始处插桩
-			if concrete.Body != nil && len(concrete.Body.List) > 0 {
+			// 仅分配funcID，供channel/wg/select等pass使用
+			if concrete.Body != nil {
 				id := iCtx.GetNewOpId()
 				Add(concrete.Pos(), id)
-
-				st := GenInstFunction(id)
-				concrete.Body.List = append([]ast.Stmt{st}, concrete.Body.List...)
-
-				iCtx.SetMetadata(FunctionInstNeed, true)
 			}
 		case *ast.FuncLit:
-			// 检测到匿名函数（函数字面量），在函数体开始处插桩
-			if concrete.Body != nil && len(concrete.Body.List) > 0 {
+			// 仅分配funcID，供channel/wg/select等pass使用
+			if concrete.Body != nil {
 				id := iCtx.GetNewOpId()
 				Add(concrete.Pos(), id)
-
-				st := GenInstFunction(id)
-				concrete.Body.List = append([]ast.Stmt{st}, concrete.Body.List...)
-
-				iCtx.SetMetadata(FunctionInstNeed, true)
 			}
 		}
 

@@ -39,6 +39,7 @@ func (d DangerType) String() string { return string(d) }
 type OpInfo struct {
 	OpId     uint64 // 编译期唯一操作 ID
 	FuncId   uint64 // 所在函数 ID
+	Gid      uint64 // 所在 goroutine 的静态 ID（gid=0 表示未知或主goroutine）
 	ObjAddr  uint64 // 运行时对象地址（channel 指针或 wg 指针）
 	OpType   OpType // 操作类型
 	ObjKind  OpKind // 操作对象类型
@@ -92,8 +93,8 @@ func matchWgPair(a, b *OpInfo) *OpPair {
 }
 
 func (o *OpInfo) String() string {
-	return fmt.Sprintf("[%s] opId=%d funcId=%d obj=0x%x op=%s",
-		o.ObjKind, o.OpId, o.FuncId, o.ObjAddr, o.OpType)
+	return fmt.Sprintf("[%s] opId=%d funcId=%d gid=%d obj=0x%x op=%s",
+		o.ObjKind, o.OpId, o.FuncId, o.Gid, o.ObjAddr, o.OpType)
 }
 
 func (p *OpPair) String() string {

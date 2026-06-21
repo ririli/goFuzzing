@@ -8,6 +8,8 @@ import (
 	"strings"
 	"sync"
 	"time"
+
+	"toolkit/pkg/goroutine"
 )
 
 var event sync.Map
@@ -146,7 +148,8 @@ func InstChBF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uin
 func InstChAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uint64, opType string) {
 	if debugSched {
 		addr := uint64(reflect.ValueOf(o).Pointer())
-		print("[FB]chan: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; op=", opType, ";\n")
+		gid := goroutine.CurrentGid()
+		print("[FB]chan: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; gid=", gid, "; op=", opType, ";\n")
 	}
 	event.Store(opId, struct{}{})
 }
@@ -156,7 +159,8 @@ func InstChAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uin
 func InstChSelectAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uint64, opType string) {
 	if debugSched {
 		addr := uint64(reflect.ValueOf(o).Pointer())
-		print("[FB]chan: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; op=", opType, "; select=1;\n")
+		gid := goroutine.CurrentGid()
+		print("[FB]chan: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; gid=", gid, "; op=", opType, "; select=1;\n")
 	}
 	event.Store(opId, struct{}{})
 }
@@ -194,7 +198,8 @@ func InstWgBF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
 func InstWgAF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
 	if debugSched {
 		addr := uint64(reflect.ValueOf(wg).Pointer())
-		print("[FB]wg: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; op=", opType, ";\n")
+		gid := goroutine.CurrentGid()
+		print("[FB]wg: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; gid=", gid, "; op=", opType, ";\n")
 	}
 	event.Store(opId, struct{}{})
 }

@@ -13,7 +13,9 @@ type TestPass struct {
 }
 
 var (
-	TestNeedInst = "NEED_TEST_INST"
+	TestNeedInst   = "NEED_TEST_INST"
+	GortImportName = "goroutine"
+	GortImportPath = "toolkit/pkg/goroutine"
 )
 
 func (p *TestPass) Before(ctx *inst.InstContext) {
@@ -21,6 +23,11 @@ func (p *TestPass) Before(ctx *inst.InstContext) {
 }
 
 func (p *TestPass) After(ctx *inst.InstContext) {
+	need, _ := ctx.GetMetadata(TestNeedInst)
+	needinst := need.(bool)
+	if needinst {
+		inst.AddImport(ctx.FS, ctx.AstFile, GortImportName, GortImportPath)
+	}
 }
 
 func (p *TestPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
@@ -72,11 +79,33 @@ func (p *TestPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 func genTestDeclWithParseInput(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	testname := name + "_1"
 
-	// 创建 callstack.ParseInput() 调用语句
+	// 创建 goroutine.EnterMain() 调用语句
+	enterMainCall := &ast.ExprStmt{
+		X: &ast.CallExpr{
+			Fun: &ast.SelectorExpr{
+				X:   &ast.Ident{Name: "goroutine"},
+				Sel: &ast.Ident{Name: "EnterMain"},
+			},
+			Args: []ast.Expr{},
+		},
+	}
+
+	// 创建 defer goroutine.ExitMain() 调用语句
+	exitMainDefer := &ast.DeferStmt{
+		Call: &ast.CallExpr{
+			Fun: &ast.SelectorExpr{
+				X:   &ast.Ident{Name: "goroutine"},
+				Sel: &ast.Ident{Name: "ExitMain"},
+			},
+			Args: []ast.Expr{},
+		},
+	}
+
+	// 创建 goroutine.ParseInput() 调用语句
 	parseInputCall := &ast.ExprStmt{
 		X: &ast.CallExpr{
 			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "callstack"},
+				X:   &ast.Ident{Name: "goroutine"},
 				Sel: &ast.Ident{Name: "ParseInput"},
 			},
 			Args: []ast.Expr{},
@@ -94,12 +123,12 @@ func genTestDeclWithParseInput(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 		},
 	}
 
-	// 创建 defer callstack.PrintSusConPairs() 调用语句
-	printSusConPairsCall := &ast.DeferStmt{
+	// 创建 defer goroutine.PrintGoroutinePairs() 调用语句
+	printGoroutinePairsCall := &ast.DeferStmt{
 		Call: &ast.CallExpr{
 			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "callstack"},
-				Sel: &ast.Ident{Name: "PrintSusConPairs"},
+				X:   &ast.Ident{Name: "goroutine"},
+				Sel: &ast.Ident{Name: "PrintGoroutinePairs"},
 			},
 			Args: []ast.Expr{},
 		},
@@ -109,9 +138,10 @@ func genTestDeclWithParseInput(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	testbodylst := make([]ast.Stmt, len(fn.Body.List))
 	copy(testbodylst, fn.Body.List)
 
-	// 在函数体开头插入 callstack.ParseInput()、sched.ParseInput() 和 defer callstack.PrintSusConPairs()
+	// 在函数体开头插入 goroutine.EnterMain()、defer goroutine.ExitMain()、
+	// goroutine.ParseInput()、sched.ParseInput() 和 defer goroutine.PrintGoroutinePairs()
 	block := &ast.BlockStmt{
-		List: append([]ast.Stmt{parseInputCall, schedParseInputCall, printSusConPairsCall}, testbodylst...),
+		List: append([]ast.Stmt{enterMainCall, exitMainDefer, parseInputCall, schedParseInputCall, printGoroutinePairsCall}, testbodylst...),
 	}
 
 	testdecl := &ast.FuncDecl{

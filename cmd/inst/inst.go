@@ -19,6 +19,7 @@ func main() {
 			reg := inst.NewPassRegistry()
 
 			reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
+			reg.Register("gort", func() inst.InstPass { return &passes.GoroutinePass{} })
 			// register passes
 			reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
 			reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
@@ -36,6 +37,7 @@ func main() {
 		}
 		reg := inst.NewPassRegistry()
 		reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
+		reg.Register("gort", func() inst.InstPass { return &passes.GoroutinePass{} })
 		// register passes
 		reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
 		reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
