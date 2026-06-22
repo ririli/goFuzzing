@@ -4,7 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 var minConnectTimeout = 10 * time.Second
@@ -20,14 +21,12 @@ type Builder interface {
 }
 
 func newPickfirstBuilder() Builder {
-	defer callstack.Trace(987842478081)()
 	return &pickfirstBuilder{}
 }
 
 type pickfirstBuilder struct{}
 
 func (*pickfirstBuilder) Build(cc balancer_ClientConn) Balancer {
-	defer callstack.Trace(987842478082)()
 	return &pickfirstBalancer{cc: cc}
 }
 
@@ -45,7 +44,6 @@ type pickfirstBalancer struct {
 }
 
 func (b *pickfirstBalancer) HandleResolvedAddrs() {
-	defer callstack.Trace(987842478083)()
 	b.sc = b.cc.NewSubConn()
 	b.sc.Connect()
 }
@@ -66,32 +64,30 @@ type addrConn struct {
 }
 
 func (ac *addrConn) resetTransport() {
-	defer callstack.Trace(987842478084)()
 	_ = minConnectTimeout
 }
 
 func (ac *addrConn) transportMonitor() {
-	defer callstack.Trace(987842478085)()
 	ac.resetTransport()
 }
 
 func (ac *addrConn) connect() {
-	defer callstack.Trace(987842478086)()
 	go func() {
-		defer callstack.Trace(987842478087)()
-		ac.transportMonitor()
+		goroutine.Enter(987842478081)
+		defer goroutine.Exit(987842478081)
+		func() {
+			ac.transportMonitor()
+		}()
 	}()
 }
 
 func (acbw *acBalancerWrapper) Connect() {
-	defer callstack.Trace(987842478088)()
 	acbw.mu.Lock()
 	defer acbw.mu.Unlock()
 	acbw.ac.connect()
 }
 
 func newPickerWrapper() *pickerWrapper {
-	defer callstack.Trace(987842478089)()
 	return &pickerWrapper{}
 }
 
@@ -100,13 +96,11 @@ type ClientConn struct {
 }
 
 func (cc *ClientConn) switchBalancer() {
-	defer callstack.Trace(987842478090)()
 	builder := newPickfirstBuilder()
 	newCCBalancerWrapper(cc, builder)
 }
 
 func (cc *ClientConn) newAddrConn() *addrConn {
-	defer callstack.Trace(987842478091)()
 	return &addrConn{cc: cc}
 }
 
@@ -116,7 +110,6 @@ type ccBalancerWrapper struct {
 }
 
 func (ccb *ccBalancerWrapper) watcher() {
-	defer callstack.Trace(987842478092)()
 	for i := 0; i < 10; i++ {
 		balanceMutex.Lock()
 		if ccb.balancer != nil {
@@ -129,7 +122,6 @@ func (ccb *ccBalancerWrapper) watcher() {
 }
 
 func (ccb *ccBalancerWrapper) NewSubConn() SubConn {
-	defer callstack.Trace(987842478093)()
 	ac := ccb.cc.newAddrConn()
 	acbw := &acBalancerWrapper{ac: ac}
 	acbw.ac.mu.Lock()
@@ -139,49 +131,57 @@ func (ccb *ccBalancerWrapper) NewSubConn() SubConn {
 }
 
 func newCCBalancerWrapper(cc *ClientConn, b Builder) {
-	defer callstack.Trace(987842478094)()
 	ccb := &ccBalancerWrapper{cc: cc}
-	go ccb.watcher()
+	go func() {
+		goroutine.Enter(987842478082)
+		defer goroutine.Exit(987842478082)
+		ccb.watcher()
+	}()
 	balanceMutex.Lock()
 	defer balanceMutex.Unlock()
 	ccb.balancer = b.Build(ccb)
 }
 
 func TestGrpc1748(t *testing.T) {
-	defer callstack.Trace(987842478095)()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		defer callstack.Trace(987842478096)()
-		defer wg.Done()
-		mctBkp := minConnectTimeout
-		// Call this only after transportMonitor goroutine has ended.
-		defer func() {
-			defer callstack.Trace(987842478097)()
-			minConnectTimeout = mctBkp
+		goroutine.Enter(987842478083)
+		defer goroutine.Exit(987842478083)
+		func() {
+			defer wg.Done()
+			mctBkp := minConnectTimeout
+			// Call this only after transportMonitor goroutine has ended.
+			defer func() {
+				minConnectTimeout = mctBkp
+			}()
+			cc := &ClientConn{}
+			cc.switchBalancer()
 		}()
-		cc := &ClientConn{}
-		cc.switchBalancer()
 	}()
 	wg.Wait()
 }
 func TestGrpc1748_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(987842478095)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		defer callstack.Trace(987842478096)()
-		defer wg.Done()
-		mctBkp := minConnectTimeout
+		goroutine.Enter(987842478083)
+		defer goroutine.Exit(987842478083)
+		func() {
+			defer wg.Done()
+			mctBkp := minConnectTimeout
 
-		defer func() {
-			defer callstack.Trace(987842478097)()
-			minConnectTimeout = mctBkp
+			defer func() {
+				minConnectTimeout = mctBkp
+			}()
+			cc := &ClientConn{}
+			cc.switchBalancer()
 		}()
-		cc := &ClientConn{}
-		cc.switchBalancer()
 	}()
 	wg.Wait()
 }

@@ -5,7 +5,8 @@ import (
 	"sync"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type Handler interface {
@@ -15,7 +16,6 @@ type Handler interface {
 type websocket_Handler func()
 
 func (h websocket_Handler) ServeHTTP() {
-	defer callstack.Trace(609885356033)()
 	h()
 }
 
@@ -28,7 +28,6 @@ type ServeMux struct {
 }
 
 func (mux *ServeMux) match() Handler {
-	defer callstack.Trace(609885356034)()
 	for _, e := range mux.es {
 		return e.h
 	}
@@ -36,30 +35,25 @@ func (mux *ServeMux) match() Handler {
 }
 
 func (mux *ServeMux) handler() (h Handler) {
-	defer callstack.Trace(609885356035)()
 	h = mux.match()
 	return
 }
 
 func (mux *ServeMux) Handler() Handler {
-	defer callstack.Trace(609885356036)()
 	return mux.handler()
 }
 
 func (mux *ServeMux) Handle(handler Handler) {
-	defer callstack.Trace(609885356037)()
 	e := muxEntry{h: handler}
 	mux.es = appendSorted(mux.es, e)
 }
 
 func (mux *ServeMux) ServeHTTP() {
-	defer callstack.Trace(609885356038)()
 	h := mux.Handler()
 	h.ServeHTTP()
 }
 
 func appendSorted(es []muxEntry, e muxEntry) []muxEntry {
-	defer callstack.Trace(609885356039)()
 	n := len(es)
 	i := 0
 	if i == n {
@@ -72,7 +66,6 @@ func appendSorted(es []muxEntry, e muxEntry) []muxEntry {
 }
 
 func NewServeMux() *ServeMux {
-	defer callstack.Trace(609885356040)()
 	return new(ServeMux)
 }
 
@@ -82,17 +75,18 @@ type Server struct {
 }
 
 func (s *Server) StartTLS() {
-	defer callstack.Trace(609885356041)()
 	s.goServe()
 }
 
 func (s *Server) goServe() {
-	defer callstack.Trace(609885356042)()
 	s.wg.Add(1)
 	go func() {
-		defer callstack.Trace(609885356043)()
-		defer s.wg.Done()
-		s.Config.Serve()
+		goroutine.Enter(609885356033)
+		defer goroutine.Exit(609885356033)
+		func() {
+			defer s.wg.Done()
+			s.Config.Serve()
+		}()
 	}()
 }
 
@@ -101,7 +95,6 @@ type conn struct {
 }
 
 func (c *conn) serve() {
-	defer callstack.Trace(609885356044)()
 	serverHandler{c.server}.ServeHTTP()
 }
 
@@ -110,7 +103,6 @@ type serverHandler struct {
 }
 
 func (sh serverHandler) ServeHTTP() {
-	defer callstack.Trace(609885356045)()
 	handler := sh.srv.Handler
 	handler.ServeHTTP()
 }
@@ -120,13 +112,15 @@ type http_Server struct {
 }
 
 func (srv *http_Server) Serve() {
-	defer callstack.Trace(609885356046)()
 	c := srv.newConn()
-	go c.serve()
+	go func() {
+		goroutine.Enter(609885356034)
+		defer goroutine.Exit(609885356034)
+		c.serve()
+	}()
 }
 
 func (srv *http_Server) newConn() *conn {
-	defer callstack.Trace(609885356047)()
 	c := &conn{
 		server: srv,
 	}
@@ -134,19 +128,15 @@ func (srv *http_Server) newConn() *conn {
 }
 
 func NewUnstartedServer(handler Handler) *Server {
-	defer callstack.Trace(609885356048)()
 	return &Server{Config: &http_Server{Handler: handler}}
 }
 
 func TestKubernetes49404(t *testing.T) {
-	defer callstack.Trace(609885356049)()
 	ExpectCalled := true
 	called := false
 	func() {
-		defer callstack.Trace(609885356050)()
 		backendHandler := NewServeMux()
 		backendHandler.Handle(websocket_Handler(func() {
-			defer callstack.Trace(609885356051)()
 			called = true
 		}))
 
@@ -155,7 +145,6 @@ func TestKubernetes49404(t *testing.T) {
 		backendServer.StartTLS()
 
 		defer func() {
-			defer callstack.Trace(609885356052)()
 			if called != ExpectCalled {
 				_ = fmt.Sprintf("Error")
 			}
@@ -164,16 +153,16 @@ func TestKubernetes49404(t *testing.T) {
 	time.Sleep(10 * time.Millisecond)
 }
 func TestKubernetes49404_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(609885356049)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	ExpectCalled := true
 	called := false
 	func() {
-		defer callstack.Trace(609885356050)()
 		backendHandler := NewServeMux()
 		backendHandler.Handle(websocket_Handler(func() {
-			defer callstack.Trace(609885356051)()
 			called = true
 		}))
 
@@ -182,7 +171,6 @@ func TestKubernetes49404_1(t *testing.T) {
 		backendServer.StartTLS()
 
 		defer func() {
-			defer callstack.Trace(609885356052)()
 			if called != ExpectCalled {
 				_ = fmt.Sprintf("Error")
 			}

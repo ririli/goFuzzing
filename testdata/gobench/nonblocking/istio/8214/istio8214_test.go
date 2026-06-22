@@ -4,7 +4,8 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type internal_Cache interface {
@@ -22,13 +23,11 @@ type Cache struct {
 }
 
 func (cc *Cache) Set() {
-	defer callstack.Trace(369367187457)()
 	cc.cache.SetWithExpiration()
 	cc.recordStats()
 }
 
 func (cc *Cache) recordStats() {
-	defer callstack.Trace(369367187458)()
 	cc.cache.Stats()
 }
 
@@ -41,17 +40,14 @@ type lruCache struct {
 }
 
 func (c *lruCache) Stats() Stats {
-	defer callstack.Trace(369367187459)()
 	return c.stats
 }
 
 func (c *lruCache) Set() {
-	defer callstack.Trace(369367187460)()
 	c.SetWithExpiration()
 }
 
 func (c *lruCache) SetWithExpiration() {
-	defer callstack.Trace(369367187461)()
 	atomic.AddUint64(&c.stats.Writes, 1)
 }
 
@@ -60,65 +56,82 @@ type grpcServer struct {
 }
 
 func (s *grpcServer) check() {
-	defer callstack.Trace(369367187462)()
 	if s.cache != nil {
 		s.cache.Set()
 	}
 }
 
 func (s *grpcServer) Check() {
-	defer callstack.Trace(369367187463)()
 	s.check()
 }
 
 func TestIstio8214(t *testing.T) {
-	defer callstack.Trace(369367187464)()
 	var wg sync.WaitGroup
 	wg.Add(3)
 	go func() {
-		defer callstack.Trace(369367187465)()
-		defer wg.Done()
-		s := &grpcServer{
-			cache: &Cache{
-				cache: &lruCache{},
-			},
-		}
-		go func() {
-			defer callstack.Trace(369367187466)()
+		goroutine.Enter(369367187457)
+		defer goroutine.Exit(369367187457)
+		func() {
 			defer wg.Done()
-			s.Check()
-		}()
-		go func() {
-			defer callstack.Trace(369367187467)()
-			defer wg.Done()
-			s.Check()
+			s := &grpcServer{
+				cache: &Cache{
+					cache: &lruCache{},
+				},
+			}
+			go func() {
+				goroutine.Enter(369367187458)
+				defer goroutine.Exit(369367187458)
+				func() {
+					defer wg.Done()
+					s.Check()
+				}()
+			}()
+			go func() {
+				goroutine.Enter(369367187459)
+				defer goroutine.Exit(369367187459)
+				func() {
+					defer wg.Done()
+					s.Check()
+				}()
+			}()
 		}()
 	}()
 	wg.Wait()
 }
 func TestIstio8214_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(369367187464)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
 	wg.Add(3)
 	go func() {
-		defer callstack.Trace(369367187465)()
-		defer wg.Done()
-		s := &grpcServer{
-			cache: &Cache{
-				cache: &lruCache{},
-			},
-		}
-		go func() {
-			defer callstack.Trace(369367187466)()
+		goroutine.Enter(369367187457)
+		defer goroutine.Exit(369367187457)
+		func() {
 			defer wg.Done()
-			s.Check()
-		}()
-		go func() {
-			defer callstack.Trace(369367187467)()
-			defer wg.Done()
-			s.Check()
+			s := &grpcServer{
+				cache: &Cache{
+					cache: &lruCache{},
+				},
+			}
+			go func() {
+				goroutine.Enter(369367187458)
+				defer goroutine.Exit(369367187458)
+				func() {
+					defer wg.Done()
+					s.Check()
+				}()
+			}()
+			go func() {
+				goroutine.Enter(369367187459)
+				defer goroutine.Exit(369367187459)
+				func() {
+					defer wg.Done()
+					s.Check()
+				}()
+			}()
 		}()
 	}()
 	wg.Wait()

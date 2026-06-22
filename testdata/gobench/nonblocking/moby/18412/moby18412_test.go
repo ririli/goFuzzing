@@ -7,11 +7,11 @@ import (
 	"os/exec"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 func RunCommandWithOutputForDuration(cmd *exec.Cmd, duration time.Duration) (output string, exitCode int, timedOut bool, err error) {
-	defer callstack.Trace(519691042817)()
 	var outputBuffer bytes.Buffer
 	if cmd.Stdout != nil {
 		err = errors.New("cmd.Stdout already set")
@@ -34,13 +34,17 @@ func RunCommandWithOutputForDuration(cmd *exec.Cmd, duration time.Duration) (out
 	}
 
 	go func() {
-		defer
-		// And wait for it to exit in the goroutine :)
-		callstack.Trace(519691042818)()
+		goroutine.
+			//inst.WaitTimeout(10 * time.Millisecond)
+			// And wait for it to exit in the goroutine :)
+			Enter(519691042817)
+		defer goroutine.Exit(519691042817)
+		func() {
 
-		exitErr := cmd.Wait()
-		exitCode = 1
-		done <- exitErr
+			exitErr := cmd.Wait()
+			exitCode = 1
+			done <- exitErr
+		}()
 	}()
 
 	select {
@@ -54,12 +58,12 @@ func RunCommandWithOutputForDuration(cmd *exec.Cmd, duration time.Duration) (out
 	case err = <-done:
 		break
 	}
+	//inst.WaitTimeout(10 * time.Millisecond)
 	output = outputBuffer.String()
 	return
 }
 
 func TestMoby18412(t *testing.T) {
-	defer callstack.Trace(519691042819)()
 	cmd := exec.Command("sh", "-c", "ls")
 	out, exitCode, timedOut, err := RunCommandWithOutputForDuration(cmd, 1*time.Millisecond)
 	if exitCode != 0 || !timedOut || err != nil {
@@ -68,9 +72,11 @@ func TestMoby18412(t *testing.T) {
 	time.Sleep(100 * time.Millisecond)
 }
 func TestMoby18412_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(519691042819)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	cmd := exec.Command("sh", "-c", "ls")
 	out, exitCode, timedOut, err := RunCommandWithOutputForDuration(cmd, 1*time.Millisecond)
 	if exitCode != 0 || !timedOut || err != nil {

@@ -5,7 +5,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type Interface interface {
@@ -22,21 +23,22 @@ type impl struct {
 var _ Interface = (*impl)(nil)
 
 func NewWithCapacity(workers, capacity int) Interface {
-	defer callstack.Trace(416611827713)()
 	i := &impl{
 		workCh: make(chan func(), capacity),
 	}
 
 	for idx := 0; idx < workers; idx++ {
 		go func() {
-			defer callstack.Trace(416611827714)()
-			for work := range i.workCh {
-				func() {
-					defer callstack.Trace(416611827715)()
-					defer i.wg.Done()
-					work()
-				}()
-			}
+			goroutine.Enter(416611827713)
+			defer goroutine.Exit(416611827713)
+			func() {
+				for work := range i.workCh {
+					func() {
+						defer i.wg.Done()
+						work()
+					}()
+				}
+			}()
 		}()
 	}
 
@@ -44,41 +46,42 @@ func NewWithCapacity(workers, capacity int) Interface {
 }
 
 func (i *impl) Go(w func()) {
-	defer callstack.Trace(416611827716)()
 	i.wg.Add(1)
 	i.workCh <- w
 }
 
 func (i *impl) Wait() {
-	defer callstack.Trace(416611827717)()
 	i.once.Do(func() {
-		defer callstack.Trace(416611827718)()
 		close(i.workCh)
 
 		go func() {
-			defer callstack.Trace(416611827719)()
-			i.wg.Wait()
+			goroutine.Enter(416611827714)
+			defer goroutine.Exit(416611827714)
+			func() {
+				i.wg.Wait()
+			}()
 		}()
 	})
 }
 
 func TestServing3068(t *testing.T) {
-	defer callstack.Trace(416611827720)()
 	p := NewWithCapacity(1, 5)
 	wg := &sync.WaitGroup{}
 	var cntExecuted int32
 	const n = 5
 	wg.Add(n)
 	go func() {
-		defer callstack.Trace(416611827721)()
-		for i := 0; i < n; i++ {
-			p.Go(func() {
-				defer callstack.Trace(416611827722)()
-				atomic.AddInt32(&cntExecuted, 1)
-			})
-			time.Sleep(10 * time.Millisecond)
-			wg.Done()
-		}
+		goroutine.Enter(416611827715)
+		defer goroutine.Exit(416611827715)
+		func() {
+			for i := 0; i < n; i++ {
+				p.Go(func() {
+					atomic.AddInt32(&cntExecuted, 1)
+				})
+				time.Sleep(10 * time.Millisecond)
+				wg.Done()
+			}
+		}()
 	}()
 	p.Wait()
 	wg.Wait()
@@ -87,24 +90,28 @@ func TestServing3068(t *testing.T) {
 	}
 }
 func TestServing3068_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(416611827720)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	p := NewWithCapacity(1, 5)
 	wg := &sync.WaitGroup{}
 	var cntExecuted int32
 	const n = 5
 	wg.Add(n)
 	go func() {
-		defer callstack.Trace(416611827721)()
-		for i := 0; i < n; i++ {
-			p.Go(func() {
-				defer callstack.Trace(416611827722)()
-				atomic.AddInt32(&cntExecuted, 1)
-			})
-			time.Sleep(10 * time.Millisecond)
-			wg.Done()
-		}
+		goroutine.Enter(416611827715)
+		defer goroutine.Exit(416611827715)
+		func() {
+			for i := 0; i < n; i++ {
+				p.Go(func() {
+					atomic.AddInt32(&cntExecuted, 1)
+				})
+				time.Sleep(10 * time.Millisecond)
+				wg.Done()
+			}
+		}()
 	}()
 	p.Wait()
 	wg.Wait()

@@ -5,7 +5,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type workItem struct {
@@ -29,7 +30,6 @@ type Type struct {
 }
 
 func (q *Type) Get() (item interface{}) {
-	defer callstack.Trace(743029342209)()
 	q.cond.L.Lock()
 	defer q.cond.L.Unlock()
 
@@ -42,7 +42,6 @@ func (q *Type) Get() (item interface{}) {
 }
 
 func (q *Type) Add(item interface{}) {
-	defer callstack.Trace(743029342210)()
 	q.cond.L.Lock()
 	defer q.cond.L.Unlock()
 
@@ -59,17 +58,14 @@ type delayingType struct {
 }
 
 func (q *delayingType) AddAfter(item interface{}) {
-	defer callstack.Trace(743029342211)()
 	q.Add(item)
 }
 
 func newDelayingQueue() DelayingInterface {
-	defer callstack.Trace(743029342212)()
 	return &delayingType{&Type{queue: []t{}, cond: sync.NewCond(&sync.Mutex{})}}
 }
 
 func NewDelayingQueue() DelayingInterface {
-	defer callstack.Trace(743029342213)()
 	return newDelayingQueue()
 }
 
@@ -83,12 +79,10 @@ type rateLimitingType struct {
 }
 
 func (q *rateLimitingType) AddRateLimited(item interface{}) {
-	defer callstack.Trace(743029342214)()
 	q.DelayingInterface.AddAfter(item)
 }
 
 func NewRateLimitingQueue() RateLimitingInterface {
-	defer callstack.Trace(743029342215)()
 	return &rateLimitingType{
 		DelayingInterface: NewDelayingQueue(),
 	}
@@ -99,7 +93,6 @@ type Prober struct {
 }
 
 func (m *Prober) IsReady() {
-	defer callstack.Trace(743029342216)()
 	workItems := make(map[string][]*workItem)
 	ingressState := &ingressState{}
 	workItems["0"] = append(workItems["0"], &workItem{
@@ -119,7 +112,6 @@ func (m *Prober) IsReady() {
 }
 
 func (m *Prober) processWorkItem() {
-	defer callstack.Trace(743029342217)()
 	obj := m.workQueue.Get()
 	item, ok := obj.(*workItem)
 	if !ok {
@@ -129,33 +121,36 @@ func (m *Prober) processWorkItem() {
 }
 
 func (m *Prober) updateStates(ingressState *ingressState) {
-	defer callstack.Trace(743029342218)()
 	if atomic.AddInt32(&ingressState.pendingCount, -1) == 0 {
 	}
 }
 
 func (m *Prober) Start() chan struct{} {
-	defer callstack.Trace(743029342219)()
 	var wg sync.WaitGroup
 	for i := 0; i < 2; i++ {
 		wg.Add(1)
 		go func() {
-			defer callstack.Trace(743029342220)()
-			defer wg.Done()
-			m.processWorkItem()
+			goroutine.Enter(743029342209)
+			defer goroutine.Exit(743029342209)
+			func() {
+				defer wg.Done()
+				m.processWorkItem()
+			}()
 		}()
 	}
 	ch := make(chan struct{})
 	go func() {
-		defer callstack.Trace(743029342221)()
-		wg.Wait()
-		close(ch)
+		goroutine.Enter(743029342210)
+		defer goroutine.Exit(743029342210)
+		func() {
+			wg.Wait()
+			close(ch)
+		}()
 	}()
 	return ch
 }
 
 func NewProber() *Prober {
-	defer callstack.Trace(743029342222)()
 	workQueue := NewRateLimitingQueue()
 	workQueue.Add(&workItem{&ingressState{}})
 	return &Prober{
@@ -164,12 +159,10 @@ func NewProber() *Prober {
 }
 
 func TestServing6472(t *testing.T) {
-	defer callstack.Trace(743029342223)()
 	prober := NewProber()
 	done := make(chan struct{})
 	cancelled := prober.Start()
 	defer func() {
-		defer callstack.Trace(743029342224)()
 		close(done)
 		<-cancelled
 	}()
@@ -178,14 +171,15 @@ func TestServing6472(t *testing.T) {
 	time.Sleep(1 * time.Millisecond)
 }
 func TestServing6472_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(743029342223)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	prober := NewProber()
 	done := make(chan struct{})
 	cancelled := prober.Start()
 	defer func() {
-		defer callstack.Trace(743029342224)()
 		close(done)
 		<-cancelled
 	}()

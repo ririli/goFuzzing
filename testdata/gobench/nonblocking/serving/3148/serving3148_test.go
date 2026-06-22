@@ -3,7 +3,8 @@ package serving3148
 import (
 	"sync"
 	"testing"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type PodAutoscalerInterface interface {
@@ -27,7 +28,6 @@ type FakeAutoscalingV1alpha1 struct {
 }
 
 func (c *FakeAutoscalingV1alpha1) PodAutoscalers() PodAutoscalerInterface {
-	defer callstack.Trace(858993459201)()
 	return &FakePodAutoscalers{c}
 }
 
@@ -36,7 +36,6 @@ type Clientset struct {
 }
 
 func (c *Clientset) AutoscalingV1alpha1() AutoscalingV1alpha1Interface {
-	defer callstack.Trace(858993459202)()
 	return &FakeAutoscalingV1alpha1{Fake: &c.Fake}
 }
 
@@ -45,7 +44,6 @@ type FakePodAutoscalers struct {
 }
 
 func (c *FakePodAutoscalers) Create() {
-	defer callstack.Trace(858993459203)()
 	c.Fake.Invokes()
 }
 
@@ -54,12 +52,10 @@ type Reconciler struct {
 }
 
 func (c *Reconciler) Reconcile() {
-	defer callstack.Trace(858993459204)()
 	c.reconcile()
 }
 
 func (c *Reconciler) reconcile() {
-	defer callstack.Trace(858993459205)()
 	phases := []struct {
 		name string
 		f    func()
@@ -73,12 +69,10 @@ func (c *Reconciler) reconcile() {
 }
 
 func (c *Reconciler) reconcileKPA() {
-	defer callstack.Trace(858993459206)()
 	c.createKPA()
 }
 
 func (c *Reconciler) createKPA() {
-	defer callstack.Trace(858993459207)()
 	c.ServingClientSet.AutoscalingV1alpha1().PodAutoscalers().Create()
 }
 
@@ -91,34 +85,33 @@ type Impl struct {
 }
 
 func (c *Impl) Run(threadiness int) {
-	defer callstack.Trace(858993459208)()
 	sg := sync.WaitGroup{}
 	defer sg.Wait()
 
 	for i := 0; i < threadiness; i++ {
 		sg.Add(1)
 		go func() {
-			defer callstack.Trace(858993459209)()
-			defer sg.Done()
-			c.processNextWorkItem()
+			goroutine.Enter(858993459201)
+			defer goroutine.Exit(858993459201)
+			func() {
+				defer sg.Done()
+				c.processNextWorkItem()
+			}()
 		}()
 	}
 }
 
 func (c *Impl) processNextWorkItem() {
-	defer callstack.Trace(858993459210)()
 	c.controller_Reconciler.Reconcile()
 }
 
 func NewImpl(r controller_Reconciler) *Impl {
-	defer callstack.Trace(858993459211)()
 	return &Impl{
 		controller_Reconciler: r,
 	}
 }
 
 func NewController() *Impl {
-	defer callstack.Trace(858993459212)()
 	c := &Reconciler{}
 	return NewImpl(c)
 }
@@ -129,28 +122,27 @@ type Group struct {
 }
 
 func (g *Group) Wait() {
-	defer callstack.Trace(858993459213)()
 	g.wg.Wait()
 }
 
 func (g *Group) Go(f func()) {
-	defer callstack.Trace(858993459214)()
 	g.wg.Add(1)
 	go func() {
-		defer callstack.Trace(858993459215)()
-		defer g.wg.Done()
-		f()
+		goroutine.Enter(858993459202)
+		defer goroutine.Exit(858993459202)
+		func() {
+			defer g.wg.Done()
+			f()
+		}()
 	}()
 }
 
 type Hooks struct{}
 
 func NewHooks() *Hooks {
-	defer callstack.Trace(858993459216)()
 	return &Hooks{}
 }
 func (h *Hooks) OnUpdate(fake *Fake) {
-	defer callstack.Trace(858993459217)()
 	fake.PrependReactor()
 }
 
@@ -163,57 +155,60 @@ type Fake struct {
 }
 
 func (c *Fake) Invokes() {
-	defer callstack.Trace(858993459218)()
 	for _ = range c.ReactionChain {
 	}
 }
 
 func (c *Fake) PrependReactor() {
-	defer callstack.Trace(858993459219)()
 	c.ReactionChain = append([]Reactor{&SimpleReactor{}})
 }
 
 func TestServing3148(t *testing.T) {
-	defer callstack.Trace(858993459220)()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		defer callstack.Trace(858993459221)()
-		defer wg.Done()
-		cs := &Clientset{}
-		controller := NewController()
-		controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
-		eg := &Group{}
-		defer func() {
-			defer callstack.Trace(858993459222)()
-			eg.Wait()
+		goroutine.Enter(858993459203)
+		defer goroutine.Exit(858993459203)
+		func() {
+			defer wg.Done()
+			cs := &Clientset{}
+			controller := NewController()
+			controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
+			eg := &Group{}
+			defer func() {
+				eg.Wait()
+			}()
+			eg.Go(func() { controller.Run(1) })
+			h := NewHooks()
+			h.OnUpdate(&cs.Fake)
 		}()
-		eg.Go(func() { defer callstack.Trace(858993459223)(); controller.Run(1) })
-		h := NewHooks()
-		h.OnUpdate(&cs.Fake)
 	}()
 	wg.Wait()
 }
 func TestServing3148_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(858993459220)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		defer callstack.Trace(858993459221)()
-		defer wg.Done()
-		cs := &Clientset{}
-		controller := NewController()
-		controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
-		eg := &Group{}
-		defer func() {
-			defer callstack.Trace(858993459222)()
-			eg.Wait()
+		goroutine.Enter(858993459203)
+		defer goroutine.Exit(858993459203)
+		func() {
+			defer wg.Done()
+			cs := &Clientset{}
+			controller := NewController()
+			controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
+			eg := &Group{}
+			defer func() {
+				eg.Wait()
+			}()
+			eg.Go(func() { controller.Run(1) })
+			h := NewHooks()
+			h.OnUpdate(&cs.Fake)
 		}()
-		eg.Go(func() { defer callstack.Trace(858993459223)(); controller.Run(1) })
-		h := NewHooks()
-		h.OnUpdate(&cs.Fake)
 	}()
 	wg.Wait()
 }

@@ -5,7 +5,8 @@ import (
 	"sync"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type ProcessFunc func(obj interface{})
@@ -23,7 +24,6 @@ type ResourceEventHandlerFuncs struct {
 }
 
 func (r ResourceEventHandlerFuncs) OnDelete(obj interface{}) {
-	defer callstack.Trace(455266533377)()
 	if r.DeleteFunc != nil {
 		r.DeleteFunc(obj)
 	}
@@ -34,7 +34,6 @@ type Controller struct {
 }
 
 func (c *Controller) processLoop() {
-	defer callstack.Trace(455266533378)()
 	for {
 		c.config.Process(nil)
 		break
@@ -42,21 +41,17 @@ func (c *Controller) processLoop() {
 }
 
 func (c *Controller) Run(stopCh <-chan struct{}) {
-	defer callstack.Trace(455266533379)()
 	Until(c.processLoop, 10*time.Millisecond, stopCh)
 }
 
 func New(c *Config) *Controller {
-	defer callstack.Trace(455266533380)()
 	ctlr := &Controller{config: *c}
 	return ctlr
 }
 
 func NewInformer(h ResourceEventHandler) *Controller {
-	defer callstack.Trace(455266533381)()
 	cfg := &Config{
 		Process: func(obj interface{}) {
-			defer callstack.Trace(455266533382)()
 			h.OnDelete(obj)
 		},
 	}
@@ -64,7 +59,6 @@ func NewInformer(h ResourceEventHandler) *Controller {
 }
 
 func Until(f func(), period time.Duration, stopCh <-chan struct{}) {
-	defer callstack.Trace(455266533383)()
 	for {
 		select {
 		case <-stopCh:
@@ -72,7 +66,6 @@ func Until(f func(), period time.Duration, stopCh <-chan struct{}) {
 		default:
 		}
 		func() {
-			defer callstack.Trace(455266533384)()
 			f()
 		}()
 		time.Sleep(period)
@@ -80,18 +73,20 @@ func Until(f func(), period time.Duration, stopCh <-chan struct{}) {
 }
 
 func TestKubernetes13058(t *testing.T) {
-	defer callstack.Trace(455266533385)()
 	var testDoneWG sync.WaitGroup
 
 	controller := NewInformer(ResourceEventHandlerFuncs{
 		DeleteFunc: func(obj interface{}) {
-			defer callstack.Trace(455266533386)()
 			testDoneWG.Done()
 		},
 	})
 
 	stop := make(chan struct{})
-	go controller.Run(stop)
+	go func() {
+		goroutine.Enter(455266533377)
+		defer goroutine.Exit(455266533377)
+		controller.Run(stop)
+	}()
 
 	tests := []func(string){
 		func(name string) {},
@@ -99,15 +94,19 @@ func TestKubernetes13058(t *testing.T) {
 
 	const threads = 3
 	var wg sync.WaitGroup
+	time.Sleep(1 * time.Second)
 	wg.Add(threads * len(tests))
 	testDoneWG.Add(threads * len(tests))
 	for i := 0; i < threads; i++ {
 		for j, f := range tests {
-			go func(name string, f func(string)) {
-				defer callstack.Trace(455266533387)()
-				defer wg.Done()
-				f(name)
-			}(fmt.Sprintf("%v-%v", i, j), f)
+			go func() {
+				goroutine.Enter(455266533378)
+				defer goroutine.Exit(455266533378)
+				func(name string, f func(string)) {
+					defer wg.Done()
+					f(name)
+				}(fmt.Sprintf("%v-%v", i, j), f)
+			}()
 		}
 	}
 	wg.Wait()
@@ -115,20 +114,25 @@ func TestKubernetes13058(t *testing.T) {
 	close(stop)
 }
 func TestKubernetes13058_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(455266533385)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	var testDoneWG sync.WaitGroup
 
 	controller := NewInformer(ResourceEventHandlerFuncs{
 		DeleteFunc: func(obj interface{}) {
-			defer callstack.Trace(455266533386)()
 			testDoneWG.Done()
 		},
 	})
 
 	stop := make(chan struct{})
-	go controller.Run(stop)
+	go func() {
+		goroutine.Enter(455266533377)
+		defer goroutine.Exit(455266533377)
+		controller.Run(stop)
+	}()
 
 	tests := []func(string){
 		func(name string) {},
@@ -136,15 +140,19 @@ func TestKubernetes13058_1(t *testing.T) {
 
 	const threads = 3
 	var wg sync.WaitGroup
+	time.Sleep(1 * time.Second)
 	wg.Add(threads * len(tests))
 	testDoneWG.Add(threads * len(tests))
 	for i := 0; i < threads; i++ {
 		for j, f := range tests {
-			go func(name string, f func(string)) {
-				defer callstack.Trace(455266533387)()
-				defer wg.Done()
-				f(name)
-			}(fmt.Sprintf("%v-%v", i, j), f)
+			go func() {
+				goroutine.Enter(455266533378)
+				defer goroutine.Exit(455266533378)
+				func(name string, f func(string)) {
+					defer wg.Done()
+					f(name)
+				}(fmt.Sprintf("%v-%v", i, j), f)
+			}()
 		}
 	}
 	wg.Wait()

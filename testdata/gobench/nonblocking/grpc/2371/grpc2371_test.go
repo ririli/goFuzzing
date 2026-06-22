@@ -4,7 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type ccBalancerWrapper struct {
@@ -13,7 +14,6 @@ type ccBalancerWrapper struct {
 }
 
 func (ccb *ccBalancerWrapper) handleResolvedAddrs() {
-	defer callstack.Trace(1022202216449)()
 	select {
 	case <-ccb.resolverUpdateCh:
 	default:
@@ -22,7 +22,6 @@ func (ccb *ccBalancerWrapper) handleResolvedAddrs() {
 }
 
 func newCCBalancerWrapper(cc *ClientConn) *ccBalancerWrapper {
-	defer callstack.Trace(1022202216450)()
 	ccb := &ccBalancerWrapper{
 		cc:               cc,
 		resolverUpdateCh: make(chan struct{}, 1),
@@ -35,17 +34,18 @@ type ccResolverWrapper struct {
 }
 
 func (ccr *ccResolverWrapper) start() {
-	defer callstack.Trace(1022202216451)()
-	go ccr.watcher()
+	go func() {
+		goroutine.Enter(1022202216449)
+		defer goroutine.Exit(1022202216449)
+		ccr.watcher()
+	}()
 }
 
 func (ccr *ccResolverWrapper) watcher() {
-	defer callstack.Trace(1022202216452)()
 	ccr.cc.handleServiceConfig()
 }
 
 func newCCResolverWrapper(cc *ClientConn) *ccResolverWrapper {
-	defer callstack.Trace(1022202216453)()
 	ccr := &ccResolverWrapper{
 		cc: cc,
 	}
@@ -59,14 +59,12 @@ type ClientConn struct {
 }
 
 func (cc *ClientConn) handleServiceConfig() {
-	defer callstack.Trace(1022202216454)()
 	cc.mu.Lock()
 	cc.balancerWrapper.handleResolvedAddrs()
 	cc.mu.Unlock()
 }
 
 func (cc *ClientConn) Close() {
-	defer callstack.Trace(1022202216455)()
 	cc.mu.Lock()
 	cc.resolverWrapper = nil
 	cc.balancerWrapper = nil
@@ -74,12 +72,10 @@ func (cc *ClientConn) Close() {
 }
 
 func Dial() *ClientConn {
-	defer callstack.Trace(1022202216456)()
 	return DialContext()
 }
 
 func DialContext() *ClientConn {
-	defer callstack.Trace(1022202216457)()
 	cc := &ClientConn{}
 
 	cc.resolverWrapper = newCCResolverWrapper(cc)
@@ -91,24 +87,33 @@ func DialContext() *ClientConn {
 }
 
 func TestGrpc2371(t *testing.T) {
-	defer callstack.Trace(1022202216458)()
 
 	for i := 0; i < 10; i++ {
 		cc := Dial()
 
-		go cc.Close()
+		go func() {
+			goroutine.Enter(1022202216450)
+			defer goroutine.Exit(1022202216450)
+			cc.Close()
+		}()
 	}
 
 	time.Sleep(100 * time.Millisecond)
 }
 func TestGrpc2371_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(1022202216458)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	for i := 0; i < 10; i++ {
 		cc := Dial()
 
-		go cc.Close()
+		go func() {
+			goroutine.Enter(1022202216450)
+			defer goroutine.Exit(1022202216450)
+			cc.Close()
+		}()
 	}
 
 	time.Sleep(100 * time.Millisecond)

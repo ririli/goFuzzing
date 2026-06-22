@@ -13,9 +13,11 @@ type TestPass struct {
 }
 
 var (
-	TestNeedInst   = "NEED_TEST_INST"
-	GortImportName = "goroutine"
-	GortImportPath = "toolkit/pkg/goroutine"
+	TestNeedInst    = "NEED_TEST_INST"
+	GortImportName  = "goroutine"
+	GortImportPath  = "toolkit/pkg/goroutine"
+	SchedImportName = "sched"
+	SchedImportPath = "toolkit/pkg/sched"
 )
 
 func (p *TestPass) Before(ctx *inst.InstContext) {
@@ -27,6 +29,7 @@ func (p *TestPass) After(ctx *inst.InstContext) {
 	needinst := need.(bool)
 	if needinst {
 		inst.AddImport(ctx.FS, ctx.AstFile, GortImportName, GortImportPath)
+		inst.AddImport(ctx.FS, ctx.AstFile, SchedImportName, SchedImportPath)
 	}
 }
 

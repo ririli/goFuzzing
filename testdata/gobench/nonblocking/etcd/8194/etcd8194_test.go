@@ -4,15 +4,15 @@ import (
 	"sync"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 var leaseRevokeRate = 1000
 
 func testLessorRenewExtendPileup() {
-	defer callstack.Trace(236223201281)()
 	oldRevokeRate := leaseRevokeRate
-	defer func() { defer callstack.Trace(236223201282)(); leaseRevokeRate = oldRevokeRate }()
+	defer func() { leaseRevokeRate = oldRevokeRate }()
 	leaseRevokeRate = 10
 }
 
@@ -25,7 +25,6 @@ type lessor struct {
 }
 
 func (le *lessor) runLoop() {
-	defer callstack.Trace(236223201283)()
 	defer close(le.doneC)
 
 	for i := 0; i < 10; i++ {
@@ -54,48 +53,63 @@ func (le *lessor) runLoop() {
 }
 
 func newLessor() *lessor {
-	defer callstack.Trace(236223201284)()
 	l := &lessor{}
-	go l.runLoop()
+	go func() {
+		goroutine.Enter(236223201281)
+		defer goroutine.Exit(236223201281)
+		l.runLoop()
+	}()
 	return l
 }
 
 func testLessorGrant() {
-	defer callstack.Trace(236223201285)()
 	newLessor()
 }
 
 func TestEtcd8194(t *testing.T) {
-	defer callstack.Trace(236223201286)()
 	var wg sync.WaitGroup
 	wg.Add(2)
 	go func() {
-		defer callstack.Trace(236223201287)()
-		defer wg.Done()
-		testLessorGrant()
+		goroutine.Enter(236223201282)
+		defer goroutine.Exit(236223201282)
+		func() {
+			defer wg.Done()
+			testLessorGrant()
+		}()
 	}()
 	go func() {
-		defer callstack.Trace(236223201288)()
-		defer wg.Done()
-		testLessorRenewExtendPileup()
+		goroutine.Enter(236223201283)
+		defer goroutine.Exit(236223201283)
+		func() {
+			defer wg.Done()
+			testLessorRenewExtendPileup()
+		}()
 	}()
 	wg.Wait()
 }
 func TestEtcd8194_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(236223201286)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
 	wg.Add(2)
 	go func() {
-		defer callstack.Trace(236223201287)()
-		defer wg.Done()
-		testLessorGrant()
+		goroutine.Enter(236223201282)
+		defer goroutine.Exit(236223201282)
+		func() {
+			defer wg.Done()
+			testLessorGrant()
+		}()
 	}()
 	go func() {
-		defer callstack.Trace(236223201288)()
-		defer wg.Done()
-		testLessorRenewExtendPileup()
+		goroutine.Enter(236223201283)
+		defer goroutine.Exit(236223201283)
+		func() {
+			defer wg.Done()
+			testLessorRenewExtendPileup()
+		}()
 	}()
 	wg.Wait()
 }

@@ -4,7 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type resolver_ClientConn interface {
@@ -16,7 +17,6 @@ type resolver_Resolver struct {
 }
 
 func (r *resolver_Resolver) Build(cc resolver_ClientConn) Resolver {
-	defer callstack.Trace(158913789953)()
 	r.CC = cc
 	r.UpdateState()
 	return r
@@ -26,7 +26,6 @@ func (r *resolver_Resolver) ResolveNow() {
 }
 
 func (r *resolver_Resolver) UpdateState() {
-	defer callstack.Trace(158913789954)()
 	r.CC.UpdateState()
 }
 
@@ -41,29 +40,28 @@ type ccResolverWrapper struct {
 }
 
 func (ccr *ccResolverWrapper) resolveNow() {
-	defer callstack.Trace(158913789955)()
 	ccr.mu.Lock()
 	ccr.resolver.ResolveNow()
 	ccr.mu.Unlock()
 }
 
 func (ccr *ccResolverWrapper) poll() {
-	defer callstack.Trace(158913789956)()
 	ccr.mu.Lock()
 	defer ccr.mu.Unlock()
 	go func() {
-		defer callstack.Trace(158913789957)()
-		ccr.resolveNow()
+		goroutine.Enter(158913789953)
+		defer goroutine.Exit(158913789953)
+		func() {
+			ccr.resolveNow()
+		}()
 	}()
 }
 
 func (ccr *ccResolverWrapper) UpdateState() {
-	defer callstack.Trace(158913789958)()
 	ccr.poll()
 }
 
 func newCCResolverWrapper(cc *ClientConn) {
-	defer callstack.Trace(158913789959)()
 	rb := cc.dopts.resolverBuilder
 	ccr := &ccResolverWrapper{}
 	ccr.resolver = rb.Build(ccr)
@@ -82,7 +80,6 @@ type ClientConn struct {
 }
 
 func DialContext() {
-	defer callstack.Trace(158913789960)()
 	cc := &ClientConn{
 		dopts: dialOptions{},
 	}
@@ -92,33 +89,39 @@ func DialContext() {
 	newCCResolverWrapper(cc)
 }
 func Dial() {
-	defer callstack.Trace(158913789961)()
 	DialContext()
 }
 
 func TestGrpc3090(t *testing.T) {
-	defer callstack.Trace(158913789962)()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		defer callstack.Trace(158913789963)()
-		defer wg.Done()
-		Dial()
-		time.Sleep(5 * time.Millisecond)
+		goroutine.Enter(158913789954)
+		defer goroutine.Exit(158913789954)
+		func() {
+			defer wg.Done()
+			Dial()
+			time.Sleep(5 * time.Millisecond)
+		}()
 	}()
 	wg.Wait()
 }
 func TestGrpc3090_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(158913789962)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		defer callstack.Trace(158913789963)()
-		defer wg.Done()
-		Dial()
-		time.Sleep(5 * time.Millisecond)
+		goroutine.Enter(158913789954)
+		defer goroutine.Exit(158913789954)
+		func() {
+			defer wg.Done()
+			Dial()
+			time.Sleep(5 * time.Millisecond)
+		}()
 	}()
 	wg.Wait()
 }

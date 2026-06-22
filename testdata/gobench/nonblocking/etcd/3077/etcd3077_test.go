@@ -3,7 +3,8 @@ package etcd3077
 import (
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type raftNode struct {
@@ -13,7 +14,6 @@ type raftNode struct {
 }
 
 func (r *raftNode) run() {
-	defer callstack.Trace(141733920769)()
 	r.stopped = make(chan struct{})
 	r.done = make(chan struct{})
 	defer r.stop()
@@ -26,7 +26,6 @@ func (r *raftNode) run() {
 }
 
 func (r *raftNode) stop() {
-	defer callstack.Trace(141733920770)()
 	close(r.done)
 }
 
@@ -37,15 +36,16 @@ type EtcdServer struct {
 }
 
 func (s *EtcdServer) run() {
-	defer callstack.Trace(
-
-		// Wait s.r.run
-		141733920771)()
-	go s.r.run()
+	go func() {
+		goroutine.
+			// Wait s.r.run
+			Enter(141733920769)
+		defer goroutine.Exit(141733920769)
+		s.r.run()
+	}()
 
 	time.Sleep(10 * time.Millisecond)
 	defer func() {
-		defer callstack.Trace(141733920772)()
 		s.r.stopped <- struct{}{}
 		<-s.r.done
 		close(s.done)
@@ -60,14 +60,16 @@ func (s *EtcdServer) run() {
 }
 
 func (s *EtcdServer) start() {
-	defer callstack.Trace(141733920773)()
 	s.done = make(chan struct{})
 	s.stop = make(chan struct{})
-	go s.run()
+	go func() {
+		goroutine.Enter(141733920770)
+		defer goroutine.Exit(141733920770)
+		s.run()
+	}()
 }
 
 func (s *EtcdServer) Stop() {
-	defer callstack.Trace(141733920774)()
 	select {
 	case s.stop <- struct{}{}:
 	case <-s.done:
@@ -77,7 +79,6 @@ func (s *EtcdServer) Stop() {
 }
 
 func TestEtcd3077(t *testing.T) {
-	defer callstack.Trace(141733920775)()
 	srv := &EtcdServer{
 		r: raftNode{},
 	}
@@ -85,9 +86,11 @@ func TestEtcd3077(t *testing.T) {
 	defer srv.Stop()
 }
 func TestEtcd3077_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(141733920775)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	srv := &EtcdServer{
 		r: raftNode{},
 	}

@@ -4,7 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type Conn interface {
@@ -16,19 +17,16 @@ type pipe struct {
 }
 
 func (p *pipe) Write(b []byte) {
-	defer callstack.Trace(249108103169)()
 	p.wrMu.Lock()
 	defer p.wrMu.Unlock()
 	b = b[1:]
 }
 
 func Pipe() Conn {
-	defer callstack.Trace(249108103170)()
 	return &pipe{}
 }
 
 func TestMoby22941(t *testing.T) {
-	defer callstack.Trace(249108103171)()
 	srv := Pipe()
 	tests := [][2][]byte{
 		{
@@ -42,16 +40,21 @@ func TestMoby22941(t *testing.T) {
 	}
 	for _, pair := range tests {
 		go func() {
-			defer callstack.Trace(249108103172)()
-			srv.Write(pair[0])
+			goroutine.Enter(249108103169)
+			defer goroutine.Exit(249108103169)
+			func() {
+				srv.Write(pair[0])
+			}()
 		}()
 	}
 	time.Sleep(10 * time.Millisecond)
 }
 func TestMoby22941_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(249108103171)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	srv := Pipe()
 	tests := [][2][]byte{
 		{
@@ -65,8 +68,11 @@ func TestMoby22941_1(t *testing.T) {
 	}
 	for _, pair := range tests {
 		go func() {
-			defer callstack.Trace(249108103172)()
-			srv.Write(pair[0])
+			goroutine.Enter(249108103169)
+			defer goroutine.Exit(249108103169)
+			func() {
+				srv.Write(pair[0])
+			}()
 		}()
 	}
 	time.Sleep(10 * time.Millisecond)

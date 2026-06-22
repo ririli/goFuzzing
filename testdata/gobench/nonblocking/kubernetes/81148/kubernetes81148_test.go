@@ -4,7 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 const unschedulableQTimeInterval = 60 * time.Second
@@ -22,18 +23,15 @@ type UnschedulablePodsMap struct {
 }
 
 func (u *UnschedulablePodsMap) addOrUpdate(pInfo *PodInfo) {
-	defer callstack.Trace(459561500673)()
 	podID := u.keyFunc(pInfo.Pod)
 	u.podInfoMap[podID] = pInfo
 }
 
 func GetPodFullName(pod Pod) string {
-	defer callstack.Trace(459561500674)()
 	return string(pod)
 }
 
 func newUnschedulablePodsMap() *UnschedulablePodsMap {
-	defer callstack.Trace(459561500675)()
 	return &UnschedulablePodsMap{
 		podInfoMap: make(map[string]*PodInfo),
 		keyFunc:    GetPodFullName,
@@ -47,7 +45,6 @@ type PriorityQueue struct {
 }
 
 func (p *PriorityQueue) flushUnschedulableQLeftover() {
-	defer callstack.Trace(459561500676)()
 	p.lock.Lock()
 	defer p.lock.Unlock()
 
@@ -57,12 +54,14 @@ func (p *PriorityQueue) flushUnschedulableQLeftover() {
 }
 
 func (p *PriorityQueue) run() {
-	defer callstack.Trace(459561500677)()
-	go Until(p.flushUnschedulableQLeftover, p.stop)
+	go func() {
+		goroutine.Enter(459561500673)
+		defer goroutine.Exit(459561500673)
+		Until(p.flushUnschedulableQLeftover, p.stop)
+	}()
 }
 
 func (p *PriorityQueue) newPodInfo(pod Pod) *PodInfo {
-	defer callstack.Trace(459561500678)()
 	return &PodInfo{
 		Pod:       pod,
 		Timestamp: time.Now(),
@@ -70,7 +69,6 @@ func (p *PriorityQueue) newPodInfo(pod Pod) *PodInfo {
 }
 
 func NewPriorityQueueWithClock(stop <-chan struct{}) *PriorityQueue {
-	defer callstack.Trace(459561500679)()
 	pq := &PriorityQueue{
 		stop:           stop,
 		unschedulableQ: newUnschedulablePodsMap(),
@@ -80,12 +78,10 @@ func NewPriorityQueueWithClock(stop <-chan struct{}) *PriorityQueue {
 }
 
 func NewPriorityQueue(stop <-chan struct{}) *PriorityQueue {
-	defer callstack.Trace(459561500680)()
 	return NewPriorityQueueWithClock(stop)
 }
 
 func BackoffUntil(f func(), stopCh <-chan struct{}) {
-	defer callstack.Trace(459561500681)()
 	for {
 		select {
 		case <-stopCh:
@@ -94,7 +90,6 @@ func BackoffUntil(f func(), stopCh <-chan struct{}) {
 		}
 
 		func() {
-			defer callstack.Trace(459561500682)()
 			f()
 		}()
 
@@ -106,52 +101,56 @@ func BackoffUntil(f func(), stopCh <-chan struct{}) {
 }
 
 func JitterUntil(f func(), stopCh <-chan struct{}) {
-	defer callstack.Trace(459561500683)()
 	BackoffUntil(f, stopCh)
 }
 
 func Until(f func(), stopCh <-chan struct{}) {
-	defer callstack.Trace(459561500684)()
 	JitterUntil(f, stopCh)
 }
 
 func addOrUpdateUnschedulablePod(p *PriorityQueue, pod Pod) {
-	defer callstack.Trace(459561500685)()
 	p.lock.Lock()
 	defer p.lock.Unlock()
 	p.unschedulableQ.addOrUpdate(p.newPodInfo(pod))
 }
 
 func TestKubernetes81148(t *testing.T) {
-	defer callstack.Trace(459561500686)()
 	stop := make(chan struct{})
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		defer callstack.Trace(459561500687)()
-		defer wg.Done()
-		q := NewPriorityQueue(stop)
-		highPod := Pod("1")
-		addOrUpdateUnschedulablePod(q, highPod)
-		q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
+		goroutine.Enter(459561500674)
+		defer goroutine.Exit(459561500674)
+		func() {
+			defer wg.Done()
+			q := NewPriorityQueue(stop)
+			highPod := Pod("1")
+			addOrUpdateUnschedulablePod(q, highPod)
+			q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
+		}()
 	}()
 	wg.Wait()
 	close(stop)
 }
 func TestKubernetes81148_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(459561500686)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	stop := make(chan struct{})
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		defer callstack.Trace(459561500687)()
-		defer wg.Done()
-		q := NewPriorityQueue(stop)
-		highPod := Pod("1")
-		addOrUpdateUnschedulablePod(q, highPod)
-		q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
+		goroutine.Enter(459561500674)
+		defer goroutine.Exit(459561500674)
+		func() {
+			defer wg.Done()
+			q := NewPriorityQueue(stop)
+			highPod := Pod("1")
+			addOrUpdateUnschedulablePod(q, highPod)
+			q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
+		}()
 	}()
 	wg.Wait()
 	close(stop)

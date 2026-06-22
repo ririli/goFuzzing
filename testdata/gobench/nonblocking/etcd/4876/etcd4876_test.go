@@ -4,7 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
-	callstack "toolkit/pkg/callstack"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 var ProgressReportInterval = 10 * time.Second
@@ -31,60 +32,82 @@ type WatchServer interface {
 type serverWatchStream struct{}
 
 func (sws *serverWatchStream) sendLoop() {
-	defer callstack.Trace(820338753537)()
 	_ = time.NewTicker(ProgressReportInterval)
 }
 
 type watchServer struct{}
 
 func (ws *watchServer) Watch(stream Watch_WatchServer) {
-	defer callstack.Trace(820338753538)()
+	//inst.WaitTimeout(500 * time.Millisecond)
 	sws := serverWatchStream{}
-	go sws.sendLoop()
+	go func() {
+		goroutine.Enter(820338753537)
+		defer goroutine.Exit(820338753537)
+		sws.sendLoop()
+	}()
 }
 
 func TestEtcd4876(t *testing.T) {
-	defer callstack.Trace(820338753539)()
 	var wg sync.WaitGroup
 	wg.Add(3)
 	go func() {
-		defer callstack.Trace(820338753540)()
-		defer wg.Done()
-		w := &watchServer{}
-		go func() {
-			defer callstack.Trace(820338753541)()
+		goroutine.Enter(820338753538)
+		defer goroutine.Exit(820338753538)
+		func() {
 			defer wg.Done()
-			testInterval := 3 * time.Second
-			ProgressReportInterval = testInterval
-		}()
-		go func() {
-			defer callstack.Trace(820338753542)()
-			defer wg.Done()
-			w.Watch(&watchWatchServer{})
+			w := &watchServer{}
+			go func() {
+				goroutine.Enter(820338753539)
+				defer goroutine.Exit(820338753539)
+				func() {
+					defer wg.Done()
+					testInterval := 3 * time.Second
+					ProgressReportInterval = testInterval
+				}()
+			}()
+			go func() {
+				goroutine.Enter(820338753540)
+				defer goroutine.Exit(820338753540)
+				func() {
+					defer wg.Done()
+					w.Watch(&watchWatchServer{})
+				}()
+			}()
 		}()
 	}()
 	wg.Wait()
 }
 func TestEtcd4876_1(t *testing.T) {
-	callstack.ParseInput()
-	defer callstack.PrintSusConPairs()
-	defer callstack.Trace(820338753539)()
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
 	wg.Add(3)
 	go func() {
-		defer callstack.Trace(820338753540)()
-		defer wg.Done()
-		w := &watchServer{}
-		go func() {
-			defer callstack.Trace(820338753541)()
+		goroutine.Enter(820338753538)
+		defer goroutine.Exit(820338753538)
+		func() {
 			defer wg.Done()
-			testInterval := 3 * time.Second
-			ProgressReportInterval = testInterval
-		}()
-		go func() {
-			defer callstack.Trace(820338753542)()
-			defer wg.Done()
-			w.Watch(&watchWatchServer{})
+			w := &watchServer{}
+			go func() {
+				goroutine.Enter(820338753539)
+				defer goroutine.Exit(820338753539)
+				func() {
+					defer wg.Done()
+					testInterval := 3 * time.Second
+					ProgressReportInterval = testInterval
+				}()
+			}()
+			go func() {
+				goroutine.Enter(820338753540)
+				defer goroutine.Exit(820338753540)
+				func() {
+					defer wg.Done()
+					w.Watch(&watchWatchServer{})
+				}()
+			}()
 		}()
 	}()
 	wg.Wait()
