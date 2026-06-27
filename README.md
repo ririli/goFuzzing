@@ -1,19 +1,3 @@
-# GoPie
-This is the repo of Go-pie, a concurrency testing tool for Golang.
-This document is to introduce the structure of `GoPie` project.
-
-## Project Structure
-- bug.md: a file used to track the bugs found by `GoPie` reported on Github. 
-- cmd: files under `cmd` are the command line tools of `GoPie`, including the instrument tools and the testing tools. 
-- patch: files under `patch` are the hacks of the runtime of Golang, these files will be replaced before compiling the target binary.
-- pkg: the packages of GoPie, contain all the details in the form of source code. The important packages under `pkg` are:
-  - feedback: the runtime feedback analysis in GoPie.
-  - hack: the hack of Go runtime data structure.
-  - inst: the passes of instrumentation.
-  - sched: implement of scheduling approach.
-- script: shell scripts used during development.
-- Dockerfile: dev environment.
-
 ## Usage
 1. `GoPie` has been implemented using `Go 1.19.1`. 
 
@@ -28,14 +12,9 @@ This document is to introduce the structure of `GoPie` project.
     ~~~
 3. Build test binaries, the test binaries will be placed into `./testbins`
     ~~~shell
-    // install dependencies
-    cd your_project_to_be_tested
-    go mod tidy
-
-    // compile the unit tests
-    ./bin/fuzz --task bins --path your_project_to_be_tested
+    ./bin/fuzz --task bins --path your_project_to_be_tested -o 
     ~~~
 4. Start testing
-    ~~~
-    ./bin/fuzz --task full --path path_of_test_binaries
+    ~~~shell
+    ./bin/fuzz --task full --path path_of_test_binaries > log.txt
     ~~~
