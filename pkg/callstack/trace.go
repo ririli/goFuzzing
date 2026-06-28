@@ -1,239 +1,99 @@
+// Package callstack 是运行时并发测试插桩的门面包。
+//
+// 它组装 calltree（调用树收集）、overlap（时间重叠检测）、breakpoint（断点控制）
+// 三个子包，对外提供稳定的 Trace / ParseInput / PrintSusConPairs / PrintTrees API。
+//
+// 本包是被插桩代码的唯一入口 —— inst/passes 在源码中注入的 defer callstack.Trace(id)()
+// 和 callstack.ParseInput() 等调用全部指向本包。
+//
+// 断点策略切换：
+//
+//	默认使用单栏策略（Config），设置环境变量 BARRIER_MODE=double 可切换为双栏策略（BarrierConfig）。
 package callstack
 
 import (
 	"fmt"
 	"os"
-	"strings"
-	"sync"
-	"sync/atomic"
 	"time"
+
+	"toolkit/pkg/breakpoint"
+	"toolkit/pkg/calltree"
+	"toolkit/pkg/overlap"
 )
 
 var (
-	collector = NewCallStackCollector() // 收集的全部函数调用链
-	mu        sync.Mutex
-
-	waiters sync.Map
-)
-var (
-	cfg           *Config
-	timeout       time.Duration
-	timeoutGlobal time.Duration
-	oa            *OverlapAnalysis
+	collector *calltree.CallStackCollector // 全局调用树收集器
+	strategy  breakpoint.Strategy          // 当前断点控制策略（单栏或双栏）
+	oa        *overlap.OverlapAnalysis     // 全局重叠分析器
 )
 
 func init() {
-	cfg = NewConfig()
-	timeout = 40 * time.Millisecond
-	oa = NewOverlapAnalysis(collector) // 初始化重叠分析器
+	collector = calltree.NewCallStackCollector()
+	oa = overlap.NewOverlapAnalysis(collector)
+
+	// 根据环境变量选择断点策略
+	if os.Getenv("BARRIER_MODE") == "double" {
+		strategy = breakpoint.NewBarrierConfig()
+	} else {
+		strategy = breakpoint.NewConfig()
+	}
 }
 
-// ParseInput 解析输入
+// Trace 自动插桩函数，用法：defer Trace(funcID)()
+//
+// 它依次执行：
+//  1. 断点控制（根据当前策略决定是否阻塞等待）
+//  2. 调用树记录（除非 RECORD_STACK=1 跳过）
+func Trace(funcID uint64) func() {
+	strategy.PointControl(funcID)
+
+	if os.Getenv("RECORD_STACK") == "1" {
+		return func() {}
+	}
+
+	node := collector.EnterFunction(funcID)
+	return func() {
+		collector.ExitFunction(node)
+	}
+}
+
+// ParseInput 从环境变量 Input 解析可疑函数对配置
 func ParseInput() {
-	input_susPairs := os.Getenv("Input")
-	if input_susPairs != "" {
-		ParseSusPairs(input_susPairs)
-	}
-	if len(cfg.activeFunc) > 0 {
-		atomic.StoreUint32(&cfg.hasActive, 1)
-	}
+	strategy.ParseInput()
 }
 
-// ParseSusPairs 解析输入的函数对
-// 格式: (id1,id2)(id3,id4)(id5,id6)...
+// ParseSusPairs 解析字符串格式的可疑函数对并加入配置
 func ParseSusPairs(s string) {
-	cfg.mu.Lock()
-	defer cfg.mu.Unlock()
-
-	// 逐对解析 (id1,id2) 格式
-	for len(s) > 0 {
-		// 查找左括号
-		left := strings.Index(s, "(")
-		if left == -1 {
-			break
-		}
-		// 查找右括号
-		right := strings.Index(s[left:], ")")
-		if right == -1 {
-			break
-		}
-		right += left // 调整为绝对位置
-
-		// 提取括号内的内容
-		pairStr := s[left+1 : right]
-
-		// 解析两个 ID
-		var id1, id2 uint64
-		_, err := fmt.Sscanf(pairStr, "%d,%d", &id1, &id2)
-		if err == nil {
-			cfg.activeFunc[id1] = struct{}{}
-			cfg.activeFunc[id2] = struct{}{}
-			cfg.preFuncMap[id2] = append(cfg.preFuncMap[id2], id1)
-			actual, _ := cfg.waitMap.LoadOrStore(id2, new(atomic.Int32))
-			actual.(*atomic.Int32).Add(1)
-		}
-
-		// 移动到下一对
-		s = s[right+1:]
-	}
+	strategy.ParseSusPairs(s)
 }
 
-// PrintSusConPairs 打印所有并发函数对到stderr
-// 格式：[CONPAIR] node1:funcId = xxx,callloc = xxx;node2:funcid = xxx,callloc = xxx
+// PrintSusConPairs 检测并打印所有可疑的并发函数对到 stderr
 func PrintSusConPairs() {
 	if os.Getenv("RECORD_STACK") == "1" {
 		return
 	}
 	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
-	// 重新检测并发函数对（在测试结束时调用，此时所有函数都已执行完毕）
-	pairs := oa.DetectFunctionOverlaps()
 
+	pairs := oa.DetectFunctionOverlaps()
 	if len(pairs) == 0 {
 		print("No concurrent function pairs found.\n")
 		return
-	} else {
-		print("Concurrent function pairs found:\n")
 	}
+	print("Concurrent function pairs found:\n")
 
-	susPairs := InferSuspiciousPairs(pairs)
-
+	susPairs := overlap.InferSuspiciousPairs(pairs)
 	for _, pair := range susPairs {
-		info := pair.String()
-		print(info)
+		print(pair.String())
 	}
 }
 
-// Trace 自动插桩函数，在函数开始处调用 用法：defer Trace(funcID)()
-func Trace(funcID uint64) func() {
-
-	pointControl(funcID)
-
-	// RECORD_STACK=0 时跳过调用栈记录，仅保留断点控制
-	if os.Getenv("RECORD_STACK") == "1" {
-		return func() {}
-	}
-
-	//mu.Lock()
-	node := collector.EnterFunction(funcID)
-	//mu.Unlock()
-
-	// 返回的闭包将在defer时执行
-	return func() {
-		//mu.Lock()
-		//defer mu.Unlock()
-		collector.ExitFunction(node)
-	}
-}
-
-// findPrev 查找指定 funcId 的前驱 ID
-func (c *Config) findPrev(funcId uint64) []uint64 {
-	if prevId, ok := c.preFuncMap[funcId]; ok {
-		return prevId
-	}
-	return nil // 没有前驱
-}
-
-// todo
-// pointControl 实现函数对之间的断点控制
-func pointControl(funcId uint64) {
-	if atomic.LoadUint32(&cfg.hasActive) == 0 {
-		return
-	}
-	if !cfg.isActive(funcId) {
-		return
-	}
-	//判断函数是否需要等待
-	if cfg.doWait(funcId) {
-		preIds := cfg.findPrev(funcId)
-		if preIds != nil {
-			for _, preId := range preIds {
-				waiter := getWaiter(preId)
-
-				// todo 待收集
-				select {
-				case <-waiter:
-					cfg.waitMapDec(funcId)
-					fmt.Printf("{COVERED} {%v, %v}\n", preId, funcId) //作为冷却时期的反馈
-				case <-time.After(timeout):
-					fmt.Printf("{TIMEOUT} {%v, %v}\n", preId, funcId)
-				}
-			}
-		}
-	}
-	completeOperation(funcId)
-}
-
-// isActive 判断函数是否处于活动状态
-func (c *Config) isActive(funcId uint64) bool {
-
-	_, ok := c.activeFunc[funcId]
-	return ok
-}
-
-// doWait 判断函数是否需要等待
-func (c *Config) doWait(funcId uint64) bool {
-	if value, ok := c.waitMap.Load(funcId); ok {
-		return value.(*atomic.Int32).Load() > 0
-	}
-	return false
-}
-
-// waitMapDec 减少指定函数 ID 的等待计数
-func (c *Config) waitMapDec(funcId uint64) {
-
-	if val, ok := c.waitMap.Load(funcId); ok {
-		newVal := val.(*atomic.Int32).Add(-1)
-		if newVal <= 0 {
-			c.waitMap.Delete(funcId)
-		}
-	}
-}
-
-// getWaiter 获取或创建指定操作 ID 的等待 channel
-func getWaiter(id uint64) chan struct{} {
-	// 尝试加载已存在的 waiter
-	if val, ok := waiters.Load(id); ok {
-		return val.(chan struct{})
-	}
-
-	// 创建新的 waiter
-	newWaiter := make(chan struct{}, 1) // 缓冲为 1，避免发送时阻塞
-
-	// 存储，如果已被其他协程创建则使用已有的
-	actual, _ := waiters.LoadOrStore(id, newWaiter)
-	return actual.(chan struct{})
-}
-
-// completeOperation 标记操作完成，通知所有等待者
-func completeOperation(id uint64) {
-	if val, ok := waiters.LoadAndDelete(id); ok {
-		ch := val.(chan struct{})
-		// 安全关闭：使用 select 检测 channel 是否已被关闭
-		// LoadAndDelete 保证原子删除，但 channel 可能已被 else 分支预先关闭
-		select {
-		case <-ch:
-			// channel 已关闭，无需重复关闭
-		default:
-			close(ch)
-		}
-		return
-	}
-	// 向前引用：completeOperation 发生在任何 getWaiter 之前
-	// 创建一个预先关闭的 channel，后续 getWaiter 会直接返回
-	done := make(chan struct{})
-	close(done)
-	waiters.LoadOrStore(id, done)
-}
-
+// PrintTrees 打印所有 goroutine 的调用树和统计信息
 func PrintTrees() {
-	// 获取并打印调用树
 	trees := collector.GetAllCallTrees()
-
-	for goroutineID, _ := range trees {
+	for goroutineID := range trees {
 		fmt.Printf("\n")
 		collector.PrintCallTree(goroutineID)
 
-		// 获取统计信息
 		stats := collector.GetStatistics(goroutineID)
 		if stats != nil {
 			fmt.Printf("\n统计信息:\n")
