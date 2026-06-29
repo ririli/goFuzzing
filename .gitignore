@@ -1,0 +1,15 @@
+# IDE 配置（JetBrains GoLand）
+.idea/
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# Go 依赖（如使用 vendor）
+# vendor/
+
+# 临时文件
+*.swp
+*.swo
+*~
+*.log
