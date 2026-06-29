@@ -26,7 +26,7 @@ var (
 
 func init() {
 	cfg = NewConfig()
-	timeout = 40 * time.Millisecond
+	timeout = 10 * time.Millisecond
 	tracker = NewGoroutineTracker()
 }
 
@@ -108,7 +108,9 @@ func EnterMain() {
 	tracker.EnterGoroutineWithParent(0, 0) // 主goroutine没有父goroutine
 }
 
-// ExitMain 记录主goroutine的结束时间并通知等待者
+// ExitMain 记录主goroutine的结束时间
+// 主goroutine (gid=0) 无 EnterMain 对应的 pointControl，
+// 因此 completeOperation(0) 仍在此处调用，确保等待主goroutine的子goroutine能收到通知
 // 在生成的 TestXxx_1 包装函数中defer调用
 func ExitMain() {
 	gidMap.Delete(getCurrentGoroutineID())
@@ -117,21 +119,22 @@ func ExitMain() {
 }
 
 // Enter goroutine级别入口hook，在go语句创建的goroutine开始时调用
+// 与 callstack.Trace 对齐：pointControl 作为第一条语句，确保等待者能尽快被唤醒
 func Enter(gid uint64) {
+	pointControl(gid)
+
 	// 查找父goroutine ID（创建当前goroutine的那个goroutine）
 	parentGid := CurrentGid()
 	// 存储当前OS goroutine → gid的映射
 	gidMap.Store(getCurrentGoroutineID(), gid)
-
-	pointControl(gid)
 	tracker.EnterGoroutineWithParent(gid, parentGid)
 }
 
 // Exit goroutine级别出口hook，在go语句创建的goroutine结束时defer调用
+// 注意：completeOperation 已在 Enter→pointControl 入口处调用，此处不再重复通知
 func Exit(gid uint64) {
 	gidMap.Delete(getCurrentGoroutineID())
 	tracker.ExitGoroutine(gid)
-	completeOperation(gid)
 }
 
 // pointControl 实现goroutine之间的断点控制
