@@ -15,7 +15,7 @@ type CorpusOp struct {
 	byFunc map[uint64]map[uint64]struct{} // FuncId -> OpId 集合，按函数索引
 
 	// blockedPairs 记录已处理/屏蔽的操作对
-	// key: opPairKey, value: -1=已完成(panic触发过), >0=超时次数(>=阈值=永久屏蔽)
+	// key: opPairKey, value: -1=已完成(panic触发过), >0=超时次数(>=阈值=永久屏蔽
 	blockedPairs map[string]int
 }
 
