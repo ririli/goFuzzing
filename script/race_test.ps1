@@ -66,6 +66,9 @@ Write-Host "  Timeout  : ${TimeoutMinutes} min/package" -ForegroundColor Cyan
 Write-Host "============================================" -ForegroundColor Cyan
 Write-Host ""
 
+# Start global wall-clock timer
+$globalSW = [System.Diagnostics.Stopwatch]::StartNew()
+
 # ============================================================
 # 1. Discover test packages
 # ============================================================
@@ -287,16 +290,18 @@ foreach ($pkg in $testPkgs) {
     }
 
     $elapsed = $sw.Elapsed.ToString("mm\:ss")
+    $elapsedSec = [math]::Round($sw.Elapsed.TotalSeconds, 2)
     $statusIcon = if ($pkgResult -eq "CMDFAIL") { "[CMDFAIL]" } elseif ($raceCount -gt 0) { "[RACE]" } elseif ($panicCount -gt 0) { "[PANIC]" } elseif ($pkgResult -eq "FAIL") { "[FAIL]" } else { "OK" }
     $statusColor = if ($pkgResult -eq "CMDFAIL") { "Magenta" } elseif ($raceCount -gt 0) { "Red" } elseif ($panicCount -gt 0) { "Red" } elseif ($pkgResult -eq "FAIL") { "Yellow" } else { "Green" }
     Write-Host " ${elapsed}  $statusIcon (races=$raceCount, panics=$panicCount)" -ForegroundColor $statusColor
 
     [void]$results.Add([PSCustomObject]@{
-        Package    = $pkg
-        Result     = $pkgResult
-        RaceCount  = $raceCount
-        PanicCount = $panicCount
-        Elapsed    = $elapsed
+        Package        = $pkg
+        Result         = $pkgResult
+        RaceCount      = $raceCount
+        PanicCount     = $panicCount
+        Elapsed        = $elapsed
+        ElapsedSeconds = $elapsedSec
     })
 }
 
@@ -367,6 +372,10 @@ $($pw.Block)
 # ============================================================
 # 4. Generate summary
 # ============================================================
+$globalSW.Stop()
+$wallTimeSec = [math]::Round($globalSW.Elapsed.TotalSeconds, 2)
+$testTimeSec = [math]::Round(($results | Measure-Object -Property ElapsedSeconds -Sum).Sum, 2)
+
 Write-Host "[4/4] Generating summary..." -ForegroundColor Yellow
 
 $passCount = ($results | Where-Object { $_.Result -eq "PASS" -and $_.RaceCount -eq 0 -and $_.PanicCount -eq 0 }).Count
@@ -396,6 +405,9 @@ $summaryContent = @"
   Panic detected  : $panicPkgCount
   Total race blocks: $totalRaces
   Total panic blocks: $totalPanics
+  ----------------------------------------
+  Wall time       : $($wallTimeSec.ToString('0.00')) s
+  go test (sum)   : $($testTimeSec.ToString('0.00')) s
 
 ============================================
   Per-Package Results
@@ -449,6 +461,9 @@ Write-Host "  Race detected   : $racePkgCount" -ForegroundColor Red
 Write-Host "  Panic detected  : $panicPkgCount" -ForegroundColor Red
 Write-Host "  Total race blocks: $totalRaces" -ForegroundColor Red
 Write-Host "  Total panic blocks: $totalPanics" -ForegroundColor Red
+Write-Host "  ----------------------------------------" -ForegroundColor DarkGray
+Write-Host "  Wall time       : $($wallTimeSec.ToString('0.00')) s" -ForegroundColor White
+Write-Host "  Test time (sum) : $($testTimeSec.ToString('0.00')) s" -ForegroundColor White
 Write-Host ""
 Write-Host "  Full report: $summaryFile" -ForegroundColor Cyan
 Write-Host "  Race warnings: $raceFile" -ForegroundColor Cyan
