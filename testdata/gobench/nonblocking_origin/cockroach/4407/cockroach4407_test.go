@@ -4,8 +4,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-
-	"github.com/timmyyuan/gobench/gobench/goker/inst"
 )
 
 type Stopper struct {
@@ -15,7 +13,6 @@ type Stopper struct {
 }
 
 func (s *Stopper) RunWorker(f func()) {
-	inst.WaitTimeout(500 * time.Millisecond)
 	s.stop.Add(1)
 	go func() {
 		defer s.stop.Done()
@@ -30,7 +27,6 @@ func (s *Stopper) SetStopped() {
 }
 
 func (s *Stopper) Stop() {
-	inst.WaitTimeout(500 * time.Millisecond)
 	close(s.stopper)
 	s.stop.Wait()
 	s.mu.Lock()
