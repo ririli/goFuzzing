@@ -62,11 +62,6 @@ func ParseInput() {
 	strategy.ParseInput()
 }
 
-// ParseSusPairs 解析字符串格式的可疑函数对并加入配置
-func ParseSusPairs(s string) {
-	strategy.ParseSusPairs(s)
-}
-
 // PrintSusConPairs 检测并打印所有可疑的并发函数对到 stderr
 func PrintSusConPairs() {
 	if os.Getenv("RECORD_STACK") == "1" {

@@ -3,20 +3,19 @@ package main
 import (
 	"fmt"
 	"toolkit/cmd"
-	"toolkit/pkg/bug"
 	"toolkit/pkg/fuzzer"
 )
 
 func Lite(bin, fn string, llevel string, timeout, recovertimeout int, maxworker int) {
 	resCh := make(chan string, 100)
 	logCh := make(chan string, 100)
-	bugset := bug.NewBugSet()
+	//bugset := bug.NewBugSet()
 	nolimit := make(chan struct{})
 	close(nolimit)
 	dowork := func(bin string, fn string) {
 		m := fuzzer.Monitor{}
 
-		cfg := fuzzer.NewConfig(bin, fn, logCh, bugset, "default")
+		cfg := fuzzer.NewConfig(bin, fn, logCh, "default")
 		cfg.LogLevel = llevel
 		cfg.TimeOut = timeout
 		cfg.RecoverTimeOut = recovertimeout

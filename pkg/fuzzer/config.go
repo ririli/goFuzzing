@@ -1,7 +1,5 @@
 package fuzzer
 
-import "toolkit/pkg/bug"
-
 type Config struct {
 	Bin string
 	Fn  string
@@ -26,7 +24,6 @@ type Config struct {
 	MaxQuit         int
 	MaxPreExecRound int // 预执行轮次上限
 
-	BugSet *bug.BugSet
 }
 
 func DefaultConfig() *Config {
@@ -70,7 +67,7 @@ func GokerConfig() *Config {
 	return c
 }
 
-func NewConfig(bin, fn string, logCh chan string, bugset *bug.BugSet, typ string) *Config {
+func NewConfig(bin, fn string, logCh chan string, typ string) *Config {
 	var c *Config
 	switch typ {
 	case "goker":
@@ -81,6 +78,5 @@ func NewConfig(bin, fn string, logCh chan string, bugset *bug.BugSet, typ string
 	c.Bin = bin
 	c.Fn = fn
 	c.LogCh = logCh
-	c.BugSet = bugset
 	return c
 }

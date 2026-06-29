@@ -21,6 +21,10 @@ func (p *TestPass) Before(ctx *inst.InstContext) {
 }
 
 func (p *TestPass) After(ctx *inst.InstContext) {
+	need, _ := ctx.GetMetadata(TestNeedInst)
+	if needinst := need.(bool); needinst {
+		inst.AddImport(ctx.FS, ctx.AstFile, "sched", "toolkit/pkg/sched")
+	}
 }
 
 func (p *TestPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {

@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 	"toolkit/cmd"
-	"toolkit/pkg/bug"
 	"toolkit/pkg/fuzzer"
 )
 
@@ -25,8 +24,6 @@ func Full(path string, llevel string, feature string, maxworker int) {
 	// 二进制文件对应的测试函数
 	bin2tests := make(map[string][]string)
 
-	bugset := bug.NewBugSet()
-
 	bins := cmd.ListFiles(path, func(s string) bool {
 		return true
 	})
@@ -46,7 +43,6 @@ func Full(path string, llevel string, feature string, maxworker int) {
 			for _, test := range tests {
 				cfg := fuzzer.DefaultConfig() //fuzzing Config
 				// shared bugset
-				cfg.BugSet = bugset
 				cfg.Bin = bin
 				cfg.Fn = test
 				cfg.MaxWorker = 4
