@@ -24,6 +24,7 @@ var (
 	timeoutGlobal time.Duration
 )
 
+// todo 反馈阶段还在收集时间信息
 func init() {
 	cfg = NewConfig()
 	timeout = 10 * time.Millisecond
