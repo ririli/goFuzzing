@@ -3,8 +3,6 @@ package kubernetes88331
 import (
 	"sync"
 	"testing"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type data struct {
@@ -74,11 +72,7 @@ func createAndRunPriorityQueue() *PriorityQueue {
 }
 
 func (p *PriorityQueue) Run() {
-	go func() {
-		goroutine.Enter(296352743425)
-		defer goroutine.Exit(296352743425)
-		Until(p.flushBackoffQCompleted, p.stop)
-	}()
+	go Until(p.flushBackoffQCompleted, p.stop)
 }
 
 func BackoffUntil(f func(), stopCh <-chan struct{}) {
@@ -112,32 +106,9 @@ func TestKubernetes88331(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		goroutine.Enter(296352743426)
-		defer goroutine.Exit(296352743426)
-		func() {
-			wg.Done()
-			p := createAndRunPriorityQueue()
-			p.podBackoffQ.Len()
-		}()
-	}()
-	wg.Wait()
-}
-func TestKubernetes88331_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		goroutine.Enter(296352743426)
-		defer goroutine.Exit(296352743426)
-		func() {
-			wg.Done()
-			p := createAndRunPriorityQueue()
-			p.podBackoffQ.Len()
-		}()
+		wg.Done()
+		p := createAndRunPriorityQueue()
+		p.podBackoffQ.Len()
 	}()
 	wg.Wait()
 }

@@ -4,8 +4,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 var minConnectTimeout = 10 * time.Second
@@ -73,11 +71,7 @@ func (ac *addrConn) transportMonitor() {
 
 func (ac *addrConn) connect() {
 	go func() {
-		goroutine.Enter(987842478081)
-		defer goroutine.Exit(987842478081)
-		func() {
-			ac.transportMonitor()
-		}()
+		ac.transportMonitor()
 	}()
 }
 
@@ -132,11 +126,7 @@ func (ccb *ccBalancerWrapper) NewSubConn() SubConn {
 
 func newCCBalancerWrapper(cc *ClientConn, b Builder) {
 	ccb := &ccBalancerWrapper{cc: cc}
-	go func() {
-		goroutine.Enter(987842478082)
-		defer goroutine.Exit(987842478082)
-		ccb.watcher()
-	}()
+	go ccb.watcher()
 	balanceMutex.Lock()
 	defer balanceMutex.Unlock()
 	ccb.balancer = b.Build(ccb)
@@ -146,42 +136,14 @@ func TestGrpc1748(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		goroutine.Enter(987842478083)
-		defer goroutine.Exit(987842478083)
-		func() {
-			defer wg.Done()
-			mctBkp := minConnectTimeout
-			// Call this only after transportMonitor goroutine has ended.
-			defer func() {
-				minConnectTimeout = mctBkp
-			}()
-			cc := &ClientConn{}
-			cc.switchBalancer()
+		defer wg.Done()
+		mctBkp := minConnectTimeout
+		// Call this only after transportMonitor goroutine has ended.
+		defer func() {
+			minConnectTimeout = mctBkp
 		}()
-	}()
-	wg.Wait()
-}
-func TestGrpc1748_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		goroutine.Enter(987842478083)
-		defer goroutine.Exit(987842478083)
-		func() {
-			defer wg.Done()
-			mctBkp := minConnectTimeout
-
-			defer func() {
-				minConnectTimeout = mctBkp
-			}()
-			cc := &ClientConn{}
-			cc.switchBalancer()
-		}()
+		cc := &ClientConn{}
+		cc.switchBalancer()
 	}()
 	wg.Wait()
 }

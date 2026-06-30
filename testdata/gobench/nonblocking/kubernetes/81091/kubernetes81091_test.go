@@ -3,8 +3,6 @@ package kubernetes81091
 import (
 	"sync"
 	"testing"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type FakeFilterPlugin struct {
@@ -79,19 +77,15 @@ func ParallelizeUntil(workers, pieces int, doWorkPiece DoWorkPieceFunc) {
 	wg.Add(workers)
 	for i := 0; i < workers; i++ {
 		go func() {
-			goroutine.Enter(1035087118337)
-			defer goroutine.Exit(1035087118337)
-			func() {
-				defer wg.Done()
-				for piece := range toProcess {
-					select {
-					case <-stop:
-						return
-					default:
-						doWorkPiece(piece)
-					}
+			defer wg.Done()
+			for piece := range toProcess {
+				select {
+				case <-stop:
+					return
+				default:
+					doWorkPiece(piece)
 				}
-			}()
+			}
 		}()
 	}
 	wg.Wait()
@@ -101,34 +95,10 @@ func TestKubernetes81091(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		goroutine.Enter(1035087118338)
-		defer goroutine.Exit(1035087118338)
-		func() {
-			defer wg.Done()
-			filterFramework := NewFramework()
-			scheduler := NewGenericScheduler(filterFramework)
-			scheduler.Schedule()
-		}()
-	}()
-	wg.Wait()
-}
-func TestKubernetes81091_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		goroutine.Enter(1035087118338)
-		defer goroutine.Exit(1035087118338)
-		func() {
-			defer wg.Done()
-			filterFramework := NewFramework()
-			scheduler := NewGenericScheduler(filterFramework)
-			scheduler.Schedule()
-		}()
+		defer wg.Done()
+		filterFramework := NewFramework()
+		scheduler := NewGenericScheduler(filterFramework)
+		scheduler.Schedule()
 	}()
 	wg.Wait()
 }

@@ -4,8 +4,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 var leaseRevokeRate = 1000
@@ -54,11 +52,7 @@ func (le *lessor) runLoop() {
 
 func newLessor() *lessor {
 	l := &lessor{}
-	go func() {
-		goroutine.Enter(236223201281)
-		defer goroutine.Exit(236223201281)
-		l.runLoop()
-	}()
+	go l.runLoop()
 	return l
 }
 
@@ -70,46 +64,12 @@ func TestEtcd8194(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(2)
 	go func() {
-		goroutine.Enter(236223201282)
-		defer goroutine.Exit(236223201282)
-		func() {
-			defer wg.Done()
-			testLessorGrant()
-		}()
+		defer wg.Done()
+		testLessorGrant()
 	}()
 	go func() {
-		goroutine.Enter(236223201283)
-		defer goroutine.Exit(236223201283)
-		func() {
-			defer wg.Done()
-			testLessorRenewExtendPileup()
-		}()
-	}()
-	wg.Wait()
-}
-func TestEtcd8194_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(2)
-	go func() {
-		goroutine.Enter(236223201282)
-		defer goroutine.Exit(236223201282)
-		func() {
-			defer wg.Done()
-			testLessorGrant()
-		}()
-	}()
-	go func() {
-		goroutine.Enter(236223201283)
-		defer goroutine.Exit(236223201283)
-		func() {
-			defer wg.Done()
-			testLessorRenewExtendPileup()
-		}()
+		defer wg.Done()
+		testLessorRenewExtendPileup()
 	}()
 	wg.Wait()
 }

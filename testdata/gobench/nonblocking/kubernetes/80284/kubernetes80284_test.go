@@ -3,8 +3,6 @@ package kubernetes80284
 import (
 	"sync"
 	"testing"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type Dialer struct{}
@@ -34,33 +32,8 @@ func TestKubernetes80284(t *testing.T) {
 	a := newAuthenticator()
 	for i := 0; i < 2; i++ {
 		go func() {
-			goroutine.Enter(274877906945)
-			defer goroutine.Exit(274877906945)
-			func() {
-				defer wg.Done()
-				a.UpdateTransportConfig()
-			}()
-		}()
-	}
-	wg.Wait()
-}
-func TestKubernetes80284_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(2)
-	a := newAuthenticator()
-	for i := 0; i < 2; i++ {
-		go func() {
-			goroutine.Enter(274877906945)
-			defer goroutine.Exit(274877906945)
-			func() {
-				defer wg.Done()
-				a.UpdateTransportConfig()
-			}()
+			defer wg.Done()
+			a.UpdateTransportConfig()
 		}()
 	}
 	wg.Wait()

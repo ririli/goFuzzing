@@ -4,8 +4,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type cacheWatcher int
@@ -34,11 +32,7 @@ func (c *Cacher) dispatchEvents() {
 
 func NewCacherFromConfig() *Cacher {
 	cacher := &Cacher{}
-	go func() {
-		goroutine.Enter(639950127105)
-		defer goroutine.Exit(639950127105)
-		cacher.dispatchEvents()
-	}()
+	go cacher.dispatchEvents()
 	return cacher
 }
 
@@ -50,29 +44,7 @@ func TestKubernetes77796(t *testing.T) {
 	cacher := newTestCacher()
 	for i := 0; i < 3; i++ {
 		go func() {
-			goroutine.Enter(639950127106)
-			defer goroutine.Exit(639950127106)
-			func() {
-				cacher.dispatchEvent()
-			}()
-		}()
-		time.Sleep(10 * time.Millisecond)
-	}
-}
-func TestKubernetes77796_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	cacher := newTestCacher()
-	for i := 0; i < 3; i++ {
-		go func() {
-			goroutine.Enter(639950127106)
-			defer goroutine.Exit(639950127106)
-			func() {
-				cacher.dispatchEvent()
-			}()
+			cacher.dispatchEvent()
 		}()
 		time.Sleep(10 * time.Millisecond)
 	}

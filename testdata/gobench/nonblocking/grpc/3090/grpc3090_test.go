@@ -4,8 +4,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type resolver_ClientConn interface {
@@ -49,11 +47,7 @@ func (ccr *ccResolverWrapper) poll() {
 	ccr.mu.Lock()
 	defer ccr.mu.Unlock()
 	go func() {
-		goroutine.Enter(158913789953)
-		defer goroutine.Exit(158913789953)
-		func() {
-			ccr.resolveNow()
-		}()
+		ccr.resolveNow()
 	}()
 }
 
@@ -96,32 +90,9 @@ func TestGrpc3090(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		goroutine.Enter(158913789954)
-		defer goroutine.Exit(158913789954)
-		func() {
-			defer wg.Done()
-			Dial()
-			time.Sleep(5 * time.Millisecond)
-		}()
-	}()
-	wg.Wait()
-}
-func TestGrpc3090_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		goroutine.Enter(158913789954)
-		defer goroutine.Exit(158913789954)
-		func() {
-			defer wg.Done()
-			Dial()
-			time.Sleep(5 * time.Millisecond)
-		}()
+		defer wg.Done()
+		Dial()
+		time.Sleep(5 * time.Millisecond)
 	}()
 	wg.Wait()
 }

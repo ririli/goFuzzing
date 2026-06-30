@@ -3,8 +3,6 @@ package cockroach35501
 import (
 	"sync"
 	"testing"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type MutableTableDescriptor struct {
@@ -58,11 +56,7 @@ func (*SchemaChanger) validateChecks(checks []ConstraintToValidate) {
 		desc := NewImmutableTableDescriptor(*tableDesc).MakeFirstMutationPublic()
 		for _, c := range checks {
 			go func() {
-				goroutine.Enter(219043332097)
-				defer goroutine.Exit(219043332097)
-				func() {
-					validateCheckInTxn(desc, &c.Name)
-				}()
+				validateCheckInTxn(desc, &c.Name)
 			}()
 		}
 	}()
@@ -80,32 +74,9 @@ func TestCockroach35501(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		goroutine.Enter(219043332098)
-		defer goroutine.Exit(219043332098)
-		func() {
-			defer wg.Done()
-			sc := &SchemaChanger{}
-			sc.runBackfill()
-		}()
-	}()
-	wg.Wait()
-}
-func TestCockroach35501_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		goroutine.Enter(219043332098)
-		defer goroutine.Exit(219043332098)
-		func() {
-			defer wg.Done()
-			sc := &SchemaChanger{}
-			sc.runBackfill()
-		}()
+		defer wg.Done()
+		sc := &SchemaChanger{}
+		sc.runBackfill()
 	}()
 	wg.Wait()
 }

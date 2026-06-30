@@ -12,19 +12,19 @@ import (
 // GoroutinePass 插桩go语句，为每个goroutine分配唯一ID并包装生命周期hook
 // 将 go f(args) 转换为:
 //
-//	go func() {
-//	    goroutine.Enter(id)
+//	go func(_parentGid uint64) {
+//	    goroutine.Enter(id, _parentGid)
 //	    defer goroutine.Exit(id)
 //	    f(args)
-//	}()
+//	}(goroutine.CurrentGid())
 //
 // 将 go func(){body}() 转换为:
 //
-//	go func() {
-//	    goroutine.Enter(id)
+//	go func(_parentGid uint64) {
+//	    goroutine.Enter(id, _parentGid)
 //	    defer goroutine.Exit(id)
 //	    func(){body}()
-//	}()
+//	}(goroutine.CurrentGid())
 var (
 	GoroutineInstNeed   = "GoroutineNeedInst"
 	GoroutineImportName = "goroutine"
@@ -72,14 +72,23 @@ func (p *GoroutinePass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Curso
 
 // wrapGoStmt 将go语句包装为带生命周期hook的匿名函数调用
 // 统一处理 go f(args) 和 go func(){body}() 两种形式
+// 通过匿名函数参数将父goroutine的gid传入子goroutine（参数在父goroutine中求值）
 func wrapGoStmt(goStmt *ast.GoStmt, id uint64) *ast.GoStmt {
-	// goroutine.Enter(id)
+	// _parentGid 形参
+	parentGidIdent := &ast.Ident{Name: "_parentGid"}
+	paramField := &ast.Field{
+		Names: []*ast.Ident{parentGidIdent},
+		Type:  &ast.Ident{Name: "uint64"},
+	}
+
+	// goroutine.Enter(id, _parentGid)
 	enterCall := NewArgCallExpr("goroutine", "Enter", []ast.Expr{
 		&ast.BasicLit{
 			ValuePos: 0,
 			Kind:     token.INT,
 			Value:    strconv.FormatUint(id, 10),
 		},
+		&ast.Ident{Name: "_parentGid"},
 	})
 
 	// defer goroutine.Exit(id)
@@ -93,7 +102,7 @@ func wrapGoStmt(goStmt *ast.GoStmt, id uint64) *ast.GoStmt {
 		}),
 	}
 
-	// 函数体: { goroutine.Enter(id); defer goroutine.Exit(id); <原始调用> }
+	// 函数体: { goroutine.Enter(id, _parentGid); defer goroutine.Exit(id); <原始调用> }
 	body := &ast.BlockStmt{
 		List: []ast.Stmt{
 			enterCall,
@@ -102,14 +111,17 @@ func wrapGoStmt(goStmt *ast.GoStmt, id uint64) *ast.GoStmt {
 		},
 	}
 
+	// goroutine.CurrentGid() 调用 —— 作为匿名函数的实参，在父goroutine中求值
+	currentGidCall := NewArgCall("goroutine", "CurrentGid", []ast.Expr{})
+
 	return &ast.GoStmt{
 		Go: goStmt.Go,
 		Call: &ast.CallExpr{
 			Fun: &ast.FuncLit{
-				Type: &ast.FuncType{Params: &ast.FieldList{List: nil}},
+				Type: &ast.FuncType{Params: &ast.FieldList{List: []*ast.Field{paramField}}},
 				Body: body,
 			},
-			Args: []ast.Expr{},
+			Args: []ast.Expr{currentGidCall},
 		},
 	}
 }

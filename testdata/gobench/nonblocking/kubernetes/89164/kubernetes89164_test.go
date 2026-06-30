@@ -3,8 +3,6 @@ package kubernetes89164
 import (
 	"sync"
 	"testing"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type cacheWatcher int
@@ -33,11 +31,7 @@ func (c *Cacher) dispatchEvents() {
 
 func NewCacherFromConfig() *Cacher {
 	cacher := &Cacher{}
-	go func() {
-		goroutine.Enter(1073741824001)
-		defer goroutine.Exit(1073741824001)
-		cacher.dispatchEvents()
-	}()
+	go cacher.dispatchEvents()
 	return cacher
 }
 
@@ -51,33 +45,8 @@ func TestKubernetes89164(t *testing.T) {
 		wg := sync.WaitGroup{}
 		wg.Add(1)
 		go func() {
-			goroutine.Enter(1073741824002)
-			defer goroutine.Exit(1073741824002)
-			func() {
-				cacher.dispatchEvent()
-				wg.Done()
-			}()
-		}()
-		wg.Wait()
-	}
-}
-func TestKubernetes89164_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	cacher := newTestCacher()
-	for i := 0; i < 3; i++ {
-		wg := sync.WaitGroup{}
-		wg.Add(1)
-		go func() {
-			goroutine.Enter(1073741824002)
-			defer goroutine.Exit(1073741824002)
-			func() {
-				cacher.dispatchEvent()
-				wg.Done()
-			}()
+			cacher.dispatchEvent()
+			wg.Done()
 		}()
 		wg.Wait()
 	}

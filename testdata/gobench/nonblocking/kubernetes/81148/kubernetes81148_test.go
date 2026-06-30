@@ -4,8 +4,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 const unschedulableQTimeInterval = 60 * time.Second
@@ -54,11 +52,7 @@ func (p *PriorityQueue) flushUnschedulableQLeftover() {
 }
 
 func (p *PriorityQueue) run() {
-	go func() {
-		goroutine.Enter(459561500673)
-		defer goroutine.Exit(459561500673)
-		Until(p.flushUnschedulableQLeftover, p.stop)
-	}()
+	go Until(p.flushUnschedulableQLeftover, p.stop)
 }
 
 func (p *PriorityQueue) newPodInfo(pod Pod) *PodInfo {
@@ -119,38 +113,11 @@ func TestKubernetes81148(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		goroutine.Enter(459561500674)
-		defer goroutine.Exit(459561500674)
-		func() {
-			defer wg.Done()
-			q := NewPriorityQueue(stop)
-			highPod := Pod("1")
-			addOrUpdateUnschedulablePod(q, highPod)
-			q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
-		}()
-	}()
-	wg.Wait()
-	close(stop)
-}
-func TestKubernetes81148_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	stop := make(chan struct{})
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		goroutine.Enter(459561500674)
-		defer goroutine.Exit(459561500674)
-		func() {
-			defer wg.Done()
-			q := NewPriorityQueue(stop)
-			highPod := Pod("1")
-			addOrUpdateUnschedulablePod(q, highPod)
-			q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
-		}()
+		defer wg.Done()
+		q := NewPriorityQueue(stop)
+		highPod := Pod("1")
+		addOrUpdateUnschedulablePod(q, highPod)
+		q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
 	}()
 	wg.Wait()
 	close(stop)

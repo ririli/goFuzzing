@@ -3,8 +3,6 @@ package istio16742
 import (
 	"sync"
 	"testing"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 var (
@@ -92,69 +90,19 @@ func TestIstio16742(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(3)
 	go func() {
-		goroutine.Enter(120259084289)
-		defer goroutine.Exit(120259084289)
-		func() {
+		defer wg.Done()
+		registry := &MemServiceDiscovery{
+			EDSUpdater: &DiscoveryServer{
+				ConfigGenerator: &ConfigGeneratorImpl{},
+			},
+		}
+		go func() {
 			defer wg.Done()
-			registry := &MemServiceDiscovery{
-				EDSUpdater: &DiscoveryServer{
-					ConfigGenerator: &ConfigGeneratorImpl{},
-				},
-			}
-			go func() {
-				goroutine.Enter(120259084290)
-				defer goroutine.Exit(120259084290)
-				func() {
-					defer wg.Done()
-					registry.EDSUpdater.(*DiscoveryServer).StreamAggregatedResources()
-				}()
-			}()
-			go func() {
-				goroutine.Enter(120259084291)
-				defer goroutine.Exit(120259084291)
-				func() {
-					defer wg.Done()
-					registry.AddWorkload()
-				}()
-			}()
+			registry.EDSUpdater.(*DiscoveryServer).StreamAggregatedResources()
 		}()
-	}()
-	wg.Wait()
-}
-func TestIstio16742_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(3)
-	go func() {
-		goroutine.Enter(120259084289)
-		defer goroutine.Exit(120259084289)
-		func() {
+		go func() {
 			defer wg.Done()
-			registry := &MemServiceDiscovery{
-				EDSUpdater: &DiscoveryServer{
-					ConfigGenerator: &ConfigGeneratorImpl{},
-				},
-			}
-			go func() {
-				goroutine.Enter(120259084290)
-				defer goroutine.Exit(120259084290)
-				func() {
-					defer wg.Done()
-					registry.EDSUpdater.(*DiscoveryServer).StreamAggregatedResources()
-				}()
-			}()
-			go func() {
-				goroutine.Enter(120259084291)
-				defer goroutine.Exit(120259084291)
-				func() {
-					defer wg.Done()
-					registry.AddWorkload()
-				}()
-			}()
+			registry.AddWorkload()
 		}()
 	}()
 	wg.Wait()

@@ -4,8 +4,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type ccBalancerWrapper struct {
@@ -34,11 +32,7 @@ type ccResolverWrapper struct {
 }
 
 func (ccr *ccResolverWrapper) start() {
-	go func() {
-		goroutine.Enter(1022202216449)
-		defer goroutine.Exit(1022202216449)
-		ccr.watcher()
-	}()
+	go ccr.watcher()
 }
 
 func (ccr *ccResolverWrapper) watcher() {
@@ -91,29 +85,7 @@ func TestGrpc2371(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		cc := Dial()
 
-		go func() {
-			goroutine.Enter(1022202216450)
-			defer goroutine.Exit(1022202216450)
-			cc.Close()
-		}()
-	}
-
-	time.Sleep(100 * time.Millisecond)
-}
-func TestGrpc2371_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	for i := 0; i < 10; i++ {
-		cc := Dial()
-
-		go func() {
-			goroutine.Enter(1022202216450)
-			defer goroutine.Exit(1022202216450)
-			cc.Close()
-		}()
+		go cc.Close()
 	}
 
 	time.Sleep(100 * time.Millisecond)

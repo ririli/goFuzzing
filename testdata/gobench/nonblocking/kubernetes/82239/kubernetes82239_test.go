@@ -4,8 +4,6 @@ import (
 	"strconv"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type ObjectMeta struct {
@@ -99,11 +97,7 @@ type PersistentVolumeController struct {
 }
 
 func (ctrl *PersistentVolumeController) Run(stopCh <-chan struct{}) {
-	go func() {
-		goroutine.Enter(472446402561)
-		defer goroutine.Exit(472446402561)
-		Until(ctrl.volumeWorker, stopCh)
-	}()
+	go Until(ctrl.volumeWorker, stopCh)
 }
 
 func (ctrl *PersistentVolumeController) volumeWorker() {
@@ -149,45 +143,7 @@ func TestKubernetes82239(t *testing.T) {
 		ctrl.volumeLister = lister
 
 		stopCh := make(chan struct{})
-		go func() {
-			goroutine.Enter(472446402562)
-			defer goroutine.Exit(472446402562)
-			ctrl.Run(stopCh)
-		}()
-		time.Sleep(1 * time.Millisecond)
-		test.test(test)
-		close(stopCh)
-	}
-}
-func TestKubernetes82239_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	tests := []controllerTest{
-		{
-			initialVolumes: volumesWithAnnotation(newVolumeArray()),
-			test: func(test controllerTest) {
-				test.initialVolumes[0].Annotations["0"] = struct{}{}
-			},
-		},
-	}
-
-	for _, test := range tests {
-		ctrl := newTestController()
-
-		lister := &SimplifiedLister{
-			volume: test.initialVolumes[0],
-		}
-		ctrl.volumeLister = lister
-
-		stopCh := make(chan struct{})
-		go func() {
-			goroutine.Enter(472446402562)
-			defer goroutine.Exit(472446402562)
-			ctrl.Run(stopCh)
-		}()
+		go ctrl.Run(stopCh)
 		time.Sleep(1 * time.Millisecond)
 		test.test(test)
 		close(stopCh)

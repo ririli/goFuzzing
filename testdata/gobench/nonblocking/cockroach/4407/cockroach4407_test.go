@@ -4,8 +4,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type Stopper struct {
@@ -17,12 +15,8 @@ type Stopper struct {
 func (s *Stopper) RunWorker(f func()) {
 	s.stop.Add(1)
 	go func() {
-		goroutine.Enter(914828034049)
-		defer goroutine.Exit(914828034049)
-		func() {
-			defer s.stop.Done()
-			f()
-		}()
+		defer s.stop.Done()
+		f()
 	}()
 }
 
@@ -70,31 +64,7 @@ func TestCockroach4407(t *testing.T) {
 		stopper: stopper,
 	}
 	for i := 0; i < 2; i++ {
-		go func() {
-			goroutine.Enter(914828034050)
-			defer goroutine.Exit(914828034050)
-			s.Gossip()
-		}()
-	}
-	time.Sleep(time.Millisecond)
-}
-func TestCockroach4407_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	stopper := NewStopper()
-	defer stopper.Stop()
-	s := &server{
-		stopper: stopper,
-	}
-	for i := 0; i < 2; i++ {
-		go func() {
-			goroutine.Enter(914828034050)
-			defer goroutine.Exit(914828034050)
-			s.Gossip()
-		}()
+		go s.Gossip()
 	}
 	time.Sleep(time.Millisecond)
 }

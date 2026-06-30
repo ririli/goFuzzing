@@ -3,8 +3,6 @@ package serving4908
 import (
 	"sync"
 	"testing"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type TestingT interface {
@@ -119,11 +117,7 @@ func (rw *revisionWatcher) runWithTickCh() {
 
 func (rw *revisionWatcher) checkDests() {
 	go func() {
-		goroutine.Enter(459561500673)
-		defer goroutine.Exit(459561500673)
-		func() {
-			rw.logger.Info("1")
-		}()
+		rw.logger.Info("1")
 	}()
 }
 
@@ -131,60 +125,19 @@ func TestServing4908(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		goroutine.Enter(459561500674)
-		defer goroutine.Exit(459561500674)
-		func() {
-			defer wg.Done()
-			t.Run("TestServing4908", func(t *testing.T) {
-				rw := newRevisionWatcher(
-					testing_TestLogger(t),
-				)
-				var _wg sync.WaitGroup
-				_wg.Add(1)
-				go func() {
-					goroutine.Enter(459561500675)
-					defer goroutine.Exit(459561500675)
-					func() {
-						rw.runWithTickCh()
-						_wg.Done()
-					}()
-				}()
-				_wg.Wait()
-			})
-		}()
-	}()
-	wg.Wait()
-}
-func TestServing4908_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		goroutine.Enter(459561500674)
-		defer goroutine.Exit(459561500674)
-		func() {
-			defer wg.Done()
-			t.Run("TestServing4908", func(t *testing.T) {
-				rw := newRevisionWatcher(
-					testing_TestLogger(t),
-				)
-				var _wg sync.WaitGroup
-				_wg.Add(1)
-				go func() {
-					goroutine.Enter(459561500675)
-					defer goroutine.Exit(459561500675)
-					func() {
-						rw.runWithTickCh()
-						_wg.Done()
-					}()
-				}()
-				_wg.Wait()
-			})
-		}()
+		defer wg.Done()
+		t.Run("TestServing4908", func(t *testing.T) {
+			rw := newRevisionWatcher(
+				testing_TestLogger(t),
+			)
+			var _wg sync.WaitGroup
+			_wg.Add(1)
+			go func() {
+				rw.runWithTickCh()
+				_wg.Done()
+			}()
+			_wg.Wait()
+		})
 	}()
 	wg.Wait()
 }

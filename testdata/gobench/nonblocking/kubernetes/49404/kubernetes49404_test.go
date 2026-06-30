@@ -5,8 +5,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type Handler interface {
@@ -81,12 +79,8 @@ func (s *Server) StartTLS() {
 func (s *Server) goServe() {
 	s.wg.Add(1)
 	go func() {
-		goroutine.Enter(609885356033)
-		defer goroutine.Exit(609885356033)
-		func() {
-			defer s.wg.Done()
-			s.Config.Serve()
-		}()
+		defer s.wg.Done()
+		s.Config.Serve()
 	}()
 }
 
@@ -113,11 +107,7 @@ type http_Server struct {
 
 func (srv *http_Server) Serve() {
 	c := srv.newConn()
-	go func() {
-		goroutine.Enter(609885356034)
-		defer goroutine.Exit(609885356034)
-		c.serve()
-	}()
+	go c.serve()
 }
 
 func (srv *http_Server) newConn() *conn {
@@ -132,32 +122,6 @@ func NewUnstartedServer(handler Handler) *Server {
 }
 
 func TestKubernetes49404(t *testing.T) {
-	ExpectCalled := true
-	called := false
-	func() {
-		backendHandler := NewServeMux()
-		backendHandler.Handle(websocket_Handler(func() {
-			called = true
-		}))
-
-		backendServer := NewUnstartedServer(backendHandler)
-
-		backendServer.StartTLS()
-
-		defer func() {
-			if called != ExpectCalled {
-				_ = fmt.Sprintf("Error")
-			}
-		}()
-	}()
-	time.Sleep(10 * time.Millisecond)
-}
-func TestKubernetes49404_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
 	ExpectCalled := true
 	called := false
 	func() {

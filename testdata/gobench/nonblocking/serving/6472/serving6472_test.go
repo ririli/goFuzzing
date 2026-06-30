@@ -5,8 +5,6 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type workItem struct {
@@ -130,22 +128,14 @@ func (m *Prober) Start() chan struct{} {
 	for i := 0; i < 2; i++ {
 		wg.Add(1)
 		go func() {
-			goroutine.Enter(743029342209)
-			defer goroutine.Exit(743029342209)
-			func() {
-				defer wg.Done()
-				m.processWorkItem()
-			}()
+			defer wg.Done()
+			m.processWorkItem()
 		}()
 	}
 	ch := make(chan struct{})
 	go func() {
-		goroutine.Enter(743029342210)
-		defer goroutine.Exit(743029342210)
-		func() {
-			wg.Wait()
-			close(ch)
-		}()
+		wg.Wait()
+		close(ch)
 	}()
 	return ch
 }
@@ -159,23 +149,6 @@ func NewProber() *Prober {
 }
 
 func TestServing6472(t *testing.T) {
-	prober := NewProber()
-	done := make(chan struct{})
-	cancelled := prober.Start()
-	defer func() {
-		close(done)
-		<-cancelled
-	}()
-
-	prober.IsReady()
-	time.Sleep(1 * time.Millisecond)
-}
-func TestServing6472_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
 	prober := NewProber()
 	done := make(chan struct{})
 	cancelled := prober.Start()

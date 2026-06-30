@@ -25,14 +25,16 @@ type GoroutineRecord struct {
 
 // GoroutineTracker 收集goroutine生命周期记录
 type GoroutineTracker struct {
-	mu      sync.RWMutex
-	gortMap map[uint64][]*GoroutineRecord // gid -> 实例列表
+	mu       sync.RWMutex
+	gortMap  map[uint64][]*GoroutineRecord // gid -> 实例列表
+	childMap map[uint64][]uint64           // parentGid -> childGid 列表
 }
 
 // NewGoroutineTracker 创建新的goroutine追踪器
 func NewGoroutineTracker() *GoroutineTracker {
 	return &GoroutineTracker{
-		gortMap: make(map[uint64][]*GoroutineRecord),
+		gortMap:  make(map[uint64][]*GoroutineRecord),
+		childMap: make(map[uint64][]uint64),
 	}
 }
 
@@ -53,6 +55,9 @@ func (gt *GoroutineTracker) EnterGoroutineWithParent(gid uint64, parentGid uint6
 		StartTime: time.Now().UnixNano(),
 	}
 	gt.gortMap[gid] = append(gt.gortMap[gid], rec)
+	if gid != parentGid {
+		gt.childMap[parentGid] = append(gt.childMap[parentGid], gid)
+	}
 }
 
 // ExitGoroutine 记录goroutine结束
@@ -194,70 +199,204 @@ func (gt *GoroutineTracker) DetectGoroutineOverlaps() []*GoroutinePairInfo {
 	return overlaps
 }
 
-// InferParentChildPairs 推测父子goroutine并发对 (Rule 2, confidence=0.9)
-// 对于每个有父goroutine的记录，生成 (ParentGid, Gid) 对
-func (gt *GoroutineTracker) InferParentChildPairs() []*GoroutinePairInfo {
+// InferAdjacentPairs 基于COVERED对做父子方向邻接推测。
+// 向上：ga.Parent × gb, ga × gb.Parent  (conf=0.5)
+//
+//	goroutine父子是并发关系，parent可能提前退出，因此置信度适中
+//
+// 向下：ga.Children × gb, ga × gb.Children (conf=0.3)
+//
+//	子节点启动时机不确定，与重叠窗口的关系弱于parent方向
+//
+// gid=0参与扩展但不参与最终输出（由PrintGoroutinePairs过滤）
+func (gt *GoroutineTracker) InferAdjacentPairs(observed []*GoroutinePairInfo) []*GoroutinePairInfo {
 	gt.mu.RLock()
 	defer gt.mu.RUnlock()
 
-	var pairs []*GoroutinePairInfo
 	seen := make(map[string]bool)
+	var pairs []*GoroutinePairInfo
 
-	for gid, instances := range gt.gortMap {
-		for _, inst := range instances {
-			if inst.ParentGid == 0 || inst.ParentGid == gid {
-				continue
+	for _, pair := range observed {
+		// === 向下：查子节点 ===
+
+		// A 的子与 B
+		for _, child := range gt.childMap[pair.Gid1] {
+			if child == pair.Gid2 {
+				continue // 排除 (B, B) 自配对
 			}
-			// 生成标准化的key避免重复
-			gid1, gid2 := inst.ParentGid, gid
-			if gid1 > gid2 {
-				gid1, gid2 = gid2, gid1
-			}
-			key := fmt.Sprintf("%d-%d", gid1, gid2)
+			key := pairKeyAdj(pair.Gid2, child)
 			if seen[key] {
 				continue
 			}
 			seen[key] = true
-
 			pairs = append(pairs, &GoroutinePairInfo{
-				Gid1:       inst.ParentGid,
-				Gid2:       gid,
-				Confidence: 0.9,
-				SourceType: "inferred_parent_child",
+				Gid1:       child,
+				Gid2:       pair.Gid2,
+				Confidence: 0.3,
+				SourceType: "inferred_adjacent",
 			})
+		}
+
+		// B 的子与 A
+		for _, child := range gt.childMap[pair.Gid2] {
+			if child == pair.Gid1 {
+				continue
+			}
+			key := pairKeyAdj(pair.Gid1, child)
+			if seen[key] {
+				continue
+			}
+			seen[key] = true
+			pairs = append(pairs, &GoroutinePairInfo{
+				Gid1:       pair.Gid1,
+				Gid2:       child,
+				Confidence: 0.3,
+				SourceType: "inferred_adjacent",
+			})
+		}
+
+		// === 向上：查父节点 ===
+
+		// A 的父与 B
+		if parentA := gt.getParentGid(pair.Gid1); parentA != 0 {
+			if parentA != pair.Gid2 {
+				key := pairKeyAdj(parentA, pair.Gid2)
+				if !seen[key] {
+					seen[key] = true
+					pairs = append(pairs, &GoroutinePairInfo{
+						Gid1:       parentA,
+						Gid2:       pair.Gid2,
+						Confidence: 0.5,
+						SourceType: "inferred_adjacent",
+					})
+				}
+			}
+		}
+
+		// B 的父与 A
+		if parentB := gt.getParentGid(pair.Gid2); parentB != 0 {
+			if parentB != pair.Gid1 {
+				key := pairKeyAdj(pair.Gid1, parentB)
+				if !seen[key] {
+					seen[key] = true
+					pairs = append(pairs, &GoroutinePairInfo{
+						Gid1:       pair.Gid1,
+						Gid2:       parentB,
+						Confidence: 0.5,
+						SourceType: "inferred_adjacent",
+					})
+				}
+			}
 		}
 	}
 	return pairs
 }
 
-// InferSelfPairs 推测自配对并发对 (Rule 3, confidence=0.7)
-// 对于有多个实例的goroutine ID，生成 (Gid, Gid) 自配对
-// 表示同一goroutine ID的多个实例之间可能存在并发
-func (gt *GoroutineTracker) InferSelfPairs() []*GoroutinePairInfo {
+// InferAllSiblingPairs 纯结构推断：同一parent的所有children之间两两配对。
+// 依据：同一parent通过多个go语句spawn的goroutine在语义上就是并发的。
+// 仅当parent拥有≥2个children时才产出对。
+func (gt *GoroutineTracker) InferAllSiblingPairs() []*GoroutinePairInfo {
 	gt.mu.RLock()
 	defer gt.mu.RUnlock()
 
+	seen := make(map[string]bool)
 	var pairs []*GoroutinePairInfo
 
-	for gid, instances := range gt.gortMap {
-		// 统计已完成的实例数
-		completed := 0
-		for _, inst := range instances {
-			if inst.EndTime != 0 {
-				completed++
-			}
+	for _, children := range gt.childMap {
+		if len(children) < 2 {
+			continue
 		}
-		if completed >= 2 {
-			// 至少有两个实例完成了 → 存在自配对可能性
-			pairs = append(pairs, &GoroutinePairInfo{
-				Gid1:       gid,
-				Gid2:       gid,
-				Confidence: 0.7,
-				SourceType: "inferred_self_pair",
-			})
+		for i := 0; i < len(children); i++ {
+			for j := i + 1; j < len(children); j++ {
+				key := pairKeyAdj(children[i], children[j])
+				if seen[key] {
+					continue
+				}
+				seen[key] = true
+				pairs = append(pairs, &GoroutinePairInfo{
+					Gid1:       children[i],
+					Gid2:       children[j],
+					Confidence: 0.5,
+					SourceType: "inferred_sibling",
+				})
+			}
 		}
 	}
 	return pairs
+}
+
+// InferSiblingAdjacentPairs 基于COVERED对做兄弟方向的邻接推测。
+// ga-gb被观测到并发 → ga的兄弟 × gb, ga × gb的兄弟。
+// sibling与ga的结构距离和parent相同（都是一条边），置信度0.5。
+func (gt *GoroutineTracker) InferSiblingAdjacentPairs(observed []*GoroutinePairInfo) []*GoroutinePairInfo {
+	gt.mu.RLock()
+	defer gt.mu.RUnlock()
+
+	seen := make(map[string]bool)
+	var pairs []*GoroutinePairInfo
+
+	for _, pair := range observed {
+		// 方向一：ga的兄弟 × gb
+		if parentA := gt.getParentGid(pair.Gid1); parentA != 0 {
+			for _, sib := range gt.childMap[parentA] {
+				if sib == pair.Gid1 || sib == pair.Gid2 {
+					continue // 排除ga自身和gb，防止同父时产生自配对
+				}
+				key := pairKeyAdj(sib, pair.Gid2)
+				if seen[key] {
+					continue
+				}
+				seen[key] = true
+				pairs = append(pairs, &GoroutinePairInfo{
+					Gid1:       sib,
+					Gid2:       pair.Gid2,
+					Confidence: 0.5,
+					SourceType: "inferred_sibling",
+				})
+			}
+		}
+
+		// 方向二：ga × gb的兄弟
+		if parentB := gt.getParentGid(pair.Gid2); parentB != 0 {
+			for _, sib := range gt.childMap[parentB] {
+				if sib == pair.Gid1 || sib == pair.Gid2 {
+					continue // 排除gb自身和ga，防止同父时产生自配对
+				}
+				key := pairKeyAdj(pair.Gid1, sib)
+				if seen[key] {
+					continue
+				}
+				seen[key] = true
+				pairs = append(pairs, &GoroutinePairInfo{
+					Gid1:       pair.Gid1,
+					Gid2:       sib,
+					Confidence: 0.5,
+					SourceType: "inferred_sibling",
+				})
+			}
+		}
+	}
+	return pairs
+}
+
+// getParentGid 从gortMap中获取指定gid的父gid。
+// 取第一个实例的ParentGid。假设同一gid的所有实例有相同父节点——
+// 在静态gid机制下此假设成立（同一go语句处编译期分配同一gid）。
+// 调用方需持有mu读锁。
+func (gt *GoroutineTracker) getParentGid(gid uint64) uint64 {
+	instances := gt.gortMap[gid]
+	if len(instances) == 0 {
+		return 0
+	}
+	return instances[0].ParentGid
+}
+
+// pairKeyAdj 生成标准化的去重key（小ID在前）
+func pairKeyAdj(gid1, gid2 uint64) string {
+	if gid1 <= gid2 {
+		return fmt.Sprintf("%d-%d", gid1, gid2)
+	}
+	return fmt.Sprintf("%d-%d", gid2, gid1)
 }
 
 // isTimeRangeOverlap 检测两个时间区间是否重叠
@@ -267,4 +406,46 @@ func isTimeRangeOverlap(start1, end1, start2, end2 int64) bool {
 		return false
 	}
 	return start1 <= end2 && start2 <= end1
+}
+
+// PrintGoroutineRecords 打印所有goroutine实例的追踪记录，用于调试查看
+// 输出格式:
+//
+//	=== Goroutine Records ===
+//	gid=0, instances=1, children=[10,20]
+//	  [0] gortID=1, parent=0, start=100, end=900 (dur=800ns)
+//	gid=10, instances=2, children=[20]
+//	  [0] gortID=22, parent=0, start=200, end=400 (dur=200ns)
+//	  [1] gortID=24, parent=0, start=500, end=800 (dur=300ns)
+func (gt *GoroutineTracker) PrintGoroutineRecords() {
+	gt.mu.RLock()
+	defer gt.mu.RUnlock()
+
+	fmt.Println("=== Goroutine Records ===")
+
+	// 收集所有 gid 并排序
+	gids := make([]uint64, 0, len(gt.gortMap))
+	for gid := range gt.gortMap {
+		gids = append(gids, gid)
+	}
+	sort.Slice(gids, func(i, j int) bool { return gids[i] < gids[j] })
+
+	for _, gid := range gids {
+		instances := gt.gortMap[gid]
+		children := gt.childMap[gid]
+		fmt.Printf("gid=%d, instances=%d, children=%v\n", gid, len(instances), children)
+
+		for i, inst := range instances {
+			dur := int64(0)
+			if inst.EndTime != 0 {
+				dur = inst.EndTime - inst.StartTime
+			}
+			endStr := fmt.Sprintf("%d", inst.EndTime)
+			if inst.EndTime == 0 {
+				endStr = "(running)"
+			}
+			fmt.Printf("  [%d] gortID=%d, parent=%d, start=%d, end=%s (dur=%dns)\n",
+				i, inst.GortID, inst.ParentGid, inst.StartTime, endStr, dur)
+		}
+	}
 }

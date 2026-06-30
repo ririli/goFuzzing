@@ -3,8 +3,6 @@ package serving3148
 import (
 	"sync"
 	"testing"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type PodAutoscalerInterface interface {
@@ -91,12 +89,8 @@ func (c *Impl) Run(threadiness int) {
 	for i := 0; i < threadiness; i++ {
 		sg.Add(1)
 		go func() {
-			goroutine.Enter(858993459201)
-			defer goroutine.Exit(858993459201)
-			func() {
-				defer sg.Done()
-				c.processNextWorkItem()
-			}()
+			defer sg.Done()
+			c.processNextWorkItem()
 		}()
 	}
 }
@@ -128,12 +122,8 @@ func (g *Group) Wait() {
 func (g *Group) Go(f func()) {
 	g.wg.Add(1)
 	go func() {
-		goroutine.Enter(858993459202)
-		defer goroutine.Exit(858993459202)
-		func() {
-			defer g.wg.Done()
-			f()
-		}()
+		defer g.wg.Done()
+		f()
 	}()
 }
 
@@ -167,48 +157,17 @@ func TestServing3148(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		goroutine.Enter(858993459203)
-		defer goroutine.Exit(858993459203)
-		func() {
-			defer wg.Done()
-			cs := &Clientset{}
-			controller := NewController()
-			controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
-			eg := &Group{}
-			defer func() {
-				eg.Wait()
-			}()
-			eg.Go(func() { controller.Run(1) })
-			h := NewHooks()
-			h.OnUpdate(&cs.Fake)
+		defer wg.Done()
+		cs := &Clientset{}
+		controller := NewController()
+		controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
+		eg := &Group{}
+		defer func() {
+			eg.Wait()
 		}()
-	}()
-	wg.Wait()
-}
-func TestServing3148_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		goroutine.Enter(858993459203)
-		defer goroutine.Exit(858993459203)
-		func() {
-			defer wg.Done()
-			cs := &Clientset{}
-			controller := NewController()
-			controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
-			eg := &Group{}
-			defer func() {
-				eg.Wait()
-			}()
-			eg.Go(func() { controller.Run(1) })
-			h := NewHooks()
-			h.OnUpdate(&cs.Fake)
-		}()
+		eg.Go(func() { controller.Run(1) })
+		h := NewHooks()
+		h.OnUpdate(&cs.Fake)
 	}()
 	wg.Wait()
 }

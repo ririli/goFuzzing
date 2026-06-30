@@ -5,8 +5,6 @@ import (
 	"sync"
 	"testing"
 	"time"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type ProcessFunc func(obj interface{})
@@ -82,11 +80,7 @@ func TestKubernetes13058(t *testing.T) {
 	})
 
 	stop := make(chan struct{})
-	go func() {
-		goroutine.Enter(455266533377)
-		defer goroutine.Exit(455266533377)
-		controller.Run(stop)
-	}()
+	go controller.Run(stop)
 
 	tests := []func(string){
 		func(name string) {},
@@ -99,60 +93,10 @@ func TestKubernetes13058(t *testing.T) {
 	testDoneWG.Add(threads * len(tests))
 	for i := 0; i < threads; i++ {
 		for j, f := range tests {
-			go func() {
-				goroutine.Enter(455266533378)
-				defer goroutine.Exit(455266533378)
-				func(name string, f func(string)) {
-					defer wg.Done()
-					f(name)
-				}(fmt.Sprintf("%v-%v", i, j), f)
-			}()
-		}
-	}
-	wg.Wait()
-	testDoneWG.Wait()
-	close(stop)
-}
-func TestKubernetes13058_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var testDoneWG sync.WaitGroup
-
-	controller := NewInformer(ResourceEventHandlerFuncs{
-		DeleteFunc: func(obj interface{}) {
-			testDoneWG.Done()
-		},
-	})
-
-	stop := make(chan struct{})
-	go func() {
-		goroutine.Enter(455266533377)
-		defer goroutine.Exit(455266533377)
-		controller.Run(stop)
-	}()
-
-	tests := []func(string){
-		func(name string) {},
-	}
-
-	const threads = 3
-	var wg sync.WaitGroup
-	time.Sleep(1 * time.Second)
-	wg.Add(threads * len(tests))
-	testDoneWG.Add(threads * len(tests))
-	for i := 0; i < threads; i++ {
-		for j, f := range tests {
-			go func() {
-				goroutine.Enter(455266533378)
-				defer goroutine.Exit(455266533378)
-				func(name string, f func(string)) {
-					defer wg.Done()
-					f(name)
-				}(fmt.Sprintf("%v-%v", i, j), f)
-			}()
+			go func(name string, f func(string)) {
+				defer wg.Done()
+				f(name)
+			}(fmt.Sprintf("%v-%v", i, j), f)
 		}
 	}
 	wg.Wait()

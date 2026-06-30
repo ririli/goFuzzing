@@ -110,22 +110,19 @@ func EnterMain() {
 }
 
 // ExitMain 记录主goroutine的结束时间
-// 主goroutine (gid=0) 无 EnterMain 对应的 pointControl，
-// 因此 completeOperation(0) 仍在此处调用，确保等待主goroutine的子goroutine能收到通知
+// gid=0 不参与断点控制，不再调用 completeOperation(0)
 // 在生成的 TestXxx_1 包装函数中defer调用
 func ExitMain() {
 	gidMap.Delete(getCurrentGoroutineID())
 	tracker.ExitGoroutine(0)
-	completeOperation(0)
 }
 
 // Enter goroutine级别入口hook，在go语句创建的goroutine开始时调用
+// parentGid 由调用方在父goroutine上下文中通过 goroutine.CurrentGid() 获取并传入
 // 与 callstack.Trace 对齐：pointControl 作为第一条语句，确保等待者能尽快被唤醒
-func Enter(gid uint64) {
+func Enter(gid uint64, parentGid uint64) {
 	pointControl(gid)
 
-	// 查找父goroutine ID（创建当前goroutine的那个goroutine）
-	parentGid := CurrentGid()
 	// 存储当前OS goroutine → gid的映射
 	gidMap.Store(getCurrentGoroutineID(), gid)
 	tracker.EnterGoroutineWithParent(gid, parentGid)
@@ -238,8 +235,9 @@ func completeOperation(id uint64) {
 	waiters.LoadOrStore(id, done)
 }
 
-// PrintGoroutinePairs 打印所有goroutine并发对到stderr
-// 包含直接观测（Rule 0）和推测（Rule 2: 父子, Rule 3: 自配对）
+// PrintGoroutinePairs 打印所有goroutine并发对到stderr。
+// 包含直接观测（Rule 0）和三类推测（纯结构兄弟、邻接父子、邻接兄弟）。
+// gid=0 不参与任何输出。跨推断函数间按 (gid1,gid2) 去重，冲突时保留高置信度。
 // 格式：[COVERED] 或 [SUSPECT] gid1,gid2|file1:line1,file2:line2|confidence|sourceType;
 func PrintGoroutinePairs() {
 	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
@@ -247,28 +245,67 @@ func PrintGoroutinePairs() {
 	// Rule 0: 直接观测的时间重叠对 → [COVERED]
 	observedPairs := tracker.DetectGoroutineOverlaps()
 
-	// Rule 2: 父子goroutine对 → [SUSPECT]
-	parentChildPairs := tracker.InferParentChildPairs()
+	// 纯结构推断：同父的所有children两两配对 → [SUSPECT]
+	allSiblingPairs := tracker.InferAllSiblingPairs()
 
-	// Rule 3: 自配对（同gid多实例） → [SUSPECT]
-	selfPairs := tracker.InferSelfPairs()
+	// 观测锚定：邻接推测（父子方向一跳） → [SUSPECT]
+	adjacentPairs := tracker.InferAdjacentPairs(observedPairs)
 
-	total := len(observedPairs) + len(parentChildPairs) + len(selfPairs)
-	if total == 0 {
+	// 观测锚定：兄弟邻接推测（ga兄弟×gb, ga×gb兄弟） → [SUSPECT]
+	siblingAdjacentPairs := tracker.InferSiblingAdjacentPairs(observedPairs)
+
+	// 统一去重：按 (gid1,gid2) 合并，冲突时保留高置信度
+	merged := make(map[string]*GoroutinePairInfo)
+	for _, pair := range observedPairs {
+		if pair.Gid1 == 0 || pair.Gid2 == 0 {
+			continue
+		}
+		key := pairKeyAdj(pair.Gid1, pair.Gid2)
+		if existing, ok := merged[key]; !ok || pair.Confidence > existing.Confidence {
+			merged[key] = pair
+		}
+	}
+	for _, pair := range allSiblingPairs {
+		if pair.Gid1 == 0 || pair.Gid2 == 0 {
+			continue
+		}
+		key := pairKeyAdj(pair.Gid1, pair.Gid2)
+		if existing, ok := merged[key]; !ok || pair.Confidence > existing.Confidence {
+			merged[key] = pair
+		}
+	}
+	for _, pair := range adjacentPairs {
+		if pair.Gid1 == 0 || pair.Gid2 == 0 {
+			continue
+		}
+		key := pairKeyAdj(pair.Gid1, pair.Gid2)
+		if existing, ok := merged[key]; !ok || pair.Confidence > existing.Confidence {
+			merged[key] = pair
+		}
+	}
+	for _, pair := range siblingAdjacentPairs {
+		if pair.Gid1 == 0 || pair.Gid2 == 0 {
+			continue
+		}
+		key := pairKeyAdj(pair.Gid1, pair.Gid2)
+		if existing, ok := merged[key]; !ok || pair.Confidence > existing.Confidence {
+			merged[key] = pair
+		}
+	}
+
+	if len(merged) == 0 {
 		print("No concurrent goroutine pairs found.\n")
 		return
 	}
 
-	// 输出直接观测对 [COVERED]
-	for _, pair := range observedPairs {
+	for _, pair := range merged {
 		print(pair.String())
 	}
+}
 
-	// 输出推测对 [SUSPECT]
-	for _, pair := range parentChildPairs {
-		print(pair.String())
-	}
-	for _, pair := range selfPairs {
-		print(pair.String())
-	}
+// PrintRecords 打印所有goroutine实例的追踪记录（含父子关系）
+// 用于调试时查看完整的goroutine生命周期数据
+func PrintRecords() {
+	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
+	tracker.PrintGoroutineRecords()
 }

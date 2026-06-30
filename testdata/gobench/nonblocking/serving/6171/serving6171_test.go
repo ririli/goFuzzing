@@ -3,8 +3,6 @@ package serving6171
 import (
 	"sync"
 	"testing"
-	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
 )
 
 type TestingT interface {
@@ -119,11 +117,7 @@ func (rw *revisionWatcher) run() {
 
 func (rw *revisionWatcher) checkDests() {
 	go func() {
-		goroutine.Enter(468151435265)
-		defer goroutine.Exit(468151435265)
-		func() {
-			rw.logger.Errorw("1")
-		}()
+		rw.logger.Errorw("1")
 	}()
 }
 
@@ -133,47 +127,18 @@ type revisionBackendsManager struct {
 
 func (rbm *revisionBackendsManager) getOrCreateRevisionWatcher() {
 	rw := newRevisionWatcher(rbm.logger)
-	go func() {
-		goroutine.Enter(468151435266)
-		defer goroutine.Exit(468151435266)
-		rw.run()
-	}()
+	go rw.run()
 }
 
 func TestServing6171(t *testing.T) {
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go func() {
-		goroutine.Enter(468151435267)
-		defer goroutine.Exit(468151435267)
-		func() {
-			defer wg.Done()
-			t.Run("Serving6171", func(t *testing.T) {
-				rbm := &revisionBackendsManager{logger: testing_TestLogger(t)}
-				rbm.getOrCreateRevisionWatcher()
-			})
-		}()
-	}()
-	wg.Wait()
-}
-func TestServing6171_1(t *testing.T) {
-	goroutine.EnterMain()
-	defer goroutine.ExitMain()
-	goroutine.ParseInput()
-	sched.ParseInput()
-	defer goroutine.PrintGoroutinePairs()
-	var wg sync.WaitGroup
-	wg.Add(1)
-	go func() {
-		goroutine.Enter(468151435267)
-		defer goroutine.Exit(468151435267)
-		func() {
-			defer wg.Done()
-			t.Run("Serving6171", func(t *testing.T) {
-				rbm := &revisionBackendsManager{logger: testing_TestLogger(t)}
-				rbm.getOrCreateRevisionWatcher()
-			})
-		}()
+		defer wg.Done()
+		t.Run("Serving6171", func(t *testing.T) {
+			rbm := &revisionBackendsManager{logger: testing_TestLogger(t)}
+			rbm.getOrCreateRevisionWatcher()
+		})
 	}()
 	wg.Wait()
 }
