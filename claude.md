@@ -129,12 +129,16 @@ Goroutine ID（gid）在**编译期**通过 `文件路径 hash << 32 + 原子递
 
 ### 4. 并发对推断规则
 
-| 规则 | 来源 | 置信度 | 输出标签 |
-|------|------|--------|----------|
-| Rule 0 | 执行时间重叠 | 直接观测 | `[COVERED]` |
-| Rule 1 | 共享对象（同 channel/WG） | 0.8 | `[SUSPECT]` |
-| Rule 2 | 父子 goroutine 关系 | - | `[SUSPECT]` |
-| Rule 3 | 同 gid 多实例自配对 | - | `[SUSPECT]` |
+共 4 条规则，在 `PrintGoroutinePairs()`（`pkg/goroutine/gort.go`）中依次执行后统一去重合并。去重按 `(gid1,gid2)` key，冲突时保留高置信度。gid=0（主 goroutine）不参与输出。
+
+| # | 规则 | 函数 | 置信度 | 输出标签 | 说明 |
+|---|------|------|--------|----------|------|
+| Rule 0 | 直接观测时间重叠 | `DetectGoroutineOverlaps` | 1.0 | `[COVERED]` | 计算每个 gid 的时间范围 `[minStart, maxEnd]`，O(n²) 两两比较重叠 |
+| 纯结构兄弟 | 同父 children 全配对 | `InferAllSiblingPairs` | 0.5 | `[SUSPECT]` | 不依赖观测，childMap 中同一 parent 的 children（≥2）两两配对，来源 `inferred_sibling` |
+| 邻接父子 | COVERED 对 → 父子一跳 | `InferAdjacentPairs` | 0.5/0.3 | `[SUSPECT]` | 基于 Rule 0 结果向外扩展：向上（parent×对方）0.5，向下（children×对方）0.3，来源 `inferred_adjacent` |
+| 邻接兄弟 | COVERED 对 → 兄弟一跳 | `InferSiblingAdjacentPairs` | 0.5 | `[SUSPECT]` | 基于 Rule 0 结果向兄弟方向扩展（ga兄弟×gb, ga×gb兄弟），来源 `inferred_sibling` |
+
+**邻接父子置信度差异**：向上（parent）0.5 > 向下（children）0.3，因为子节点启动时机不确定，与重叠窗口的关系弱于 parent 方向。
 
 ### 5. 信号反馈机制
 
