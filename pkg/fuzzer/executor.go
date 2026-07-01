@@ -29,7 +29,8 @@ type Input struct {
 	timeout        int
 	recovertimeout int
 	//
-	gortPair *feedback.InputGortPair // goroutine对
+	gortPair  *feedback.InputGortPair // goroutine对
+	tryOpPair *feedback.InputPair
 }
 
 // 复用缓冲区的全局池（按需调整初始容量）
