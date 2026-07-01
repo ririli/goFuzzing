@@ -30,7 +30,6 @@ type RunContext struct {
 var workerID uint32
 
 func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
-	//log.Println(http.ListenAndServe(":6060", nil))
 	startTime := time.Now()
 	defer func() {
 		fmt.Printf("[FUZZER] %s elapsed: %.3fs, etimes=%d\n", cfg.Fn, time.Since(startTime).Seconds(), atomic.LoadInt32(&m.etimes))
@@ -48,8 +47,8 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	default:
 	}
 
-	var corpusPair *CorpusPair
-	corpusPair = NewCorpusPair()
+	var corpusGort *CorpusGort
+	corpusGort = NewCorpusGort()
 	var corpusOp *CorpusOp
 	corpusOp = NewCorpusOp()
 	wid := atomic.AddUint32(&workerID, 1)
@@ -68,22 +67,18 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			default:
 			}
 
-			//tryPair := corpusPair.Get()
-			// OP对调度已禁用，仅使用goroutine级别调度
-			//var tryOpPair *feedback.InputOpPair
+			gortPair := corpusGort.Get()
+			opPair := corpusOp.Get(corpusGort)
 			e := Executor{}
 			in := Input{
-				//tryPair:   tryPair,
-				//tryOpPair: tryOpPair,
-				cmd:  cfg.Bin,
-				args: []string{"-test.v", "-test.run", cfg.Fn},
-				// args:           []string{"-test.v", "-test.run", cfg.Fn, "-test.timeout", "30s"},
+				gortPair:       gortPair,
+				tryOpPair:      opPair,
+				cmd:            cfg.Bin,
+				args:           []string{"-test.v", "-test.run", cfg.Fn},
 				timeout:        cfg.TimeOut,
 				recovertimeout: cfg.RecoverTimeOut,
 			}
-			// atomic.AddInt32(&m.etimes, 1)
 
-			//timeout := time.After(1 * time.Minute)
 			var istimeout bool
 			done := make(chan int)
 			var o *Output
@@ -96,7 +91,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			case <-done:
 			case <-timeoutTimer.C:
 				istimeout = true
-			case <-cancel: // 增加对 cancel 的监听
+			case <-cancel:
 				fmt.Println("cancel and return done")
 				return
 			}
@@ -119,14 +114,14 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	for i := 0; i < cfg.MaxWorker; i++ {
 		go dowork()
 	}
-	fmt.Println("m.max=", m.max) // 最大运行次数上限
+	fmt.Println("m.max=", m.max)
 	for {
-		fmt.Println("m.etimes=", m.etimes) // 已执行的轮次
+		fmt.Println("m.etimes=", m.etimes)
 		if m.etimes > m.max {
 			close(cancel)
 			return false, []string{}
 		}
-		ctx := <-ch // 接收worker的执行结果
+		ctx := <-ch
 		atomic.AddInt32(&m.etimes, 1)
 		var inputc string
 
@@ -136,14 +131,12 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] Input: %s", time.Now().String(), wid, inputc)
 		}
 
-		// panic收集：捕获 Go runtime panic 并输出完整堆栈
+		// panic收集
 		if strings.Contains(ctx.Out.O, "panic:") || strings.Contains(ctx.Out.Trace, "panic:") {
-			// 优先从 stdout 取，否则从 stderr 取
 			panicOutput := ctx.Out.O
 			if !strings.Contains(panicOutput, "panic:") {
 				panicOutput = ctx.Out.Trace
 			}
-			// 截取从 "panic:" 开始的所有内容（包含完整堆栈）
 			if idx := strings.Index(panicOutput, "panic:"); idx != -1 {
 				panicMsg := panicOutput[idx:]
 				if normal {
@@ -152,11 +145,8 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 				if debug {
 					cfg.LogCh <- fmt.Sprintf("%s\t[PANIC DEBUG] Full Trace:\n%s", time.Now().String(), panicMsg)
 				}
-				//close(cancel)
-				//return true, []string{inputc, "DATA RACE", ""}
 			}
 		}
-		// ✅ 新增：专门处理 -race 输出的逻辑
 		if strings.Contains(ctx.Out.Trace, "WARNING: DATA RACE") {
 			raceReport := ctx.Out.Trace
 			if normal {
@@ -165,16 +155,12 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			if debug {
 				cfg.LogCh <- fmt.Sprintf("%s\t[RACE DEBUG] Full Trace:\n%s", time.Now().String(), raceReport)
 			}
-			// 如果希望发现 Race 就停止，可以取消下面的注释
-			//close(cancel)
-			//return true, []string{inputc, "DATA RACE", raceReport}
 		}
-		// 输出台收集信息
-		// stderr → 种子信息（预执行和 fuzzing 全程收集）
-		pair_st, opInfos, err := feedback.ParseStdPairs(ctx.Out.Trace)
+		// stderr → 种子信息
+		pair_st, opInfos, err := feedback.ParseGortPairs(ctx.Out.Trace)
 		if err == nil {
 			if len(pair_st) > 0 {
-				corpusPair.AddPair(pair_st)
+				corpusGort.AddPair(pair_st)
 			}
 			if len(opInfos) > 0 {
 				corpusOp.Add(opInfos)
@@ -182,27 +168,29 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 		}
 
 		// 预执行阶段判断
-		if atomic.LoadUint32(&corpusPair.done) == 0 {
-			if corpusPair.TryEndPreExec(cfg.MaxPreExecRound) {
-				fmt.Printf("[PRESTAGE] Pre-execution finished, total pairs: cover=%d, sus=%d\n",
-					len(corpusPair.CoveredConPairs), len(corpusPair.SusConPairs))
+		if atomic.LoadUint32(&corpusGort.done) == 0 {
+			if corpusGort.TryEndPreExec(cfg.MaxPreExecRound) {
+				fmt.Printf("[PRESTAGE] Pre-execution finished, total pairs: cover=%d\n",
+					len(corpusGort.CoveredConPairs))
+				// 对 COVERED goroutine 对检测共享对象 panic
+				opPairs := corpusOp.Get(corpusGort)
+				for _, p := range opPairs.TryPair {
+					fmt.Printf("[PANIC] %s\n", p)
+				}
 			}
-			//continue
 		}
 
-		// --- fuzzing 阶段 ---
-		// stdout → 调度有效性信号
-		funcSignals, opSignals := feedback.ParseSignals(ctx.Out.O)
+		// fuzzing 阶段
+		funcSignals, opSingnals := feedback.ParseSignals(ctx.Out.O)
 		if cfg.UseMutate {
 			if len(funcSignals) > 0 {
-				corpusPair.ApplySignals(funcSignals)
+				corpusGort.ApplySignals(funcSignals)
 			}
-			if len(opSignals) > 0 {
-				corpusOp.ApplySignals(opSignals)
+			if len(opSingnals) > 0 {
+				corpusOp.ApplySignals(opSingnals)
 			}
 		}
 
-		// todo 有价值就继续fuzzing，不减quit
 		quit -= 1
 		fmt.Println("quit=", quit)
 		if quit <= 0 {

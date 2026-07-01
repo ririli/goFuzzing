@@ -141,8 +141,8 @@ func GenInstCall(f string, ch ast.Expr, id uint64) *ast.ExprStmt {
 }
 
 // GenInstCallWithType 生成带操作类型的插桩调用
-// 生成: sched.InstXxxBF(opId, obj, funcId, "opType")
-func GenInstCallWithType(f string, obj ast.Expr, id uint64, funcId uint64, opType string) *ast.ExprStmt {
+// 生成: sched.InstXxxBF(opId, obj, "opType")
+func GenInstCallWithType(f string, obj ast.Expr, id uint64, opType string) *ast.ExprStmt {
 	return NewArgCallExpr("sched", f, []ast.Expr{
 		&ast.BasicLit{
 			ValuePos: 0,
@@ -150,11 +150,6 @@ func GenInstCallWithType(f string, obj ast.Expr, id uint64, funcId uint64, opTyp
 			Value:    strconv.FormatUint(id, 10),
 		},
 		obj,
-		&ast.BasicLit{
-			ValuePos: 0,
-			Kind:     token.INT,
-			Value:    strconv.FormatUint(funcId, 10),
-		},
 		&ast.BasicLit{ // opType
 			ValuePos: 0,
 			Kind:     token.STRING,

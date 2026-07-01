@@ -92,8 +92,8 @@ func parseSignal(line string) *CoverageSignal {
 //
 //	[COVERED] FuncID1,FuncID2|File1:Line1,File2:Line2|Confidence|SourceType;
 //	[SUSPECT] FuncID1,FuncID2|File1:Line1,File2:Line2|Confidence|SourceType;
-//	[FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
-//	[FB]wg: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+//	[FB]chan: obj=ADDR; opId=ID; gid=ID; op=TYPE;
+//	[FB]wg: obj=ADDR; opId=ID; gid=ID; op=TYPE;
 func ParseStdPairs(s string) ([]*SuspiciousPairInfo, []*OpInfo, error) {
 	var results []*SuspiciousPairInfo
 	var ops []*OpInfo
@@ -230,13 +230,13 @@ func parseLocation(locStr string) (CallLocationInfo, error) {
 }
 
 // parseFBOp 解析 [FB] 格式的操作日志
-// 格式: [FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+// 格式: [FB]chan: obj=ADDR; opId=ID; gid=ID; op=TYPE;
 //
-//	[FB]wg: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+//	[FB]wg: obj=ADDR; opId=ID; gid=ID; op=TYPE;
 //
 // select 中的操作额外带 select=1:
 //
-//	[FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE; select=1;
+//	[FB]chan: obj=ADDR; opId=ID; gid=ID; op=TYPE; select=1;
 func parseFBOp(line string) (*OpInfo, error) {
 	// 去除 [FB] 前缀
 	content := strings.TrimPrefix(line, "[FB]")
@@ -286,12 +286,6 @@ func parseFBOp(line string) (*OpInfo, error) {
 				return nil, fmt.Errorf("invalid opId: %v", err)
 			}
 			op.OpId = v
-		case "funcId":
-			v, err := strconv.ParseUint(val, 10, 64)
-			if err != nil {
-				return nil, fmt.Errorf("invalid funcId: %v", err)
-			}
-			op.FuncId = v
 		case "gid":
 			v, err := strconv.ParseUint(val, 10, 64)
 			if err != nil {

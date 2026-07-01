@@ -9,7 +9,7 @@ import (
 )
 
 // WgPass, WaitGroup Record Pass. This pass instruments
-// sync.WaitGroup operations: Add, Done, Wait
+// sync.WaitGroup operations: Add, Done
 
 var (
 	WgNeedInst   = "WgNeedInst"
@@ -18,14 +18,6 @@ var (
 )
 
 type WgPass struct {
-	funcIdStack []uint64
-}
-
-func (p *WgPass) currentFuncId() uint64 {
-	if len(p.funcIdStack) > 0 {
-		return p.funcIdStack[len(p.funcIdStack)-1]
-	}
-	return 0
 }
 
 func (p *WgPass) Before(iCtx *inst.InstContext) {
@@ -42,12 +34,6 @@ func (p *WgPass) After(iCtx *inst.InstContext) {
 
 func (p *WgPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
 	return func(c *astutil.Cursor) bool {
-		switch c.Node().(type) {
-		case *ast.FuncDecl, *ast.FuncLit:
-			if len(p.funcIdStack) > 0 {
-				p.funcIdStack = p.funcIdStack[:len(p.funcIdStack)-1]
-			}
-		}
 		return true
 	}
 }
@@ -61,16 +47,6 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 
 		switch concrete := c.Node().(type) {
 
-		// 追踪函数边界，维护 funcId 栈
-		case *ast.FuncDecl:
-			if fid, ok := Find(concrete.Pos()); ok {
-				p.funcIdStack = append(p.funcIdStack, fid)
-			}
-		case *ast.FuncLit:
-			if fid, ok := Find(concrete.Pos()); ok {
-				p.funcIdStack = append(p.funcIdStack, fid)
-			}
-
 		case *ast.ExprStmt:
 			callExpr, ok := concrete.X.(*ast.CallExpr)
 			if !ok {
@@ -81,7 +57,6 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 				return true
 			}
 
-			// 检查 receiver 类型是否为 sync.WaitGroup 或 *sync.WaitGroup
 			if !SelectorCallerHasTypes(iCtx, selectorExpr, true, "sync.WaitGroup", "*sync.WaitGroup") {
 				return true
 			}
@@ -99,15 +74,13 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
 			wg := selectorExpr.X
-			// 取地址传给 InstWgBF/InstWgAF
 			p_wg := &ast.UnaryExpr{
 				Op: token.AND,
 				X:  wg,
 			}
-			fid := p.currentFuncId()
-			before := GenInstCallWithType("InstWgBF", p_wg, id, fid, opType)
+			before := GenInstCallWithType("InstWgBF", p_wg, id, opType)
 			c.InsertBefore(before)
-			after := GenInstCallWithType("InstWgAF", p_wg, id, fid, opType)
+			after := GenInstCallWithType("InstWgAF", p_wg, id, opType)
 			c.InsertAfter(after)
 			iCtx.SetMetadata(WgNeedInst, true)
 
@@ -140,9 +113,8 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 				Op: token.AND,
 				X:  wg,
 			}
-			fid := p.currentFuncId()
-			before := GenInstCallWithType("InstWgBF", p_wg, id, fid, opType)
-			after := GenInstCallWithType("InstWgAF", p_wg, id, fid, opType)
+			before := GenInstCallWithType("InstWgBF", p_wg, id, opType)
+			after := GenInstCallWithType("InstWgAF", p_wg, id, opType)
 
 			body := &ast.BlockStmt{List: []ast.Stmt{
 				before,

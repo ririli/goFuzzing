@@ -4,8 +4,8 @@ package feedback
 type SignalKind string
 
 const (
-	SignalFuncCovered SignalKind = "func_covered" // 函数对调度成功
-	SignalFuncTimeout SignalKind = "func_timeout" // 函数对调度超时
+	SignalFuncCovered SignalKind = "func_covered" // goroutine对调度成功
+	SignalFuncTimeout SignalKind = "func_timeout" // goroutine对调度超时
 	SignalOpCovered   SignalKind = "op_covered"   // 操作对调度成功
 	SignalOpTimeout   SignalKind = "op_timeout"   // 操作对调度超时
 )

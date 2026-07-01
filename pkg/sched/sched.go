@@ -115,7 +115,7 @@ func (c *Config) waitDec(id uint64) {
 }
 
 // InstChBF channel 操作前拦截，根据调度配置决定是否等待前置 opId 完成
-func InstChBF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uint64, opType string) {
+func InstChBF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, opType string) {
 
 	if !config.doWait(opId) {
 		return
@@ -145,28 +145,28 @@ func InstChBF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uin
 }
 
 // InstChAF channel 操作后记录，用于通知等待者并输出 ObjectID 日志
-func InstChAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uint64, opType string) {
+func InstChAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, opType string) {
 	if debugSched {
 		addr := uint64(reflect.ValueOf(o).Pointer())
 		gid := goroutine.CurrentGid()
-		print("[FB]chan: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; gid=", gid, "; op=", opType, ";\n")
+		print("[FB]chan: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, ";\n")
 	}
 	event.Store(opId, struct{}{})
 }
 
 // InstChSelectAF select 中的 channel 操作后记录（仅 AF，无 BF）
 // 与 InstChAF 的区别：输出 select=1 标记，fuzzer 据此限制该操作只能做 Op1（pre）
-func InstChSelectAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, funcId uint64, opType string) {
+func InstChSelectAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, opType string) {
 	if debugSched {
 		addr := uint64(reflect.ValueOf(o).Pointer())
 		gid := goroutine.CurrentGid()
-		print("[FB]chan: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; gid=", gid, "; op=", opType, "; select=1;\n")
+		print("[FB]chan: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, "; select=1;\n")
 	}
 	event.Store(opId, struct{}{})
 }
 
 // InstWgBF WaitGroup 操作前拦截（Add/Done/Wait）
-func InstWgBF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
+func InstWgBF(opId uint64, wg *sync.WaitGroup, opType string) {
 	if !config.doWait(opId) {
 		return
 	}
@@ -195,11 +195,11 @@ func InstWgBF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
 }
 
 // InstWgAF WaitGroup 操作后记录
-func InstWgAF(opId uint64, wg *sync.WaitGroup, funcId uint64, opType string) {
+func InstWgAF(opId uint64, wg *sync.WaitGroup, opType string) {
 	if debugSched {
 		addr := uint64(reflect.ValueOf(wg).Pointer())
 		gid := goroutine.CurrentGid()
-		print("[FB]wg: obj=", addr, "; opId=", opId, "; funcId=", funcId, "; gid=", gid, "; op=", opType, ";\n")
+		print("[FB]wg: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, ";\n")
 	}
 	event.Store(opId, struct{}{})
 }

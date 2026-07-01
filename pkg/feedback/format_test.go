@@ -6,7 +6,7 @@ import (
 )
 
 func TestParseFBOp_ChannelSend(t *testing.T) {
-	line := "[FB]chan: obj=1234; opId=5; funcId=10; op=send;"
+	line := "[FB]chan: obj=1234; opId=5; gid=10; op=send;"
 	op, err := parseFBOp(line)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -20,8 +20,8 @@ func TestParseFBOp_ChannelSend(t *testing.T) {
 	if op.OpId != 5 {
 		t.Errorf("OpId = %d, want %d", op.OpId, 5)
 	}
-	if op.FuncId != 10 {
-		t.Errorf("FuncId = %d, want %d", op.FuncId, 10)
+	if op.Gid != 10 {
+		t.Errorf("Gid = %d, want %d", op.Gid, 10)
 	}
 	if op.OpType != OpTypeSend {
 		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeSend)
@@ -29,7 +29,7 @@ func TestParseFBOp_ChannelSend(t *testing.T) {
 }
 
 func TestParseFBOp_ChannelClose(t *testing.T) {
-	line := "[FB]chan: obj=42; opId=1; funcId=2; op=close;"
+	line := "[FB]chan: obj=42; opId=1; gid=2; op=close;"
 	op, err := parseFBOp(line)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -43,7 +43,7 @@ func TestParseFBOp_ChannelClose(t *testing.T) {
 }
 
 func TestParseFBOp_WaitGroupAdd(t *testing.T) {
-	line := "[FB]wg: obj=5678; opId=8; funcId=12; op=add;"
+	line := "[FB]wg: obj=5678; opId=8; gid=12; op=add;"
 	op, err := parseFBOp(line)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -57,8 +57,8 @@ func TestParseFBOp_WaitGroupAdd(t *testing.T) {
 	if op.OpId != 8 {
 		t.Errorf("OpId = %d, want %d", op.OpId, 8)
 	}
-	if op.FuncId != 12 {
-		t.Errorf("FuncId = %d, want %d", op.FuncId, 12)
+	if op.Gid != 12 {
+		t.Errorf("Gid = %d, want %d", op.Gid, 12)
 	}
 	if op.OpType != OpTypeAdd {
 		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeAdd)
@@ -66,7 +66,7 @@ func TestParseFBOp_WaitGroupAdd(t *testing.T) {
 }
 
 func TestParseFBOp_WaitGroupDone(t *testing.T) {
-	line := "[FB]wg: obj=7777; opId=9; funcId=15; op=done;"
+	line := "[FB]wg: obj=7777; opId=9; gid=15; op=done;"
 	op, err := parseFBOp(line)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -80,7 +80,7 @@ func TestParseFBOp_WaitGroupDone(t *testing.T) {
 }
 
 func TestParseFBOp_LargeIDs(t *testing.T) {
-	line := "[FB]chan: obj=987842478084; opId=987842478097; funcId=987842478084; op=send;"
+	line := "[FB]chan: obj=987842478084; opId=987842478097; gid=987842478084; op=send;"
 	op, err := parseFBOp(line)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -91,8 +91,8 @@ func TestParseFBOp_LargeIDs(t *testing.T) {
 	if op.OpId != 987842478097 {
 		t.Errorf("OpId = %d, want %d", op.OpId, 987842478097)
 	}
-	if op.FuncId != 987842478084 {
-		t.Errorf("FuncId = %d, want %d", op.FuncId, 987842478084)
+	if op.Gid != 987842478084 {
+		t.Errorf("Gid = %d, want %d", op.Gid, 987842478084)
 	}
 	if op.OpType != OpTypeSend {
 		t.Errorf("OpType = %q, want %q", op.OpType, OpTypeSend)
@@ -101,7 +101,7 @@ func TestParseFBOp_LargeIDs(t *testing.T) {
 
 func TestParseFBOp_NoTrailingSemicolon(t *testing.T) {
 	// 无尾部分号，容许解析
-	line := "[FB]chan: obj=100; opId=1; funcId=2; op=send"
+	line := "[FB]chan: obj=100; opId=1; gid=2; op=send"
 	op, err := parseFBOp(line)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -115,7 +115,7 @@ func TestParseFBOp_NoTrailingSemicolon(t *testing.T) {
 }
 
 func TestParseFBOp_InvalidObjKind(t *testing.T) {
-	line := "[FB]unknown: obj=100; opId=1; funcId=2; op=send;"
+	line := "[FB]unknown: obj=100; opId=1; gid=2; op=send;"
 	_, err := parseFBOp(line)
 	if err == nil {
 		t.Error("expected error for unknown object kind, got nil")
@@ -191,7 +191,7 @@ func TestParseStdPairs_OnlySuspect(t *testing.T) {
 }
 
 func TestParseStdPairs_OnlyFBOps(t *testing.T) {
-	input := "[FB]chan: obj=111; opId=1; funcId=10; op=send;\n[FB]wg: obj=222; opId=2; funcId=20; op=add;"
+	input := "[FB]chan: obj=111; opId=1; gid=10; op=send;\n[FB]wg: obj=222; opId=2; gid=20; op=add;"
 	pairs, ops, err := ParseStdPairs(input)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -214,10 +214,10 @@ func TestParseStdPairs_OnlyFBOps(t *testing.T) {
 func TestParseStdPairs_MixedContent(t *testing.T) {
 	input := strings.Join([]string{
 		"[COVERED] 100,200|a.go:10,b.go:20|1.00|observed;",
-		"[FB]chan: obj=111; opId=1; funcId=10; op=send;",
+		"[FB]chan: obj=111; opId=1; gid=10; op=send;",
 		"[SUSPECT] 300,400|c.go:30,d.go:40|0.50|inferred_child1;",
-		"[FB]wg: obj=222; opId=2; funcId=20; op=done;",
-		"[FB]chan: obj=333; opId=3; funcId=30; op=close;",
+		"[FB]wg: obj=222; opId=2; gid=20; op=done;",
+		"[FB]chan: obj=333; opId=3; gid=30; op=close;",
 	}, "\n")
 
 	pairs, ops, err := ParseStdPairs(input)
@@ -270,7 +270,7 @@ func TestParseStdPairs_EmptyString(t *testing.T) {
 }
 
 func TestParseStdPairs_BlankLines(t *testing.T) {
-	input := "\n\n[FB]chan: obj=1; opId=1; funcId=1; op=send;\n\n"
+	input := "\n\n[FB]chan: obj=1; opId=1; gid=1; op=send;\n\n"
 	pairs, ops, err := ParseStdPairs(input)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -284,7 +284,7 @@ func TestParseStdPairs_BlankLines(t *testing.T) {
 }
 
 func TestParseStdPairs_SkipsInvalidLines(t *testing.T) {
-	input := "this is garbage\n[UNKNOWN] something\njust text\n[FB]chan: obj=1; opId=1; funcId=1; op=send;"
+	input := "this is garbage\n[UNKNOWN] something\njust text\n[FB]chan: obj=1; opId=1; gid=1; op=send;"
 	pairs, ops, err := ParseStdPairs(input)
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
