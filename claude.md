@@ -9,7 +9,7 @@ GoPie 是一个基于 Fuzzing 的 Golang 数据竞争检测工具。通过对被
 
 - **语言**: Go 1.19.1
 - **模块名**: `toolkit`
-- **核心依赖**: `go-flags`（命令行解析）、`testify`（测试框架）、`goleak`（goroutine 泄漏检测）、`x/tools`（Go AST 工具集）、`go-echarts`（可视化）
+- **核心依赖**: `go-flags`（命令行解析）、`testify`（测试框架）、`x/tools`（Go AST 工具集）、`go-echarts`（可视化）
 
 ## 项目结构
 
@@ -43,31 +43,22 @@ gopie/
 │   │       ├── test.go           # 测试函数包装
 │   │       └── utils.go          # Pass 公共工具函数
 │   ├── fuzzer/                   # Fuzzing 引擎
-│   │   ├── config.go             # Config 配置（DefaultConfig / GokerConfig）
-│   │   ├── corpus.go             # CorpusPair：并发对种子管理核心
+│   │   ├── config.go             # Config 配置（含 GortPhase 阶段标志）
+│   │   ├── corpus.go             # CorpusPair：函数级种子管理（保留未使用）
 │   │   ├── corpus_gort.go        # CorpusGort：goroutine 级别种子管理
-│   │   ├── corpus_op.go          # CorpusOp：操作级别种子管理（已禁用）
+│   │   ├── corpus_op.go          # CorpusOp：操作级别种子管理
 │   │   ├── executor.go           # Executor：测试二进制执行与输出流式处理
-│   │   ├── monitor.go            # Monitor：主监控循环（预执行 + Fuzzing 两阶段）
-│   │   ├── utils.go              # 工具函数
-│   │   └── visitor.go            # 文件系统遍历
+│   │   └── monitor.go            # Monitor：主监控循环（预执行 + Fuzzing 两阶段）
 │   ├── goroutine/                # 运行时 Goroutine 生命周期追踪
 │   │   ├── gort.go               # Enter/Exit/pointControl 核心调度逻辑
 │   │   ├── env.go                # GoroutineTracker 实现
 │   │   └── overlap.go            # 时间重叠检测（Rule 0/2/3 推断）
-│   ├── callstack/                # 运行时函数调用栈追踪
-│   │   ├── trace.go              # Trace/pointControl 核心逻辑
-│   │   ├── functionNode.go       # 调用树节点（FunctionNode）
-│   │   ├── timeoverlap.go        # 函数级时间重叠分析
-│   │   ├── susconpair.go         # 可疑并发对推断与输出
-│   │   ├── parseinput.go         # Input 环境变量解析
-│   │   └── env.go                # CallStackCollector 实现
-│   ├── feedback/                 # 反馈信号类型定义
-│   │   ├── type.go               # SuspiciousPairInfo / CoverageSignal 等核心类型
-│   │   ├── signal.go             # 信号解析（ParseGortPairs / ParseSignals）
-│   │   ├── format.go             # 格式化和序列化
-│   │   ├── type_gort.go          # GortPairInfo / InputPair 类型
-│   │   └── type_op.go            # OpInfo 类型
+│   ├── feedback/                 # 反馈信号类型与解析
+│   │   ├── type.go               # SuspiciousPairInfo / InputPair 类型（函数级，保留未使用）
+│   │   ├── signal.go             # CoverageSignal / SignalKind 定义（gort_covered/gort_timeout/op_covered/op_timeout）
+│   │   ├── format.go             # ParseSignals / ParseGortPairs / ParseStdPairs 信号解析
+│   │   ├── type_gort.go          # GortPairInfo / InputGortPair 类型
+│   │   └── type_op.go            # OpInfo / OpPair / InputOpPair / MatchOpPair 类型
 │   ├── sched/                    # 运行时调度原语（[FB] 日志输出）
 │   │   ├── sched.go              # Channel/WG/Mutex 操作的 [FB] 日志
 │   │   └── env.go                # 环境变量读取
@@ -98,12 +89,14 @@ GoPie 采用双层插桩架构，从两个层面捕获并发行为：
 修改 Go runtime / sync / time 包源码，在 goroutine 创建、channel 收发、互斥锁、WaitGroup 等并发原语关键位置输出 `[FBSDK]` 日志，提供运行时级别的并发行为记录。
 
 **第二层 — AST Instrumentation（用户代码层）**：
-通过 AST Pass 系统对用户源码进行静态插桩。每个 Pass 遵循 `Before → Apply → After` 三阶段生命周期。插桩内容包括：
-- 函数入口插入 `defer callstack.Trace(funcID)()`
-- `go` 语句处插入 `goroutine.Enter(gid)` / `defer goroutine.Exit(gid)`
-- channel 操作处插入 `sched` 包日志调用
-- WaitGroup 操作处插入追踪日志
-- select 语句各分支插入操作日志
+通过 AST Pass 系统对用户源码进行静态插桩。每个 Pass 遵循 `Before → Apply → After` 三阶段生命周期。当前激活的 Pass（按注册顺序）：
+- **GoroutinePass**：`go` 语句处插入 `goroutine.Enter(gid, parentGid)` / `defer goroutine.Exit(gid)`
+- **ChRecPass**：channel send/close 操作处插入 `sched.InstChBF` / `sched.InstChAF` 钩子
+- **SelectPass**：select 分支中的 send 操作插入 `sched.InstChSelectAF` 钩子
+- **WgPass**：WaitGroup Add/Done 操作处插入 `sched.InstWgBF` / `sched.InstWgAF` 钩子
+- **TestPass**：测试函数生成 `TestXxx_1` 包装，注入 `EnterMain` / `ParseInput` / `PrintGoroutinePairs` 生命周期
+
+> **注意**：`FunctionPass`（函数级 funcID 分配）已被注释掉；函数级 `callstack` 包已移除。
 
 ### 2. 静态 GID 机制
 
@@ -113,19 +106,38 @@ Goroutine ID（gid）在**编译期**通过 `文件路径 hash << 32 + 原子递
 
 ### 3. 两阶段 Fuzzing 架构
 
+预执行与 Fuzzing 的切换由 `Config.GortPhase` 统一控制（0=预执行，1=Fuzzing）。`CorpusGort` 和 `CorpusOp` 各自持有 `*uint32` 指针指向该字段，通过 `atomic` 读写。
+
+**两 Corpus 生命周期对齐**：
+
+```
+                预执行收集          阶段转换               取种子      反馈
+CorpusGort:   AddPair()     →  TryEndPreExec()      →  Get()  →  ApplySignals()
+CorpusOp:     Add()         →  TryEndPreExec(cg)    →  Get()  →  ApplySignals() + OnGortCovered()
+```
+
+`TryEndPreExec` 由 monitor 循环每轮并列调用，各自在内部管理日志输出，无返回值。
+
 #### Phase 1 — 预执行阶段（Pre-execution）
-- 反复运行测试二进制，从 **stderr** 解析并发种子信息
-- 种子来源：直接观测的时间重叠对、父子关系推断、自配对推断、共享对象访问推测
+
+- 反复运行测试二进制（`Input=""`），`SCHED_DEBUG` 未设置 → `debugSched=true` → `[FB]` 日志输出到 stderr
+- **stderr**：`ParseGortPairs` → goroutine 对（`[COVERED]`/`[SUSPECT]`）→ `corpusGort.AddPair()` 分类入 CoveredConPairs 或 SusConPairs
+- **stderr**：`ParseGortPairs` → OpInfo（`[FB]chan:`/`[FB]wg:`）→ `corpusOp.Add()` 去重索引
 - 采用不动点停止策略：连续 3 轮种子总数不变 或 达到最大轮次（默认 30）
+- 阶段转换：`CorpusGort.TryEndPreExec` 设置 `cfg.GortPhase=1` + `RefillTryPairs`
+- 转换后：`CorpusOp.TryEndPreExec` 从 `cg.CoveredConPairs` 一次性生成全部 OP 对 → `SusConPairs` → `RefillTryPairs`
 - 种子按置信度 × 10 − 超时次数 × 2 的优先级排序
 
 #### Phase 2 — Fuzzing 阶段
-- 从 SusConPairs 按优先级选取种子，通过环境变量 `Input` 传递给运行时
-- 运行时 pointControl 实现 goroutine 间断点同步：后执行的 goroutine 等待先执行的 goroutine 完成
-- 从 **stdout** 解析 `{COVERED}` / `{TIMEOUT}` 信号进行反馈
+
+- 从 SusConPairs 按优先级选取种子，通过环境变量 `Input` / `InputOp` 传递给运行时
+- 运行时 `goroutine.pointControl` 实现 goroutine 间断点同步：后执行的 goroutine 等待先执行的 goroutine 完成
+- `sched.InstChBF`/`InstWgBF` 实现操作级断点同步
+- 从 **stdout** 解析 `{COVERED}` / `{TIMEOUT}`（goroutine 级）和 `{COVERED_OP}` / `{TIMEOUT_OP}`（OP 级）信号
 - 交替反转策略：每两次执行交换 goroutine 先后顺序
 - 超时 5 次后温和淘汰至 InfeasiblePairs
 - 无覆盖时 selectNum 翻倍（上限 64）扩大搜索范围
+- goroutine 对 COVERED → `corpusOp.OnGortCovered()` 增量生成对应 OP 对
 
 ### 4. 并发对推断规则
 
@@ -142,9 +154,25 @@ Goroutine ID（gid）在**编译期**通过 `文件路径 hash << 32 + 原子递
 
 ### 5. 信号反馈机制
 
-- `COVERED` 信号：种子从 SusConPairs → CoveredConPairs，selectNum 不变
-- `TIMEOUT` 信号：累计超时计数，≥5 次 → InfeasiblePairs（温和淘汰）
-- 无覆盖 + 有超时 → selectNum 翻倍（不立即淘汰，给种子更多机会）
+**信号类型**（`pkg/feedback/signal.go`）：
+
+| 信号 | Kind | stdout 格式 | 含义 |
+|------|------|------------|------|
+| `{COVERED}` | `SignalGortCovered` | `{COVERED} {gid1, gid2}` | goroutine 对调度成功 |
+| `{TIMEOUT}` | `SignalGortTimeout` | `{TIMEOUT} {gid1, gid2}` | goroutine 对调度超时 |
+| `{COVERED_OP}` | `SignalOpCovered` | `{COVERED_OP} {opId1, opId2}` | 操作对调度成功 |
+| `{TIMEOUT_OP}` | `SignalOpTimeout` | `{TIMEOUT_OP} {opId1, opId2}` | 操作对调度超时 |
+
+**ApplySignals 处理流程**（goroutine 和 OP 两个 Corpus 完全对称）：
+
+1. 分类 coveredSigKeys / timeoutSigKeys
+2. 超时计数：TryPairs 中匹配 timeoutSigKeys → 累计超时，≥5 次 → SusConPairs → InfeasiblePairs（淘汰）
+3. 计算 `COVERED ∩ TryPairs` = intersection
+4. 无覆盖但有超时 → selectNum 翻倍扩大搜索范围（上限 64）
+5. intersection 中的对：从 SusConPairs **删除**，加入 CoveredConPairs（晋升）
+6. RefillTryPairs() 从剩余 SusConPairs 按 score 重选种子
+
+**goroutine 特有的反馈链路**：`ApplySignals` 返回本轮新覆盖的 goroutine 对列表 → `corpusOp.OnGortCovered()` 增量生成对应 OP 对种子。
 
 ## 构建与运行
 
@@ -213,11 +241,14 @@ go build -o ./bin ./cmd/...
 - Windows 上测试二进制以 `.exe` 结尾，`exec.Command` 传入路径需包含 `.exe` 后缀
 - Race Detector 的插桩可能与自定义调度产生交互，可能掩盖部分竞态
 - `go test -race -c` 编译后的二进制通过 `-test.run` 参数指定测试函数
-- 预执行阶段和 Fuzzing 阶段共用一个 Monitor 循环，通过 `corpusGort.done` 标志区分
+- 预执行阶段和 Fuzzing 阶段共用一个 Monitor 循环，通过 `cfg.GortPhase` 标志区分
 
 ## 已知限制
 
-- OP 级别调度已禁用，当前仅使用 goroutine 级别调度
-- select 语句的 AST 插桩存在结构限制，某些复杂 select 无法完整插桩
-- Bug 结果汇总模块（`pkg/bug`）尚未完成
+- OP 级别 Fuzzing 依赖 `SCHED_DEBUG` 环境变量收集 `[FB]` 日志，channel/select/waitgroup Pass 已激活，但 `[FB]` 日志通过 `print()` 内建函数输出到 stderr，需要 Runtime Patch 层配合
+- select 语句的 AST 插桩存在结构限制，某些复杂 select 无法完整插桩；select 分支中的操作仅插入 AF 钩子，无法作为 OP 对的 Next 方（只能做 Pre）
+- Bug 结果汇总模块（`pkg/bug`）尚未完成，panic/data race 仅在日志中打印
 - Fuzzing 种子选择可能出现饥饿问题（RefillTryPairs 中 TODO 标注）
+- `cfg.MaxWorker` 被硬编码为 4（monitor.go:113），用户配置不生效
+- 大量 Config 字段未被使用（`InitTurnCnt`、`UseCoveredSched`、`UseStates`、`UseAnalysis`、`UseGuide`、`SingleCrash`）
+- `Monitor.Start` 始终返回 `(false, []string{})`，bug 发现无返回路径

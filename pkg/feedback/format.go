@@ -7,15 +7,15 @@ import (
 )
 
 // ParseSignals 从 stdout 中解析调度有效性信号（轻量，无需调用栈）
-// 返回 func 和 op 两份独立的信号切片
+// 返回 gort 和 op 两份独立的信号切片
 //
 // 支持格式：
 //
-//	{COVERED} {funcId1, funcId2}
-//	{TIMEOUT} {funcId1, funcId2}
+//	{COVERED} {gid1, gid2}
+//	{TIMEOUT} {gid1, gid2}
 //	{COVERED_OP} {opId1, opId2}
 //	{TIMEOUT_OP} {opId1, opId2}
-func ParseSignals(s string) (funcSignals, opSignals []*CoverageSignal) {
+func ParseSignals(s string) (gortSignals, opSignals []*CoverageSignal) {
 	lines := strings.Split(s, "\n")
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
@@ -27,8 +27,8 @@ func ParseSignals(s string) (funcSignals, opSignals []*CoverageSignal) {
 			continue
 		}
 		switch sig.Kind {
-		case SignalFuncCovered, SignalFuncTimeout:
-			funcSignals = append(funcSignals, sig)
+		case SignalGortCovered, SignalGortTimeout:
+			gortSignals = append(gortSignals, sig)
 		case SignalOpCovered, SignalOpTimeout:
 			opSignals = append(opSignals, sig)
 		}
@@ -53,11 +53,11 @@ func parseSignal(line string) *CoverageSignal {
 		line = strings.TrimPrefix(line, "{TIMEOUT_OP}")
 	case strings.HasPrefix(line, "{COVERED}"):
 		success = true
-		kind = SignalFuncCovered
+		kind = SignalGortCovered
 		line = strings.TrimPrefix(line, "{COVERED}")
 	case strings.HasPrefix(line, "{TIMEOUT}"):
 		success = false
-		kind = SignalFuncTimeout
+		kind = SignalGortTimeout
 		line = strings.TrimPrefix(line, "{TIMEOUT}")
 	default:
 		return nil

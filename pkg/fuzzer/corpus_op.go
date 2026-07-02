@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"sort"
 	"sync"
+	"sync/atomic"
 
 	"toolkit/pkg/feedback"
 )
@@ -28,6 +29,9 @@ type CorpusOp struct {
 	pairTimeouts map[string]int // pairKey -> 累计超时次数
 	selectNum    int            // 从 SusConPairs 选取数量，初始=1，自适应调整（上限 64）
 	generated    bool           // 是否已从 goroutine 对生成过 OP 种子（只生成一次）
+	collected    bool           // 预执行阶段是否已成功收集过 OP 信息（只收集一次，避免跨运行 ObjAddr 不一致）
+
+	gortPhase *uint32 // 指向 cfg.GortPhase，读取预执行/fuzzing 阶段状态
 }
 
 const (
@@ -36,7 +40,7 @@ const (
 )
 
 // NewCorpusOp 创建并初始化 CorpusOp
-func NewCorpusOp() *CorpusOp {
+func NewCorpusOp(phase *uint32) *CorpusOp {
 	return &CorpusOp{
 		ops:             make(map[uint64]*feedback.OpInfo),
 		byGid:           make(map[uint64]map[uint64]struct{}),
@@ -47,14 +51,22 @@ func NewCorpusOp() *CorpusOp {
 		pairTimeouts:    make(map[string]int),
 		selectNum:       1,
 		generated:       false,
+		gortPhase:       phase,
 	}
 }
 
 // Add 批量添加 OpInfo，按 OpId 自动去重，并建立 Gid 索引
+// 预执行阶段只在首次成功收集后跳过后续调用，避免跨运行 ObjAddr 不一致导致 MatchOpPair 失败
 func (co *CorpusOp) Add(opInfos []*feedback.OpInfo) {
 	co.mu.Lock()
 	defer co.mu.Unlock()
 
+	// 预执行阶段只收集一次：首次成功添加 OP 后，后续调用直接跳过
+	if atomic.LoadUint32(co.gortPhase) == 0 && co.collected {
+		return
+	}
+
+	added := false
 	for _, op := range opInfos {
 		if op == nil {
 			continue
@@ -70,6 +82,12 @@ func (co *CorpusOp) Add(opInfos []*feedback.OpInfo) {
 			co.byGid[op.Gid] = make(map[uint64]struct{})
 		}
 		co.byGid[op.Gid][op.OpId] = struct{}{}
+		added = true
+	}
+
+	// 预执行阶段首次成功添加 OP 后标记已收集
+	if atomic.LoadUint32(co.gortPhase) == 0 && added {
+		co.collected = true
 	}
 }
 
@@ -98,9 +116,44 @@ func opSignalKey(preID, nextID uint64) string {
 	return fmt.Sprintf("%d-%d", preID, nextID)
 }
 
-// GenerateFromGort 从 CorpusGort 的 CoveredConPairs 一次性生成所有危险 OpPair
-// 应在 goroutine 预执行结束后调用，只执行一次
-func (co *CorpusOp) GenerateFromGort(cg *CorpusGort) {
+// generateFromPair 从单个 goroutine 对生成危险 OpPair（内部辅助函数）
+// caller 负责持有 co.mu 写锁
+func (co *CorpusOp) generateFromPair(pair *feedback.GortPairInfo, seen map[string]struct{}) {
+	ops1 := co.getOpsByGid(pair.Gid1)
+	ops2 := co.getOpsByGid(pair.Gid2)
+
+	for _, op1 := range ops1 {
+		for _, op2 := range ops2 {
+			// 双向匹配：op1→op2 和 op2→op1
+			// select 中的操作无 BF 钩子，只能做 Op1（pre），不能做 Op2（next）
+			if !op2.IsSelect {
+				if opPair := feedback.MatchOpPair(op1, op2); opPair != nil {
+					key := opPairKey(opPair)
+					if _, exists := seen[key]; !exists {
+						seen[key] = struct{}{}
+						co.SusConPairs[key] = opPair
+					}
+				}
+			}
+			if !op1.IsSelect {
+				if opPair := feedback.MatchOpPair(op2, op1); opPair != nil {
+					key := opPairKey(opPair)
+					if _, exists := seen[key]; !exists {
+						seen[key] = struct{}{}
+						co.SusConPairs[key] = opPair
+					}
+				}
+			}
+		}
+	}
+}
+
+// TryEndPreExec goroutine预执行结束时，一次性从 covered goroutine 对生成全部 OP 对
+// 应在 monitor 循环中紧跟 corpusGort.TryEndPreExec 之后调用
+func (co *CorpusOp) TryEndPreExec(cg *CorpusGort) {
+	if atomic.LoadUint32(co.gortPhase) == 0 {
+		return
+	}
 	co.mu.Lock()
 	defer co.mu.Unlock()
 
@@ -109,37 +162,9 @@ func (co *CorpusOp) GenerateFromGort(cg *CorpusGort) {
 	}
 
 	seen := make(map[string]struct{})
-
 	for _, pair := range cg.CoveredConPairs {
-		if pair == nil {
-			continue
-		}
-		ops1 := co.getOpsByGid(pair.Gid1)
-		ops2 := co.getOpsByGid(pair.Gid2)
-
-		for _, op1 := range ops1 {
-			for _, op2 := range ops2 {
-				// 双向匹配：op1→op2 和 op2→op1
-				// select 中的操作无 BF 钩子，只能做 Op1（pre），不能做 Op2（next）
-				if !op2.IsSelect {
-					if opPair := feedback.MatchOpPair(op1, op2); opPair != nil {
-						key := opPairKey(opPair)
-						if _, exists := seen[key]; !exists {
-							seen[key] = struct{}{}
-							co.SusConPairs[key] = opPair
-						}
-					}
-				}
-				if !op1.IsSelect {
-					if opPair := feedback.MatchOpPair(op2, op1); opPair != nil {
-						key := opPairKey(opPair)
-						if _, exists := seen[key]; !exists {
-							seen[key] = struct{}{}
-							co.SusConPairs[key] = opPair
-						}
-					}
-				}
-			}
+		if pair != nil {
+			co.generateFromPair(pair, seen)
 		}
 	}
 
@@ -152,13 +177,13 @@ func (co *CorpusOp) GenerateFromGort(cg *CorpusGort) {
 
 // Get 返回 TryPairs 作为 InputOpPair
 // 预执行阶段（generated=false）返回 nil；fuzzing 阶段返回 TryPairs 副本
-func (co *CorpusOp) Get(cg *CorpusGort) *feedback.InputOpPair {
-	co.mu.RLock()
-	defer co.mu.RUnlock()
-
+func (co *CorpusOp) Get() *feedback.InputOpPair {
 	if !co.generated {
 		return nil
 	}
+
+	co.mu.RLock()
+	defer co.mu.RUnlock()
 
 	result := make([]*feedback.OpPair, 0, len(co.TryPairs))
 	for _, pair := range co.TryPairs {
@@ -166,6 +191,33 @@ func (co *CorpusOp) Get(cg *CorpusGort) *feedback.InputOpPair {
 	}
 
 	return &feedback.InputOpPair{TryPair: result}
+}
+
+// OnGortCovered goroutine 对被 COVERED 时，增量生成对应 OP 对
+func (co *CorpusOp) OnGortCovered(pairs []*feedback.GortPairInfo) {
+	if atomic.LoadUint32(co.gortPhase) == 0 {
+		return
+	}
+	co.mu.Lock()
+	defer co.mu.Unlock()
+
+	if !co.generated {
+		return
+	}
+
+	seen := make(map[string]struct{})
+	for _, pair := range pairs {
+		if pair == nil {
+			continue
+		}
+		co.generateFromPair(pair, seen)
+	}
+
+	if len(seen) > 0 {
+		co.RefillTryPairs()
+		fmt.Printf("[OP_INCREMENTAL] Generated %d new op pairs from %d newly covered goroutine pairs\n",
+			len(seen), len(pairs))
+	}
 }
 
 // RefillTryPairs 全量替换 TryPairs，从 SusConPairs 按优先级选取 selectNum 个

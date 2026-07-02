@@ -82,7 +82,7 @@ func (e *Executor) Run(in Input) Output {
 		command.Env = append(command.Env, fmt.Sprintf("RECOVER_TIMEOUT=%v", in.recovertimeout))
 	}
 	// 传递是否记录调用栈的标志
-	if in.gortPair != nil && !in.gortPair.RecordStack {
+	if in.gortPair != nil {
 		command.Env = append(command.Env, "RECORD_STACK=1")
 		command.Env = append(command.Env, "SCHED_DEBUG=1")
 	}

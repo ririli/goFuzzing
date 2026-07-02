@@ -17,8 +17,7 @@ type GortPairInfo struct {
 // InputGortPair 传递给测试二进制的goroutine对输入
 // 对标 InputPair
 type InputGortPair struct {
-	TryPair     []*GortPairInfo
-	RecordStack bool // true: 记录调用栈; false: 仅断点控制
+	TryPair []*GortPairInfo
 }
 
 // ToString 返回字符串表示，用于设置Input环境变量

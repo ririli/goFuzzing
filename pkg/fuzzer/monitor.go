@@ -48,9 +48,9 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	}
 
 	var corpusGort *CorpusGort
-	corpusGort = NewCorpusGort()
+	corpusGort = NewCorpusGort(&cfg.GortPhase)
 	var corpusOp *CorpusOp
-	corpusOp = NewCorpusOp()
+	corpusOp = NewCorpusOp(&cfg.GortPhase)
 	wid := atomic.AddUint32(&workerID, 1)
 	ch := make(chan RunContext)
 	cancel := make(chan struct{})
@@ -68,7 +68,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			}
 
 			gortPair := corpusGort.Get()
-			opPair := corpusOp.Get(corpusGort)
+			opPair := corpusOp.Get()
 			e := Executor{}
 			in := Input{
 				gortPair:       gortPair,
@@ -168,23 +168,19 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 		}
 
 		// 预执行阶段判断
-		if atomic.LoadUint32(&corpusGort.done) == 0 {
-			if corpusGort.TryEndPreExec(cfg.MaxPreExecRound) {
-				fmt.Printf("[PRESTAGE] Pre-execution finished, total pairs: cover=%d\n",
-					len(corpusGort.CoveredConPairs))
-				// 对 COVERED goroutine 对检测共享对象 panic
-				opPairs := corpusOp.Get(corpusGort)
-				for _, p := range opPairs.TryPair {
-					fmt.Printf("[PANIC] %s\n", p)
-				}
-			}
+		if atomic.LoadUint32(&cfg.GortPhase) == 0 {
+			corpusGort.TryEndPreExec(cfg.MaxPreExecRound)
+			corpusOp.TryEndPreExec(corpusGort)
 		}
 
 		// fuzzing 阶段
-		funcSignals, opSingnals := feedback.ParseSignals(ctx.Out.O)
+		gortSignals, opSingnals := feedback.ParseSignals(ctx.Out.O)
 		if cfg.UseMutate {
-			if len(funcSignals) > 0 {
-				corpusGort.ApplySignals(funcSignals)
+			if len(gortSignals) > 0 {
+				newlyCovered := corpusGort.ApplySignals(gortSignals)
+				if len(newlyCovered) > 0 {
+					corpusOp.OnGortCovered(newlyCovered)
+				}
 			}
 			if len(opSingnals) > 0 {
 				corpusOp.ApplySignals(opSingnals)

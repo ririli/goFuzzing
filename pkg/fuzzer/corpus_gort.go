@@ -41,7 +41,6 @@ func gortSignalKey(preID, nextID uint64) string {
 type CorpusGort struct {
 	mu              sync.RWMutex
 	isReverse       bool                              // 是否反转pair
-	done            uint32                            // 0=预执行中, 1=预执行完成
 	CoveredConPairs map[string]*feedback.GortPairInfo // 已覆盖的goroutine并发对 (Rule 0直接观测)
 	SusConPairs     map[string]*feedback.GortPairInfo // 可疑的goroutine并发对 (Rule 1-4推测)
 	InfeasiblePairs map[string]*feedback.GortPairInfo // 无法覆盖的goroutine并发对 (超时过多或已完成)
@@ -53,12 +52,13 @@ type CorpusGort struct {
 	preExecRound  uint32 // 预执行当前轮次
 	prevPairTotal int    // 上一轮 pair 总数
 	stableCount   int    // 连续不变轮数
+
+	gortPhase *uint32 // 指向 cfg.GortPhase，预执行→fuzzing 转换时写入
 }
 
 // NewCorpusGort 初始化CorpusGort
-func NewCorpusGort() *CorpusGort {
+func NewCorpusGort(phase *uint32) *CorpusGort {
 	p := CorpusGort{}
-	p.done = 0
 	p.execCount = 0
 	p.isReverse = true
 	p.CoveredConPairs = make(map[string]*feedback.GortPairInfo)
@@ -70,12 +70,13 @@ func NewCorpusGort() *CorpusGort {
 	p.preExecRound = 0
 	p.prevPairTotal = 0
 	p.stableCount = 0
+	p.gortPhase = phase
 	return &p
 }
 
 // Get 获取 TryPairs 作为 InputGortPair 返回
 func (p *CorpusGort) Get() *feedback.InputGortPair {
-	if atomic.LoadUint32(&p.done) == uint32(0) {
+	if atomic.LoadUint32(p.gortPhase) == uint32(0) {
 		return nil
 	}
 	p.mu.Lock()
@@ -103,8 +104,7 @@ func (p *CorpusGort) Get() *feedback.InputGortPair {
 	}
 
 	return &feedback.InputGortPair{
-		TryPair:     result,
-		RecordStack: p.shouldRecord(),
+		TryPair: result,
 	}
 }
 
@@ -133,12 +133,12 @@ func (p *CorpusGort) AddPair(feedPair []*feedback.GortPairInfo) {
 const gortDefaultStableThreshold = 3
 
 // TryEndPreExec 判断预执行是否结束
-func (p *CorpusGort) TryEndPreExec(maxRounds int) bool {
+func (p *CorpusGort) TryEndPreExec(maxRounds int) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	if atomic.LoadUint32(&p.done) == 1 {
-		return true
+	if atomic.LoadUint32(p.gortPhase) == 1 {
+		return
 	}
 
 	round := atomic.AddUint32(&p.preExecRound, 1)
@@ -152,11 +152,11 @@ func (p *CorpusGort) TryEndPreExec(maxRounds int) bool {
 	}
 
 	if p.stableCount >= gortDefaultStableThreshold || int(round) >= maxRounds {
-		atomic.StoreUint32(&p.done, 1)
+		atomic.StoreUint32(p.gortPhase, 1)
 		p.RefillTryPairs()
-		return true
+		fmt.Printf("[PRESTAGE] Pre-execution finished, total gort pairs: cover=%d, suspect=%d\n",
+			len(p.CoveredConPairs), len(p.SusConPairs))
 	}
-	return false
 }
 
 const (
@@ -204,7 +204,8 @@ func (p *CorpusGort) gortScore(key string) float64 {
 }
 
 // ApplySignals 应用goroutine调度有效性信号
-func (p *CorpusGort) ApplySignals(signals []*feedback.CoverageSignal) {
+// 返回本轮新覆盖的 goroutine 对（从 SusConPairs → CoveredConPairs）
+func (p *CorpusGort) ApplySignals(signals []*feedback.CoverageSignal) []*feedback.GortPairInfo {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
@@ -214,7 +215,7 @@ func (p *CorpusGort) ApplySignals(signals []*feedback.CoverageSignal) {
 		if sig == nil {
 			continue
 		}
-		if sig.Kind != feedback.SignalFuncCovered && sig.Kind != feedback.SignalFuncTimeout {
+		if sig.Kind != feedback.SignalGortCovered && sig.Kind != feedback.SignalGortTimeout {
 			continue
 		}
 		sk := gortSignalKey(sig.PreID, sig.NextID)
@@ -259,15 +260,14 @@ func (p *CorpusGort) ApplySignals(signals []*feedback.CoverageSignal) {
 			p.selectNum = gortMaxSelectNum
 		}
 	}
+	var newlyCovered []*feedback.GortPairInfo
 	for key, pair := range intersection {
 		p.CoveredConPairs[key] = pair
 		delete(p.SusConPairs, key)
 		delete(p.pairTimeouts, key)
+		newlyCovered = append(newlyCovered, pair)
 	}
 
 	p.RefillTryPairs()
-}
-
-func (p *CorpusGort) shouldRecord() bool {
-	return true
+	return newlyCovered
 }

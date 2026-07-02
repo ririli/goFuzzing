@@ -22,7 +22,8 @@ type Config struct {
 	RecoverTimeOut  int
 	InitTurnCnt     int
 	MaxQuit         int
-	MaxPreExecRound int // 预执行轮次上限
+	MaxPreExecRound int    // 预执行轮次上限
+	GortPhase       uint32 // 0=预执行种子收集, 1=fuzzing阶段 (CorpusGort写入, CorpusOp读取)
 
 	//BugSet *bug.BugSet
 }

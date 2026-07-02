@@ -24,11 +24,13 @@ var (
 	timeoutGlobal time.Duration
 )
 
-// todo 反馈阶段还在收集时间信息
+var skipRecord bool
+
 func init() {
 	cfg = NewConfig()
 	timeout = 10 * time.Millisecond
 	tracker = NewGoroutineTracker()
+	skipRecord = os.Getenv("RECORD_STACK") == "1"
 }
 
 // CurrentGid 返回当前OS goroutine对应的静态goroutine ID
@@ -105,6 +107,9 @@ func ParsePairs(s string) {
 // EnterMain 记录主goroutine (gid=0) 的开始时间
 // 在生成的 TestXxx_1 包装函数开头调用
 func EnterMain() {
+	if skipRecord {
+		return
+	}
 	gidMap.Store(getCurrentGoroutineID(), uint64(0))
 	tracker.EnterGoroutineWithParent(0, 0) // 主goroutine没有父goroutine
 }
@@ -113,6 +118,9 @@ func EnterMain() {
 // gid=0 不参与断点控制，不再调用 completeOperation(0)
 // 在生成的 TestXxx_1 包装函数中defer调用
 func ExitMain() {
+	if skipRecord {
+		return
+	}
 	gidMap.Delete(getCurrentGoroutineID())
 	tracker.ExitGoroutine(0)
 }
@@ -123,6 +131,9 @@ func ExitMain() {
 func Enter(gid uint64, parentGid uint64) {
 	pointControl(gid)
 
+	if skipRecord {
+		return
+	}
 	// 存储当前OS goroutine → gid的映射
 	gidMap.Store(getCurrentGoroutineID(), gid)
 	tracker.EnterGoroutineWithParent(gid, parentGid)
@@ -131,6 +142,9 @@ func Enter(gid uint64, parentGid uint64) {
 // Exit goroutine级别出口hook，在go语句创建的goroutine结束时defer调用
 // 注意：completeOperation 已在 Enter→pointControl 入口处调用，此处不再重复通知
 func Exit(gid uint64) {
+	if skipRecord {
+		return
+	}
 	gidMap.Delete(getCurrentGoroutineID())
 	tracker.ExitGoroutine(gid)
 }
@@ -240,6 +254,9 @@ func completeOperation(id uint64) {
 // gid=0 不参与任何输出。跨推断函数间按 (gid1,gid2) 去重，冲突时保留高置信度。
 // 格式：[COVERED] 或 [SUSPECT] gid1,gid2|file1:line1,file2:line2|confidence|sourceType;
 func PrintGoroutinePairs() {
+	if skipRecord {
+		return
+	}
 	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
 
 	// Rule 0: 直接观测的时间重叠对 → [COVERED]
@@ -306,6 +323,9 @@ func PrintGoroutinePairs() {
 // PrintRecords 打印所有goroutine实例的追踪记录（含父子关系）
 // 用于调试时查看完整的goroutine生命周期数据
 func PrintRecords() {
+	if skipRecord {
+		return
+	}
 	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
 	tracker.PrintGoroutineRecords()
 }

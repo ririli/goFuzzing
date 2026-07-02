@@ -20,10 +20,9 @@ func main() {
 
 			//	reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
 			reg.Register("gort", func() inst.InstPass { return &passes.GoroutinePass{} })
-			// register passes
-			//reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
-			//reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
-			//reg.Register("waitgroup", func() inst.InstPass { return &passes.WgPass{} })
+			reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
+			reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
+			reg.Register("waitgroup", func() inst.InstPass { return &passes.WgPass{} })
 			reg.Register("test", func() inst.InstPass { return &passes.TestPass{Pos: cmd.Opts.Pos} })
 			err := cmd.HandleSrcFile(file, reg, reg.ListOfPassNames())
 			log.Println("Inst " + file)
@@ -38,10 +37,9 @@ func main() {
 		reg := inst.NewPassRegistry()
 		//reg.Register("func", func() inst.InstPass { return &passes.FunctionPass{} })
 		reg.Register("gort", func() inst.InstPass { return &passes.GoroutinePass{} })
-		// register passes
-		//reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
-		//reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
-		//reg.Register("waitgroup", func() inst.InstPass { return &passes.WgPass{} })
+		reg.Register("channel", func() inst.InstPass { return &passes.ChRecPass{} })
+		reg.Register("select", func() inst.InstPass { return &passes.SelectPass{} })
+		reg.Register("waitgroup", func() inst.InstPass { return &passes.WgPass{} })
 		reg.Register("test", func() inst.InstPass { return &passes.TestPass{Pos: cmd.Opts.Pos} })
 		cmd.HandleSrcFile(cmd.Opts.File, reg, reg.ListOfPassNames())
 	}
