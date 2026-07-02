@@ -3,6 +3,8 @@ package grpc1687
 import (
 	"testing"
 	"time"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type ResponseWriter interface {
@@ -27,6 +29,7 @@ func (ht *serverHandlerTransport) do(fn func()) {
 	default:
 		select {
 		case ht.writes <- fn:
+			sched.InstChSelectAF(450971566084, ht.writes, "send")
 			return
 		case <-ht.closedCh:
 			return
@@ -95,10 +98,28 @@ func newHandleStreamTest(t *testing.T) *handleStreamTest {
 
 func testHandlerTransportHandleStreams(t *testing.T, handleStream func(st *handleStreamTest)) {
 	st := newHandleStreamTest(t)
-	st.ht.HandleStreams(func() { go handleStream(st) })
+	st.ht.HandleStreams(func() {
+		go func(_parentGid uint64) {
+			goroutine.Enter(450971566081, _parentGid)
+			defer goroutine.Exit(450971566081)
+			handleStream(st)
+		}(goroutine.CurrentGid())
+	})
 }
 
 func TestGrpc1687(t *testing.T) {
+	testHandlerTransportHandleStreams(t, func(st *handleStreamTest) {
+		st.ht.WriteStatus()
+		st.ht.Write()
+	})
+	time.Sleep(10 * time.Millisecond)
+}
+func TestGrpc1687_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	testHandlerTransportHandleStreams(t, func(st *handleStreamTest) {
 		st.ht.WriteStatus()
 		st.ht.Write()

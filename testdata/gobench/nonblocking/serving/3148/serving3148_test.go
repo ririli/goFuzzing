@@ -3,6 +3,8 @@ package serving3148
 import (
 	"sync"
 	"testing"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type PodAutoscalerInterface interface {
@@ -87,11 +89,21 @@ func (c *Impl) Run(threadiness int) {
 	defer sg.Wait()
 
 	for i := 0; i < threadiness; i++ {
+		sched.InstWgBF(858993459204)
 		sg.Add(1)
-		go func() {
-			defer sg.Done()
-			c.processNextWorkItem()
-		}()
+		sched.InstWgAF(858993459204, &sg, "add")
+		go func(_parentGid uint64) {
+			goroutine.Enter(858993459201, _parentGid)
+			defer goroutine.Exit(858993459201)
+			func() {
+				defer func() {
+					sched.InstWgBF(858993459205)
+					sg.Done()
+					sched.InstWgAF(858993459205, &sg, "done")
+				}()
+				c.processNextWorkItem()
+			}()
+		}(goroutine.CurrentGid())
 	}
 }
 
@@ -120,11 +132,21 @@ func (g *Group) Wait() {
 }
 
 func (g *Group) Go(f func()) {
+	sched.InstWgBF(858993459206)
 	g.wg.Add(1)
-	go func() {
-		defer g.wg.Done()
-		f()
-	}()
+	sched.InstWgAF(858993459206, &g.wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(858993459202, _parentGid)
+		defer goroutine.Exit(858993459202)
+		func() {
+			defer func() {
+				sched.InstWgBF(858993459207)
+				g.wg.Done()
+				sched.InstWgAF(858993459207, &g.wg, "done")
+			}()
+			f()
+		}()
+	}(goroutine.CurrentGid())
 }
 
 type Hooks struct{}
@@ -155,19 +177,62 @@ func (c *Fake) PrependReactor() {
 
 func TestServing3148(t *testing.T) {
 	var wg sync.WaitGroup
+	sched.InstWgBF(858993459208)
 	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		cs := &Clientset{}
-		controller := NewController()
-		controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
-		eg := &Group{}
-		defer func() {
-			eg.Wait()
+	sched.InstWgAF(858993459208, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(858993459203, _parentGid)
+		defer goroutine.Exit(858993459203)
+		func() {
+			defer func() {
+				sched.InstWgBF(858993459209)
+				wg.Done()
+				sched.InstWgAF(858993459209, &wg, "done")
+			}()
+			cs := &Clientset{}
+			controller := NewController()
+			controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
+			eg := &Group{}
+			defer func() {
+				eg.Wait()
+			}()
+			eg.Go(func() { controller.Run(1) })
+			h := NewHooks()
+			h.OnUpdate(&cs.Fake)
 		}()
-		eg.Go(func() { controller.Run(1) })
-		h := NewHooks()
-		h.OnUpdate(&cs.Fake)
-	}()
+	}(goroutine.CurrentGid())
+	wg.Wait()
+}
+func TestServing3148_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	var wg sync.WaitGroup
+	sched.InstWgBF(858993459208)
+	wg.Add(1)
+	sched.InstWgAF(858993459208, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(858993459203, _parentGid)
+		defer goroutine.Exit(858993459203)
+		func() {
+			defer func() {
+				sched.InstWgBF(858993459209)
+				wg.Done()
+				sched.InstWgAF(858993459209, &wg, "done")
+			}()
+			cs := &Clientset{}
+			controller := NewController()
+			controller.controller_Reconciler.(*Reconciler).ServingClientSet = cs
+			eg := &Group{}
+			defer func() {
+				eg.Wait()
+			}()
+			eg.Go(func() { controller.Run(1) })
+			h := NewHooks()
+			h.OnUpdate(&cs.Fake)
+		}()
+	}(goroutine.CurrentGid())
 	wg.Wait()
 }

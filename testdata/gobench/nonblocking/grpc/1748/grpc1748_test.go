@@ -4,6 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 var minConnectTimeout = 10 * time.Second
@@ -70,9 +72,13 @@ func (ac *addrConn) transportMonitor() {
 }
 
 func (ac *addrConn) connect() {
-	go func() {
-		ac.transportMonitor()
-	}()
+	go func(_parentGid uint64) {
+		goroutine.Enter(987842478081, _parentGid)
+		defer goroutine.Exit(987842478081)
+		func() {
+			ac.transportMonitor()
+		}()
+	}(goroutine.CurrentGid())
 }
 
 func (acbw *acBalancerWrapper) Connect() {
@@ -126,7 +132,11 @@ func (ccb *ccBalancerWrapper) NewSubConn() SubConn {
 
 func newCCBalancerWrapper(cc *ClientConn, b Builder) {
 	ccb := &ccBalancerWrapper{cc: cc}
-	go ccb.watcher()
+	go func(_parentGid uint64) {
+		goroutine.Enter(987842478082, _parentGid)
+		defer goroutine.Exit(987842478082)
+		ccb.watcher()
+	}(goroutine.CurrentGid())
 	balanceMutex.Lock()
 	defer balanceMutex.Unlock()
 	ccb.balancer = b.Build(ccb)
@@ -134,16 +144,59 @@ func newCCBalancerWrapper(cc *ClientConn, b Builder) {
 
 func TestGrpc1748(t *testing.T) {
 	var wg sync.WaitGroup
+	sched.InstWgBF(987842478084)
 	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		mctBkp := minConnectTimeout
+	sched.InstWgAF(987842478084, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(987842478083, _parentGid)
+		defer
+
 		// Call this only after transportMonitor goroutine has ended.
-		defer func() {
-			minConnectTimeout = mctBkp
+		goroutine.Exit(987842478083)
+		func() {
+			defer func() {
+				sched.InstWgBF(987842478085)
+				wg.Done()
+				sched.InstWgAF(987842478085, &wg, "done")
+			}()
+			mctBkp := minConnectTimeout
+
+			defer func() {
+				minConnectTimeout = mctBkp
+			}()
+			cc := &ClientConn{}
+			cc.switchBalancer()
 		}()
-		cc := &ClientConn{}
-		cc.switchBalancer()
-	}()
+	}(goroutine.CurrentGid())
+	wg.Wait()
+}
+func TestGrpc1748_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	var wg sync.WaitGroup
+	sched.InstWgBF(987842478084)
+	wg.Add(1)
+	sched.InstWgAF(987842478084, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(987842478083, _parentGid)
+		defer goroutine.Exit(987842478083)
+		func() {
+			defer func() {
+				sched.InstWgBF(987842478085)
+				wg.Done()
+				sched.InstWgAF(987842478085, &wg, "done")
+			}()
+			mctBkp := minConnectTimeout
+
+			defer func() {
+				minConnectTimeout = mctBkp
+			}()
+			cc := &ClientConn{}
+			cc.switchBalancer()
+		}()
+	}(goroutine.CurrentGid())
 	wg.Wait()
 }

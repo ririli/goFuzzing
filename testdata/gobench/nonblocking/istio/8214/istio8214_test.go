@@ -4,6 +4,8 @@ import (
 	"sync"
 	"sync/atomic"
 	"testing"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type internal_Cache interface {
@@ -65,22 +67,100 @@ func (s *grpcServer) Check() {
 
 func TestIstio8214(t *testing.T) {
 	var wg sync.WaitGroup
+	sched.InstWgBF(369367187460)
 	wg.Add(3)
-	go func() {
-		defer wg.Done()
-		s := &grpcServer{
-			cache: &Cache{
-				cache: &lruCache{},
-			},
-		}
-		go func() {
-			defer wg.Done()
-			s.Check()
+	sched.InstWgAF(369367187460, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(369367187457, _parentGid)
+		defer goroutine.Exit(369367187457)
+		func() {
+			defer func() {
+				sched.InstWgBF(369367187461)
+				wg.Done()
+				sched.InstWgAF(369367187461, &wg, "done")
+			}()
+			s := &grpcServer{
+				cache: &Cache{
+					cache: &lruCache{},
+				},
+			}
+			go func(_parentGid uint64) {
+				goroutine.Enter(369367187458, _parentGid)
+				defer goroutine.Exit(369367187458)
+				func() {
+					defer func() {
+						sched.InstWgBF(369367187462)
+						wg.Done()
+						sched.InstWgAF(369367187462, &wg, "done")
+					}()
+					s.Check()
+				}()
+			}(goroutine.CurrentGid())
+			go func(_parentGid uint64) {
+				goroutine.Enter(369367187459, _parentGid)
+				defer goroutine.Exit(369367187459)
+				func() {
+					defer func() {
+						sched.InstWgBF(369367187463)
+						wg.Done()
+						sched.InstWgAF(369367187463, &wg, "done")
+					}()
+					s.Check()
+				}()
+			}(goroutine.CurrentGid())
 		}()
-		go func() {
-			defer wg.Done()
-			s.Check()
+	}(goroutine.CurrentGid())
+	wg.Wait()
+}
+func TestIstio8214_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	var wg sync.WaitGroup
+	sched.InstWgBF(369367187460)
+	wg.Add(3)
+	sched.InstWgAF(369367187460, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(369367187457, _parentGid)
+		defer goroutine.Exit(369367187457)
+		func() {
+			defer func() {
+				sched.InstWgBF(369367187461)
+				wg.Done()
+				sched.InstWgAF(369367187461, &wg, "done")
+			}()
+			s := &grpcServer{
+				cache: &Cache{
+					cache: &lruCache{},
+				},
+			}
+			go func(_parentGid uint64) {
+				goroutine.Enter(369367187458, _parentGid)
+				defer goroutine.Exit(369367187458)
+				func() {
+					defer func() {
+						sched.InstWgBF(369367187462)
+						wg.Done()
+						sched.InstWgAF(369367187462, &wg, "done")
+					}()
+					s.Check()
+				}()
+			}(goroutine.CurrentGid())
+			go func(_parentGid uint64) {
+				goroutine.Enter(369367187459, _parentGid)
+				defer goroutine.Exit(369367187459)
+				func() {
+					defer func() {
+						sched.InstWgBF(369367187463)
+						wg.Done()
+						sched.InstWgAF(369367187463, &wg, "done")
+					}()
+					s.Check()
+				}()
+			}(goroutine.CurrentGid())
 		}()
-	}()
+	}(goroutine.CurrentGid())
 	wg.Wait()
 }

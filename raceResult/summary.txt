@@ -1,0 +1,98 @@
+﻿============================================
+  Go Race Detector Batch Test - Summary
+============================================
+  Project        : D:\gopath\src\gopie\testdata\gobench\nonblocking_origin
+  Date           : 2026-06-30 04:01:45
+  Count per test : 1
+  Timeout/pkg    : 5 min
+============================================
+
+  Total packages  : 35
+  Pass (clean)    : 9
+  Failed          : 26
+  Cmd Failed      : 0
+  Race detected   : 24
+  Panic detected  : 4
+  Total race blocks: 24
+  Total panic blocks: 4
+  ----------------------------------------
+  Wall time       : 54.38 s
+  go test (sum)   : 51.91 s
+
+============================================
+  Per-Package Results
+============================================
+
+Package                                                      Result Races Panics Time 
+-------                                                      ------ ----- ------ ---- 
+toolkit/testdata/gobench/nonblocking_origin/cockroach/35501  FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/cockroach/4407   PASS       0      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/etcd/3077        FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/etcd/4876        FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/etcd/8194        FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/etcd/9446        FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/grpc/1687        FAIL       0      1 00:01
+toolkit/testdata/gobench/nonblocking_origin/grpc/1748        FAIL       1      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/grpc/2371        PASS       0      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/grpc/3090        FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/istio/16742      FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/istio/8144       FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/istio/8214       FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/istio/8967       FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058 FAIL       0      1 00:01
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404 FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/70892 PASS       0      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796 FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631 FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/80284 FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/81091 PASS       0      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/81148 PASS       0      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/82239 FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/82550 FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331 FAIL       1      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164 FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/moby/18412       PASS       0      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/moby/22941       FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/moby/27037       FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/serving/3068     FAIL       1      1 00:01
+toolkit/testdata/gobench/nonblocking_origin/serving/3148     FAIL       1      0 00:01
+toolkit/testdata/gobench/nonblocking_origin/serving/4908     PASS       0      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/serving/5865     FAIL       1      1 00:01
+toolkit/testdata/gobench/nonblocking_origin/serving/6171     PASS       0      0 00:02
+toolkit/testdata/gobench/nonblocking_origin/serving/6472     PASS       0      0 00:02
+
+
+
+============================================
+
+Packages with Race Warnings:
+  - toolkit/testdata/gobench/nonblocking_origin/cockroach/35501  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/etcd/3077  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/etcd/4876  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/etcd/8194  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/etcd/9446  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/grpc/1748  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/grpc/3090  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/istio/16742  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/istio/8144  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/istio/8214  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/istio/8967  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/kubernetes/80284  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/kubernetes/82239  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/kubernetes/82550  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/moby/22941  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/moby/27037  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/serving/3068  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/serving/3148  (1 race(s))
+  - toolkit/testdata/gobench/nonblocking_origin/serving/5865  (1 race(s))
+
+Packages with Panics:
+  - toolkit/testdata/gobench/nonblocking_origin/grpc/1687  (1 panic(s))
+  - toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058  (1 panic(s))
+  - toolkit/testdata/gobench/nonblocking_origin/serving/3068  (1 panic(s))
+  - toolkit/testdata/gobench/nonblocking_origin/serving/5865  (1 panic(s))

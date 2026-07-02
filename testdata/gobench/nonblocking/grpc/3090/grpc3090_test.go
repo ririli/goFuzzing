@@ -4,6 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type resolver_ClientConn interface {
@@ -46,9 +48,13 @@ func (ccr *ccResolverWrapper) resolveNow() {
 func (ccr *ccResolverWrapper) poll() {
 	ccr.mu.Lock()
 	defer ccr.mu.Unlock()
-	go func() {
-		ccr.resolveNow()
-	}()
+	go func(_parentGid uint64) {
+		goroutine.Enter(158913789953, _parentGid)
+		defer goroutine.Exit(158913789953)
+		func() {
+			ccr.resolveNow()
+		}()
+	}(goroutine.CurrentGid())
 }
 
 func (ccr *ccResolverWrapper) UpdateState() {
@@ -88,11 +94,46 @@ func Dial() {
 
 func TestGrpc3090(t *testing.T) {
 	var wg sync.WaitGroup
+	sched.InstWgBF(158913789955)
 	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		Dial()
-		time.Sleep(5 * time.Millisecond)
-	}()
+	sched.InstWgAF(158913789955, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(158913789954, _parentGid)
+		defer goroutine.Exit(158913789954)
+		func() {
+			defer func() {
+				sched.InstWgBF(158913789956)
+				wg.Done()
+				sched.InstWgAF(158913789956, &wg, "done")
+			}()
+			Dial()
+			time.Sleep(5 * time.Millisecond)
+		}()
+	}(goroutine.CurrentGid())
+	wg.Wait()
+}
+func TestGrpc3090_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	var wg sync.WaitGroup
+	sched.InstWgBF(158913789955)
+	wg.Add(1)
+	sched.InstWgAF(158913789955, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(158913789954, _parentGid)
+		defer goroutine.Exit(158913789954)
+		func() {
+			defer func() {
+				sched.InstWgBF(158913789956)
+				wg.Done()
+				sched.InstWgAF(158913789956, &wg, "done")
+			}()
+			Dial()
+			time.Sleep(5 * time.Millisecond)
+		}()
+	}(goroutine.CurrentGid())
 	wg.Wait()
 }

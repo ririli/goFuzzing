@@ -110,7 +110,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			}
 		}
 	}
-	cfg.MaxWorker = 4
+	cfg.MaxWorker = 1
 	for i := 0; i < cfg.MaxWorker; i++ {
 		go dowork()
 	}
@@ -175,6 +175,17 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 
 		// fuzzing 阶段
 		gortSignals, opSingnals := feedback.ParseSignals(ctx.Out.O)
+		fmt.Println("====stdout_start=====")
+		fmt.Println(ctx.Out.O)
+		fmt.Println("=======stdout_end=========")
+		fmt.Println("====反馈信号_start=====")
+		for _, signal := range gortSignals {
+			fmt.Println(signal.PreID, signal.NextID, signal.Success, signal.Kind)
+		}
+		for _, singnal := range opSingnals {
+			fmt.Println(singnal.PreID, singnal.NextID, singnal.Success, singnal.Kind)
+		}
+		fmt.Println("=======反馈信号_end=======")
 		if cfg.UseMutate {
 			if len(gortSignals) > 0 {
 				newlyCovered := corpusGort.ApplySignals(gortSignals)

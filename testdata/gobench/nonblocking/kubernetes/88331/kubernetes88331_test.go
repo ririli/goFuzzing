@@ -3,6 +3,8 @@ package kubernetes88331
 import (
 	"sync"
 	"testing"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type data struct {
@@ -72,7 +74,11 @@ func createAndRunPriorityQueue() *PriorityQueue {
 }
 
 func (p *PriorityQueue) Run() {
-	go Until(p.flushBackoffQCompleted, p.stop)
+	go func(_parentGid uint64) {
+		goroutine.Enter(296352743425, _parentGid)
+		defer goroutine.Exit(296352743425)
+		Until(p.flushBackoffQCompleted, p.stop)
+	}(goroutine.CurrentGid())
 }
 
 func BackoffUntil(f func(), stopCh <-chan struct{}) {
@@ -104,11 +110,42 @@ func Until(f func(), stopCh <-chan struct{}) {
 
 func TestKubernetes88331(t *testing.T) {
 	var wg sync.WaitGroup
+	sched.InstWgBF(296352743427)
 	wg.Add(1)
-	go func() {
-		wg.Done()
-		p := createAndRunPriorityQueue()
-		p.podBackoffQ.Len()
-	}()
+	sched.InstWgAF(296352743427, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(296352743426, _parentGid)
+		defer goroutine.Exit(296352743426)
+		func() {
+			sched.InstWgBF(296352743428)
+			wg.Done()
+			sched.InstWgAF(296352743428, &wg, "done")
+			p := createAndRunPriorityQueue()
+			p.podBackoffQ.Len()
+		}()
+	}(goroutine.CurrentGid())
+	wg.Wait()
+}
+func TestKubernetes88331_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	var wg sync.WaitGroup
+	sched.InstWgBF(296352743427)
+	wg.Add(1)
+	sched.InstWgAF(296352743427, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(296352743426, _parentGid)
+		defer goroutine.Exit(296352743426)
+		func() {
+			sched.InstWgBF(296352743428)
+			wg.Done()
+			sched.InstWgAF(296352743428, &wg, "done")
+			p := createAndRunPriorityQueue()
+			p.podBackoffQ.Len()
+		}()
+	}(goroutine.CurrentGid())
 	wg.Wait()
 }

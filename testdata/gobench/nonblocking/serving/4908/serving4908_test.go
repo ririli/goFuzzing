@@ -3,6 +3,8 @@ package serving4908
 import (
 	"sync"
 	"testing"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type TestingT interface {
@@ -116,28 +118,93 @@ func (rw *revisionWatcher) runWithTickCh() {
 }
 
 func (rw *revisionWatcher) checkDests() {
-	go func() {
-		rw.logger.Info("1")
-	}()
+	go func(_parentGid uint64) {
+		goroutine.Enter(459561500673, _parentGid)
+		defer goroutine.Exit(459561500673)
+		func() {
+			rw.logger.Info("1")
+		}()
+	}(goroutine.CurrentGid())
 }
 
 func TestServing4908(t *testing.T) {
 	var wg sync.WaitGroup
+	sched.InstWgBF(459561500676)
 	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		t.Run("TestServing4908", func(t *testing.T) {
-			rw := newRevisionWatcher(
-				testing_TestLogger(t),
-			)
-			var _wg sync.WaitGroup
-			_wg.Add(1)
-			go func() {
-				rw.runWithTickCh()
-				_wg.Done()
+	sched.InstWgAF(459561500676, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(459561500674, _parentGid)
+		defer goroutine.Exit(459561500674)
+		func() {
+			defer func() {
+				sched.InstWgBF(459561500677)
+				wg.Done()
+				sched.InstWgAF(459561500677, &wg, "done")
 			}()
-			_wg.Wait()
-		})
-	}()
+			t.Run("TestServing4908", func(t *testing.T) {
+				rw := newRevisionWatcher(
+					testing_TestLogger(t),
+				)
+				var _wg sync.WaitGroup
+				sched.InstWgBF(459561500678)
+				_wg.Add(1)
+				sched.InstWgAF(459561500678, &_wg, "add")
+				go func(_parentGid uint64) {
+					goroutine.Enter(459561500675, _parentGid)
+					defer goroutine.Exit(459561500675)
+					func() {
+						rw.runWithTickCh()
+						sched.InstWgBF(459561500679)
+						_wg.Done()
+						sched.InstWgAF(459561500679, &_wg, "done")
+					}()
+				}(goroutine.CurrentGid())
+				_wg.Wait()
+			})
+		}()
+	}(goroutine.CurrentGid())
+	wg.Wait()
+}
+func TestServing4908_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	var wg sync.WaitGroup
+	sched.InstWgBF(459561500676)
+	wg.Add(1)
+	sched.InstWgAF(459561500676, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(459561500674, _parentGid)
+		defer goroutine.Exit(459561500674)
+		func() {
+			defer func() {
+				sched.InstWgBF(459561500677)
+				wg.Done()
+				sched.InstWgAF(459561500677, &wg, "done")
+			}()
+			t.Run("TestServing4908", func(t *testing.T) {
+				rw := newRevisionWatcher(
+					testing_TestLogger(t),
+				)
+				var _wg sync.WaitGroup
+				sched.InstWgBF(459561500678)
+				_wg.Add(1)
+				sched.InstWgAF(459561500678, &_wg, "add")
+				go func(_parentGid uint64) {
+					goroutine.Enter(459561500675, _parentGid)
+					defer goroutine.Exit(459561500675)
+					func() {
+						rw.runWithTickCh()
+						sched.InstWgBF(459561500679)
+						_wg.Done()
+						sched.InstWgAF(459561500679, &_wg, "done")
+					}()
+				}(goroutine.CurrentGid())
+				_wg.Wait()
+			})
+		}()
+	}(goroutine.CurrentGid())
 	wg.Wait()
 }

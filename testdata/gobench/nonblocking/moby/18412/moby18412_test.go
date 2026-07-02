@@ -7,6 +7,8 @@ import (
 	"os/exec"
 	"testing"
 	"time"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 func RunCommandWithOutputForDuration(cmd *exec.Cmd, duration time.Duration) (output string, exitCode int, timedOut bool, err error) {
@@ -31,13 +33,20 @@ func RunCommandWithOutputForDuration(cmd *exec.Cmd, duration time.Duration) (out
 		err = fmt.Errorf("Fail to start command %v : %v", cmd, err)
 	}
 
-	go func() {
+	go func(_parentGid uint64) {
 		//inst.WaitTimeout(10 * time.Millisecond)
 		// And wait for it to exit in the goroutine :)
-		exitErr := cmd.Wait()
-		exitCode = 1
-		done <- exitErr
-	}()
+		goroutine.Enter(519691042817, _parentGid)
+		defer goroutine.Exit(519691042817)
+		func() {
+
+			exitErr := cmd.Wait()
+			exitCode = 1
+			sched.InstChBF(519691042818)
+			done <- exitErr
+			sched.InstChAF(519691042818, done, "send")
+		}()
+	}(goroutine.CurrentGid())
 
 	select {
 	case <-time.After(duration):
@@ -56,6 +65,19 @@ func RunCommandWithOutputForDuration(cmd *exec.Cmd, duration time.Duration) (out
 }
 
 func TestMoby18412(t *testing.T) {
+	cmd := exec.Command("sh", "-c", "ls")
+	out, exitCode, timedOut, err := RunCommandWithOutputForDuration(cmd, 1*time.Millisecond)
+	if exitCode != 0 || !timedOut || err != nil {
+		_ = fmt.Sprintf("%v", out)
+	}
+	time.Sleep(100 * time.Millisecond)
+}
+func TestMoby18412_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	cmd := exec.Command("sh", "-c", "ls")
 	out, exitCode, timedOut, err := RunCommandWithOutputForDuration(cmd, 1*time.Millisecond)
 	if exitCode != 0 || !timedOut || err != nil {

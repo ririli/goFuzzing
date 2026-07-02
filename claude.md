@@ -9,7 +9,7 @@ GoPie 是一个基于 Fuzzing 的 Golang 数据竞争检测工具。通过对被
 
 - **语言**: Go 1.19.1
 - **模块名**: `toolkit`
-- **核心依赖**: `go-flags`（命令行解析）、`testify`（测试框架）、`x/tools`（Go AST 工具集）、`go-echarts`（可视化）
+- **核心依赖**: `go-flags`（命令行解析）、`testify`（测试框架）、`x/tools`（Go AST 工具集）
 
 ## 项目结构
 
@@ -252,3 +252,7 @@ go build -o ./bin ./cmd/...
 - `cfg.MaxWorker` 被硬编码为 4（monitor.go:113），用户配置不生效
 - 大量 Config 字段未被使用（`InitTurnCnt`、`UseCoveredSched`、`UseStates`、`UseAnalysis`、`UseGuide`、`SingleCrash`）
 - `Monitor.Start` 始终返回 `(false, []string{})`，bug 发现无返回路径
+
+## 开发注意事项
+- 实现功能时，多去复用现有的代码，开发风格要保持统一
+- 完成功能时，给出相应的变动总结

@@ -1,0 +1,88 @@
+﻿============================================
+  Panic Warnings Summary
+  Generated: 2026-06-30 04:01:45
+  Total panic blocks: 4
+============================================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/grpc/1687
+----------------------------------------
+panic: send on closed channel
+
+goroutine 20 [running]:
+toolkit/testdata/gobench/nonblocking_origin/grpc/1687.(*serverHandlerTransport).do(...)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1687/grpc1687_test.go:28
+toolkit/testdata/gobench/nonblocking_origin/grpc/1687.(*serverHandlerTransport).Write(...)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1687/grpc1687_test.go:43
+toolkit/testdata/gobench/nonblocking_origin/grpc/1687.TestGrpc1687.func1(0xc00008a560)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1687/grpc1687_test.go:104 +0x26a
+created by toolkit/testdata/gobench/nonblocking_origin/grpc/1687.testHandlerTransportHandleStreams.func1
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1687/grpc1687_test.go:98 +0xdf
+FAIL	toolkit/testdata/gobench/nonblocking_origin/grpc/1687	0.205s
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058
+----------------------------------------
+panic: sync: negative WaitGroup counter
+
+goroutine 7 [running]:
+sync.(*WaitGroup).Add(0xc00001a300, 0xffffffffffffffff)
+	D:/Program Files/GO/go1.19.1/src/sync/waitgroup.go:83 +0x205
+sync.(*WaitGroup).Done(...)
+	D:/Program Files/GO/go1.19.1/src/sync/waitgroup.go:108
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058.TestKubernetes13058.func1({0x4a9bb9?, 0x4aaf97?})
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/13058/kubernetes13058_test.go:78 +0x39
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058.ResourceEventHandlerFuncs.OnDelete({0x0?}, {0x0, 0x0})
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/13058/kubernetes13058_test.go:26 +0x46
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058.NewInformer.func1({0x0, 0x0})
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/13058/kubernetes13058_test.go:53 +0x57
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058.(*Controller).processLoop(0xc00000a038)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/13058/kubernetes13058_test.go:36 +0x42
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058.Until.func1(...)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/13058/kubernetes13058_test.go:67
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058.Until(0xc000055f90, 0x0?, 0x0?)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/13058/kubernetes13058_test.go:68 +0x3a
+toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058.(*Controller).Run(0xc00000a038, 0x0?)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/13058/kubernetes13058_test.go:42 +0x58
+created by toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058.TestKubernetes13058
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/13058/kubernetes13058_test.go:83 +0x1d2
+FAIL	toolkit/testdata/gobench/nonblocking_origin/kubernetes/13058	0.197s
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/serving/3068
+----------------------------------------
+panic: send on closed channel
+
+goroutine 21 [running]:
+toolkit/testdata/gobench/nonblocking_origin/serving/3068.(*impl).Go(0xc000138720, 0xc000088000)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3068/serving3068_test.go:44 +0x67
+toolkit/testdata/gobench/nonblocking_origin/serving/3068.TestServing3068.func1()
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3068/serving3068_test.go:65 +0x5a
+created by toolkit/testdata/gobench/nonblocking_origin/serving/3068.TestServing3068
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3068/serving3068_test.go:63 +0x186
+FAIL	toolkit/testdata/gobench/nonblocking_origin/serving/3068	0.228s
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/serving/5865
+----------------------------------------
+panic: send on closed channel [recovered]
+	panic: send on closed channel
+
+goroutine 19 [running]:
+testing.tRunner.func1.2({0x5c1620, 0x628d90})
+	D:/Program Files/GO/go1.19.1/src/testing/testing.go:1396 +0x372
+testing.tRunner.func1()
+	D:/Program Files/GO/go1.19.1/src/testing/testing.go:1399 +0x5f0
+panic({0x5c1620, 0x628d90})
+	D:/Program Files/GO/go1.19.1/src/runtime/panic.go:890 +0x262
+toolkit/testdata/gobench/nonblocking_origin/serving/5865.(*revisionBackendsManager).endpointsUpdated(...)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:26
+toolkit/testdata/gobench/nonblocking_origin/serving/5865.TestServing5865.func1(...)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:50
+toolkit/testdata/gobench/nonblocking_origin/serving/5865.TestServing5865(0x0?)
+	D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:51 +0x6d
+testing.tRunner(0xc0000849c0, 0x5ef6c0)
+	D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x217
+created by testing.(*T).Run
+	D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x75e
+

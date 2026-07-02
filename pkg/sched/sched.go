@@ -115,7 +115,7 @@ func (c *Config) waitDec(id uint64) {
 }
 
 // InstChBF channel 操作前拦截，根据调度配置决定是否等待前置 opId 完成
-func InstChBF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, opType string) {
+func InstChBF(opId uint64) {
 
 	if !config.doWait(opId) {
 		return
@@ -166,7 +166,7 @@ func InstChSelectAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, opTy
 }
 
 // InstWgBF WaitGroup 操作前拦截（Add/Done/Wait）
-func InstWgBF(opId uint64, wg *sync.WaitGroup, opType string) {
+func InstWgBF(opId uint64) {
 	if !config.doWait(opId) {
 		return
 	}
@@ -195,7 +195,7 @@ func InstWgBF(opId uint64, wg *sync.WaitGroup, opType string) {
 }
 
 // InstWgAF WaitGroup 操作后记录
-func InstWgAF(opId uint64, wg *sync.WaitGroup, opType string) {
+func InstWgAF(opId uint64, wg any, opType string) {
 	if debugSched {
 		addr := uint64(reflect.ValueOf(wg).Pointer())
 		gid := goroutine.CurrentGid()

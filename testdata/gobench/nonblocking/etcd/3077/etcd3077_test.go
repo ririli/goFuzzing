@@ -3,6 +3,8 @@ package etcd3077
 import (
 	"testing"
 	"time"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type raftNode struct {
@@ -34,8 +36,13 @@ type EtcdServer struct {
 }
 
 func (s *EtcdServer) run() {
-	go s.r.run()
-	// Wait s.r.run
+	go func(_parentGid uint64) {
+		// Wait s.r.run
+		goroutine.Enter(141733920769, _parentGid)
+		defer goroutine.Exit(141733920769)
+		s.r.run()
+	}(goroutine.CurrentGid())
+
 	time.Sleep(10 * time.Millisecond)
 	defer func() {
 		s.r.stopped <- struct{}{}
@@ -54,12 +61,17 @@ func (s *EtcdServer) run() {
 func (s *EtcdServer) start() {
 	s.done = make(chan struct{})
 	s.stop = make(chan struct{})
-	go s.run()
+	go func(_parentGid uint64) {
+		goroutine.Enter(141733920770, _parentGid)
+		defer goroutine.Exit(141733920770)
+		s.run()
+	}(goroutine.CurrentGid())
 }
 
 func (s *EtcdServer) Stop() {
 	select {
 	case s.stop <- struct{}{}:
+		sched.InstChSelectAF(141733920773, s.stop, "send")
 	case <-s.done:
 		return
 	}
@@ -67,6 +79,18 @@ func (s *EtcdServer) Stop() {
 }
 
 func TestEtcd3077(t *testing.T) {
+	srv := &EtcdServer{
+		r: raftNode{},
+	}
+	srv.start()
+	defer srv.Stop()
+}
+func TestEtcd3077_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	srv := &EtcdServer{
 		r: raftNode{},
 	}

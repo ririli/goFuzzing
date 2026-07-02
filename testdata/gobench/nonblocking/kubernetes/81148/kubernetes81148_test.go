@@ -4,6 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 const unschedulableQTimeInterval = 60 * time.Second
@@ -52,7 +54,11 @@ func (p *PriorityQueue) flushUnschedulableQLeftover() {
 }
 
 func (p *PriorityQueue) run() {
-	go Until(p.flushUnschedulableQLeftover, p.stop)
+	go func(_parentGid uint64) {
+		goroutine.Enter(459561500673, _parentGid)
+		defer goroutine.Exit(459561500673)
+		Until(p.flushUnschedulableQLeftover, p.stop)
+	}(goroutine.CurrentGid())
 }
 
 func (p *PriorityQueue) newPodInfo(pod Pod) *PodInfo {
@@ -111,14 +117,57 @@ func addOrUpdateUnschedulablePod(p *PriorityQueue, pod Pod) {
 func TestKubernetes81148(t *testing.T) {
 	stop := make(chan struct{})
 	var wg sync.WaitGroup
+	sched.InstWgBF(459561500676)
 	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		q := NewPriorityQueue(stop)
-		highPod := Pod("1")
-		addOrUpdateUnschedulablePod(q, highPod)
-		q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
-	}()
+	sched.InstWgAF(459561500676, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(459561500674, _parentGid)
+		defer goroutine.Exit(459561500674)
+		func() {
+			defer func() {
+				sched.InstWgBF(459561500677)
+				wg.Done()
+				sched.InstWgAF(459561500677, &wg, "done")
+			}()
+			q := NewPriorityQueue(stop)
+			highPod := Pod("1")
+			addOrUpdateUnschedulablePod(q, highPod)
+			q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
+		}()
+	}(goroutine.CurrentGid())
 	wg.Wait()
+	sched.InstChBF(459561500675)
 	close(stop)
+	sched.InstChAF(459561500675, stop, "close")
+}
+func TestKubernetes81148_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	stop := make(chan struct{})
+	var wg sync.WaitGroup
+	sched.InstWgBF(459561500676)
+	wg.Add(1)
+	sched.InstWgAF(459561500676, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(459561500674, _parentGid)
+		defer goroutine.Exit(459561500674)
+		func() {
+			defer func() {
+				sched.InstWgBF(459561500677)
+				wg.Done()
+				sched.InstWgAF(459561500677, &wg, "done")
+			}()
+			q := NewPriorityQueue(stop)
+			highPod := Pod("1")
+			addOrUpdateUnschedulablePod(q, highPod)
+			q.unschedulableQ.podInfoMap[GetPodFullName(highPod)].Timestamp = time.Now().Add(-1 * unschedulableQTimeInterval)
+		}()
+	}(goroutine.CurrentGid())
+	wg.Wait()
+	sched.InstChBF(459561500675)
+	close(stop)
+	sched.InstChAF(459561500675, stop, "close")
 }

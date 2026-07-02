@@ -74,7 +74,7 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
 			ch := concrete.Chan
-			before := GenInstCallWithType("InstChBF", ch, id, "send")
+			before := GenInstCallBF("InstChBF", id)
 			c.InsertBefore(before)
 			after := GenInstCallWithType("InstChAF", ch, id, "send")
 			c.InsertAfter(after)
@@ -91,7 +91,7 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 						args := callExpr.Args
 						if len(args) == 1 {
 							if ch, ok := args[0].(*ast.Ident); ok {
-								before := GenInstCallWithType("InstChBF", ch, id, "close")
+								before := GenInstCallBF("InstChBF", id)
 								c.InsertBefore(before)
 
 								after := GenInstCallWithType("InstChAF", ch, id, "close")
@@ -113,7 +113,7 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 					args := callExpr.Args
 					if len(args) == 1 {
 						if ch, ok := args[0].(*ast.Ident); ok {
-							before := GenInstCallWithType("InstChBF", ch, id, "close")
+							before := GenInstCallBF("InstChBF", id)
 							after := GenInstCallWithType("InstChAF", ch, id, "close")
 
 							body := &ast.BlockStmt{List: []ast.Stmt{

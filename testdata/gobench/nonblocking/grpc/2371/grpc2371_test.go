@@ -4,6 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type ccBalancerWrapper struct {
@@ -16,7 +18,9 @@ func (ccb *ccBalancerWrapper) handleResolvedAddrs() {
 	case <-ccb.resolverUpdateCh:
 	default:
 	}
+	sched.InstChBF(1022202216451)
 	ccb.resolverUpdateCh <- struct{}{}
+	sched.InstChAF(1022202216451, ccb.resolverUpdateCh, "send")
 }
 
 func newCCBalancerWrapper(cc *ClientConn) *ccBalancerWrapper {
@@ -32,7 +36,11 @@ type ccResolverWrapper struct {
 }
 
 func (ccr *ccResolverWrapper) start() {
-	go ccr.watcher()
+	go func(_parentGid uint64) {
+		goroutine.Enter(1022202216449, _parentGid)
+		defer goroutine.Exit(1022202216449)
+		ccr.watcher()
+	}(goroutine.CurrentGid())
 }
 
 func (ccr *ccResolverWrapper) watcher() {
@@ -85,7 +93,29 @@ func TestGrpc2371(t *testing.T) {
 	for i := 0; i < 10; i++ {
 		cc := Dial()
 
-		go cc.Close()
+		go func(_parentGid uint64) {
+			goroutine.Enter(1022202216450, _parentGid)
+			defer goroutine.Exit(1022202216450)
+			cc.Close()
+		}(goroutine.CurrentGid())
+	}
+
+	time.Sleep(100 * time.Millisecond)
+}
+func TestGrpc2371_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	for i := 0; i < 10; i++ {
+		cc := Dial()
+
+		go func(_parentGid uint64) {
+			goroutine.Enter(1022202216450, _parentGid)
+			defer goroutine.Exit(1022202216450)
+			cc.Close()
+		}(goroutine.CurrentGid())
 	}
 
 	time.Sleep(100 * time.Millisecond)

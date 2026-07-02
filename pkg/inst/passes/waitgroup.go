@@ -74,11 +74,8 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
 			wg := selectorExpr.X
-			p_wg := &ast.UnaryExpr{
-				Op: token.AND,
-				X:  wg,
-			}
-			before := GenInstCallWithType("InstWgBF", p_wg, id, opType)
+			p_wg := &ast.UnaryExpr{Op: token.AND, X: wg}
+			before := GenInstCallBF("InstWgBF", id)
 			c.InsertBefore(before)
 			after := GenInstCallWithType("InstWgAF", p_wg, id, opType)
 			c.InsertAfter(after)
@@ -109,11 +106,8 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 			Add(concrete.Pos(), id)
 
 			wg := selectorExpr.X
-			p_wg := &ast.UnaryExpr{
-				Op: token.AND,
-				X:  wg,
-			}
-			before := GenInstCallWithType("InstWgBF", p_wg, id, opType)
+			p_wg := &ast.UnaryExpr{Op: token.AND, X: wg}
+			before := GenInstCallBF("InstWgBF", id)
 			after := GenInstCallWithType("InstWgAF", p_wg, id, opType)
 
 			body := &ast.BlockStmt{List: []ast.Stmt{

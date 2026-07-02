@@ -28,7 +28,7 @@ var skipRecord bool
 
 func init() {
 	cfg = NewConfig()
-	timeout = 10 * time.Millisecond
+	timeout = 5 * time.Millisecond
 	tracker = NewGoroutineTracker()
 	skipRecord = os.Getenv("RECORD_STACK") == "1"
 }

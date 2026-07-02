@@ -5,6 +5,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type workItem struct {
@@ -56,7 +58,9 @@ type delayingType struct {
 }
 
 func (q *delayingType) AddAfter(item interface{}) {
+	sched.InstWgBF(743029342212)
 	q.Add(item)
+	sched.InstWgAF(743029342212, &q, "add")
 }
 
 func newDelayingQueue() DelayingInterface {
@@ -103,7 +107,9 @@ func (m *Prober) IsReady() {
 			}()
 		*/
 		for _, wi := range ipWorkItems {
+			sched.InstWgBF(743029342213)
 			m.workQueue.Add(wi)
+			sched.InstWgAF(743029342213, &m.workQueue, "add")
 		}
 	}
 	ingressState.pendingCount += int32(len(workItems))
@@ -126,17 +132,33 @@ func (m *Prober) updateStates(ingressState *ingressState) {
 func (m *Prober) Start() chan struct{} {
 	var wg sync.WaitGroup
 	for i := 0; i < 2; i++ {
+		sched.InstWgBF(743029342214)
 		wg.Add(1)
-		go func() {
-			defer wg.Done()
-			m.processWorkItem()
-		}()
+		sched.InstWgAF(743029342214, &wg, "add")
+		go func(_parentGid uint64) {
+			goroutine.Enter(743029342209, _parentGid)
+			defer goroutine.Exit(743029342209)
+			func() {
+				defer func() {
+					sched.InstWgBF(743029342215)
+					wg.Done()
+					sched.InstWgAF(743029342215, &wg, "done")
+				}()
+				m.processWorkItem()
+			}()
+		}(goroutine.CurrentGid())
 	}
 	ch := make(chan struct{})
-	go func() {
-		wg.Wait()
-		close(ch)
-	}()
+	go func(_parentGid uint64) {
+		goroutine.Enter(743029342210, _parentGid)
+		defer goroutine.Exit(743029342210)
+		func() {
+			wg.Wait()
+			sched.InstChBF(743029342211)
+			close(ch)
+			sched.InstChAF(743029342211, ch, "close")
+		}()
+	}(goroutine.CurrentGid())
 	return ch
 }
 
@@ -149,6 +171,23 @@ func NewProber() *Prober {
 }
 
 func TestServing6472(t *testing.T) {
+	prober := NewProber()
+	done := make(chan struct{})
+	cancelled := prober.Start()
+	defer func() {
+		close(done)
+		<-cancelled
+	}()
+
+	prober.IsReady()
+	time.Sleep(1 * time.Millisecond)
+}
+func TestServing6472_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
 	prober := NewProber()
 	done := make(chan struct{})
 	cancelled := prober.Start()

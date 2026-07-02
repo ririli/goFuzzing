@@ -1,0 +1,983 @@
+﻿============================================
+  Race Detector Warnings Summary
+  Generated: 2026-06-30 04:01:45
+  Total race blocks: 24
+============================================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/cockroach/35501
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c00010a570 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.validateCheckInTxn()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:19 +0x31
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.(*SchemaChanger).validateChecks.func1.1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:59 +0x27
+
+Previous write at 0x00c00010a570 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.(*SchemaChanger).validateChecks.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:57 +0xa4
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.(*SchemaChanger).validateChecks()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:62 +0x44
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.(*SchemaChanger).runBackfill()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:70 +0xf6
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.TestCockroach35501.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:79 +0x68
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.(*SchemaChanger).validateChecks.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:58 +0x17a
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.(*SchemaChanger).validateChecks()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:62 +0x44
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.(*SchemaChanger).runBackfill()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:70 +0xf6
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.TestCockroach35501.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:79 +0x68
+
+Goroutine 8 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/cockroach/35501.TestCockroach35501()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/cockroach/35501/cockroach35501_test.go:76 +0xce
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/etcd/3077
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c000074728 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/3077.(*EtcdServer).run.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/3077/etcd3077_test.go:41 +0x3d
+  runtime.deferreturn()
+      D:/Program Files/GO/go1.19.1/src/runtime/panic.go:476 +0x32
+  toolkit/testdata/gobench/nonblocking_origin/etcd/3077.(*EtcdServer).start.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/3077/etcd3077_test.go:57 +0x39
+
+Previous write at 0x00c000074728 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/3077.(*raftNode).run()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/3077/etcd3077_test.go:15 +0x68
+  toolkit/testdata/gobench/nonblocking_origin/etcd/3077.(*EtcdServer).run.func2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/3077/etcd3077_test.go:37 +0x39
+
+Goroutine 8 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/3077.(*EtcdServer).start()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/3077/etcd3077_test.go:57 +0x136
+  toolkit/testdata/gobench/nonblocking_origin/etcd/3077.TestEtcd3077()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/3077/etcd3077_test.go:73 +0x7d
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/3077.(*EtcdServer).run()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/3077/etcd3077_test.go:37 +0xa6
+  toolkit/testdata/gobench/nonblocking_origin/etcd/3077.(*EtcdServer).start.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/3077/etcd3077_test.go:57 +0x39
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/etcd/4876
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x0000006eb4e8 by goroutine 11:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/4876.(*serverWatchStream).sendLoop()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/4876/etcd4876_test.go:33 +0x29
+  toolkit/testdata/gobench/nonblocking_origin/etcd/4876.(*watchServer).Watch.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/4876/etcd4876_test.go:41 +0x39
+
+Previous write at 0x0000006eb4e8 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/4876.TestEtcd4876.func1.1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/4876/etcd4876_test.go:53 +0x6a
+
+Goroutine 11 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/4876.(*watchServer).Watch()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/4876/etcd4876_test.go:41 +0x90
+  toolkit/testdata/gobench/nonblocking_origin/etcd/4876.TestEtcd4876.func1.2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/4876/etcd4876_test.go:57 +0xaa
+
+Goroutine 9 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/4876.TestEtcd4876.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/4876/etcd4876_test.go:50 +0xf5
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/etcd/8194
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x0000006ee4e8 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/8194.testLessorRenewExtendPileup()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/8194/etcd8194_test.go:14 +0x74
+  toolkit/testdata/gobench/nonblocking_origin/etcd/8194.TestEtcd8194.func2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/8194/etcd8194_test.go:72 +0x64
+
+Previous read at 0x0000006ee4e8 by goroutine 10:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/8194.(*lessor).runLoop()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/8194/etcd8194_test.go:35 +0x164
+  toolkit/testdata/gobench/nonblocking_origin/etcd/8194.newLessor.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/8194/etcd8194_test.go:55 +0x39
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/8194.TestEtcd8194()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/8194/etcd8194_test.go:70 +0x136
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 10 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/8194.newLessor()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/8194/etcd8194_test.go:55 +0xe4
+  toolkit/testdata/gobench/nonblocking_origin/etcd/8194.testLessorGrant()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/8194/etcd8194_test.go:60 +0x64
+  toolkit/testdata/gobench/nonblocking_origin/etcd/8194.TestEtcd8194.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/8194/etcd8194_test.go:68 +0x5f
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/etcd/9446
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c0000b66f0 by goroutine 10:
+  runtime.mapaccess1_faststr()
+      D:/Program Files/GO/go1.19.1/src/runtime/map_faststr.go:13 +0x0
+  toolkit/testdata/gobench/nonblocking_origin/etcd/9446.(*txReadBuffer).Range()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/9446/etcd9446_test.go:21 +0xa8
+  toolkit/testdata/gobench/nonblocking_origin/etcd/9446.(*readTx).UnsafeRange()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/9446/etcd9446_test.go:33 +0x7c
+  toolkit/testdata/gobench/nonblocking_origin/etcd/9446.TestEtcd9446.func1.2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/9446/etcd9446_test.go:55 +0x83
+
+Previous write at 0x00c0000b66f0 by goroutine 9:
+  runtime.mapdelete_faststr()
+      D:/Program Files/GO/go1.19.1/src/runtime/map_faststr.go:301 +0x0
+  toolkit/testdata/gobench/nonblocking_origin/etcd/9446.(*txBuffer).reset()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/9446/etcd9446_test.go:14 +0x150
+  toolkit/testdata/gobench/nonblocking_origin/etcd/9446.(*readTx).reset()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/9446/etcd9446_test.go:29 +0x8e
+  toolkit/testdata/gobench/nonblocking_origin/etcd/9446.TestEtcd9446.func1.1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/9446/etcd9446_test.go:51 +0x95
+
+Goroutine 10 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/9446.TestEtcd9446.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/9446/etcd9446_test.go:53 +0x296
+
+Goroutine 9 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/etcd/9446.TestEtcd9446.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/etcd/9446/etcd9446_test.go:49 +0x1d5
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/grpc/1748
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x0000006ed4e8 by goroutine 10:
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.(*addrConn).resetTransport()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:65 +0x2b
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.(*addrConn).transportMonitor()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:69 +0x1f
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.(*addrConn).connect.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:74 +0x1e
+
+Previous write at 0x0000006ed4e8 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.TestGrpc1748.func1.1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:143 +0x32
+  runtime.deferreturn()
+      D:/Program Files/GO/go1.19.1/src/runtime/panic.go:476 +0x32
+
+Goroutine 10 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.(*addrConn).connect()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:73 +0x8e
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.(*acBalancerWrapper).Connect()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:81 +0x87
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.(*pickfirstBalancer).HandleResolvedAddrs()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:46 +0xb7
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.(*ccBalancerWrapper).watcher()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:111 +0x99
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.newCCBalancerWrapper.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:129 +0x39
+
+Goroutine 8 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/grpc/1748.TestGrpc1748()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/1748/grpc1748_test.go:138 +0xce
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/grpc/3090
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c0000983e8 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.(*ccResolverWrapper).resolveNow()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:42 +0x4d
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.(*ccResolverWrapper).poll.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:50 +0x30
+
+Previous write at 0x00c0000983e8 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.newCCResolverWrapper()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:61 +0x149
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.DialContext()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:83 +0x92
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.Dial()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:86 +0x64
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.TestGrpc3090.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:94 +0x5f
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.(*ccResolverWrapper).poll()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:49 +0xfd
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.(*ccResolverWrapper).UpdateState()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:55 +0x2e
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.(*resolver_Resolver).UpdateState()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:27 +0x8b
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.(*resolver_Resolver).Build()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:19 +0x74
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.newCCResolverWrapper()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:61 +0x12e
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.DialContext()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:83 +0x92
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.Dial()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:86 +0x64
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.TestGrpc3090.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:94 +0x5f
+
+Goroutine 8 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/grpc/3090.TestGrpc3090()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/grpc/3090/grpc3090_test.go:92 +0xce
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/istio/16742
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c000008018 by goroutine 10:
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.(*DiscoveryServer).WorkloadUpdate()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:72 +0xdd
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.(*MemServiceDiscovery).AddWorkload()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:86 +0x87
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.TestIstio16742.func1.2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:105 +0x70
+
+Previous read at 0x00c000008018 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.(*ConfigGeneratorImpl).buildSidecarOutboundHTTPRouteConfig()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:28 +0x31
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.(*ConfigGeneratorImpl).BuildHTTPRoutes()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:24 +0x2c
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.(*DiscoveryServer).generateRawRoutes()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:62 +0xed
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.(*DiscoveryServer).pushRoute()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:66 +0xb3
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.(*DiscoveryServer).StreamAggregatedResources()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:58 +0xb2
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.TestIstio16742.func1.1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:101 +0xa4
+
+Goroutine 10 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.TestIstio16742.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:103 +0x2ae
+
+Goroutine 9 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/istio/16742.TestIstio16742.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/16742/istio16742_test.go:99 +0x1fd
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/istio/8144
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c00009e298 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.(*callbackRecorder).callback()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8144/istio8144_test.go:15 +0x44
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.(*callbackRecorder).callback-fm()
+      <autogenerated>:1 +0x39
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.(*ttlCache).evictExpired.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8144/istio8144_test.go:29 +0x47
+  sync.(*Map).Range()
+      D:/Program Files/GO/go1.19.1/src/sync/map.go:354 +0x225
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.(*ttlCache).evictExpired()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8144/istio8144_test.go:28 +0x4c
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.(*ttlCache).evicter()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8144/istio8144_test.go:24 +0x2e
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.NewTTLWithCallback.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8144/istio8144_test.go:42 +0x39
+
+Previous read at 0x00c00009e298 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.TestIstio8144.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8144/istio8144_test.go:54 +0x14e
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.NewTTLWithCallback()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8144/istio8144_test.go:42 +0x11a
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.TestIstio8144.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8144/istio8144_test.go:52 +0x124
+
+Goroutine 8 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8144.TestIstio8144()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8144/istio8144_test.go:49 +0xce
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/istio/8214
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c0000a0298 by goroutine 10:
+  sync/atomic.AddInt64()
+      D:/Program Files/GO/go1.19.1/src/runtime/race_amd64.s:289 +0xb
+  sync/atomic.AddUint64()
+      <autogenerated>:1 +0x1b
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.(*Cache).Set()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:24 +0x42
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.(*grpcServer).check()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:58 +0x93
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.(*grpcServer).Check()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:63 +0x71
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.TestIstio8214.func1.2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:82 +0x70
+
+Previous read at 0x00c0000a0298 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.(*lruCache).Stats()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:41 +0x30
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.(*Cache).recordStats()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:29 +0x61
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.(*Cache).Set()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:25 +0x43
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.(*grpcServer).check()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:58 +0x93
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.(*grpcServer).Check()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:63 +0x71
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.TestIstio8214.func1.1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:78 +0x70
+
+Goroutine 10 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.TestIstio8214.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:80 +0x2d0
+
+Goroutine 9 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8214.TestIstio8214.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8214/istio8214_test.go:76 +0x224
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/istio/8967
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c000146028 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8967.(*fsSource).Start.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8967/istio8967_test.go:22 +0x32
+
+Previous write at 0x00c000146028 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8967.(*fsSource).Stop()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8967/istio8967_test.go:31 +0x47
+  toolkit/testdata/gobench/nonblocking_origin/istio/8967.TestIstio8967.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8967/istio8967_test.go:51 +0xdd
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8967.(*fsSource).Start()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8967/istio8967_test.go:19 +0x8e
+  toolkit/testdata/gobench/nonblocking_origin/istio/8967.TestIstio8967.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8967/istio8967_test.go:50 +0xd3
+
+Goroutine 8 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/istio/8967.TestIstio8967()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/istio/8967/istio8967_test.go:47 +0xce
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c0000a028f by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.TestKubernetes49404.func1.1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:130 +0x30
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.websocket_Handler.ServeHTTP()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:17 +0x2e
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.(*ServeMux).ServeHTTP()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:51 +0x66
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.serverHandler.ServeHTTP()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:101 +0x56
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.(*conn).serve()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:92 +0x25
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.(*http_Server).Serve.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:110 +0x39
+
+Previous read at 0x00c0000a028f by goroutine 7:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.TestKubernetes49404.func1.2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:138 +0x38
+  runtime.deferreturn()
+      D:/Program Files/GO/go1.19.1/src/runtime/panic.go:476 +0x32
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.TestKubernetes49404()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:142 +0x45
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.(*http_Server).Serve()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:110 +0xce
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/49404.(*Server).goServe.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/49404/kubernetes49404_test.go:83 +0x84
+
+Goroutine 7 (running) created at:
+  testing.(*T).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x75d
+  testing.runTests.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1846 +0x99
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.runTests()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1844 +0x7ec
+  testing.(*M).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1726 +0xa84
+  main.main()
+      _testmain.go:47 +0x2e9
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c000136708 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.(*Cacher).startDispatching()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:20 +0x88
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.(*Cacher).dispatchEvent()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:24 +0x31
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.TestKubernetes77796.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:47 +0x27
+
+Previous read at 0x00c000136708 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.(*Cacher).dispatchEvent()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:25 +0x44
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.(*Cacher).dispatchEvents()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:30 +0x25
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.NewCacherFromConfig.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:35 +0x39
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.TestKubernetes77796()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:46 +0x38
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 8 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.NewCacherFromConfig()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:35 +0xe4
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.newTestCacher()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:40 +0x2a
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/77796.TestKubernetes77796()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/77796/kubernetes77796_test.go:44 +0x25
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c000076720 by goroutine 9:
+  runtime.mapdelete_faststr()
+      D:/Program Files/GO/go1.19.1/src/runtime/map_faststr.go:301 +0x0
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.(*heapData).Pop()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:13 +0x50
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.Pop()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:21 +0xb1
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.(*Heap).Pop()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:29 +0x9e
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.(*PriorityQueue).flushBackoffQCompleted()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:57 +0x79
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.(*PriorityQueue).flushBackoffQCompleted-fm()
+      <autogenerated>:1 +0x39
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.BackoffUntil.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:87 +0x51
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.BackoffUntil()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:88 +0x47
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.JitterUntil()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:98 +0x37
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.Until()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:102 +0x28
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.(*PriorityQueue).run.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:75 +0x47
+
+Previous read at 0x00c000076720 by goroutine 8:
+  runtime.mapaccess1_faststr()
+      D:/Program Files/GO/go1.19.1/src/runtime/map_faststr.go:13 +0x0
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.(*Heap).GetByKey()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:37 +0xa4
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.(*Heap).Get()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:33 +0x68
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.TestKubernetes79631.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:111 +0x4a
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.(*PriorityQueue).run()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:75 +0x13e
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.NewPriorityQueueWithClock()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:70 +0x18e
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.NewPriorityQueue()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:62 +0x44
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.TestKubernetes79631.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:110 +0x3d
+
+Goroutine 8 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/79631.TestKubernetes79631()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/79631/kubernetes79631_test.go:108 +0xce
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/kubernetes/80284
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c000146028 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/80284.(*Authenticator).UpdateTransportConfig()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/80284/kubernetes80284_test.go:22 +0xfe
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/80284.TestKubernetes80284.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/80284/kubernetes80284_test.go:36 +0x88
+
+Previous write at 0x00c000146028 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/80284.(*Authenticator).UpdateTransportConfig()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/80284/kubernetes80284_test.go:22 +0xfe
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/80284.TestKubernetes80284.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/80284/kubernetes80284_test.go:36 +0x88
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/80284.TestKubernetes80284()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/80284/kubernetes80284_test.go:34 +0xaa
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 8 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/80284.TestKubernetes80284()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/80284/kubernetes80284_test.go:34 +0xaa
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/kubernetes/82239
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c000074720 by goroutine 7:
+  runtime.mapassign_faststr()
+      D:/Program Files/GO/go1.19.1/src/runtime/map_faststr.go:203 +0x0
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82239.TestKubernetes82239.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82239/kubernetes82239_test.go:132 +0x84
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82239.TestKubernetes82239()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82239/kubernetes82239_test.go:148 +0x2c3
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Previous read at 0x00c000074720 by goroutine 9:
+  [failed to restore the stack]
+
+Goroutine 7 (running) created at:
+  testing.(*T).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x75d
+  testing.runTests.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1846 +0x99
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.runTests()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1844 +0x7ec
+  testing.(*M).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1726 +0xa84
+  main.main()
+      _testmain.go:47 +0x2e9
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82239.(*PersistentVolumeController).Run()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82239/kubernetes82239_test.go:100 +0x136
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82239.TestKubernetes82239.func2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82239/kubernetes82239_test.go:146 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/kubernetes/82550
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c000146028 by goroutine 10:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82550.(*lazyEcrProvider).LazyProvide()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82550/kubernetes82550_test.go:24 +0x49
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82550.TestKubernetes82550.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82550/kubernetes82550_test.go:34 +0x39
+
+Previous write at 0x00c000146028 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82550.(*lazyEcrProvider).LazyProvide()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82550/kubernetes82550_test.go:25 +0x9e
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82550.TestKubernetes82550.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82550/kubernetes82550_test.go:34 +0x39
+
+Goroutine 10 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82550.TestKubernetes82550()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82550/kubernetes82550_test.go:34 +0x69
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 8 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/82550.TestKubernetes82550()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/82550/kubernetes82550_test.go:34 +0x69
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c0000080d8 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.(*data).Pop()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:13 +0x65
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.Pop()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:21 +0xb1
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.(*Heap).Pop()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:29 +0x9e
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.(*PriorityQueue).flushBackoffQCompleted()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:56 +0x79
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.(*PriorityQueue).flushBackoffQCompleted-fm()
+      <autogenerated>:1 +0x39
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.BackoffUntil.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:87 +0x51
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.BackoffUntil()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:88 +0x47
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.JitterUntil()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:98 +0x37
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.Until()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:102 +0x28
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.(*PriorityQueue).Run.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:75 +0x47
+
+Previous read at 0x00c0000080d8 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.(*Heap).Len()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:32 +0x74
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.TestKubernetes88331.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:111 +0x43
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.(*PriorityQueue).Run()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:75 +0x13e
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.createAndRunPriorityQueue()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:70 +0x25a
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.TestKubernetes88331.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:110 +0x3d
+
+Goroutine 8 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/88331.TestKubernetes88331()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/88331/kubernetes88331_test.go:108 +0xce
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c000138708 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.(*Cacher).startDispatching()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:19 +0x88
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.(*Cacher).dispatchEvent()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:23 +0x3e
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.TestKubernetes89164.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:48 +0x34
+
+Previous read at 0x00c000138708 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.(*Cacher).dispatchEvent()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:24 +0x44
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.(*Cacher).dispatchEvents()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:29 +0x25
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.NewCacherFromConfig.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:34 +0x39
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.TestKubernetes89164()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:47 +0x38
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 8 (finished) created at:
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.NewCacherFromConfig()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:34 +0xe4
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.newTestCacher()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:39 +0x2a
+  toolkit/testdata/gobench/nonblocking_origin/kubernetes/89164.TestKubernetes89164()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/kubernetes/89164/kubernetes89164_test.go:43 +0x25
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/moby/22941
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c0001366f0 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/moby/22941.TestMoby22941.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/moby/22941/moby22941_test.go:41 +0x44
+
+Previous write at 0x00c0001366f0 by goroutine 7:
+  toolkit/testdata/gobench/nonblocking_origin/moby/22941.TestMoby22941()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/moby/22941/moby22941_test.go:39 +0x3a8
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 8 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/moby/22941.TestMoby22941()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/moby/22941/moby22941_test.go:40 +0x467
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 7 (running) created at:
+  testing.(*T).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x75d
+  testing.runTests.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1846 +0x99
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.runTests()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1844 +0x7ec
+  testing.(*M).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1726 +0xa84
+  main.main()
+      _testmain.go:47 +0x2e9
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/moby/27037
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c0000a8298 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/moby/27037.TestMoby27037.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/moby/27037/moby27037_test.go:15 +0x9b
+
+Previous write at 0x00c0000a8298 by goroutine 7:
+  toolkit/testdata/gobench/nonblocking_origin/moby/27037.TestMoby27037()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/moby/27037/moby27037_test.go:11 +0xa4
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 8 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/moby/27037.TestMoby27037()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/moby/27037/moby27037_test.go:13 +0x84
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 7 (running) created at:
+  testing.(*T).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x75d
+  testing.runTests.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1846 +0x99
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.runTests()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1844 +0x7ec
+  testing.(*M).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1726 +0xa84
+  main.main()
+      _testmain.go:47 +0x2e9
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/serving/3068
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c000158070 by goroutine 9:
+  runtime.chansend()
+      D:/Program Files/GO/go1.19.1/src/runtime/chan.go:160 +0x0
+  toolkit/testdata/gobench/nonblocking_origin/serving/3068.(*impl).Go()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3068/serving3068_test.go:44 +0x66
+  toolkit/testdata/gobench/nonblocking_origin/serving/3068.TestServing3068.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3068/serving3068_test.go:65 +0x59
+
+Previous write at 0x00c000158070 by goroutine 7:
+  runtime.closechan()
+      D:/Program Files/GO/go1.19.1/src/runtime/chan.go:357 +0x0
+  toolkit/testdata/gobench/nonblocking_origin/serving/3068.(*impl).Wait.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3068/serving3068_test.go:49 +0x4b
+  sync.(*Once).doSlow()
+      D:/Program Files/GO/go1.19.1/src/sync/once.go:74 +0x101
+  sync.(*Once).Do()
+      D:/Program Files/GO/go1.19.1/src/sync/once.go:65 +0x46
+  toolkit/testdata/gobench/nonblocking_origin/serving/3068.(*impl).Wait()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3068/serving3068_test.go:48 +0x50
+  toolkit/testdata/gobench/nonblocking_origin/serving/3068.TestServing3068()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3068/serving3068_test.go:72 +0x195
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/serving/3068.TestServing3068()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3068/serving3068_test.go:63 +0x185
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 7 (running) created at:
+  testing.(*T).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x75d
+  testing.runTests.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1846 +0x99
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.runTests()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1844 +0x7ec
+  testing.(*M).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1726 +0xa84
+  main.main()
+      _testmain.go:47 +0x2e9
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/serving/3148
+----------------------------------------
+WARNING: DATA RACE
+Read at 0x00c00011e0a8 by goroutine 10:
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Fake).Invokes()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:148 +0x58
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*FakePodAutoscalers).Create()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:45 +0x25
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Reconciler).createKPA()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:74 +0x54
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Reconciler).reconcileKPA()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:70 +0x2e
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Reconciler).reconcileKPA-fm()
+      <autogenerated>:1 +0x39
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Reconciler).reconcile()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:65 +0x8e
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Reconciler).Reconcile()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:53 +0x27
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Impl).processNextWorkItem()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:99 +0x87
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Impl).Run.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:93 +0x70
+
+Previous write at 0x00c00011e0a8 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Fake).PrependReactor()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:153 +0x351
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Hooks).OnUpdate()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:136 +0x2e6
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.TestServing3148.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:170 +0x2e5
+
+Goroutine 10 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Impl).Run()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:91 +0xd9
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.TestServing3148.func1.2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:168 +0x35
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.(*Group).Go.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:126 +0x73
+
+Goroutine 8 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/serving/3148.TestServing3148()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/3148/serving3148_test.go:159 +0xce
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+==================
+
+----------------------------------------
+  Package: toolkit/testdata/gobench/nonblocking_origin/serving/5865
+----------------------------------------
+WARNING: DATA RACE
+Write at 0x00c0000862b0 by goroutine 8:
+  runtime.closechan()
+      D:/Program Files/GO/go1.19.1/src/runtime/chan.go:357 +0x0
+  toolkit/testdata/gobench/nonblocking_origin/serving/5865.(*revisionWatcher).run.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:13 +0x39
+  runtime.deferreturn()
+      D:/Program Files/GO/go1.19.1/src/runtime/panic.go:476 +0x32
+  toolkit/testdata/gobench/nonblocking_origin/serving/5865.(*revisionBackendsManager).getOrCreateRevisionWatcher.func2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:35 +0x39
+
+Previous read at 0x00c0000862b0 by goroutine 7:
+  runtime.chansend()
+      D:/Program Files/GO/go1.19.1/src/runtime/chan.go:160 +0x0
+  toolkit/testdata/gobench/nonblocking_origin/serving/5865.(*revisionBackendsManager).endpointsUpdated()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:26 +0x6c
+  toolkit/testdata/gobench/nonblocking_origin/serving/5865.TestServing5865.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:50 +0x49
+  toolkit/testdata/gobench/nonblocking_origin/serving/5865.TestServing5865()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:51 +0x48
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 8 (running) created at:
+  toolkit/testdata/gobench/nonblocking_origin/serving/5865.(*revisionBackendsManager).getOrCreateRevisionWatcher()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:35 +0x164
+  toolkit/testdata/gobench/nonblocking_origin/serving/5865.(*revisionBackendsManager).endpointsUpdated()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:25 +0x4e
+  toolkit/testdata/gobench/nonblocking_origin/serving/5865.TestServing5865.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:50 +0x49
+  toolkit/testdata/gobench/nonblocking_origin/serving/5865.TestServing5865()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking_origin/serving/5865/serving5865_test.go:51 +0x48
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 7 (running) created at:
+  testing.(*T).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x75d
+  testing.runTests.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1846 +0x99
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.runTests()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1844 +0x7ec
+  testing.(*M).Run()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1726 +0xa84
+  main.main()
+      _testmain.go:47 +0x2e9
+==================
+
