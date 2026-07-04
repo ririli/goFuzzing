@@ -2,7 +2,7 @@
 
 ## 项目概述
 
-GoPie 是一个基于 Fuzzing 的 Golang 数据竞争检测工具。通过对被测代码进行 **双层插桩**（Runtime Patch + AST Instrumentation）
+GoPie 是一个基于 Fuzzing 的 Golang 数据竞争检测工具。通过对被测代码进行 **双层插桩**（AST Instrumentation）
 ，在测试执行时收集并发行为信息，构建 goroutine 调用顺序图，并据此引导 Fuzzing 变异策略来系统性地检测数据竞争、panic，当前项目采用goroutine作为颗粒度，函数颗粒度代码虽然保留但未使用。
 
 ## 技术栈

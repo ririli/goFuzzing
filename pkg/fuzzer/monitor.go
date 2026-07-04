@@ -110,7 +110,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			}
 		}
 	}
-	cfg.MaxWorker = 1
+	cfg.MaxWorker = 4
 	for i := 0; i < cfg.MaxWorker; i++ {
 		go dowork()
 	}
