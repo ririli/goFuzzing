@@ -74,9 +74,6 @@ func TestNewCorpusGort(t *testing.T) {
 	if cg.selectNum != 1 {
 		t.Errorf("selectNum = %d, want 1", cg.selectNum)
 	}
-	if !cg.isReverse {
-		t.Error("isReverse should be true")
-	}
 	if cg.gortPhase != &phase {
 		t.Error("gortPhase should point to phase")
 	}
@@ -371,44 +368,6 @@ func TestCorpusGort_ApplySignals_SelectNumExpansion(t *testing.T) {
 	})
 	if cg.selectNum != origSelectNum*2 {
 		t.Errorf("selectNum = %d, want %d (doubled)", cg.selectNum, origSelectNum*2)
-	}
-}
-
-// ---------- Get 交替反转 ----------
-
-func TestCorpusGort_Get_Reverse(t *testing.T) {
-	var phase uint32 = 1
-	cg := NewCorpusGort(&phase)
-
-	loc1 := feedback.CallLocationInfo{File: "a.go", Line: 1}
-	loc2 := feedback.CallLocationInfo{File: "b.go", Line: 2}
-
-	pair := &feedback.GortPairInfo{
-		Gid1: 10, Gid2: 20,
-		CallLoc1: loc1, CallLoc2: loc2,
-	}
-	key := gortPairKey(pair)
-	cg.TryPairs[key] = pair
-
-	// 第一次 Get：不反转（execCount=1）
-	out1 := cg.Get()
-	if out1 == nil || len(out1.TryPair) != 1 {
-		t.Fatal("Get() should return TryPairs")
-	}
-	if out1.TryPair[0].Gid1 != 10 || out1.TryPair[0].Gid2 != 20 {
-		t.Error("first Get should not reverse")
-	}
-
-	// 恢复 TryPairs（Get 后 RefillTryPairs 可能被调用时清空）
-	cg.TryPairs[key] = pair
-
-	// 第二次 Get：反转（execCount=2）
-	out2 := cg.Get()
-	if out2 == nil || len(out2.TryPair) != 1 {
-		t.Fatal("Get() should return TryPairs")
-	}
-	if out2.TryPair[0].Gid1 != 20 || out2.TryPair[0].Gid2 != 10 {
-		t.Error("second Get should reverse Gid1/Gid2")
 	}
 }
 

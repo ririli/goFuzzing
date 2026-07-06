@@ -40,12 +40,10 @@ func gortSignalKey(preID, nextID uint64) string {
 // 对标 CorpusPair，但使用 GortPairInfo 替代 SuspiciousPairInfo
 type CorpusGort struct {
 	mu              sync.RWMutex
-	isReverse       bool                              // 是否反转pair
 	CoveredConPairs map[string]*feedback.GortPairInfo // 已覆盖的goroutine并发对 (Rule 0直接观测)
 	SusConPairs     map[string]*feedback.GortPairInfo // 可疑的goroutine并发对 (Rule 1-4推测)
 	InfeasiblePairs map[string]*feedback.GortPairInfo // 无法覆盖的goroutine并发对 (超时过多或已完成)
 	TryPairs        map[string]*feedback.GortPairInfo // 本轮fuzzing输入的goroutine并发对
-	execCount       uint32                            // Get() 调用次数，用于交替反转
 	pairTimeouts    map[string]int                    // pairKey -> 累计超时次数
 	selectNum       int                               // 从 SusConPairs 选取的数量，初始=1，自适应调整（上限64）
 
@@ -59,8 +57,6 @@ type CorpusGort struct {
 // NewCorpusGort 初始化CorpusGort
 func NewCorpusGort(phase *uint32) *CorpusGort {
 	p := CorpusGort{}
-	p.execCount = 0
-	p.isReverse = true
 	p.CoveredConPairs = make(map[string]*feedback.GortPairInfo)
 	p.SusConPairs = make(map[string]*feedback.GortPairInfo)
 	p.InfeasiblePairs = make(map[string]*feedback.GortPairInfo)
@@ -85,22 +81,6 @@ func (p *CorpusGort) Get() *feedback.InputGortPair {
 	result := make([]*feedback.GortPairInfo, 0, len(p.TryPairs))
 	for _, pair := range p.TryPairs {
 		result = append(result, pair)
-	}
-
-	// 统一反转：每两次调用交替方向
-	if p.isReverse {
-		cnt := atomic.AddUint32(&p.execCount, 1)
-		if cnt%2 == 0 {
-			for i, pair := range result {
-				result[i] = &feedback.GortPairInfo{
-					Gid1: pair.Gid2, Gid2: pair.Gid1,
-					CallLoc1: pair.CallLoc2, CallLoc2: pair.CallLoc1,
-					Confidence: pair.Confidence,
-					SourceType: pair.SourceType,
-					IsObserved: pair.IsObserved,
-				}
-			}
-		}
 	}
 
 	return &feedback.InputGortPair{

@@ -18,8 +18,9 @@ func ParseInput() {
 	}
 }
 
-// ParsePairs 解析输入的goroutine对
-// 格式: (id1,id2)(id3,id4)(id5,id6)...
+// ParsePairs 解析输入的goroutine对。
+// 格式: (id1,id2)(id3,id4)...
+// 双栏语义：每一对的两个goroutine互为等待对象，双方都到达后才放行。
 func ParsePairs(s string) {
 	cfg.mu.Lock()
 	defer cfg.mu.Unlock()
@@ -42,9 +43,15 @@ func ParsePairs(s string) {
 		if err == nil {
 			cfg.activeMap[id1] = struct{}{}
 			cfg.activeMap[id2] = struct{}{}
-			cfg.preMap[id2] = append(cfg.preMap[id2], id1)
-			actual, _ := cfg.waitMap.LoadOrStore(id2, new(atomic.Int32))
-			actual.(*atomic.Int32).Add(1)
+
+			gate := &barrierGate{
+				id1:     id1,
+				id2:     id2,
+				release: make(chan struct{}),
+			}
+			// 双方共享同一个 gate
+			cfg.barriers[id1] = append(cfg.barriers[id1], gate)
+			cfg.barriers[id2] = append(cfg.barriers[id2], gate)
 		}
 
 		s = s[right+1:]

@@ -12,21 +12,17 @@ var (
 	tracker *GoroutineTracker // goroutine生命周期追踪器
 	mu      sync.Mutex
 
-	waiters sync.Map
-	gidMap  sync.Map // OS goroutine ID(int) → gid(uint64)
+	gidMap sync.Map // OS goroutine ID(int) → gid(uint64)
 )
 
 var (
-	cfg           *Config
-	timeout       time.Duration
-	timeoutGlobal time.Duration
+	cfg *Config
 )
 
 var skipRecord bool
 
 func init() {
 	cfg = NewConfig()
-	timeout = 5 * time.Millisecond
 	tracker = NewGoroutineTracker()
 	skipRecord = os.Getenv("RECORD_STACK") == "1"
 }
@@ -63,7 +59,7 @@ func EnterMain() {
 }
 
 // ExitMain 记录主goroutine的结束时间
-// gid=0 不参与断点控制，不再调用 completeOperation(0)
+// gid=0 不参与断点控制
 // 在生成的 TestXxx_1 包装函数中defer调用
 func ExitMain() {
 	if skipRecord {
@@ -75,9 +71,9 @@ func ExitMain() {
 
 // Enter goroutine级别入口hook，在go语句创建的goroutine开始时调用
 // parentGid 由调用方在父goroutine上下文中通过 goroutine.CurrentGid() 获取并传入
-// 与 callstack.Trace 对齐：pointControl 作为第一条语句，确保等待者能尽快被唤醒
+// pointControl 作为第一条语句，确保 rendezvous 尽早发生
 func Enter(gid uint64, parentGid uint64) {
-	pointControl(gid)
+	cfg.pointControl(gid)
 
 	if skipRecord {
 		return
@@ -88,7 +84,7 @@ func Enter(gid uint64, parentGid uint64) {
 }
 
 // Exit goroutine级别出口hook，在go语句创建的goroutine结束时defer调用
-// 注意：completeOperation 已在 Enter→pointControl 入口处调用，此处不再重复通知
+// 注意：断点控制在 Enter→pointControl 入口处完成
 func Exit(gid uint64) {
 	if skipRecord {
 		return
