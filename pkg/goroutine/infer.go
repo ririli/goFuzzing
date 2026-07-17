@@ -1,10 +1,15 @@
 package goroutine
 
 import (
+	"encoding/json"
 	"fmt"
+	"io"
+	"os"
 	"sort"
 	"time"
 )
+
+const goroutineEdgePrefix = "[GORT_EDGE] "
 
 // CallLocationInfo 表示goroutine创建位置信息
 type CallLocationInfo struct {
@@ -310,8 +315,22 @@ func (gt *GoroutineTracker) InferSiblingAdjacentPairs(observed []*GoroutinePairI
 	return pairs
 }
 
+func writeGoroutineEdges(w io.Writer, edges []goroutineEdge) error {
+	for _, edge := range edges {
+		payload, err := json.Marshal(edge)
+		if err != nil {
+			return err
+		}
+		if _, err := fmt.Fprintf(w, "%s%s\n", goroutineEdgePrefix, payload); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // PrintGoroutinePairs 打印所有goroutine并发对到stderr。
-// 包含直接观测（Rule 0）和三类推测（纯结构兄弟、邻接父子、邻接兄弟）。
+// 先输出当前执行的父子边，再输出直接观测（Rule 0）和三类推测
+// （纯结构兄弟、邻接父子、邻接兄弟）。
 // gid=0 不参与任何输出。跨推断函数间按 (gid1,gid2) 去重，冲突时保留高置信度。
 // 格式：[COVERED] 或 [SUSPECT] gid1,gid2|file1:line1,file2:line2|confidence|sourceType;
 func PrintGoroutinePairs() {
@@ -319,6 +338,8 @@ func PrintGoroutinePairs() {
 		return
 	}
 	time.Sleep(500 * time.Millisecond) // 等待子goroutine执行完毕
+
+	_ = writeGoroutineEdges(os.Stderr, tracker.snapshotEdges())
 
 	// Rule 0: 直接观测的时间重叠对 → [COVERED]
 	observedPairs := tracker.DetectGoroutineOverlaps()

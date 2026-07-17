@@ -318,3 +318,55 @@ func TestParseStdPairs_WindowsPathWithColon(t *testing.T) {
 		t.Errorf("len(ops) = %d, want 0", len(ops))
 	}
 }
+
+func TestParseGortEdges_MixedOutput(t *testing.T) {
+	input := strings.Join([]string{
+		"test log before protocol output",
+		`[GORT_EDGE] {"parent":0,"child":10,"count":2}`,
+		"[COVERED] 10,20|a.go:1,b.go:2|1.00|observed;",
+		`[GORT_EDGE] {"parent":10,"child":20,"count":1}`,
+	}, "\n")
+
+	edges, err := ParseGortEdges(input)
+	if err != nil {
+		t.Fatalf("ParseGortEdges() error = %v", err)
+	}
+	if len(edges) != 2 {
+		t.Fatalf("len(edges) = %d, want 2", len(edges))
+	}
+	if got := *edges[0]; got != (GortEdge{ParentGid: 0, ChildGid: 10, Count: 2}) {
+		t.Errorf("edges[0] = %+v", got)
+	}
+	if got := *edges[1]; got != (GortEdge{ParentGid: 10, ChildGid: 20, Count: 1}) {
+		t.Errorf("edges[1] = %+v", got)
+	}
+}
+
+func TestParseGortEdges_ReturnsValidEdgesWithProtocolError(t *testing.T) {
+	input := strings.Join([]string{
+		`[GORT_EDGE] {"parent":0,"child":10,"count":2}`,
+		"[GORT_EDGE] not-json",
+		`[GORT_EDGE] {"parent":10,"child":20,"count":1}`,
+	}, "\n")
+
+	edges, err := ParseGortEdges(input)
+	if err == nil {
+		t.Fatal("ParseGortEdges() error = nil, want protocol error")
+	}
+	if len(edges) != 2 {
+		t.Fatalf("len(edges) = %d, want 2", len(edges))
+	}
+	if edges[0].ChildGid != 10 || edges[1].ChildGid != 20 {
+		t.Fatalf("edges = %+v", edges)
+	}
+}
+
+func TestParseGortEdges_NoEdges(t *testing.T) {
+	edges, err := ParseGortEdges("ordinary output\n[COVERED] 1,2|a.go:1,b.go:2|1.00|observed;")
+	if err != nil {
+		t.Fatalf("ParseGortEdges() error = %v", err)
+	}
+	if len(edges) != 0 {
+		t.Fatalf("len(edges) = %d, want 0", len(edges))
+	}
+}

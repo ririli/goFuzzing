@@ -2,6 +2,13 @@ package feedback
 
 import "fmt"
 
+// GortEdge 表示一次执行中观测到的静态goroutine父子边。
+type GortEdge struct {
+	ParentGid uint64 `json:"parent"`
+	ChildGid  uint64 `json:"child"`
+	Count     uint64 `json:"count"`
+}
+
 // GortPairInfo 表示一对并发goroutine的信息（用于序列化/反序列化）
 // 对标 SuspiciousPairInfo，但字段语义为goroutine ID而非函数ID
 type GortPairInfo struct {

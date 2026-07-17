@@ -205,9 +205,10 @@ id := atomic.AddUint64(&context.opid, 1) // 第一个 ID 是文件前缀 + 1
 这些 ID 不是动态 goroutine 实例 ID，也不是真正全局唯一：
 
 - ID 依赖传给插桩器的原始路径字符串；相对/绝对路径、路径分隔符和 Pass/源码变化都会改变它。
-- `Hash32` 当前先对 `uint8` 字节移位再扩宽，后三个字节被截断，实际只使用 MD5 首字节。文件前缀只有 8 bit，跨文件碰撞风险高。
+- `Hash32` 使用 MD5 前 4 字节的小端 uint32 作为文件前缀；它修复了原先只使用首字节的问题，但 32 bit hash 仍不保证绝对无碰撞。
 - 低 32 位计数器只在单个 `InstContext` 内递增，所有启用 Pass 共用。
 - 插桩没有把创建位置传给 runtime；`CallLoc` 当前通常输出为 `:0`，不能依靠 ID 反查源码位置。
+- 哈希修复只影响之后重新插桩生成的 ID；仓库中已经插桩的 fixtures 不会自动改号。
 
 ### 写回与幂等性
 
@@ -296,8 +297,9 @@ OP 调度使用 `InputOp=(preId,nextId)...`：
 
 - `CorpusGort.Get` 和 `CorpusOp.Get` 返回 nil，Executor 传递空 `Input/InputOp`。
 - Executor 自身不追加 `RECORD_STACK` 和 `SCHED_DEBUG`，所以通常会收集生命周期、推断对和 `[FB]` 日志；但子进程继承父进程环境，启动工具前必须确保这两个变量未设为 1。
+- 每次预执行还输出逐行 `[GORT_EDGE] {"parent":...,"child":...,"count":...}`。父进程按无序执行批次合并拓扑并集，允许一个 child 对应多个 parent；本轮未出现的旧边不会被删除。
 - stderr 的 observed goroutine 对进入 `CorpusGort.CoveredConPairs`，inferred 对进入 `SusConPairs`。
-- pair 总数连续 3 个已处理结果不变，或达到 `MaxPreExecRound`（默认 30），`CorpusGort` 将 phase 切到 1。
+- pair 与唯一 topology edge 总数连续 3 个已处理结果不变，或达到 `MaxPreExecRound`（默认 30），`CorpusGort` 将 phase 切到 1。边的动态次数变化不会单独延长预执行。
 - 紧接着，`CorpusOp` 仅从当前 covered goroutine 对和第一批 OP 快照生成初始操作对。
 
 这里没有 worker barrier。4 个并发预执行 worker 中已在途的结果可能在 phase 切换后返回，阶段边界不是严格批次边界。此时 `CorpusOp.Add` 的 phase 0 跳过条件已经失效，可能把其他进程的对象地址混入索引；初始 OP 全量生成又不会为已有 covered goroutine 对重新执行。
@@ -309,7 +311,12 @@ OP 调度使用 `InputOp=(preId,nextId)...`：
 - 变量名具有误导性：`RECORD_STACK=1` 实际令 `skipRecord=true`，关闭生命周期、gidMap 和并发对打印；`Enter` 中位于判断前的 `pointControl` 仍会执行。
 - `SCHED_DEBUG=1` 关闭 `[FB]` 详情日志；OP BF/AF 调度仍工作。
 - stdout 信号只有在 `UseMutate=true` 时才应用到 corpus。
-- 新覆盖的 goroutine suspect 会晋升到 covered，并触发 `CorpusOp.OnGortCovered` 增量派生操作对。
+- 新覆盖的 goroutine suspect 会标记为 `fuzz_verified` 并晋升到 covered。
+- `CorpusGort` 使用预执行缓存的多 parent 拓扑，从新 covered 对向 parent、child、sibling 各扩展一跳，产生 `fuzz_inferred_adjacent` / `fuzz_inferred_sibling` 新种子；整个过程只发生在 fuzz 父进程内。
+- 新 covered 同时触发 `CorpusOp.OnGortCovered` 增量派生操作对。
+- phase 切换后晚到的预执行边仍会合并，并基于全部 covered 对补做推断和刷新 `TryPairs`。
+
+当前没有实现带采集的 discovery replay。fuzz 子进程仍不输出拓扑，因此增量推断只能使用预执行阶段已经观察到的拓扑边，不能发现初始预执行从未执行到的新 goroutine 路径。
 
 ### 选种与淘汰
 
@@ -331,6 +338,7 @@ OP 调度使用 `InputOp=(preId,nextId)...`：
 |---|---|---|
 | stderr | `[COVERED] gid1,gid2\|loc1,loc2\|1.00\|observed;` | 生命周期聚合区间被直接观测为重叠。 |
 | stderr | `[SUSPECT] gid1,gid2\|loc1,loc2\|confidence\|source;` | 结构推断的 goroutine 对。 |
+| stderr | `[GORT_EDGE] {"parent":p,"child":c,"count":n}` | 单次预执行内聚合、排序后的静态父子边和动态出现次数。 |
 | stderr | `[FB]chan: ...` / `[FB]wg: ...` | 预执行的操作快照。 |
 | stdout | `{COVERED} {gid1, gid2}` | 未过期双栏累计到第二次到达。 |
 | stdout | `{TIMEOUT} {gid1, gid2}` | 双栏首个到达者等待超时。 |
@@ -370,12 +378,12 @@ test binary -test.v -test.run <TestXxx_1>
 Monitor 处理每份结果时：
 
 1. 在 stdout/stderr 中搜索 `panic:`，在 stderr 中搜索 `WARNING: DATA RACE`，只写入 `LogCh`。
-2. 解析 stderr，更新两个 corpus。
+2. 解析 stderr 中的 pair、OP 和 `GORT_EDGE`，更新两个 corpus 与 goroutine 拓扑并集。
 3. 检查是否切换阶段。
 4. 解析 stdout，并在 `UseMutate` 开启时应用信号。
-5. 无条件将 `MaxQuit` 减 1。
+5. 新增 goroutine covered 时重置 `MaxQuit`；否则将其减 1。
 
-`MaxQuit` 不会因新覆盖重置，日志中的 “Fuzzing seems useless” 只是固定计数结束。`MaxExecution` 先从 `int` 转为 `int32`；默认的 10,000,000,000 会截断为 1,410,065,408，更大的配置还可能变成负数并立即退出。之后使用 `etimes > max` 判断，所以未溢出时实际可处理 `max+1` 份结果。
+`MaxQuit` 现在表示连续没有新增 goroutine covered 的预算；OP covered 或仅新增拓扑边不会重置它。`MaxExecution` 先从 `int` 转为 `int32`；默认的 10,000,000,000 会截断为 1,410,065,408，更大的配置还可能变成负数并立即退出。Monitor 使用 `etimes >= max`，未溢出时最多处理 `max` 份结果。
 
 `SingleCrash`、`UseFeedBack`、`UseCoveredSched`、`UseStates`、`UseAnalysis`、`UseGuide`、`InitTurnCnt` 当前未被 Monitor 使用。`UseMutate=false` 只停止反馈应用，并不会停止取种子或运行时调度，因此会重复执行同一批种子。
 
@@ -403,6 +411,7 @@ Monitor 处理每份结果时：
 ### 修改协议或 Corpus
 
 - stderr/stdout 文本是 runtime 与 `feedback` parser 的内部协议，修改生产端时必须同步修改解析器和 parser tests。
+- `GORT_EDGE` 是逐行 JSON 协议；解析器会保留合法边并报告首个畸形协议行，Monitor 仍合并已成功解析的部分。
 - `GortPhase` 跨 worker/Corpus 共享，继续使用 atomic；map/slice 访问保持在对应 `sync.RWMutex` 下。
 - OP 的对象地址不能跨测试进程混合；改变预执行收集策略时必须先解决执行快照边界。
 - `event.LoadAndDelete` 是一次性依赖消费；改变一对多语义时需要重新设计，而不是只调整 Corpus。

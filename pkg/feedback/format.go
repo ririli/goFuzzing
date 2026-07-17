@@ -1,10 +1,13 @@
 package feedback
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
 )
+
+const gortEdgePrefix = "[GORT_EDGE]"
 
 // ParseSignals 从 stdout 中解析调度有效性信号（轻量，无需调用栈）
 // 返回 gort 和 op 两份独立的信号切片
@@ -332,6 +335,31 @@ func ParseGortPairs(s string) ([]*GortPairInfo, []*OpInfo, error) {
 		}
 	}
 	return results, ops, nil
+}
+
+// ParseGortEdges 从混合控制台输出中解析逐行JSON格式的goroutine父子边。
+func ParseGortEdges(s string) ([]*GortEdge, error) {
+	var edges []*GortEdge
+	var firstErr error
+
+	for lineNumber, line := range strings.Split(s, "\n") {
+		line = strings.TrimSpace(line)
+		if !strings.HasPrefix(line, gortEdgePrefix) {
+			continue
+		}
+
+		payload := strings.TrimSpace(strings.TrimPrefix(line, gortEdgePrefix))
+		var edge GortEdge
+		if err := json.Unmarshal([]byte(payload), &edge); err != nil {
+			if firstErr == nil {
+				firstErr = fmt.Errorf("parse goroutine edge on line %d: %w", lineNumber+1, err)
+			}
+			continue
+		}
+		edges = append(edges, &edge)
+	}
+
+	return edges, firstErr
 }
 
 // parseGortPair 解析单行goroutine对信息，返回 GortPairInfo

@@ -117,7 +117,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	fmt.Println("m.max=", m.max)
 	for {
 		fmt.Println("m.etimes=", m.etimes)
-		if m.etimes > m.max {
+		if m.etimes >= m.max {
 			close(cancel)
 			return false, []string{}
 		}
@@ -166,6 +166,13 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 				corpusOp.Add(opInfos)
 			}
 		}
+		edges, err := feedback.ParseGortEdges(ctx.Out.Trace)
+		if len(edges) > 0 {
+			corpusGort.AddEdges(edges)
+		}
+		if err != nil && debug {
+			cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] Failed to parse some goroutine topology edges: %v", time.Now().String(), wid, err)
+		}
 
 		// 预执行阶段判断
 		if atomic.LoadUint32(&cfg.GortPhase) == 0 {
@@ -186,10 +193,12 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			fmt.Println(singnal.PreID, singnal.NextID, singnal.Success, singnal.Kind)
 		}
 		fmt.Println("=======反馈信号_end=======")
+		madeProgress := false
 		if cfg.UseMutate {
 			if len(gortSignals) > 0 {
 				newlyCovered := corpusGort.ApplySignals(gortSignals)
 				if len(newlyCovered) > 0 {
+					madeProgress = true
 					corpusOp.OnGortCovered(newlyCovered)
 				}
 			}
@@ -198,7 +207,11 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			}
 		}
 
-		quit -= 1
+		if madeProgress {
+			quit = cfg.MaxQuit
+		} else {
+			quit--
+		}
 		fmt.Println("quit=", quit)
 		if quit <= 0 {
 			if info {

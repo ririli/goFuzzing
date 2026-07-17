@@ -17,6 +17,13 @@ type GoroutineRecord struct {
 	CallLoc   CallLocationInfo // go语句的源位置
 }
 
+// goroutineEdge 表示一次执行中聚合后的静态goroutine父子边。
+type goroutineEdge struct {
+	ParentGid uint64 `json:"parent"`
+	ChildGid  uint64 `json:"child"`
+	Count     uint64 `json:"count"`
+}
+
 // GoroutineTracker 收集goroutine生命周期记录
 type GoroutineTracker struct {
 	mu       sync.RWMutex
@@ -101,6 +108,43 @@ func (gt *GoroutineTracker) getParentGid(gid uint64) uint64 {
 		return 0
 	}
 	return instances[0].ParentGid
+}
+
+// snapshotEdges 返回当前执行中去重并计数的父子边快照。
+func (gt *GoroutineTracker) snapshotEdges() []goroutineEdge {
+	gt.mu.RLock()
+	defer gt.mu.RUnlock()
+
+	type edgeKey struct {
+		parent uint64
+		child  uint64
+	}
+
+	counts := make(map[edgeKey]uint64)
+	for gid, instances := range gt.gortMap {
+		for _, instance := range instances {
+			if instance.ParentGid == gid {
+				continue
+			}
+			counts[edgeKey{parent: instance.ParentGid, child: gid}]++
+		}
+	}
+
+	edges := make([]goroutineEdge, 0, len(counts))
+	for key, count := range counts {
+		edges = append(edges, goroutineEdge{
+			ParentGid: key.parent,
+			ChildGid:  key.child,
+			Count:     count,
+		})
+	}
+	sort.Slice(edges, func(i, j int) bool {
+		if edges[i].ParentGid != edges[j].ParentGid {
+			return edges[i].ParentGid < edges[j].ParentGid
+		}
+		return edges[i].ChildGid < edges[j].ChildGid
+	})
+	return edges
 }
 
 // PrintGoroutineRecords 打印所有goroutine实例的追踪记录，用于调试查看
