@@ -9,11 +9,11 @@ GoPie 是一个面向 Go 并发缺陷实验的研究原型。它并不修改 Go 
 3. 预执行测试，收集 goroutine 生命周期记录、父子关系和部分同步对象操作；直接重叠观测只使用已结束实例。
 4. 从直接观测和结构推断得到 goroutine 对，再派生可能触发 panic 的操作对。
 5. 通过环境变量下发调度对，搜索新的 goroutine/操作执行关系。
-6. 复用 Go race detector 的 stderr 和 panic 文本作为缺陷线索。
+6. 解析 Go race detector、panic 和 fatal 输出，按稳定签名汇总运行时 oracle。
 
 这里的 “fuzzing” 主要是并发调度搜索，不会变异普通函数参数或测试输入。代码也没有构建完整的调用顺序图；运行时保存的是静态 goroutine 创建点对应的动态实例、生命周期区间及父子列表。
 
-> 当前 Monitor 只记录 race/panic 日志，所有退出路径仍返回 `(false, []string{})`。因此命令最终打印的 `PASS` 不能证明未发现缺陷，必须检查完整日志。
+> Monitor 会把每次执行的 stdout/stderr 交给 `pkg/bug`，按稳定签名去重 race/panic/fatal，并据此返回 `FAIL`。`PASS` 只表示本次 Monitor 运行没有解析到这三类触发型 oracle；它不表示没有可疑并发对、没有 HangCandidate，也不表示缺陷已通过 replay 反向证明不存在。
 
 ## AI 交互与修改原则
 
@@ -55,7 +55,7 @@ gopie/
 │   ├── sched/             # 操作日志、pre -> next 操作调度
 │   ├── feedback/          # stderr/stdout 协议解析和数据类型
 │   ├── fuzzer/            # Config、Executor、Monitor、两个 Corpus
-│   ├── bug/               # 仅有 TODO，尚无结果汇总实现
+│   ├── bug/               # race/panic/fatal oracle 解析、签名去重和执行证据汇总
 │   └── utils/             # gofmt/hash 辅助
 ├── testdata/
 │   ├── gobench/nonblocking_origin/ # 35 个未插桩对照案例
@@ -345,7 +345,15 @@ OP 调度使用 `InputOp=(preId,nextId)...`：
 | stdout | `{COVERED_OP} {pre, next}` | next BF 消费了 pre event。 |
 | stdout | `{TIMEOUT_OP} {pre, next}` | next BF 未等到 pre event。 |
 
-这些 `COVERED` 信号都不是 bug 结论；真正的缺陷线索仍是 panic 或 `WARNING: DATA RACE`。
+这些 `COVERED` 信号都不是 bug 结论。当前判定层级必须严格区分：
+
+- `Observed`：phase 0 插桩执行中，两个静态 gid 的聚合生命周期区间重叠。
+- `Verified`：phase 1 下发的 goroutine/OP 输入对，在同次轻量执行中出现匹配的 `{COVERED}` / `{COVERED_OP}`。
+- `BugTriggered`：同次执行被结构化 oracle 解析为 data race、普通 panic 或 fatal error。
+- `Associated`：validate 执行同时满足输入对匹配成功和 `BugTriggered`；它只是同次执行相关性，不是归因或因果结论。
+- `BugConfirmed`：针对候选调度做独立 replay 并稳定复现；当前尚未实现。
+
+测试框架超时 panic 和 runtime deadlock 暂记为 `HangCandidate`。普通进程/context 超时以及 `{TIMEOUT}` / `{TIMEOUT_OP}` 都不属于 `BugTriggered`。
 
 ## 超时与并发层次
 
@@ -377,17 +385,24 @@ test binary -test.v -test.run <TestXxx_1>
 
 Monitor 处理每份结果时：
 
-1. 在 stdout/stderr 中搜索 `panic:`，在 stderr 中搜索 `WARNING: DATA RACE`，只写入 `LogCh`。
+1. 先解析 stdout 调度信号，再从 stdout/stderr 解析结构化 oracle，并用本次输入、成功 covered、退出错误和耗时构造 execution evidence。
 2. 解析 stderr 中的 pair、OP 和 `GORT_EDGE`，更新两个 corpus 与 goroutine 拓扑并集。
 3. 检查是否切换阶段。
-4. 解析 stdout，并在 `UseMutate` 开启时应用信号。
-5. 新增 goroutine covered 时重置 `MaxQuit`；否则将其减 1。
+4. 在 `UseMutate` 开启时应用已经解析的调度信号。
+5. 新增 goroutine covered 或首次出现新的 oracle finding 时重置 `MaxQuit`；否则将其减 1。重复 finding、OP covered 和仅新增拓扑边不会重置。
 
-`MaxQuit` 现在表示连续没有新增 goroutine covered 的预算；OP covered 或仅新增拓扑边不会重置它。`MaxExecution` 先从 `int` 转为 `int32`；默认的 10,000,000,000 会截断为 1,410,065,408，更大的配置还可能变成负数并立即退出。Monitor 使用 `etimes >= max`，未溢出时最多处理 `max` 份结果。
+`pkg/bug` 的 oracle 规则如下：
 
-`SingleCrash`、`UseFeedBack`、`UseCoveredSched`、`UseStates`、`UseAnalysis`、`UseGuide`、`InitTurnCnt` 当前未被 Monitor 使用。`UseMutate=false` 只停止反馈应用，并不会停止取种子或运行时调度，因此会重复执行同一批种子。
+- 每个 `WARNING: DATA RACE` block 独立解析；取冲突访问各自第一个业务 `.go:<line>` frame，忽略地址、goroutine 编号、栈偏移和访问先后顺序后生成 SHA-256 签名。栈恢复失败时退回规范化 block 签名。
+- panic/fatal 只接受 trim 后以 `panic:` / `fatal error:` 开头的行；签名由规范化消息和第一个非 runtime/testing/插桩 frame 组成。recovered/repanicked 重复头会去重。
+- `panic: test timed out after ...` 和 `fatal error: all goroutines are asleep - deadlock!` 归为 `HangCandidate`，会记录但不触发失败。
+- 每个 Monitor 持有独立的并发安全 `bug.Set`。相同 kind/signature 累加 `Count` 和 `AssociatedCount`，并保留 First/Last evidence；当前没有跨 Monitor 共享汇总。
 
-`pkg/bug` 没有实现；panic/race 不进入 BugSet，Monitor 也不会返回 failure。分析实验结果必须以日志内容为准。
+`MaxQuit` 现在表示连续没有新增 goroutine covered 或新 oracle finding 的预算。新的 `HangCandidate` 也算 finding 进展，但不算 `BugTriggered`。`MaxExecution` 先从 `int` 转为 `int32`；默认的 10,000,000,000 会截断为 1,410,065,408，更大的配置还可能变成负数并立即退出。Monitor 使用 `etimes >= max`，未溢出时最多处理 `max` 份结果。
+
+`SingleCrash=true` 会在第一次 data race、普通 panic 或 fatal 后结束 Monitor；HangCandidate 不触发该开关。`UseFeedBack`、`UseCoveredSched`、`UseStates`、`UseAnalysis`、`UseGuide`、`InitTurnCnt` 当前未被 Monitor 使用。`UseMutate=false` 只停止反馈应用，并不会停止取种子或运行时调度，因此会重复执行同一批种子。
+
+所有退出路径都遵守固定返回契约：触发型 oracle 存在时返回 `(true, []string{"FAIL", summary})`，否则返回 `(false, []string{"PASS", ""})`，避免 `full/lite` 读取 `detail[1]` 越界。`FAIL` 证明 oracle 在某次执行中被触发；`Associated` 仍只表示同执行相关。只有未来的 replay 才能把它提升为 `BugConfirmed` 或做目标 pair 归因。
 
 ## Fixtures、脚本与产物
 
@@ -429,4 +444,4 @@ go test ./cmd ./pkg/...
 - 插桩结果能通过编译和 `go test -race -c`。
 - stderr 预执行协议可被 `ParseGortPairs` 解析。
 - stdout 四种调度信号可被 `ParseSignals` 解析。
-- race/panic 日志没有因只看最终 `PASS` 而被遗漏。
+- race/panic/fatal 能进入结构化 oracle 并令 Monitor 返回 `FAIL`；HangCandidate 被记录但不令结果失败。
