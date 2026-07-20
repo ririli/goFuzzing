@@ -55,8 +55,8 @@ func (p *PriorityQueue) flushUnschedulableQLeftover() {
 
 func (p *PriorityQueue) run() {
 	go func(_parentGid uint64) {
-		goroutine.Enter(459561500673, _parentGid)
-		defer goroutine.Exit(459561500673)
+		goroutine.Enter(8259403164554362881, _parentGid)
+		defer goroutine.Exit(8259403164554362881)
 		Until(p.flushUnschedulableQLeftover, p.stop)
 	}(goroutine.CurrentGid())
 }
@@ -117,17 +117,17 @@ func addOrUpdateUnschedulablePod(p *PriorityQueue, pod Pod) {
 func TestKubernetes81148(t *testing.T) {
 	stop := make(chan struct{})
 	var wg sync.WaitGroup
-	sched.InstWgBF(459561500676)
+	sched.InstWgBF(8259403164554362884)
 	wg.Add(1)
-	sched.InstWgAF(459561500676, &wg, "add")
+	sched.InstWgAF(8259403164554362884, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(459561500674, _parentGid)
-		defer goroutine.Exit(459561500674)
+		goroutine.Enter(8259403164554362882, _parentGid)
+		defer goroutine.Exit(8259403164554362882)
 		func() {
 			defer func() {
-				sched.InstWgBF(459561500677)
+				sched.InstWgBF(8259403164554362885)
 				wg.Done()
-				sched.InstWgAF(459561500677, &wg, "done")
+				sched.InstWgAF(8259403164554362885, &wg, "done")
 			}()
 			q := NewPriorityQueue(stop)
 			highPod := Pod("1")
@@ -136,9 +136,9 @@ func TestKubernetes81148(t *testing.T) {
 		}()
 	}(goroutine.CurrentGid())
 	wg.Wait()
-	sched.InstChBF(459561500675)
+	sched.InstChBF(8259403164554362883)
 	close(stop)
-	sched.InstChAF(459561500675, stop, "close")
+	sched.InstChAF(8259403164554362883, stop, "close")
 }
 func TestKubernetes81148_1(t *testing.T) {
 	goroutine.EnterMain()
@@ -148,17 +148,17 @@ func TestKubernetes81148_1(t *testing.T) {
 	defer goroutine.PrintGoroutinePairs()
 	stop := make(chan struct{})
 	var wg sync.WaitGroup
-	sched.InstWgBF(459561500676)
+	sched.InstWgBF(8259403164554362884)
 	wg.Add(1)
-	sched.InstWgAF(459561500676, &wg, "add")
+	sched.InstWgAF(8259403164554362884, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(459561500674, _parentGid)
-		defer goroutine.Exit(459561500674)
+		goroutine.Enter(8259403164554362882, _parentGid)
+		defer goroutine.Exit(8259403164554362882)
 		func() {
 			defer func() {
-				sched.InstWgBF(459561500677)
+				sched.InstWgBF(8259403164554362885)
 				wg.Done()
-				sched.InstWgAF(459561500677, &wg, "done")
+				sched.InstWgAF(8259403164554362885, &wg, "done")
 			}()
 			q := NewPriorityQueue(stop)
 			highPod := Pod("1")
@@ -167,7 +167,7 @@ func TestKubernetes81148_1(t *testing.T) {
 		}()
 	}(goroutine.CurrentGid())
 	wg.Wait()
-	sched.InstChBF(459561500675)
+	sched.InstChBF(8259403164554362883)
 	close(stop)
-	sched.InstChAF(459561500675, stop, "close")
+	sched.InstChAF(8259403164554362883, stop, "close")
 }

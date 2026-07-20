@@ -19,8 +19,8 @@ type fsSource struct {
 
 func (s *fsSource) Start() {
 	go func(_parentGid uint64) {
-		goroutine.Enter(360777252865, _parentGid)
-		defer goroutine.Exit(360777252865)
+		goroutine.Enter(18210754054793986049, _parentGid)
+		defer goroutine.Exit(18210754054793986049)
 		func() {
 			for {
 				select {
@@ -49,17 +49,17 @@ func New() Source {
 
 func TestIstio8967(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(360777252868)
+	sched.InstWgBF(18210754054793986052)
 	wg.Add(1)
-	sched.InstWgAF(360777252868, &wg, "add")
+	sched.InstWgAF(18210754054793986052, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(360777252866, _parentGid)
-		defer goroutine.Exit(360777252866)
+		goroutine.Enter(18210754054793986050, _parentGid)
+		defer goroutine.Exit(18210754054793986050)
 		func() {
 			defer func() {
-				sched.InstWgBF(360777252869)
+				sched.InstWgBF(18210754054793986053)
 				wg.Done()
-				sched.InstWgAF(360777252869, &wg, "done")
+				sched.InstWgAF(18210754054793986053, &wg, "done")
 			}()
 			s := New()
 			s.Start()
@@ -76,17 +76,17 @@ func TestIstio8967_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(360777252868)
+	sched.InstWgBF(18210754054793986052)
 	wg.Add(1)
-	sched.InstWgAF(360777252868, &wg, "add")
+	sched.InstWgAF(18210754054793986052, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(360777252866, _parentGid)
-		defer goroutine.Exit(360777252866)
+		goroutine.Enter(18210754054793986050, _parentGid)
+		defer goroutine.Exit(18210754054793986050)
 		func() {
 			defer func() {
-				sched.InstWgBF(360777252869)
+				sched.InstWgBF(18210754054793986053)
 				wg.Done()
-				sched.InstWgAF(360777252869, &wg, "done")
+				sched.InstWgAF(18210754054793986053, &wg, "done")
 			}()
 			s := New()
 			s.Start()

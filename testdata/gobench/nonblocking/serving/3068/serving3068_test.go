@@ -29,15 +29,15 @@ func NewWithCapacity(workers, capacity int) Interface {
 
 	for idx := 0; idx < workers; idx++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(416611827713, _parentGid)
-			defer goroutine.Exit(416611827713)
+			goroutine.Enter(11727672913447354369, _parentGid)
+			defer goroutine.Exit(11727672913447354369)
 			func() {
 				for work := range i.workCh {
 					func() {
 						defer func() {
-							sched.InstWgBF(416611827718)
+							sched.InstWgBF(11727672913447354374)
 							i.wg.Done()
-							sched.InstWgAF(416611827718, &i.wg, "done")
+							sched.InstWgAF(11727672913447354374, &i.wg, "done")
 						}()
 						work()
 					}()
@@ -50,12 +50,12 @@ func NewWithCapacity(workers, capacity int) Interface {
 }
 
 func (i *impl) Go(w func()) {
-	sched.InstWgBF(416611827719)
+	sched.InstWgBF(11727672913447354375)
 	i.wg.Add(1)
-	sched.InstWgAF(416611827719, &i.wg, "add")
-	sched.InstChBF(416611827716)
+	sched.InstWgAF(11727672913447354375, &i.wg, "add")
+	sched.InstChBF(11727672913447354372)
 	i.workCh <- w
-	sched.InstChAF(416611827716, i.workCh, "send")
+	sched.InstChAF(11727672913447354372, i.workCh, "send")
 }
 
 func (i *impl) Wait() {
@@ -63,8 +63,8 @@ func (i *impl) Wait() {
 		close(i.workCh)
 
 		go func(_parentGid uint64) {
-			goroutine.Enter(416611827714, _parentGid)
-			defer goroutine.Exit(416611827714)
+			goroutine.Enter(11727672913447354370, _parentGid)
+			defer goroutine.Exit(11727672913447354370)
 			func() {
 				i.wg.Wait()
 			}()
@@ -77,21 +77,21 @@ func TestServing3068(t *testing.T) {
 	wg := &sync.WaitGroup{}
 	var cntExecuted int32
 	const n = 5
-	sched.InstWgBF(416611827720)
+	sched.InstWgBF(11727672913447354376)
 	wg.Add(n)
-	sched.InstWgAF(416611827720, &wg, "add")
+	sched.InstWgAF(11727672913447354376, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(416611827715, _parentGid)
-		defer goroutine.Exit(416611827715)
+		goroutine.Enter(11727672913447354371, _parentGid)
+		defer goroutine.Exit(11727672913447354371)
 		func() {
 			for i := 0; i < n; i++ {
 				p.Go(func() {
 					atomic.AddInt32(&cntExecuted, 1)
 				})
 				time.Sleep(10 * time.Millisecond)
-				sched.InstWgBF(416611827721)
+				sched.InstWgBF(11727672913447354377)
 				wg.Done()
-				sched.InstWgAF(416611827721, &wg, "done")
+				sched.InstWgAF(11727672913447354377, &wg, "done")
 			}
 		}()
 	}(goroutine.CurrentGid())
@@ -111,21 +111,21 @@ func TestServing3068_1(t *testing.T) {
 	wg := &sync.WaitGroup{}
 	var cntExecuted int32
 	const n = 5
-	sched.InstWgBF(416611827720)
+	sched.InstWgBF(11727672913447354376)
 	wg.Add(n)
-	sched.InstWgAF(416611827720, &wg, "add")
+	sched.InstWgAF(11727672913447354376, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(416611827715, _parentGid)
-		defer goroutine.Exit(416611827715)
+		goroutine.Enter(11727672913447354371, _parentGid)
+		defer goroutine.Exit(11727672913447354371)
 		func() {
 			for i := 0; i < n; i++ {
 				p.Go(func() {
 					atomic.AddInt32(&cntExecuted, 1)
 				})
 				time.Sleep(10 * time.Millisecond)
-				sched.InstWgBF(416611827721)
+				sched.InstWgBF(11727672913447354377)
 				wg.Done()
-				sched.InstWgAF(416611827721, &wg, "done")
+				sched.InstWgAF(11727672913447354377, &wg, "done")
 			}
 		}()
 	}(goroutine.CurrentGid())

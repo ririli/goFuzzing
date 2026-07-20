@@ -41,48 +41,48 @@ func (ws *watchServer) Watch(stream Watch_WatchServer) {
 	//inst.WaitTimeout(500 * time.Millisecond)
 	sws := serverWatchStream{}
 	go func(_parentGid uint64) {
-		goroutine.Enter(820338753537, _parentGid)
-		defer goroutine.Exit(820338753537)
+		goroutine.Enter(7814497140268335105, _parentGid)
+		defer goroutine.Exit(7814497140268335105)
 		sws.sendLoop()
 	}(goroutine.CurrentGid())
 }
 
 func TestEtcd4876(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(820338753541)
+	sched.InstWgBF(7814497140268335109)
 	wg.Add(3)
-	sched.InstWgAF(820338753541, &wg, "add")
+	sched.InstWgAF(7814497140268335109, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(820338753538, _parentGid)
-		defer goroutine.Exit(820338753538)
+		goroutine.Enter(7814497140268335106, _parentGid)
+		defer goroutine.Exit(7814497140268335106)
 		func() {
 			defer func() {
-				sched.InstWgBF(820338753542)
+				sched.InstWgBF(7814497140268335110)
 				wg.Done()
-				sched.InstWgAF(820338753542, &wg, "done")
+				sched.InstWgAF(7814497140268335110, &wg, "done")
 			}()
 			w := &watchServer{}
 			go func(_parentGid uint64) {
-				goroutine.Enter(820338753539, _parentGid)
-				defer goroutine.Exit(820338753539)
+				goroutine.Enter(7814497140268335107, _parentGid)
+				defer goroutine.Exit(7814497140268335107)
 				func() {
 					defer func() {
-						sched.InstWgBF(820338753543)
+						sched.InstWgBF(7814497140268335111)
 						wg.Done()
-						sched.InstWgAF(820338753543, &wg, "done")
+						sched.InstWgAF(7814497140268335111, &wg, "done")
 					}()
 					testInterval := 3 * time.Second
 					ProgressReportInterval = testInterval
 				}()
 			}(goroutine.CurrentGid())
 			go func(_parentGid uint64) {
-				goroutine.Enter(820338753540, _parentGid)
-				defer goroutine.Exit(820338753540)
+				goroutine.Enter(7814497140268335108, _parentGid)
+				defer goroutine.Exit(7814497140268335108)
 				func() {
 					defer func() {
-						sched.InstWgBF(820338753544)
+						sched.InstWgBF(7814497140268335112)
 						wg.Done()
-						sched.InstWgAF(820338753544, &wg, "done")
+						sched.InstWgAF(7814497140268335112, &wg, "done")
 					}()
 					w.Watch(&watchWatchServer{})
 				}()
@@ -98,40 +98,40 @@ func TestEtcd4876_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(820338753541)
+	sched.InstWgBF(7814497140268335109)
 	wg.Add(3)
-	sched.InstWgAF(820338753541, &wg, "add")
+	sched.InstWgAF(7814497140268335109, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(820338753538, _parentGid)
-		defer goroutine.Exit(820338753538)
+		goroutine.Enter(7814497140268335106, _parentGid)
+		defer goroutine.Exit(7814497140268335106)
 		func() {
 			defer func() {
-				sched.InstWgBF(820338753542)
+				sched.InstWgBF(7814497140268335110)
 				wg.Done()
-				sched.InstWgAF(820338753542, &wg, "done")
+				sched.InstWgAF(7814497140268335110, &wg, "done")
 			}()
 			w := &watchServer{}
 			go func(_parentGid uint64) {
-				goroutine.Enter(820338753539, _parentGid)
-				defer goroutine.Exit(820338753539)
+				goroutine.Enter(7814497140268335107, _parentGid)
+				defer goroutine.Exit(7814497140268335107)
 				func() {
 					defer func() {
-						sched.InstWgBF(820338753543)
+						sched.InstWgBF(7814497140268335111)
 						wg.Done()
-						sched.InstWgAF(820338753543, &wg, "done")
+						sched.InstWgAF(7814497140268335111, &wg, "done")
 					}()
 					testInterval := 3 * time.Second
 					ProgressReportInterval = testInterval
 				}()
 			}(goroutine.CurrentGid())
 			go func(_parentGid uint64) {
-				goroutine.Enter(820338753540, _parentGid)
-				defer goroutine.Exit(820338753540)
+				goroutine.Enter(7814497140268335108, _parentGid)
+				defer goroutine.Exit(7814497140268335108)
 				func() {
 					defer func() {
-						sched.InstWgBF(820338753544)
+						sched.InstWgBF(7814497140268335112)
 						wg.Done()
-						sched.InstWgAF(820338753544, &wg, "done")
+						sched.InstWgAF(7814497140268335112, &wg, "done")
 					}()
 					w.Watch(&watchWatchServer{})
 				}()

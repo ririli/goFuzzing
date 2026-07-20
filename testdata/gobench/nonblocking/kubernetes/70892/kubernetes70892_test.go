@@ -20,31 +20,31 @@ func ParallelizeUntil(ctx context.Context, workers, pieces int, doWorkPiece DoWo
 
 	toProcess := make(chan int, pieces)
 	for i := 0; i < pieces; i++ {
-		sched.InstChBF(588410519554)
+		sched.InstChBF(413985407965855746)
 		toProcess <- i
-		sched.InstChAF(588410519554, toProcess, "send")
+		sched.InstChAF(413985407965855746, toProcess, "send")
 	}
-	sched.InstChBF(588410519555)
+	sched.InstChBF(413985407965855747)
 	close(toProcess)
-	sched.InstChAF(588410519555, toProcess, "close")
+	sched.InstChAF(413985407965855747, toProcess, "close")
 
 	if pieces < workers {
 		workers = pieces
 	}
 
 	wg := sync.WaitGroup{}
-	sched.InstWgBF(588410519556)
+	sched.InstWgBF(413985407965855748)
 	wg.Add(workers)
-	sched.InstWgAF(588410519556, &wg, "add")
+	sched.InstWgAF(413985407965855748, &wg, "add")
 	for i := 0; i < workers; i++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(588410519553, _parentGid)
-			defer goroutine.Exit(588410519553)
+			goroutine.Enter(413985407965855745, _parentGid)
+			defer goroutine.Exit(413985407965855745)
 			func() {
 				defer func() {
-					sched.InstWgBF(588410519557)
+					sched.InstWgBF(413985407965855749)
 					wg.Done()
-					sched.InstWgAF(588410519557, &wg, "done")
+					sched.InstWgAF(413985407965855749, &wg, "done")
 				}()
 				for piece := range toProcess {
 					select {

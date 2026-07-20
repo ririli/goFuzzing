@@ -77,16 +77,16 @@ func TestKubernetes13058(t *testing.T) {
 
 	controller := NewInformer(ResourceEventHandlerFuncs{
 		DeleteFunc: func(obj interface{}) {
-			sched.InstWgBF(455266533380)
+			sched.InstWgBF(8806856596798832644)
 			testDoneWG.Done()
-			sched.InstWgAF(455266533380, &testDoneWG, "done")
+			sched.InstWgAF(8806856596798832644, &testDoneWG, "done")
 		},
 	})
 
 	stop := make(chan struct{})
 	go func(_parentGid uint64) {
-		goroutine.Enter(455266533377, _parentGid)
-		defer goroutine.Exit(455266533377)
+		goroutine.Enter(8806856596798832641, _parentGid)
+		defer goroutine.Exit(8806856596798832641)
 		controller.Run(stop)
 	}(goroutine.CurrentGid())
 
@@ -97,22 +97,22 @@ func TestKubernetes13058(t *testing.T) {
 	const threads = 3
 	var wg sync.WaitGroup
 	time.Sleep(1 * time.Second)
-	sched.InstWgBF(455266533381)
+	sched.InstWgBF(8806856596798832645)
 	wg.Add(threads * len(tests))
-	sched.InstWgAF(455266533381, &wg, "add")
-	sched.InstWgBF(455266533382)
+	sched.InstWgAF(8806856596798832645, &wg, "add")
+	sched.InstWgBF(8806856596798832646)
 	testDoneWG.Add(threads * len(tests))
-	sched.InstWgAF(455266533382, &testDoneWG, "add")
+	sched.InstWgAF(8806856596798832646, &testDoneWG, "add")
 	for i := 0; i < threads; i++ {
 		for j, f := range tests {
 			go func(_parentGid uint64) {
-				goroutine.Enter(455266533378, _parentGid)
-				defer goroutine.Exit(455266533378)
+				goroutine.Enter(8806856596798832642, _parentGid)
+				defer goroutine.Exit(8806856596798832642)
 				func(name string, f func(string)) {
 					defer func() {
-						sched.InstWgBF(455266533383)
+						sched.InstWgBF(8806856596798832647)
 						wg.Done()
-						sched.InstWgAF(455266533383, &wg, "done")
+						sched.InstWgAF(8806856596798832647, &wg, "done")
 					}()
 					f(name)
 				}(fmt.Sprintf("%v-%v", i, j), f)
@@ -121,9 +121,9 @@ func TestKubernetes13058(t *testing.T) {
 	}
 	wg.Wait()
 	testDoneWG.Wait()
-	sched.InstChBF(455266533379)
+	sched.InstChBF(8806856596798832643)
 	close(stop)
-	sched.InstChAF(455266533379, stop, "close")
+	sched.InstChAF(8806856596798832643, stop, "close")
 }
 func TestKubernetes13058_1(t *testing.T) {
 	goroutine.EnterMain()
@@ -135,16 +135,16 @@ func TestKubernetes13058_1(t *testing.T) {
 
 	controller := NewInformer(ResourceEventHandlerFuncs{
 		DeleteFunc: func(obj interface{}) {
-			sched.InstWgBF(455266533380)
+			sched.InstWgBF(8806856596798832644)
 			testDoneWG.Done()
-			sched.InstWgAF(455266533380, &testDoneWG, "done")
+			sched.InstWgAF(8806856596798832644, &testDoneWG, "done")
 		},
 	})
 
 	stop := make(chan struct{})
 	go func(_parentGid uint64) {
-		goroutine.Enter(455266533377, _parentGid)
-		defer goroutine.Exit(455266533377)
+		goroutine.Enter(8806856596798832641, _parentGid)
+		defer goroutine.Exit(8806856596798832641)
 		controller.Run(stop)
 	}(goroutine.CurrentGid())
 
@@ -155,22 +155,22 @@ func TestKubernetes13058_1(t *testing.T) {
 	const threads = 3
 	var wg sync.WaitGroup
 	time.Sleep(1 * time.Second)
-	sched.InstWgBF(455266533381)
+	sched.InstWgBF(8806856596798832645)
 	wg.Add(threads * len(tests))
-	sched.InstWgAF(455266533381, &wg, "add")
-	sched.InstWgBF(455266533382)
+	sched.InstWgAF(8806856596798832645, &wg, "add")
+	sched.InstWgBF(8806856596798832646)
 	testDoneWG.Add(threads * len(tests))
-	sched.InstWgAF(455266533382, &testDoneWG, "add")
+	sched.InstWgAF(8806856596798832646, &testDoneWG, "add")
 	for i := 0; i < threads; i++ {
 		for j, f := range tests {
 			go func(_parentGid uint64) {
-				goroutine.Enter(455266533378, _parentGid)
-				defer goroutine.Exit(455266533378)
+				goroutine.Enter(8806856596798832642, _parentGid)
+				defer goroutine.Exit(8806856596798832642)
 				func(name string, f func(string)) {
 					defer func() {
-						sched.InstWgBF(455266533383)
+						sched.InstWgBF(8806856596798832647)
 						wg.Done()
-						sched.InstWgAF(455266533383, &wg, "done")
+						sched.InstWgAF(8806856596798832647, &wg, "done")
 					}()
 					f(name)
 				}(fmt.Sprintf("%v-%v", i, j), f)
@@ -179,7 +179,7 @@ func TestKubernetes13058_1(t *testing.T) {
 	}
 	wg.Wait()
 	testDoneWG.Wait()
-	sched.InstChBF(455266533379)
+	sched.InstChBF(8806856596798832643)
 	close(stop)
-	sched.InstChAF(455266533379, stop, "close")
+	sched.InstChAF(8806856596798832643, stop, "close")
 }

@@ -119,8 +119,8 @@ func (rw *revisionWatcher) run() {
 
 func (rw *revisionWatcher) checkDests() {
 	go func(_parentGid uint64) {
-		goroutine.Enter(468151435265, _parentGid)
-		defer goroutine.Exit(468151435265)
+		goroutine.Enter(10587190235425144833, _parentGid)
+		defer goroutine.Exit(10587190235425144833)
 		func() {
 			rw.logger.Errorw("1")
 		}()
@@ -134,25 +134,25 @@ type revisionBackendsManager struct {
 func (rbm *revisionBackendsManager) getOrCreateRevisionWatcher() {
 	rw := newRevisionWatcher(rbm.logger)
 	go func(_parentGid uint64) {
-		goroutine.Enter(468151435266, _parentGid)
-		defer goroutine.Exit(468151435266)
+		goroutine.Enter(10587190235425144834, _parentGid)
+		defer goroutine.Exit(10587190235425144834)
 		rw.run()
 	}(goroutine.CurrentGid())
 }
 
 func TestServing6171(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(468151435268)
+	sched.InstWgBF(10587190235425144836)
 	wg.Add(1)
-	sched.InstWgAF(468151435268, &wg, "add")
+	sched.InstWgAF(10587190235425144836, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(468151435267, _parentGid)
-		defer goroutine.Exit(468151435267)
+		goroutine.Enter(10587190235425144835, _parentGid)
+		defer goroutine.Exit(10587190235425144835)
 		func() {
 			defer func() {
-				sched.InstWgBF(468151435269)
+				sched.InstWgBF(10587190235425144837)
 				wg.Done()
-				sched.InstWgAF(468151435269, &wg, "done")
+				sched.InstWgAF(10587190235425144837, &wg, "done")
 			}()
 			t.Run("Serving6171", func(t *testing.T) {
 				rbm := &revisionBackendsManager{logger: testing_TestLogger(t)}
@@ -169,17 +169,17 @@ func TestServing6171_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(468151435268)
+	sched.InstWgBF(10587190235425144836)
 	wg.Add(1)
-	sched.InstWgAF(468151435268, &wg, "add")
+	sched.InstWgAF(10587190235425144836, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(468151435267, _parentGid)
-		defer goroutine.Exit(468151435267)
+		goroutine.Enter(10587190235425144835, _parentGid)
+		defer goroutine.Exit(10587190235425144835)
 		func() {
 			defer func() {
-				sched.InstWgBF(468151435269)
+				sched.InstWgBF(10587190235425144837)
 				wg.Done()
-				sched.InstWgAF(468151435269, &wg, "done")
+				sched.InstWgAF(10587190235425144837, &wg, "done")
 			}()
 			t.Run("Serving6171", func(t *testing.T) {
 				rbm := &revisionBackendsManager{logger: testing_TestLogger(t)}

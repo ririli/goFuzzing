@@ -34,8 +34,8 @@ func TestKubernetes82550(t *testing.T) {
 	provider := &lazyEcrProvider{}
 	for i := 0; i < 10; i++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(377957122049, _parentGid)
-			defer goroutine.Exit(377957122049)
+			goroutine.Enter(13814836215381229569, _parentGid)
+			defer goroutine.Exit(13814836215381229569)
 			provider.LazyProvide()
 		}(goroutine.CurrentGid())
 	}
@@ -49,8 +49,8 @@ func TestKubernetes82550_1(t *testing.T) {
 	provider := &lazyEcrProvider{}
 	for i := 0; i < 10; i++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(377957122049, _parentGid)
-			defer goroutine.Exit(377957122049)
+			goroutine.Enter(13814836215381229569, _parentGid)
+			defer goroutine.Exit(13814836215381229569)
 			provider.LazyProvide()
 		}(goroutine.CurrentGid())
 	}

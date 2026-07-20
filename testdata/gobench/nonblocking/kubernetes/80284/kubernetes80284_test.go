@@ -30,19 +30,19 @@ func newAuthenticator() *Authenticator {
 
 func TestKubernetes80284(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(274877906946)
+	sched.InstWgBF(18227557805101940738)
 	wg.Add(2)
-	sched.InstWgAF(274877906946, &wg, "add")
+	sched.InstWgAF(18227557805101940738, &wg, "add")
 	a := newAuthenticator()
 	for i := 0; i < 2; i++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(274877906945, _parentGid)
-			defer goroutine.Exit(274877906945)
+			goroutine.Enter(18227557805101940737, _parentGid)
+			defer goroutine.Exit(18227557805101940737)
 			func() {
 				defer func() {
-					sched.InstWgBF(274877906947)
+					sched.InstWgBF(18227557805101940739)
 					wg.Done()
-					sched.InstWgAF(274877906947, &wg, "done")
+					sched.InstWgAF(18227557805101940739, &wg, "done")
 				}()
 				a.UpdateTransportConfig()
 			}()
@@ -57,19 +57,19 @@ func TestKubernetes80284_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(274877906946)
+	sched.InstWgBF(18227557805101940738)
 	wg.Add(2)
-	sched.InstWgAF(274877906946, &wg, "add")
+	sched.InstWgAF(18227557805101940738, &wg, "add")
 	a := newAuthenticator()
 	for i := 0; i < 2; i++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(274877906945, _parentGid)
-			defer goroutine.Exit(274877906945)
+			goroutine.Enter(18227557805101940737, _parentGid)
+			defer goroutine.Exit(18227557805101940737)
 			func() {
 				defer func() {
-					sched.InstWgBF(274877906947)
+					sched.InstWgBF(18227557805101940739)
 					wg.Done()
-					sched.InstWgAF(274877906947, &wg, "done")
+					sched.InstWgAF(18227557805101940739, &wg, "done")
 				}()
 				a.UpdateTransportConfig()
 			}()

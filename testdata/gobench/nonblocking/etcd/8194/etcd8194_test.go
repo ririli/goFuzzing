@@ -55,8 +55,8 @@ func (le *lessor) runLoop() {
 func newLessor() *lessor {
 	l := &lessor{}
 	go func(_parentGid uint64) {
-		goroutine.Enter(236223201281, _parentGid)
-		defer goroutine.Exit(236223201281)
+		goroutine.Enter(13138048183844208641, _parentGid)
+		defer goroutine.Exit(13138048183844208641)
 		l.runLoop()
 	}(goroutine.CurrentGid())
 	return l
@@ -68,29 +68,29 @@ func testLessorGrant() {
 
 func TestEtcd8194(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(236223201285)
+	sched.InstWgBF(13138048183844208645)
 	wg.Add(2)
-	sched.InstWgAF(236223201285, &wg, "add")
+	sched.InstWgAF(13138048183844208645, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(236223201282, _parentGid)
-		defer goroutine.Exit(236223201282)
+		goroutine.Enter(13138048183844208642, _parentGid)
+		defer goroutine.Exit(13138048183844208642)
 		func() {
 			defer func() {
-				sched.InstWgBF(236223201286)
+				sched.InstWgBF(13138048183844208646)
 				wg.Done()
-				sched.InstWgAF(236223201286, &wg, "done")
+				sched.InstWgAF(13138048183844208646, &wg, "done")
 			}()
 			testLessorGrant()
 		}()
 	}(goroutine.CurrentGid())
 	go func(_parentGid uint64) {
-		goroutine.Enter(236223201283, _parentGid)
-		defer goroutine.Exit(236223201283)
+		goroutine.Enter(13138048183844208643, _parentGid)
+		defer goroutine.Exit(13138048183844208643)
 		func() {
 			defer func() {
-				sched.InstWgBF(236223201287)
+				sched.InstWgBF(13138048183844208647)
 				wg.Done()
-				sched.InstWgAF(236223201287, &wg, "done")
+				sched.InstWgAF(13138048183844208647, &wg, "done")
 			}()
 			testLessorRenewExtendPileup()
 		}()
@@ -104,29 +104,29 @@ func TestEtcd8194_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(236223201285)
+	sched.InstWgBF(13138048183844208645)
 	wg.Add(2)
-	sched.InstWgAF(236223201285, &wg, "add")
+	sched.InstWgAF(13138048183844208645, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(236223201282, _parentGid)
-		defer goroutine.Exit(236223201282)
+		goroutine.Enter(13138048183844208642, _parentGid)
+		defer goroutine.Exit(13138048183844208642)
 		func() {
 			defer func() {
-				sched.InstWgBF(236223201286)
+				sched.InstWgBF(13138048183844208646)
 				wg.Done()
-				sched.InstWgAF(236223201286, &wg, "done")
+				sched.InstWgAF(13138048183844208646, &wg, "done")
 			}()
 			testLessorGrant()
 		}()
 	}(goroutine.CurrentGid())
 	go func(_parentGid uint64) {
-		goroutine.Enter(236223201283, _parentGid)
-		defer goroutine.Exit(236223201283)
+		goroutine.Enter(13138048183844208643, _parentGid)
+		defer goroutine.Exit(13138048183844208643)
 		func() {
 			defer func() {
-				sched.InstWgBF(236223201287)
+				sched.InstWgBF(13138048183844208647)
 				wg.Done()
-				sched.InstWgAF(236223201287, &wg, "done")
+				sched.InstWgAF(13138048183844208647, &wg, "done")
 			}()
 			testLessorRenewExtendPileup()
 		}()

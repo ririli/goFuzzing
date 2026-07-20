@@ -90,17 +90,17 @@ func (sd *MemServiceDiscovery) AddWorkload() {
 
 func TestIstio16742(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(120259084292)
+	sched.InstWgBF(6921123451411365892)
 	wg.Add(3)
-	sched.InstWgAF(120259084292, &wg, "add")
+	sched.InstWgAF(6921123451411365892, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(120259084289, _parentGid)
-		defer goroutine.Exit(120259084289)
+		goroutine.Enter(6921123451411365889, _parentGid)
+		defer goroutine.Exit(6921123451411365889)
 		func() {
 			defer func() {
-				sched.InstWgBF(120259084293)
+				sched.InstWgBF(6921123451411365893)
 				wg.Done()
-				sched.InstWgAF(120259084293, &wg, "done")
+				sched.InstWgAF(6921123451411365893, &wg, "done")
 			}()
 			registry := &MemServiceDiscovery{
 				EDSUpdater: &DiscoveryServer{
@@ -108,25 +108,25 @@ func TestIstio16742(t *testing.T) {
 				},
 			}
 			go func(_parentGid uint64) {
-				goroutine.Enter(120259084290, _parentGid)
-				defer goroutine.Exit(120259084290)
+				goroutine.Enter(6921123451411365890, _parentGid)
+				defer goroutine.Exit(6921123451411365890)
 				func() {
 					defer func() {
-						sched.InstWgBF(120259084294)
+						sched.InstWgBF(6921123451411365894)
 						wg.Done()
-						sched.InstWgAF(120259084294, &wg, "done")
+						sched.InstWgAF(6921123451411365894, &wg, "done")
 					}()
 					registry.EDSUpdater.(*DiscoveryServer).StreamAggregatedResources()
 				}()
 			}(goroutine.CurrentGid())
 			go func(_parentGid uint64) {
-				goroutine.Enter(120259084291, _parentGid)
-				defer goroutine.Exit(120259084291)
+				goroutine.Enter(6921123451411365891, _parentGid)
+				defer goroutine.Exit(6921123451411365891)
 				func() {
 					defer func() {
-						sched.InstWgBF(120259084295)
+						sched.InstWgBF(6921123451411365895)
 						wg.Done()
-						sched.InstWgAF(120259084295, &wg, "done")
+						sched.InstWgAF(6921123451411365895, &wg, "done")
 					}()
 					registry.AddWorkload()
 				}()
@@ -142,17 +142,17 @@ func TestIstio16742_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(120259084292)
+	sched.InstWgBF(6921123451411365892)
 	wg.Add(3)
-	sched.InstWgAF(120259084292, &wg, "add")
+	sched.InstWgAF(6921123451411365892, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(120259084289, _parentGid)
-		defer goroutine.Exit(120259084289)
+		goroutine.Enter(6921123451411365889, _parentGid)
+		defer goroutine.Exit(6921123451411365889)
 		func() {
 			defer func() {
-				sched.InstWgBF(120259084293)
+				sched.InstWgBF(6921123451411365893)
 				wg.Done()
-				sched.InstWgAF(120259084293, &wg, "done")
+				sched.InstWgAF(6921123451411365893, &wg, "done")
 			}()
 			registry := &MemServiceDiscovery{
 				EDSUpdater: &DiscoveryServer{
@@ -160,25 +160,25 @@ func TestIstio16742_1(t *testing.T) {
 				},
 			}
 			go func(_parentGid uint64) {
-				goroutine.Enter(120259084290, _parentGid)
-				defer goroutine.Exit(120259084290)
+				goroutine.Enter(6921123451411365890, _parentGid)
+				defer goroutine.Exit(6921123451411365890)
 				func() {
 					defer func() {
-						sched.InstWgBF(120259084294)
+						sched.InstWgBF(6921123451411365894)
 						wg.Done()
-						sched.InstWgAF(120259084294, &wg, "done")
+						sched.InstWgAF(6921123451411365894, &wg, "done")
 					}()
 					registry.EDSUpdater.(*DiscoveryServer).StreamAggregatedResources()
 				}()
 			}(goroutine.CurrentGid())
 			go func(_parentGid uint64) {
-				goroutine.Enter(120259084291, _parentGid)
-				defer goroutine.Exit(120259084291)
+				goroutine.Enter(6921123451411365891, _parentGid)
+				defer goroutine.Exit(6921123451411365891)
 				func() {
 					defer func() {
-						sched.InstWgBF(120259084295)
+						sched.InstWgBF(6921123451411365895)
 						wg.Done()
-						sched.InstWgAF(120259084295, &wg, "done")
+						sched.InstWgAF(6921123451411365895, &wg, "done")
 					}()
 					registry.AddWorkload()
 				}()

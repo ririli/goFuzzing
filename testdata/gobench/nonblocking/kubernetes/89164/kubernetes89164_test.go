@@ -34,8 +34,8 @@ func (c *Cacher) dispatchEvents() {
 func NewCacherFromConfig() *Cacher {
 	cacher := &Cacher{}
 	go func(_parentGid uint64) {
-		goroutine.Enter(1073741824001, _parentGid)
-		defer goroutine.Exit(1073741824001)
+		goroutine.Enter(14954784178565021697, _parentGid)
+		defer goroutine.Exit(14954784178565021697)
 		cacher.dispatchEvents()
 	}(goroutine.CurrentGid())
 	return cacher
@@ -49,17 +49,17 @@ func TestKubernetes89164(t *testing.T) {
 	cacher := newTestCacher()
 	for i := 0; i < 3; i++ {
 		wg := sync.WaitGroup{}
-		sched.InstWgBF(1073741824003)
+		sched.InstWgBF(14954784178565021699)
 		wg.Add(1)
-		sched.InstWgAF(1073741824003, &wg, "add")
+		sched.InstWgAF(14954784178565021699, &wg, "add")
 		go func(_parentGid uint64) {
-			goroutine.Enter(1073741824002, _parentGid)
-			defer goroutine.Exit(1073741824002)
+			goroutine.Enter(14954784178565021698, _parentGid)
+			defer goroutine.Exit(14954784178565021698)
 			func() {
 				cacher.dispatchEvent()
-				sched.InstWgBF(1073741824004)
+				sched.InstWgBF(14954784178565021700)
 				wg.Done()
-				sched.InstWgAF(1073741824004, &wg, "done")
+				sched.InstWgAF(14954784178565021700, &wg, "done")
 			}()
 		}(goroutine.CurrentGid())
 		wg.Wait()
@@ -74,17 +74,17 @@ func TestKubernetes89164_1(t *testing.T) {
 	cacher := newTestCacher()
 	for i := 0; i < 3; i++ {
 		wg := sync.WaitGroup{}
-		sched.InstWgBF(1073741824003)
+		sched.InstWgBF(14954784178565021699)
 		wg.Add(1)
-		sched.InstWgAF(1073741824003, &wg, "add")
+		sched.InstWgAF(14954784178565021699, &wg, "add")
 		go func(_parentGid uint64) {
-			goroutine.Enter(1073741824002, _parentGid)
-			defer goroutine.Exit(1073741824002)
+			goroutine.Enter(14954784178565021698, _parentGid)
+			defer goroutine.Exit(14954784178565021698)
 			func() {
 				cacher.dispatchEvent()
-				sched.InstWgBF(1073741824004)
+				sched.InstWgBF(14954784178565021700)
 				wg.Done()
-				sched.InstWgAF(1073741824004, &wg, "done")
+				sched.InstWgAF(14954784178565021700, &wg, "done")
 			}()
 		}(goroutine.CurrentGid())
 		wg.Wait()

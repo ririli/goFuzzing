@@ -49,8 +49,8 @@ func (ccr *ccResolverWrapper) poll() {
 	ccr.mu.Lock()
 	defer ccr.mu.Unlock()
 	go func(_parentGid uint64) {
-		goroutine.Enter(158913789953, _parentGid)
-		defer goroutine.Exit(158913789953)
+		goroutine.Enter(13531937152069271553, _parentGid)
+		defer goroutine.Exit(13531937152069271553)
 		func() {
 			ccr.resolveNow()
 		}()
@@ -94,17 +94,17 @@ func Dial() {
 
 func TestGrpc3090(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(158913789955)
+	sched.InstWgBF(13531937152069271555)
 	wg.Add(1)
-	sched.InstWgAF(158913789955, &wg, "add")
+	sched.InstWgAF(13531937152069271555, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(158913789954, _parentGid)
-		defer goroutine.Exit(158913789954)
+		goroutine.Enter(13531937152069271554, _parentGid)
+		defer goroutine.Exit(13531937152069271554)
 		func() {
 			defer func() {
-				sched.InstWgBF(158913789956)
+				sched.InstWgBF(13531937152069271556)
 				wg.Done()
-				sched.InstWgAF(158913789956, &wg, "done")
+				sched.InstWgAF(13531937152069271556, &wg, "done")
 			}()
 			Dial()
 			time.Sleep(5 * time.Millisecond)
@@ -119,17 +119,17 @@ func TestGrpc3090_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(158913789955)
+	sched.InstWgBF(13531937152069271555)
 	wg.Add(1)
-	sched.InstWgAF(158913789955, &wg, "add")
+	sched.InstWgAF(13531937152069271555, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(158913789954, _parentGid)
-		defer goroutine.Exit(158913789954)
+		goroutine.Enter(13531937152069271554, _parentGid)
+		defer goroutine.Exit(13531937152069271554)
 		func() {
 			defer func() {
-				sched.InstWgBF(158913789956)
+				sched.InstWgBF(13531937152069271556)
 				wg.Done()
-				sched.InstWgAF(158913789956, &wg, "done")
+				sched.InstWgAF(13531937152069271556, &wg, "done")
 			}()
 			Dial()
 			time.Sleep(5 * time.Millisecond)

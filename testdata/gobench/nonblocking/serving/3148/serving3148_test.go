@@ -89,17 +89,17 @@ func (c *Impl) Run(threadiness int) {
 	defer sg.Wait()
 
 	for i := 0; i < threadiness; i++ {
-		sched.InstWgBF(858993459204)
+		sched.InstWgBF(2737238354876694532)
 		sg.Add(1)
-		sched.InstWgAF(858993459204, &sg, "add")
+		sched.InstWgAF(2737238354876694532, &sg, "add")
 		go func(_parentGid uint64) {
-			goroutine.Enter(858993459201, _parentGid)
-			defer goroutine.Exit(858993459201)
+			goroutine.Enter(2737238354876694529, _parentGid)
+			defer goroutine.Exit(2737238354876694529)
 			func() {
 				defer func() {
-					sched.InstWgBF(858993459205)
+					sched.InstWgBF(2737238354876694533)
 					sg.Done()
-					sched.InstWgAF(858993459205, &sg, "done")
+					sched.InstWgAF(2737238354876694533, &sg, "done")
 				}()
 				c.processNextWorkItem()
 			}()
@@ -132,17 +132,17 @@ func (g *Group) Wait() {
 }
 
 func (g *Group) Go(f func()) {
-	sched.InstWgBF(858993459206)
+	sched.InstWgBF(2737238354876694534)
 	g.wg.Add(1)
-	sched.InstWgAF(858993459206, &g.wg, "add")
+	sched.InstWgAF(2737238354876694534, &g.wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(858993459202, _parentGid)
-		defer goroutine.Exit(858993459202)
+		goroutine.Enter(2737238354876694530, _parentGid)
+		defer goroutine.Exit(2737238354876694530)
 		func() {
 			defer func() {
-				sched.InstWgBF(858993459207)
+				sched.InstWgBF(2737238354876694535)
 				g.wg.Done()
-				sched.InstWgAF(858993459207, &g.wg, "done")
+				sched.InstWgAF(2737238354876694535, &g.wg, "done")
 			}()
 			f()
 		}()
@@ -177,17 +177,17 @@ func (c *Fake) PrependReactor() {
 
 func TestServing3148(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(858993459208)
+	sched.InstWgBF(2737238354876694536)
 	wg.Add(1)
-	sched.InstWgAF(858993459208, &wg, "add")
+	sched.InstWgAF(2737238354876694536, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(858993459203, _parentGid)
-		defer goroutine.Exit(858993459203)
+		goroutine.Enter(2737238354876694531, _parentGid)
+		defer goroutine.Exit(2737238354876694531)
 		func() {
 			defer func() {
-				sched.InstWgBF(858993459209)
+				sched.InstWgBF(2737238354876694537)
 				wg.Done()
-				sched.InstWgAF(858993459209, &wg, "done")
+				sched.InstWgAF(2737238354876694537, &wg, "done")
 			}()
 			cs := &Clientset{}
 			controller := NewController()
@@ -210,17 +210,17 @@ func TestServing3148_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(858993459208)
+	sched.InstWgBF(2737238354876694536)
 	wg.Add(1)
-	sched.InstWgAF(858993459208, &wg, "add")
+	sched.InstWgAF(2737238354876694536, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(858993459203, _parentGid)
-		defer goroutine.Exit(858993459203)
+		goroutine.Enter(2737238354876694531, _parentGid)
+		defer goroutine.Exit(2737238354876694531)
 		func() {
 			defer func() {
-				sched.InstWgBF(858993459209)
+				sched.InstWgBF(2737238354876694537)
 				wg.Done()
-				sched.InstWgAF(858993459209, &wg, "done")
+				sched.InstWgAF(2737238354876694537, &wg, "done")
 			}()
 			cs := &Clientset{}
 			controller := NewController()

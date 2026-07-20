@@ -37,17 +37,17 @@ func (rt *readTx) UnsafeRange() {
 
 func TestEtcd9446(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(545460846596)
+	sched.InstWgBF(16105148790356312068)
 	wg.Add(3)
-	sched.InstWgAF(545460846596, &wg, "add")
+	sched.InstWgAF(16105148790356312068, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(545460846593, _parentGid)
-		defer goroutine.Exit(545460846593)
+		goroutine.Enter(16105148790356312065, _parentGid)
+		defer goroutine.Exit(16105148790356312065)
 		func() {
 			defer func() {
-				sched.InstWgBF(545460846597)
+				sched.InstWgBF(16105148790356312069)
 				wg.Done()
-				sched.InstWgAF(545460846597, &wg, "done")
+				sched.InstWgAF(16105148790356312069, &wg, "done")
 			}()
 			txn := &readTx{
 				buf: txReadBuffer{
@@ -58,25 +58,25 @@ func TestEtcd9446(t *testing.T) {
 			}
 			txn.buf.buckets["1"] = struct{}{}
 			go func(_parentGid uint64) {
-				goroutine.Enter(545460846594, _parentGid)
-				defer goroutine.Exit(545460846594)
+				goroutine.Enter(16105148790356312066, _parentGid)
+				defer goroutine.Exit(16105148790356312066)
 				func() {
 					defer func() {
-						sched.InstWgBF(545460846598)
+						sched.InstWgBF(16105148790356312070)
 						wg.Done()
-						sched.InstWgAF(545460846598, &wg, "done")
+						sched.InstWgAF(16105148790356312070, &wg, "done")
 					}()
 					txn.reset()
 				}()
 			}(goroutine.CurrentGid())
 			go func(_parentGid uint64) {
-				goroutine.Enter(545460846595, _parentGid)
-				defer goroutine.Exit(545460846595)
+				goroutine.Enter(16105148790356312067, _parentGid)
+				defer goroutine.Exit(16105148790356312067)
 				func() {
 					defer func() {
-						sched.InstWgBF(545460846599)
+						sched.InstWgBF(16105148790356312071)
 						wg.Done()
-						sched.InstWgAF(545460846599, &wg, "done")
+						sched.InstWgAF(16105148790356312071, &wg, "done")
 					}()
 					txn.UnsafeRange()
 				}()
@@ -92,17 +92,17 @@ func TestEtcd9446_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(545460846596)
+	sched.InstWgBF(16105148790356312068)
 	wg.Add(3)
-	sched.InstWgAF(545460846596, &wg, "add")
+	sched.InstWgAF(16105148790356312068, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(545460846593, _parentGid)
-		defer goroutine.Exit(545460846593)
+		goroutine.Enter(16105148790356312065, _parentGid)
+		defer goroutine.Exit(16105148790356312065)
 		func() {
 			defer func() {
-				sched.InstWgBF(545460846597)
+				sched.InstWgBF(16105148790356312069)
 				wg.Done()
-				sched.InstWgAF(545460846597, &wg, "done")
+				sched.InstWgAF(16105148790356312069, &wg, "done")
 			}()
 			txn := &readTx{
 				buf: txReadBuffer{
@@ -113,25 +113,25 @@ func TestEtcd9446_1(t *testing.T) {
 			}
 			txn.buf.buckets["1"] = struct{}{}
 			go func(_parentGid uint64) {
-				goroutine.Enter(545460846594, _parentGid)
-				defer goroutine.Exit(545460846594)
+				goroutine.Enter(16105148790356312066, _parentGid)
+				defer goroutine.Exit(16105148790356312066)
 				func() {
 					defer func() {
-						sched.InstWgBF(545460846598)
+						sched.InstWgBF(16105148790356312070)
 						wg.Done()
-						sched.InstWgAF(545460846598, &wg, "done")
+						sched.InstWgAF(16105148790356312070, &wg, "done")
 					}()
 					txn.reset()
 				}()
 			}(goroutine.CurrentGid())
 			go func(_parentGid uint64) {
-				goroutine.Enter(545460846595, _parentGid)
-				defer goroutine.Exit(545460846595)
+				goroutine.Enter(16105148790356312067, _parentGid)
+				defer goroutine.Exit(16105148790356312067)
 				func() {
 					defer func() {
-						sched.InstWgBF(545460846599)
+						sched.InstWgBF(16105148790356312071)
 						wg.Done()
-						sched.InstWgAF(545460846599, &wg, "done")
+						sched.InstWgAF(16105148790356312071, &wg, "done")
 					}()
 					txn.UnsafeRange()
 				}()

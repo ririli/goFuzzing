@@ -58,9 +58,9 @@ type delayingType struct {
 }
 
 func (q *delayingType) AddAfter(item interface{}) {
-	sched.InstWgBF(743029342212)
+	sched.InstWgBF(17458846813321691140)
 	q.Add(item)
-	sched.InstWgAF(743029342212, &q, "add")
+	sched.InstWgAF(17458846813321691140, &q, "add")
 }
 
 func newDelayingQueue() DelayingInterface {
@@ -107,9 +107,9 @@ func (m *Prober) IsReady() {
 			}()
 		*/
 		for _, wi := range ipWorkItems {
-			sched.InstWgBF(743029342213)
+			sched.InstWgBF(17458846813321691141)
 			m.workQueue.Add(wi)
-			sched.InstWgAF(743029342213, &m.workQueue, "add")
+			sched.InstWgAF(17458846813321691141, &m.workQueue, "add")
 		}
 	}
 	ingressState.pendingCount += int32(len(workItems))
@@ -132,17 +132,17 @@ func (m *Prober) updateStates(ingressState *ingressState) {
 func (m *Prober) Start() chan struct{} {
 	var wg sync.WaitGroup
 	for i := 0; i < 2; i++ {
-		sched.InstWgBF(743029342214)
+		sched.InstWgBF(17458846813321691142)
 		wg.Add(1)
-		sched.InstWgAF(743029342214, &wg, "add")
+		sched.InstWgAF(17458846813321691142, &wg, "add")
 		go func(_parentGid uint64) {
-			goroutine.Enter(743029342209, _parentGid)
-			defer goroutine.Exit(743029342209)
+			goroutine.Enter(17458846813321691137, _parentGid)
+			defer goroutine.Exit(17458846813321691137)
 			func() {
 				defer func() {
-					sched.InstWgBF(743029342215)
+					sched.InstWgBF(17458846813321691143)
 					wg.Done()
-					sched.InstWgAF(743029342215, &wg, "done")
+					sched.InstWgAF(17458846813321691143, &wg, "done")
 				}()
 				m.processWorkItem()
 			}()
@@ -150,13 +150,13 @@ func (m *Prober) Start() chan struct{} {
 	}
 	ch := make(chan struct{})
 	go func(_parentGid uint64) {
-		goroutine.Enter(743029342210, _parentGid)
-		defer goroutine.Exit(743029342210)
+		goroutine.Enter(17458846813321691138, _parentGid)
+		defer goroutine.Exit(17458846813321691138)
 		func() {
 			wg.Wait()
-			sched.InstChBF(743029342211)
+			sched.InstChBF(17458846813321691139)
 			close(ch)
-			sched.InstChAF(743029342211, ch, "close")
+			sched.InstChAF(17458846813321691139, ch, "close")
 		}()
 	}(goroutine.CurrentGid())
 	return ch

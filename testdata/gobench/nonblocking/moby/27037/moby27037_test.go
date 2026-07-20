@@ -11,17 +11,17 @@ import (
 func TestMoby27037(t *testing.T) {
 	wg := sync.WaitGroup{}
 	for i := 17; i <= 21; i++ {
-		sched.InstWgBF(463856467970)
+		sched.InstWgBF(2110736234232938498)
 		wg.Add(1)
-		sched.InstWgAF(463856467970, &wg, "add")
+		sched.InstWgAF(2110736234232938498, &wg, "add")
 		go func(_parentGid uint64) {
-			goroutine.Enter(463856467969, _parentGid)
-			defer goroutine.Exit(463856467969)
+			goroutine.Enter(2110736234232938497, _parentGid)
+			defer goroutine.Exit(2110736234232938497)
 			func() {
 				defer func() {
-					sched.InstWgBF(463856467971)
+					sched.InstWgBF(2110736234232938499)
 					wg.Done()
-					sched.InstWgAF(463856467971, &wg, "done")
+					sched.InstWgAF(2110736234232938499, &wg, "done")
 				}()
 				_ = fmt.Sprintf("v1.%d", i)
 			}()
@@ -37,17 +37,17 @@ func TestMoby27037_1(t *testing.T) {
 	defer goroutine.PrintGoroutinePairs()
 	wg := sync.WaitGroup{}
 	for i := 17; i <= 21; i++ {
-		sched.InstWgBF(463856467970)
+		sched.InstWgBF(2110736234232938498)
 		wg.Add(1)
-		sched.InstWgAF(463856467970, &wg, "add")
+		sched.InstWgAF(2110736234232938498, &wg, "add")
 		go func(_parentGid uint64) {
-			goroutine.Enter(463856467969, _parentGid)
-			defer goroutine.Exit(463856467969)
+			goroutine.Enter(2110736234232938497, _parentGid)
+			defer goroutine.Exit(2110736234232938497)
 			func() {
 				defer func() {
-					sched.InstWgBF(463856467971)
+					sched.InstWgBF(2110736234232938499)
 					wg.Done()
-					sched.InstWgAF(463856467971, &wg, "done")
+					sched.InstWgAF(2110736234232938499, &wg, "done")
 				}()
 				_ = fmt.Sprintf("v1.%d", i)
 			}()

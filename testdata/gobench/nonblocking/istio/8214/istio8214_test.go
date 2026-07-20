@@ -67,17 +67,17 @@ func (s *grpcServer) Check() {
 
 func TestIstio8214(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(369367187460)
+	sched.InstWgBF(13839276151253499908)
 	wg.Add(3)
-	sched.InstWgAF(369367187460, &wg, "add")
+	sched.InstWgAF(13839276151253499908, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(369367187457, _parentGid)
-		defer goroutine.Exit(369367187457)
+		goroutine.Enter(13839276151253499905, _parentGid)
+		defer goroutine.Exit(13839276151253499905)
 		func() {
 			defer func() {
-				sched.InstWgBF(369367187461)
+				sched.InstWgBF(13839276151253499909)
 				wg.Done()
-				sched.InstWgAF(369367187461, &wg, "done")
+				sched.InstWgAF(13839276151253499909, &wg, "done")
 			}()
 			s := &grpcServer{
 				cache: &Cache{
@@ -85,25 +85,25 @@ func TestIstio8214(t *testing.T) {
 				},
 			}
 			go func(_parentGid uint64) {
-				goroutine.Enter(369367187458, _parentGid)
-				defer goroutine.Exit(369367187458)
+				goroutine.Enter(13839276151253499906, _parentGid)
+				defer goroutine.Exit(13839276151253499906)
 				func() {
 					defer func() {
-						sched.InstWgBF(369367187462)
+						sched.InstWgBF(13839276151253499910)
 						wg.Done()
-						sched.InstWgAF(369367187462, &wg, "done")
+						sched.InstWgAF(13839276151253499910, &wg, "done")
 					}()
 					s.Check()
 				}()
 			}(goroutine.CurrentGid())
 			go func(_parentGid uint64) {
-				goroutine.Enter(369367187459, _parentGid)
-				defer goroutine.Exit(369367187459)
+				goroutine.Enter(13839276151253499907, _parentGid)
+				defer goroutine.Exit(13839276151253499907)
 				func() {
 					defer func() {
-						sched.InstWgBF(369367187463)
+						sched.InstWgBF(13839276151253499911)
 						wg.Done()
-						sched.InstWgAF(369367187463, &wg, "done")
+						sched.InstWgAF(13839276151253499911, &wg, "done")
 					}()
 					s.Check()
 				}()
@@ -119,17 +119,17 @@ func TestIstio8214_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(369367187460)
+	sched.InstWgBF(13839276151253499908)
 	wg.Add(3)
-	sched.InstWgAF(369367187460, &wg, "add")
+	sched.InstWgAF(13839276151253499908, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(369367187457, _parentGid)
-		defer goroutine.Exit(369367187457)
+		goroutine.Enter(13839276151253499905, _parentGid)
+		defer goroutine.Exit(13839276151253499905)
 		func() {
 			defer func() {
-				sched.InstWgBF(369367187461)
+				sched.InstWgBF(13839276151253499909)
 				wg.Done()
-				sched.InstWgAF(369367187461, &wg, "done")
+				sched.InstWgAF(13839276151253499909, &wg, "done")
 			}()
 			s := &grpcServer{
 				cache: &Cache{
@@ -137,25 +137,25 @@ func TestIstio8214_1(t *testing.T) {
 				},
 			}
 			go func(_parentGid uint64) {
-				goroutine.Enter(369367187458, _parentGid)
-				defer goroutine.Exit(369367187458)
+				goroutine.Enter(13839276151253499906, _parentGid)
+				defer goroutine.Exit(13839276151253499906)
 				func() {
 					defer func() {
-						sched.InstWgBF(369367187462)
+						sched.InstWgBF(13839276151253499910)
 						wg.Done()
-						sched.InstWgAF(369367187462, &wg, "done")
+						sched.InstWgAF(13839276151253499910, &wg, "done")
 					}()
 					s.Check()
 				}()
 			}(goroutine.CurrentGid())
 			go func(_parentGid uint64) {
-				goroutine.Enter(369367187459, _parentGid)
-				defer goroutine.Exit(369367187459)
+				goroutine.Enter(13839276151253499907, _parentGid)
+				defer goroutine.Exit(13839276151253499907)
 				func() {
 					defer func() {
-						sched.InstWgBF(369367187463)
+						sched.InstWgBF(13839276151253499911)
 						wg.Done()
-						sched.InstWgAF(369367187463, &wg, "done")
+						sched.InstWgAF(13839276151253499911, &wg, "done")
 					}()
 					s.Check()
 				}()

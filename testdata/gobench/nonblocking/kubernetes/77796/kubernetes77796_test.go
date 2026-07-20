@@ -35,8 +35,8 @@ func (c *Cacher) dispatchEvents() {
 func NewCacherFromConfig() *Cacher {
 	cacher := &Cacher{}
 	go func(_parentGid uint64) {
-		goroutine.Enter(639950127105, _parentGid)
-		defer goroutine.Exit(639950127105)
+		goroutine.Enter(15268316082503417857, _parentGid)
+		defer goroutine.Exit(15268316082503417857)
 		cacher.dispatchEvents()
 	}(goroutine.CurrentGid())
 	return cacher
@@ -50,8 +50,8 @@ func TestKubernetes77796(t *testing.T) {
 	cacher := newTestCacher()
 	for i := 0; i < 3; i++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(639950127106, _parentGid)
-			defer goroutine.Exit(639950127106)
+			goroutine.Enter(15268316082503417858, _parentGid)
+			defer goroutine.Exit(15268316082503417858)
 			func() {
 				cacher.dispatchEvent()
 			}()
@@ -68,8 +68,8 @@ func TestKubernetes77796_1(t *testing.T) {
 	cacher := newTestCacher()
 	for i := 0; i < 3; i++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(639950127106, _parentGid)
-			defer goroutine.Exit(639950127106)
+			goroutine.Enter(15268316082503417858, _parentGid)
+			defer goroutine.Exit(15268316082503417858)
 			func() {
 				cacher.dispatchEvent()
 			}()

@@ -73,8 +73,8 @@ func (ac *addrConn) transportMonitor() {
 
 func (ac *addrConn) connect() {
 	go func(_parentGid uint64) {
-		goroutine.Enter(987842478081, _parentGid)
-		defer goroutine.Exit(987842478081)
+		goroutine.Enter(18253461912505286657, _parentGid)
+		defer goroutine.Exit(18253461912505286657)
 		func() {
 			ac.transportMonitor()
 		}()
@@ -133,8 +133,8 @@ func (ccb *ccBalancerWrapper) NewSubConn() SubConn {
 func newCCBalancerWrapper(cc *ClientConn, b Builder) {
 	ccb := &ccBalancerWrapper{cc: cc}
 	go func(_parentGid uint64) {
-		goroutine.Enter(987842478082, _parentGid)
-		defer goroutine.Exit(987842478082)
+		goroutine.Enter(18253461912505286658, _parentGid)
+		defer goroutine.Exit(18253461912505286658)
 		ccb.watcher()
 	}(goroutine.CurrentGid())
 	balanceMutex.Lock()
@@ -144,20 +144,19 @@ func newCCBalancerWrapper(cc *ClientConn, b Builder) {
 
 func TestGrpc1748(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(987842478084)
+	sched.InstWgBF(18253461912505286660)
 	wg.Add(1)
-	sched.InstWgAF(987842478084, &wg, "add")
+	sched.InstWgAF(18253461912505286660, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(987842478083, _parentGid)
-		defer
+		goroutine.Enter(18253461912505286659, _parentGid)
 
 		// Call this only after transportMonitor goroutine has ended.
-		goroutine.Exit(987842478083)
+		defer goroutine.Exit(18253461912505286659)
 		func() {
 			defer func() {
-				sched.InstWgBF(987842478085)
+				sched.InstWgBF(18253461912505286661)
 				wg.Done()
-				sched.InstWgAF(987842478085, &wg, "done")
+				sched.InstWgAF(18253461912505286661, &wg, "done")
 			}()
 			mctBkp := minConnectTimeout
 
@@ -177,17 +176,17 @@ func TestGrpc1748_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(987842478084)
+	sched.InstWgBF(18253461912505286660)
 	wg.Add(1)
-	sched.InstWgAF(987842478084, &wg, "add")
+	sched.InstWgAF(18253461912505286660, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(987842478083, _parentGid)
-		defer goroutine.Exit(987842478083)
+		goroutine.Enter(18253461912505286659, _parentGid)
+		defer goroutine.Exit(18253461912505286659)
 		func() {
 			defer func() {
-				sched.InstWgBF(987842478085)
+				sched.InstWgBF(18253461912505286661)
 				wg.Done()
-				sched.InstWgAF(987842478085, &wg, "done")
+				sched.InstWgAF(18253461912505286661, &wg, "done")
 			}()
 			mctBkp := minConnectTimeout
 

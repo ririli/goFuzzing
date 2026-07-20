@@ -79,17 +79,17 @@ func (s *Server) StartTLS() {
 }
 
 func (s *Server) goServe() {
-	sched.InstWgBF(609885356035)
+	sched.InstWgBF(4695623345977163779)
 	s.wg.Add(1)
-	sched.InstWgAF(609885356035, &s.wg, "add")
+	sched.InstWgAF(4695623345977163779, &s.wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(609885356033, _parentGid)
-		defer goroutine.Exit(609885356033)
+		goroutine.Enter(4695623345977163777, _parentGid)
+		defer goroutine.Exit(4695623345977163777)
 		func() {
 			defer func() {
-				sched.InstWgBF(609885356036)
+				sched.InstWgBF(4695623345977163780)
 				s.wg.Done()
-				sched.InstWgAF(609885356036, &s.wg, "done")
+				sched.InstWgAF(4695623345977163780, &s.wg, "done")
 			}()
 			s.Config.Serve()
 		}()
@@ -120,8 +120,8 @@ type http_Server struct {
 func (srv *http_Server) Serve() {
 	c := srv.newConn()
 	go func(_parentGid uint64) {
-		goroutine.Enter(609885356034, _parentGid)
-		defer goroutine.Exit(609885356034)
+		goroutine.Enter(4695623345977163778, _parentGid)
+		defer goroutine.Exit(4695623345977163778)
 		c.serve()
 	}(goroutine.CurrentGid())
 }

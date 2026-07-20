@@ -100,8 +100,8 @@ type PersistentVolumeController struct {
 
 func (ctrl *PersistentVolumeController) Run(stopCh <-chan struct{}) {
 	go func(_parentGid uint64) {
-		goroutine.Enter(472446402561, _parentGid)
-		defer goroutine.Exit(472446402561)
+		goroutine.Enter(13522781832277393409, _parentGid)
+		defer goroutine.Exit(13522781832277393409)
 		Until(ctrl.volumeWorker, stopCh)
 	}(goroutine.CurrentGid())
 }
@@ -150,15 +150,15 @@ func TestKubernetes82239(t *testing.T) {
 
 		stopCh := make(chan struct{})
 		go func(_parentGid uint64) {
-			goroutine.Enter(472446402562, _parentGid)
-			defer goroutine.Exit(472446402562)
+			goroutine.Enter(13522781832277393410, _parentGid)
+			defer goroutine.Exit(13522781832277393410)
 			ctrl.Run(stopCh)
 		}(goroutine.CurrentGid())
 		time.Sleep(1 * time.Millisecond)
 		test.test(test)
-		sched.InstChBF(472446402563)
+		sched.InstChBF(13522781832277393411)
 		close(stopCh)
-		sched.InstChAF(472446402563, stopCh, "close")
+		sched.InstChAF(13522781832277393411, stopCh, "close")
 	}
 }
 func TestKubernetes82239_1(t *testing.T) {
@@ -186,14 +186,14 @@ func TestKubernetes82239_1(t *testing.T) {
 
 		stopCh := make(chan struct{})
 		go func(_parentGid uint64) {
-			goroutine.Enter(472446402562, _parentGid)
-			defer goroutine.Exit(472446402562)
+			goroutine.Enter(13522781832277393410, _parentGid)
+			defer goroutine.Exit(13522781832277393410)
 			ctrl.Run(stopCh)
 		}(goroutine.CurrentGid())
 		time.Sleep(1 * time.Millisecond)
 		test.test(test)
-		sched.InstChBF(472446402563)
+		sched.InstChBF(13522781832277393411)
 		close(stopCh)
-		sched.InstChAF(472446402563, stopCh, "close")
+		sched.InstChAF(13522781832277393411, stopCh, "close")
 	}
 }

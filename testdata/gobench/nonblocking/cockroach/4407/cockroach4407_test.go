@@ -15,17 +15,17 @@ type Stopper struct {
 }
 
 func (s *Stopper) RunWorker(f func()) {
-	sched.InstWgBF(914828034052)
+	sched.InstWgBF(6069655844360814596)
 	s.stop.Add(1)
-	sched.InstWgAF(914828034052, &s.stop, "add")
+	sched.InstWgAF(6069655844360814596, &s.stop, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(914828034049, _parentGid)
-		defer goroutine.Exit(914828034049)
+		goroutine.Enter(6069655844360814593, _parentGid)
+		defer goroutine.Exit(6069655844360814593)
 		func() {
 			defer func() {
-				sched.InstWgBF(914828034053)
+				sched.InstWgBF(6069655844360814597)
 				s.stop.Done()
-				sched.InstWgAF(914828034053, &s.stop, "done")
+				sched.InstWgAF(6069655844360814597, &s.stop, "done")
 			}()
 			f()
 		}()
@@ -34,9 +34,9 @@ func (s *Stopper) RunWorker(f func()) {
 
 func (s *Stopper) SetStopped() {
 	if s != nil {
-		sched.InstWgBF(914828034054)
+		sched.InstWgBF(6069655844360814598)
 		s.stop.Done()
-		sched.InstWgAF(914828034054, &s.stop, "done")
+		sched.InstWgAF(6069655844360814598, &s.stop, "done")
 	}
 }
 
@@ -79,8 +79,8 @@ func TestCockroach4407(t *testing.T) {
 	}
 	for i := 0; i < 2; i++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(914828034050, _parentGid)
-			defer goroutine.Exit(914828034050)
+			goroutine.Enter(6069655844360814594, _parentGid)
+			defer goroutine.Exit(6069655844360814594)
 			s.Gossip()
 		}(goroutine.CurrentGid())
 	}
@@ -99,8 +99,8 @@ func TestCockroach4407_1(t *testing.T) {
 	}
 	for i := 0; i < 2; i++ {
 		go func(_parentGid uint64) {
-			goroutine.Enter(914828034050, _parentGid)
-			defer goroutine.Exit(914828034050)
+			goroutine.Enter(6069655844360814594, _parentGid)
+			defer goroutine.Exit(6069655844360814594)
 			s.Gossip()
 		}(goroutine.CurrentGid())
 	}

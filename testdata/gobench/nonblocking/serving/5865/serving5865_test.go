@@ -25,9 +25,9 @@ func newRevisionWatcher(destsCh chan struct{}) *revisionWatcher {
 
 func (rbm *revisionBackendsManager) endpointsUpdated() {
 	rw := rbm.getOrCreateRevisionWatcher()
-	sched.InstChBF(403726925827)
+	sched.InstChBF(15046379424213630979)
 	rw.destsCh <- struct{}{}
-	sched.InstChAF(403726925827, rw.destsCh, "send")
+	sched.InstChAF(15046379424213630979, rw.destsCh, "send")
 }
 
 func (rbm *revisionBackendsManager) getOrCreateRevisionWatcher() *revisionWatcher {
@@ -37,8 +37,8 @@ func (rbm *revisionBackendsManager) getOrCreateRevisionWatcher() *revisionWatche
 	destsCh := make(chan struct{})
 	rw := newRevisionWatcher(destsCh)
 	go func(_parentGid uint64) {
-		goroutine.Enter(403726925825, _parentGid)
-		defer goroutine.Exit(403726925825)
+		goroutine.Enter(15046379424213630977, _parentGid)
+		defer goroutine.Exit(15046379424213630977)
 		rw.run()
 	}(goroutine.CurrentGid())
 

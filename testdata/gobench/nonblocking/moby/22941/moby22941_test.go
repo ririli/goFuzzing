@@ -40,8 +40,8 @@ func TestMoby22941(t *testing.T) {
 	}
 	for _, pair := range tests {
 		go func(_parentGid uint64) {
-			goroutine.Enter(249108103169, _parentGid)
-			defer goroutine.Exit(249108103169)
+			goroutine.Enter(4470872912877846529, _parentGid)
+			defer goroutine.Exit(4470872912877846529)
 			func() {
 				srv.Write(pair[0])
 			}()
@@ -68,8 +68,8 @@ func TestMoby22941_1(t *testing.T) {
 	}
 	for _, pair := range tests {
 		go func(_parentGid uint64) {
-			goroutine.Enter(249108103169, _parentGid)
-			defer goroutine.Exit(249108103169)
+			goroutine.Enter(4470872912877846529, _parentGid)
+			defer goroutine.Exit(4470872912877846529)
 			func() {
 				srv.Write(pair[0])
 			}()

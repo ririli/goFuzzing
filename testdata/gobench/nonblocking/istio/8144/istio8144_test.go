@@ -42,8 +42,8 @@ func NewTTLWithCallback(callback EvictionCallback) *ttlCache {
 		callback: callback,
 	}
 	go func(_parentGid uint64) {
-		goroutine.Enter(197568495617, _parentGid)
-		defer goroutine.Exit(197568495617)
+		goroutine.Enter(4154862224399138817, _parentGid)
+		defer goroutine.Exit(4154862224399138817)
 		c.evicter()
 	}(goroutine.CurrentGid())
 	return c
@@ -51,17 +51,17 @@ func NewTTLWithCallback(callback EvictionCallback) *ttlCache {
 
 func TestIstio8144(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(197568495619)
+	sched.InstWgBF(4154862224399138819)
 	wg.Add(1)
-	sched.InstWgAF(197568495619, &wg, "add")
+	sched.InstWgAF(4154862224399138819, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(197568495618, _parentGid)
-		defer goroutine.Exit(197568495618)
+		goroutine.Enter(4154862224399138818, _parentGid)
+		defer goroutine.Exit(4154862224399138818)
 		func() {
 			defer func() {
-				sched.InstWgBF(197568495620)
+				sched.InstWgBF(4154862224399138820)
 				wg.Done()
-				sched.InstWgAF(197568495620, &wg, "done")
+				sched.InstWgAF(4154862224399138820, &wg, "done")
 			}()
 			c := &callbackRecorder{callbacks: 0}
 			ttl := NewTTLWithCallback(c.callback)
@@ -79,17 +79,17 @@ func TestIstio8144_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(197568495619)
+	sched.InstWgBF(4154862224399138819)
 	wg.Add(1)
-	sched.InstWgAF(197568495619, &wg, "add")
+	sched.InstWgAF(4154862224399138819, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(197568495618, _parentGid)
-		defer goroutine.Exit(197568495618)
+		goroutine.Enter(4154862224399138818, _parentGid)
+		defer goroutine.Exit(4154862224399138818)
 		func() {
 			defer func() {
-				sched.InstWgBF(197568495620)
+				sched.InstWgBF(4154862224399138820)
 				wg.Done()
-				sched.InstWgAF(197568495620, &wg, "done")
+				sched.InstWgAF(4154862224399138820, &wg, "done")
 			}()
 			c := &callbackRecorder{callbacks: 0}
 			ttl := NewTTLWithCallback(c.callback)

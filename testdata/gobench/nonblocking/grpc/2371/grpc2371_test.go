@@ -18,9 +18,9 @@ func (ccb *ccBalancerWrapper) handleResolvedAddrs() {
 	case <-ccb.resolverUpdateCh:
 	default:
 	}
-	sched.InstChBF(1022202216451)
+	sched.InstChBF(17409981497221316611)
 	ccb.resolverUpdateCh <- struct{}{}
-	sched.InstChAF(1022202216451, ccb.resolverUpdateCh, "send")
+	sched.InstChAF(17409981497221316611, ccb.resolverUpdateCh, "send")
 }
 
 func newCCBalancerWrapper(cc *ClientConn) *ccBalancerWrapper {
@@ -37,8 +37,8 @@ type ccResolverWrapper struct {
 
 func (ccr *ccResolverWrapper) start() {
 	go func(_parentGid uint64) {
-		goroutine.Enter(1022202216449, _parentGid)
-		defer goroutine.Exit(1022202216449)
+		goroutine.Enter(17409981497221316609, _parentGid)
+		defer goroutine.Exit(17409981497221316609)
 		ccr.watcher()
 	}(goroutine.CurrentGid())
 }
@@ -94,8 +94,8 @@ func TestGrpc2371(t *testing.T) {
 		cc := Dial()
 
 		go func(_parentGid uint64) {
-			goroutine.Enter(1022202216450, _parentGid)
-			defer goroutine.Exit(1022202216450)
+			goroutine.Enter(17409981497221316610, _parentGid)
+			defer goroutine.Exit(17409981497221316610)
 			cc.Close()
 		}(goroutine.CurrentGid())
 	}
@@ -112,8 +112,8 @@ func TestGrpc2371_1(t *testing.T) {
 		cc := Dial()
 
 		go func(_parentGid uint64) {
-			goroutine.Enter(1022202216450, _parentGid)
-			defer goroutine.Exit(1022202216450)
+			goroutine.Enter(17409981497221316610, _parentGid)
+			defer goroutine.Exit(17409981497221316610)
 			cc.Close()
 		}(goroutine.CurrentGid())
 	}

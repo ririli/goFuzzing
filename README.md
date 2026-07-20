@@ -11,8 +11,8 @@
     ./bin/fuzz --task inst --path your_project_to_be_tested
     ~~~
 3. Build test binaries, the test binaries will be placed into `./testbins`
-    ~~~shell
     // compile the unit tests,use -o
+3. ~~~shell
     ./bin/fuzz --task bins --path your_project_to_be_tested
     ~~~
 4. Start testing

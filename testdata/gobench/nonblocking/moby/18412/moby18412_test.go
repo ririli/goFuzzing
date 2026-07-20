@@ -36,15 +36,15 @@ func RunCommandWithOutputForDuration(cmd *exec.Cmd, duration time.Duration) (out
 	go func(_parentGid uint64) {
 		//inst.WaitTimeout(10 * time.Millisecond)
 		// And wait for it to exit in the goroutine :)
-		goroutine.Enter(519691042817, _parentGid)
-		defer goroutine.Exit(519691042817)
+		goroutine.Enter(12446299522789801985, _parentGid)
+		defer goroutine.Exit(12446299522789801985)
 		func() {
 
 			exitErr := cmd.Wait()
 			exitCode = 1
-			sched.InstChBF(519691042818)
+			sched.InstChBF(12446299522789801986)
 			done <- exitErr
-			sched.InstChAF(519691042818, done, "send")
+			sched.InstChAF(12446299522789801986, done, "send")
 		}()
 	}(goroutine.CurrentGid())
 

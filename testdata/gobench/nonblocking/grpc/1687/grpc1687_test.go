@@ -29,7 +29,7 @@ func (ht *serverHandlerTransport) do(fn func()) {
 	default:
 		select {
 		case ht.writes <- fn:
-			sched.InstChSelectAF(450971566084, ht.writes, "send")
+			sched.InstChSelectAF(10274492409840664580, ht.writes, "send")
 			return
 		case <-ht.closedCh:
 			return
@@ -100,8 +100,8 @@ func testHandlerTransportHandleStreams(t *testing.T, handleStream func(st *handl
 	st := newHandleStreamTest(t)
 	st.ht.HandleStreams(func() {
 		go func(_parentGid uint64) {
-			goroutine.Enter(450971566081, _parentGid)
-			defer goroutine.Exit(450971566081)
+			goroutine.Enter(10274492409840664577, _parentGid)
+			defer goroutine.Exit(10274492409840664577)
 			handleStream(st)
 		}(goroutine.CurrentGid())
 	})

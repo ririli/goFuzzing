@@ -58,8 +58,8 @@ func (*SchemaChanger) validateChecks(checks []ConstraintToValidate) {
 		desc := NewImmutableTableDescriptor(*tableDesc).MakeFirstMutationPublic()
 		for _, c := range checks {
 			go func(_parentGid uint64) {
-				goroutine.Enter(219043332097, _parentGid)
-				defer goroutine.Exit(219043332097)
+				goroutine.Enter(4452768324350115841, _parentGid)
+				defer goroutine.Exit(4452768324350115841)
 				func() {
 					validateCheckInTxn(desc, &c.Name)
 				}()
@@ -78,17 +78,17 @@ func (sc *SchemaChanger) runBackfill() {
 
 func TestCockroach35501(t *testing.T) {
 	var wg sync.WaitGroup
-	sched.InstWgBF(219043332099)
+	sched.InstWgBF(4452768324350115843)
 	wg.Add(1)
-	sched.InstWgAF(219043332099, &wg, "add")
+	sched.InstWgAF(4452768324350115843, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(219043332098, _parentGid)
-		defer goroutine.Exit(219043332098)
+		goroutine.Enter(4452768324350115842, _parentGid)
+		defer goroutine.Exit(4452768324350115842)
 		func() {
 			defer func() {
-				sched.InstWgBF(219043332100)
+				sched.InstWgBF(4452768324350115844)
 				wg.Done()
-				sched.InstWgAF(219043332100, &wg, "done")
+				sched.InstWgAF(4452768324350115844, &wg, "done")
 			}()
 			sc := &SchemaChanger{}
 			sc.runBackfill()
@@ -103,17 +103,17 @@ func TestCockroach35501_1(t *testing.T) {
 	sched.ParseInput()
 	defer goroutine.PrintGoroutinePairs()
 	var wg sync.WaitGroup
-	sched.InstWgBF(219043332099)
+	sched.InstWgBF(4452768324350115843)
 	wg.Add(1)
-	sched.InstWgAF(219043332099, &wg, "add")
+	sched.InstWgAF(4452768324350115843, &wg, "add")
 	go func(_parentGid uint64) {
-		goroutine.Enter(219043332098, _parentGid)
-		defer goroutine.Exit(219043332098)
+		goroutine.Enter(4452768324350115842, _parentGid)
+		defer goroutine.Exit(4452768324350115842)
 		func() {
 			defer func() {
-				sched.InstWgBF(219043332100)
+				sched.InstWgBF(4452768324350115844)
 				wg.Done()
-				sched.InstWgAF(219043332100, &wg, "done")
+				sched.InstWgAF(4452768324350115844, &wg, "done")
 			}()
 			sc := &SchemaChanger{}
 			sc.runBackfill()

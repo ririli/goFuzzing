@@ -38,8 +38,8 @@ type EtcdServer struct {
 func (s *EtcdServer) run() {
 	go func(_parentGid uint64) {
 		// Wait s.r.run
-		goroutine.Enter(141733920769, _parentGid)
-		defer goroutine.Exit(141733920769)
+		goroutine.Enter(2105520928459849729, _parentGid)
+		defer goroutine.Exit(2105520928459849729)
 		s.r.run()
 	}(goroutine.CurrentGid())
 
@@ -62,8 +62,8 @@ func (s *EtcdServer) start() {
 	s.done = make(chan struct{})
 	s.stop = make(chan struct{})
 	go func(_parentGid uint64) {
-		goroutine.Enter(141733920770, _parentGid)
-		defer goroutine.Exit(141733920770)
+		goroutine.Enter(2105520928459849730, _parentGid)
+		defer goroutine.Exit(2105520928459849730)
 		s.run()
 	}(goroutine.CurrentGid())
 }
@@ -71,7 +71,7 @@ func (s *EtcdServer) start() {
 func (s *EtcdServer) Stop() {
 	select {
 	case s.stop <- struct{}{}:
-		sched.InstChSelectAF(141733920773, s.stop, "send")
+		sched.InstChSelectAF(2105520928459849733, s.stop, "send")
 	case <-s.done:
 		return
 	}
