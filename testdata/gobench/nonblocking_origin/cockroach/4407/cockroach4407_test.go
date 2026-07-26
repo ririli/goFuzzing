@@ -4,6 +4,8 @@ import (
 	"sync"
 	"testing"
 	"time"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type Stopper struct {
@@ -13,16 +15,28 @@ type Stopper struct {
 }
 
 func (s *Stopper) RunWorker(f func()) {
+	sched.InstWgBF(6301501851195932676)
 	s.stop.Add(1)
-	go func() {
-		defer s.stop.Done()
-		f()
-	}()
+	sched.InstWgAF(6301501851195932676, &s.stop, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(6301501851195932673, _parentGid)
+		defer goroutine.Exit(6301501851195932673)
+		func() {
+			defer func() {
+				sched.InstWgBF(6301501851195932677)
+				s.stop.Done()
+				sched.InstWgAF(6301501851195932677, &s.stop, "done")
+			}()
+			f()
+		}()
+	}(goroutine.CurrentGid())
 }
 
 func (s *Stopper) SetStopped() {
 	if s != nil {
+		sched.InstWgBF(6301501851195932678)
 		s.stop.Done()
+		sched.InstWgAF(6301501851195932678, &s.stop, "done")
 	}
 }
 
@@ -64,7 +78,31 @@ func TestCockroach4407(t *testing.T) {
 		stopper: stopper,
 	}
 	for i := 0; i < 2; i++ {
-		go s.Gossip()
+		go func(_parentGid uint64) {
+			goroutine.Enter(6301501851195932674, _parentGid)
+			defer goroutine.Exit(6301501851195932674)
+			s.Gossip()
+		}(goroutine.CurrentGid())
+	}
+	time.Sleep(time.Millisecond)
+}
+func TestCockroach4407_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	stopper := NewStopper()
+	defer stopper.Stop()
+	s := &server{
+		stopper: stopper,
+	}
+	for i := 0; i < 2; i++ {
+		go func(_parentGid uint64) {
+			goroutine.Enter(6301501851195932674, _parentGid)
+			defer goroutine.Exit(6301501851195932674)
+			s.Gossip()
+		}(goroutine.CurrentGid())
 	}
 	time.Sleep(time.Millisecond)
 }

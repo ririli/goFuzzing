@@ -3,6 +3,8 @@ package cockroach35501
 import (
 	"sync"
 	"testing"
+	goroutine "toolkit/pkg/goroutine"
+	sched "toolkit/pkg/sched"
 )
 
 type MutableTableDescriptor struct {
@@ -55,9 +57,13 @@ func (*SchemaChanger) validateChecks(checks []ConstraintToValidate) {
 		tableDesc := GetTableDescFromID()
 		desc := NewImmutableTableDescriptor(*tableDesc).MakeFirstMutationPublic()
 		for _, c := range checks {
-			go func() {
-				validateCheckInTxn(desc, &c.Name)
-			}()
+			go func(_parentGid uint64) {
+				goroutine.Enter(296866790879789057, _parentGid)
+				defer goroutine.Exit(296866790879789057)
+				func() {
+					validateCheckInTxn(desc, &c.Name)
+				}()
+			}(goroutine.CurrentGid())
 		}
 	}()
 }
@@ -72,11 +78,46 @@ func (sc *SchemaChanger) runBackfill() {
 
 func TestCockroach35501(t *testing.T) {
 	var wg sync.WaitGroup
+	sched.InstWgBF(296866790879789059)
 	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		sc := &SchemaChanger{}
-		sc.runBackfill()
-	}()
+	sched.InstWgAF(296866790879789059, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(296866790879789058, _parentGid)
+		defer goroutine.Exit(296866790879789058)
+		func() {
+			defer func() {
+				sched.InstWgBF(296866790879789060)
+				wg.Done()
+				sched.InstWgAF(296866790879789060, &wg, "done")
+			}()
+			sc := &SchemaChanger{}
+			sc.runBackfill()
+		}()
+	}(goroutine.CurrentGid())
+	wg.Wait()
+}
+func TestCockroach35501_1(t *testing.T) {
+	goroutine.EnterMain()
+	defer goroutine.ExitMain()
+	goroutine.ParseInput()
+	sched.ParseInput()
+	defer goroutine.PrintGoroutinePairs()
+	var wg sync.WaitGroup
+	sched.InstWgBF(296866790879789059)
+	wg.Add(1)
+	sched.InstWgAF(296866790879789059, &wg, "add")
+	go func(_parentGid uint64) {
+		goroutine.Enter(296866790879789058, _parentGid)
+		defer goroutine.Exit(296866790879789058)
+		func() {
+			defer func() {
+				sched.InstWgBF(296866790879789060)
+				wg.Done()
+				sched.InstWgAF(296866790879789060, &wg, "done")
+			}()
+			sc := &SchemaChanger{}
+			sc.runBackfill()
+		}()
+	}(goroutine.CurrentGid())
 	wg.Wait()
 }

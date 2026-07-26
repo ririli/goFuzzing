@@ -46,26 +46,28 @@ func Inst(paths []string, check_pos string) {
 	var failedFiles []string
 
 	dowork := func(path string) {
-		defer func() {
-			<-limit
-		}()
-		command := exec.Command(toolpath, "--file", path, "--checkpos", check_pos) // 执行inst二进制文件
+		command := exec.Command(toolpath, "--file", path, "--checkpos", check_pos)
 		var out, out2 bytes.Buffer
 		command.Stdout = &out
 		command.Stderr = &out2
 		err := command.Run()
+		var result string
 		if err == nil {
-			resCh <- fmt.Sprintf("Handle\t%s OK", path)
+			result = fmt.Sprintf("Handle\t%s OK", path)
 		} else {
-			resCh <- fmt.Sprintf("Handle\t%s FAIL", path)
+			result = fmt.Sprintf("Handle\t%s FAIL", path)
 		}
+		<-limit // release slot before writing result, so dispatcher never deadlocks
+		resCh <- result
 	}
 
 	all := len(paths)
-	for _, p := range paths {
-		limit <- struct{}{}
-		go dowork(p)
-	}
+	go func() {
+		for _, p := range paths {
+			limit <- struct{}{}
+			go dowork(p)
+		}
+	}()
 
 	for {
 		select {

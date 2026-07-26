@@ -2,674 +2,200 @@
 
 ## 项目定位
 
-GoPie 是一个面向 Go 并发缺陷实验的研究原型。它并不修改 Go runtime，也不是通用的输入数据 Fuzzer。当前主链路是：
+GoPie 是 Go 并发缺陷实验的研究原型，通过 AST 插桩 + 调度搜索来发现数据竞争、panic 等并发 bug。不修改 Go runtime，不变异普通函数参数。
 
-1. 使用 Go AST Pass 原地改写目标源码，注入 goroutine 生命周期和 channel/WaitGroup 操作 hook。
-2. 使用 `go test -race -c` 编译测试二进制，后续只枚举并运行插桩测试 `TestXxx_1`。
-3. 预执行测试，收集 goroutine 生命周期记录、父子关系和部分同步对象操作；直接重叠观测只使用已结束实例。
-4. 从直接观测和结构推断得到 goroutine 对，再派生可能触发 panic 的操作对。
-5. 通过环境变量下发调度对，搜索新的 goroutine/操作执行关系。
-6. 解析 Go race detector、panic 和 fatal 输出，按稳定签名汇总运行时 oracle。
+主链路：**插桩源码 → 编译 -race 测试二进制 → 预执行收集种子 → 调度搜索（Fuzzing）→ 解析 race/panic/fatal 输出**。
 
-这里的 "fuzzing" 主要是并发调度搜索，不会变异普通函数参数或测试输入。代码也没有构建完整的调用顺序图；运行时保存的是静态 goroutine 创建点对应的动态实例、生命周期区间及父子列表。
-
-> Monitor 会把每次执行的 stdout/stderr 交给 `pkg/bug`，按稳定签名去重 race/panic/fatal，并据此返回 `FAIL`。`PASS` 只表示本次 Monitor 运行没有解析到这三类触发型 oracle；它不表示没有可疑并发对、没有 HangCandidate，也不表示缺陷已通过 replay 反向证明不存在。
-
-## 完整 Fuzzing 流程
-
-### 第一阶段：插桩（`fuzz --task inst`）
-
-入口：`cmd/fuzz/inst.go` → 实际调用独立 `inst` 二进制。
-
-```
-fuzz --task inst --path <target_dir>
-```
-
-1. `cmd.ListFiles` 递归遍历目标目录，收集所有 `.go` 文件。
-2. 对每个文件，以最多 16 并发的 worker 执行 `inst --file <path> --checkpos <pos>`。
-3. 独立 `inst` 二进制（`cmd/inst/inst.go`）对每个文件：
-   - 创建 `InstContext`：解析 AST、运行类型检查（错误只记录日志不阻止）、初始化全局 ID（`hash.Hash32(filePath) << 32` 作为文件前缀，低 32 位由 `atomic.AddUint64` 递增）。
-   - 按固定顺序运行 5 个 Pass：**gort → channel → select → waitgroup → test**。
-   - 写回 AST 覆盖原文件，用 `go fmt` 检查语法；若有语法错误则恢复原始内容。
-4. 结果统计：成功/失败计数和失败文件列表。注意 `fuzz inst` 的结果 channel 容量 100，文件数约 117+ 时可能死锁。
-
-> 插桩不幂等：再次插桩会重复包装 go、重复插 hook、重复生成 `TestXxx_1`。
-
-### 第二阶段：编译（`fuzz --task bins`）
-
-入口：`cmd/fuzz/bins.go`
-
-```
-fuzz --task bins --path <target_dir> -o testbins/local
-```
-
-1. 收集所有 `.go` 文件的父目录，去重。
-2. 对每个目录，最多 32 并发执行 `go test -race -c -o <output> .`。
-3. 输出文件名：目录路径中的 `:\/` 替换为 `_`。Windows 平台追加 `.exe`。
-4. 编译成功后，用 `-test.list _1` 枚举 `Test*_1` 测试函数名。
-
-### 第三阶段：调度搜索（`fuzz --task full`）
-
-入口：`cmd/fuzz/full.go`
-
-```
-fuzz --task full --path testbins/local
-```
-
-1. 遍历输出目录下所有文件（不按后缀过滤），对每个二进制枚举 `Test*_1`。
-2. 对每个测试函数创建 `fuzzer.Monitor`，以 `--max`（默认 24）控制并发 Monitor 数。
-3. 每个 Monitor 内部固定 4 个 Executor worker。
-
-### 第三阶段（简化）：单测试（`fuzz --task lite`）
-
-入口：`cmd/fuzz/lite.go`
-
-```
-fuzz --task lite --path <binary> --func <TestXxx_1> --max <N> --timeout <seconds>
-```
-
-- 指定 `--func` 时，重复启动 N 个 Monitor（N=`--max`，必须 >0）。
-- 不指定 `--func` 时，枚举该二进制的所有 `Test*_1`，每个启动一个 Monitor。
-- `--timeout` 默认值为 0，会导致 Executor context 立即过期。
+> Monitor 将每次执行输出交给 `pkg/bug` 按稳定签名去重 race/panic/fatal，据此返回 `FAIL`。`PASS` 只表示本次未解析到触发型 oracle。
 
 ---
 
-### Monitor 内部：两阶段 Fuzzing 循环
+## 完整 Fuzzing 流程
 
-每个 Monitor（`pkg/fuzzer/monitor.go`）持有独立的 `CorpusGort`、`CorpusOp` 和 `bug.Set`。
+### 1. 插桩：`fuzz --task inst --path <dir>`
 
-核心循环：4 个 worker 并发调用 `Executor.Run()`，结果送入 channel，主循环逐份处理。
+并发调用独立 `inst` 二进制，对每个 `.go` 文件运行 5 个 Pass（**gort → channel → select → waitgroup → test**），原地覆盖源码。**插桩不幂等**。
+
+### 2. 编译：`fuzz --task bins --path <dir> -o testbins/local`
+
+对每个含 `.go` 的目录并发执行 `go test -race -c`，输出测试二进制。用 `-test.list _1` 枚举 `Test*_1` 测试函数。
+
+### 3. 调度搜索：`fuzz --task full --path testbins/local`
+
+遍历二进制，为每个 `Test*_1` 启动 Monitor（`--max` 默认 24 并发），每个 Monitor 固定 4 个 Executor worker。
+
+`fuzz --task lite` 是单测试简化版。
+
+---
+
+## Monitor 内部：两阶段 Fuzzing 循环
+
+每个 Monitor 持有独立的 `CorpusGort`、`CorpusOp` 和 `bug.Set`。
 
 ```
 for each execution:
-  1. corpusGort.Get() → InputGortPair (phase 0 返回 nil)
-  2. corpusOp.Get()   → InputOpPair   (phase 0 返回 nil)
-  3. Executor.Run(in) → Output{O, Trace, Err, Time}
-  4. analyzeRun()     → 解析 stdout 信号 + bug oracle
-  5. ParseGortPairs(stderr) → 更新 CorpusGort + CorpusOp
-  6. ParseGortEdges(stderr)  → 合并拓扑边
-  7. TryEndPreExec / TryEndPreExec → 判断是否切换阶段
-  8. ApplySignals → 应用调度反馈，更新 TryPairs
-  9. 判定 quit/MaxQuit/MaxExecution
+  corpusGort.Get() + corpusOp.Get() → Enter/Op pair
+  Executor.Run() → stdout + stderr
+  ParseSignals(stdout) + bug.Parse(stdout, stderr)
+  ParseGortPairs(stderr) + ParseGortEdges(stderr) → 更新 Corpus
+  TryEndPreExec → 判断阶段切换
+  ApplySignals → 应用反馈，刷新 TryPairs
 ```
 
-#### Phase 0：预执行（种子收集）
+### Phase 0：预执行（种子收集）
 
-**触发条件**：`gortPhase == 0`（初始值）。
+- `Input` / `InputOp` 为空，不设 `RECORD_STACK` / `SCHED_DEBUG`
+- 收集 goroutine 生命周期、父子关系、`[FB]` 操作日志
+- 输出 `[GORT_EDGE]`（拓扑边）、`[COVERED]`（直接重叠）、`[SUSPECT]`（结构推断）
+- Goroutine 对推断：直接重叠（1.0）> 纯结构兄弟（0.5）> 邻接父子/兄弟（0.3-0.5）
+- 连续 3 轮无新对或达到 `MaxPreExecRound`（默认 30）→ 切换到 Phase 1
+- 切换后从 SusConPairs 选种填充 TryPairs，并生成危险操作对
 
-**子进程行为**：
+### Phase 1：调度搜索
 
-| 机制 | 状态 |
-|---|---|
-| `Input` 环境变量 | 空（`Input=`） |
-| `InputOp` 环境变量 | 空（`InputOp=`） |
-| `RECORD_STACK` | 不设置 → `skipRecord=false` → 生命周期记录开启 |
-| `SCHED_DEBUG` | 不设置 → `debugSched=true` → FB 详情日志开启 |
+- 设置 `RECORD_STACK=1`（关闭生命周期记录）和 `SCHED_DEBUG=1`（关闭 FB 日志）
+- `Input=(gid1,gid2)...` 下发 goroutine 对，`InputOp=(preId,nextId)...` 下发操作对
+- Goroutine 双栏调度：两个 goroutine 都到达 `Enter` 时放行并输出 `{COVERED}`，10ms 超时输出 `{TIMEOUT}`
+- OP 调度：next 的 BF 等待 pre 的 AF 完成（`event.LoadAndDelete`），成功输出 `{COVERED_OP}`，4s 超时输出 `{TIMEOUT_OP}`
+- 新 covered 对触发邻接推断（向 parent/child/sibling 扩展一跳）
+- 选种分数：goroutine = `confidence*10 - timeoutCount*2`，OP = `5 - timeoutCount*2`
+- 初始 `selectNum=1`，无 covered 但有 timeout 时翻倍（上限 64），累计 5 次 timeout 移入 InfeasiblePairs
 
-**TestXxx_1 执行顺序**（`pkg/inst/passes/test.go` 生成）：
+### Monitor 终止
 
-```go
-goroutine.EnterMain()              // gid=0，记录主 goroutine 开始
-defer goroutine.ExitMain()         // gid=0，记录主 goroutine 结束（LIFO，最后执行）
-goroutine.ParseInput()             // 解析 Input 环境变量 → 空，无 barrier
-sched.ParseInput()                 // 解析 InputOp 环境变量 → 空，无 OP 调度
-defer goroutine.PrintGoroutinePairs() // 输出 pair + edge 到 stderr（在 ExitMain 之前执行）
-// 原测试体（浅复制）
+- `etimes >= MaxExecution`（默认 10,000,000,000，int32 截断为 1,410,065,408）
+- 连续 `MaxQuit` 次无新 goroutine covered 且无新 oracle finding
+- `SingleCrash && triggered`：首次 race/panic/fatal 立即退出
+- 返回 `(true, ["FAIL", summary])` 或 `(false, ["PASS", ""])`
+
+---
+
+## 技术基线
+
+- 模块名：`toolkit`，Go 1.19
+- 直接依赖：`github.com/jessevdk/go-flags v1.5.0`、`golang.org/x/tools v0.2.0`
+
+---
+
+## 目录与职责
+
+```
+gopie/
+├── cmd/
+│   ├── fuzz/           # --task 路由：inst / bins / full / lite
+│   ├── inst/inst.go    # 独立 AST 插桩器
+│   ├── flags.go        # CLI flags
+│   └── utils.go        # 文件枚举、AST 写回
+├── pkg/
+│   ├── inst/           # InstContext、Pass registry、执行和写回
+│   │   └── passes/     # gort / channel / select / waitgroup / test
+│   ├── goroutine/      # 生命周期追踪、双栏调度、并发对推断
+│   ├── sched/          # 操作日志、pre→next 操作调度
+│   ├── feedback/       # stderr/stdout 协议解析
+│   ├── fuzzer/         # Config、Executor、Monitor、两个 Corpus
+│   ├── bug/            # race/panic/fatal oracle 解析、签名去重
+│   └── utils/          # gofmt / hash 辅助
+├── testdata/
+│   ├── gobench/nonblocking_origin/  # 35 个未插桩对照案例
+│   └── gobench/nonblocking/         # 对应的 35 个已插桩案例
+├── bin/                # Windows x86-64 PE 工具
+├── testbins/           # Windows x86-64 PE 测试二进制
+├── script/run_all.ps1  # 7 组 GoBench 的 bins + full 脚本
+├── raceResult/         # 历史汇总
+└── zgortResult/        # 历史 full 输出
 ```
 
-**stderr 输出内容**：
+---
 
-| 格式 | 来源 | 含义 |
-|---|---|---|
-| `[GORT_EDGE] {"parent":p,"child":c,"count":n}` | `PrintGoroutinePairs` → `snapshotEdges` | 本次执行的静态父子边及动态出现次数 |
-| `[COVERED] gid1,gid2\|loc1,loc2\|1.00\|observed;` | `PrintGoroutinePairs` → `DetectGoroutineOverlaps` | 聚合生命周期区间直接重叠 |
-| `[SUSPECT] gid1,gid2\|loc1,loc2\|conf\|source;` | `PrintGoroutinePairs` → 推断函数 | 结构推断的 goroutine 对 |
-| `[FB]chan: obj=addr; opId=id; gid=gid; op=send\|close;` | `InstChAF` | channel 操作后记录 |
-| `[FB]chan: obj=addr; opId=id; gid=gid; op=send; select=1;` | `InstChSelectAF` | select 中 send 操作后记录 |
-| `[FB]wg: obj=addr; opId=id; gid=gid; op=add\|done;` | `InstWgAF` | WaitGroup 操作后记录 |
+## 构建与验证
 
-**Goroutine 生命周期追踪**（`pkg/goroutine/gort.go`）：
+```shell
+go build -o ./bin ./cmd/...
+go test ./cmd ./pkg/...
+```
 
-- `Enter(gid, parentGid)`：先执行 `pointControl(gid)`（phase 0 无 barrier），再记录 `runtime.Stack` 解析的 OS goroutine ID → 静态 gid 映射，最后记录 start 和 parent。
-- `Exit(gid)`：结束最近一个未结束的同静态 gid 实例。
-- `childMap[parentGid]` 追加 childGid（不去重，同一 go 点多次执行可能产生 `(gid,gid)` 自配对）。
+不要用 `go test ./...`（存在 vet 错误、硬编码路径、缺失测试等问题）。
 
-**Goroutine 对推断**（`pkg/goroutine/infer.go`，在 `PrintGoroutinePairs` 中执行）：
+---
 
-| 来源 | 函数 | 置信度 | 说明 |
-|---|---|---|---|
-| 直接重叠 | `DetectGoroutineOverlaps` | 1.0 | 压缩每个 gid 的所有已完成实例为 `[min(start), max(end)]`，O(n²) 两两比较。仅已结束实例参与。 |
-| 纯结构兄弟 | `InferAllSiblingPairs` | 0.5 | 同一 parent 的 children 两两组合。 |
-| 邻接父子 | `InferAdjacentPairs` | parent 方向 0.5，child 方向 0.3 | 从 observed 对向父/子一跳扩展。 |
-| 邻接兄弟 | `InferSiblingAdjacentPairs` | 0.5 | 从 observed 对向双方兄弟扩展。 |
+## AST 插桩要点
 
-合并时按无序 `(gid1,gid2)` 去重，冲突时保留高置信度，过滤 gid=0。
+### Pass 覆盖范围
 
-**Monitor 处理（stderr → Corpus）**：
+| Pass | 注入行为 | 限制 |
+|------|---------|------|
+| GoroutinePass | 包装 `go f(args)`，子 goroutine 调用 `Enter/Exit` | `CurrentGid()` 在父 goroutine 求值，参数移入子 goroutine 可能改变语义 |
+| ChRecPass | 普通 send/close 前后插 hook | 不处理 receive/make；AF 会再次求值 channel 表达式 |
+| SelectPass | 只在 select send body 开头插 `InstChSelectAF` | 只有 AF，该操作只能做 pre 不能做 next |
+| WgPass | Add/Done 前后插 hook | 不处理 Wait；可能误插自定义方法 |
+| TestPass | 生成 `TestXxx_1`，注入 main 生命周期 hook | 浅复制原测试体，不是调用原测试 |
 
-- `ParseGortPairs(stderr)`：
-  - `[COVERED]` → `CorpusGort.AddPair()` → `CoveredConPairs`（若信号 key 已存在于 SusConPairs，则从 SusConPairs 移除）
-  - `[SUSPECT]` → `CorpusGort.AddPair()` → `SusConPairs`（若已在 CoveredConPairs 或 InfeasiblePairs 则跳过；已存在则升级置信度）
-- `ParseGortEdges(stderr)`：合并拓扑边到 `parents`/`children`/`edgeHits`/`edgeRuns`。不做删除——旧边不会因本轮未出现而被移除。
-- `CorpusOp.Add(opInfos)`：phase 0 只在首次成功收集后标记 `collected=true`，跳过后续调用，避免跨进程 ObjAddr 不一致。
+defer close/WaitGroup 改为 defer 闭包，receiver/参数从注册时求值变为执行时求值，可能改变语义。
 
-**Phase 0 → 1 切换**（`CorpusGort.TryEndPreExec`）：
+### 静态 ID
 
-每轮预执行结束时检查：`len(CoveredConPairs) + len(SusConPairs) + len(edgeHits)` 连续 3 轮不变 **或** 轮次达到 `MaxPreExecRound`（默认 30），则：
-1. 原子写入 `gortPhase = 1`。
-2. `CorpusGort.RefillTryPairs()`：从 SusConPairs 按 `confidence*10 - timeoutCount*2` 排序，选 `selectNum`（初始=1）个填充 TryPairs。
-3. `CorpusOp.TryEndPreExec(corpusGort)`：从所有 covered goroutine 对生成危险操作对。
+每文件 `uint64(hash.Hash32(filePath)) << 32` + `atomic.AddUint64` 递增。ID 依赖路径字符串，不保证绝对无碰撞。`CallLoc` 当前输出 `:0`。
 
-> 由于无 worker barrier，phase 切换时有在途预执行结果。这些结果在 phase 切换后返回时，phase 0 的跳过条件（如 CorpusOp 的 collected 检查）可能已失效。
+### 写回与幂等性
 
-#### Phase 1：调度搜索（Fuzzing）
+- 原地覆盖，不排除 vendor/generated/origin/已插桩文件
+- **再次插桩会重复包装**，不幂等
+- 写回后仅 `go fmt` 检查，不能发现类型错误
+- `fuzz inst` 结果 channel 容量 100，文件数约 117+ 可能死锁
 
-**触发条件**：`gortPhase == 1`。
+---
 
-**子进程行为**：
+## 输出协议
 
-| 机制 | 状态 |
-|---|---|
-| `Input` 环境变量 | `(gid1,gid2)(gid3,gid4)...`（TryPairs 序列化） |
-| `InputOp` 环境变量 | `(preId,nextId)...`（TryPairs 序列化） |
-| `RECORD_STACK` | `=1` → `skipRecord=true` → 生命周期记录关闭 |
-| `SCHED_DEBUG` | `=1` → `debugSched=false` → FB 详情日志关闭 |
+| 流 | 格式 | 含义 |
+|------|------|------|
+| stderr | `[COVERED] gid1,gid2\|loc1,loc2\|1.00\|observed;` | 生命周期区间直接重叠 |
+| stderr | `[SUSPECT] gid1,gid2\|loc1,loc2\|conf\|source;` | 结构推断的 goroutine 对 |
+| stderr | `[GORT_EDGE] {"parent":p,"child":c,"count":n}` | 静态父子边和动态出现次数 |
+| stderr | `[FB]chan: ...` / `[FB]wg: ...` | 预执行操作快照 |
+| stdout | `{COVERED} {gid1, gid2}` | 双栏配对成功 |
+| stdout | `{TIMEOUT} {gid1, gid2}` | 双栏等待超时 |
+| stdout | `{COVERED_OP} {pre, next}` | OP 调度配对成功 |
+| stdout | `{TIMEOUT_OP} {pre, next}` | OP 调度等待超时 |
 
-> `RECORD_STACK=1` 的语义是"跳过记录"。`pointControl` 仍在 `Enter` 开头执行，不受影响。
+---
 
-**Goroutine 双栏调度**（`pkg/goroutine/control.go` + `parse.go`）：
+## 超时层次
 
-- `ParseInput()` 解析 `Input=(gid1,gid2)...`，为每对创建共享的 `barrierGate{release: make(chan struct{})}`。
-- `pointControl(gid)` 在 `Enter` 入口执行，遍历该 gid 参与的所有 gate：
-  - `atomic.AddInt32(&gate.arrived, 1)`，若计数=2（第二个到达）→ 检查未超时 → `close(gate.release)` → stdout `{COVERED} {gid1, gid2}`。
-  - 若计数=1（第一个到达）→ select 等待 release 或 10ms timeout → 超时则 `atomic.StoreInt32(&gate.expired, 1)` → stdout `{TIMEOUT} {gid1, gid2}`。
-- 计数只看总到达次数，不验证是两个不同 goroutine ID。gate 是一次性状态。
-
-**OP 调度**（`pkg/sched/sched.go`）：
-
-- `ParseInput()` 解析 `InputOp=(preId,nextId)...`，建立 `preOpMap[nextId] = [preIds...]` 和 `active` 集合。
-- `InstChBF`/`InstWgBF`（next 的 Before hook）：若 `doWait(opId)` 为 true，busy-wait `event.LoadAndDelete(preId)`，成功 → stdout `{COVERED_OP} {preId, nextId}`；4 秒 timeout → stdout `{TIMEOUT_OP} {preId, nextId}`。
-- `InstChAF`/`InstWgAF`/`InstChSelectAF`（After hook）：`event.Store(opId, struct{}{})`，令等待该 opId 的 next BF 可以消费。
-- `SCHED_DEBUG=1` 关闭 AF hook 中的 `[FB]` 详情日志输出，但 `event.Store` 仍执行。
-
-> `{COVERED_OP}` 只表示 next 的 BF 消费了 pre event，不表示 next 操作已完成或 bug 已触发。
-
-**stdout 信号格式**：
-
-| 格式 | 含义 |
-|---|---|
-| `{COVERED} {gid1, gid2}` | 双栏累计到第二次到达，未超时 |
-| `{TIMEOUT} {gid1, gid2}` | 双栏首个到达者等待 10ms 超时 |
-| `{COVERED_OP} {preId, nextId}` | next BF 成功消费 pre event |
-| `{TIMEOUT_OP} {preId, nextId}` | next BF 4s 内未等到 pre event |
-
-**Monitor 处理（stdout 信号 → Corpus）**：
-
-1. `ParseSignals(stdout)` → 分类为 gortSignals 和 opSignals。
-2. `bug.Parse(stdout, stderr)` → 结构化 oracle 事件。
-3. `CorpusGort.ApplySignals(gortSignals)`：
-   - `{COVERED}` ∩ TryPairs → 对从 SusConPairs 移动到 CoveredConPairs，confidence=1.0，sourceType="fuzz_verified"。
-   - `{TIMEOUT}` → 累计超时；≥5 次移入 InfeasiblePairs。
-   - 新 covered 对触发 `inferFromAnchorLocked`（从 covered pair 向 parent/child/sibling 扩展，生成 "fuzz_inferred_adjacent" / "fuzz_inferred_sibling" 新种子）。
-   - 无 covered 但有 timeout → `selectNum *= 2`（上限 64）。
-   - `RefillTryPairs()` 重建 TryPairs。
-4. `CorpusOp.ApplySignals(opSignals)`：
-   - `{COVERED_OP}` ∩ TryPairs → 对从 SusConPairs 移动到 CoveredConPairs。
-   - `{TIMEOUT_OP}` → 累计超时；≥5 次移入 InfeasiblePairs。
-   - 无 covered 但有 timeout → `selectNum *= 2`（上限 64）。
-5. 新 covered goroutine 对 → `CorpusOp.OnGortCovered()` → 增量派生 OP 对。
-
-**选种与评分**：
-
-- Goroutine 分数：`confidence * 10 - timeoutCount * 2`
-- OP 分数：`0.5 * 10 - timeoutCount * 2`（所有 OP 种子基准分相同，无置信度区分）
-- 初始 `selectNum=1`；仅在无 covered 但有 timeout 时翻倍，上限 64
-- 单对累计 5 次 timeout → 移入 InfeasiblePairs
-- 没有任何信号的高分种子不会降权，可能长期占据 TryPairs
-
-> Phase 1 子进程不输出 `[GORT_EDGE]`（因为 `skipRecord=true`，`PrintGoroutinePairs` 直接返回）。因此增量推断只能使用 phase 0 已观察到的拓扑边。无法发现预执行从未执行到的新 goroutine 路径。
-
-### Monitor 终止条件
-
-循环退出条件（任一满足）：
-
-1. `m.etimes >= m.max`：`MaxExecution` 默认 10,000,000,000，转为 int32 截断为 1,410,065,408。
-2. `quit <= 0`：每次迭代若无进展（无新 goroutine covered 且无新 oracle finding）则 `quit--`；有进展则重置为 `MaxQuit`（full 设 200，default 500）。
-3. `SingleCrash && analysis.triggered`：首次 race/panic/fatal 后立即退出。
-
-> 新的 `HangCandidate` 算进展（重置 quit）但不算 `triggered`（不会触发 SingleCrash）。
-
-**返回契约**：`(true, ["FAIL", summary])` 当有触发型 oracle；`(false, ["PASS", ""])` 否则。`full/lite` 读取 `detail[1]`，必须保证长度为 2。
+| 层次 | 值 | 作用 |
+|------|-----|------|
+| Executor 子进程 | full 30s / lite 取 CLI | `context.WithTimeout` 终止测试进程 |
+| Monitor watchdog | 1 分钟 | worker 放弃等待本轮结果 |
+| Goroutine barrier | 10ms | `pointControl` 等待配对方 |
+| OP BF | 4s（20s/5） | next 等待 pre event |
+| Recover timeout | full 200s | 仅写环境变量，无读取者 |
 
 ---
 
 ## AI 交互与修改原则
 
-- 以代码实际行为为准；README、注释、历史结果和字段名都可能落后于实现。
-- 对错误假设应直接指出并给出代码依据，不要为了迎合需求而确认不实结论。
-- 修改应保持范围小并复用现有结构；不要顺手改写基准、二进制或历史结果。
-- 插桩会原地覆盖源码且不幂等。除非任务明确要求，不要对 `testdata/gobench/nonblocking_origin` 或用户未备份的源码执行插桩。
-- 不要把 `bin/`、`testbins/`、`raceResult/`、`zgortResult/` 当作可靠的跨平台构建产物或测试 oracle。
-- 完成代码变更后给出变更总结和实际验证结果；未运行或未通过的验证必须明确说明。
-
-## 技术基线
-
-- 模块名：`toolkit`
-- `go.mod` 语言版本：Go 1.19；README 说明项目最初使用 Go 1.19.1 实现，但 patch 版本不是模块约束。
-- 直接依赖：
-  - `github.com/jessevdk/go-flags v1.5.0`：CLI flags。
-  - `golang.org/x/tools v0.2.0`：`astutil.Apply` 等 AST 工具。
-- 间接依赖：`golang.org/x/sys v0.1.0`。
-- 测试只使用标准库 `testing`，没有直接依赖 `testify`。
-
-## 目录与职责
-
-```text
-gopie/
-├── cmd/
-│   ├── fuzz/
-│   │   ├── main.go        # --task 路由：inst / bins / full / lite
-│   │   ├── inst.go        # 并发调用独立 inst 二进制
-│   │   ├── bins.go        # 按目录 go test -race -c
-│   │   ├── full.go        # 扫描二进制并为每个 Test*_1 启动 Monitor
-│   │   └── lite.go        # 单二进制/单测试入口
-│   ├── inst/inst.go       # 独立 AST 插桩器
-│   ├── flags.go           # 独立 inst flags
-│   └── utils.go           # 文件/测试枚举、AST 写回
-├── pkg/
-│   ├── inst/              # InstContext、Pass registry、执行和写回
-│   │   └── passes/        # gort/channel/select/waitgroup/test Pass
-│   ├── goroutine/         # 生命周期追踪、双栏调度、并发对推断
-│   ├── sched/             # 操作日志、pre -> next 操作调度
-│   ├── feedback/          # stderr/stdout 协议解析和数据类型
-│   ├── fuzzer/            # Config、Executor、Monitor、两个 Corpus
-│   ├── bug/               # race/panic/fatal oracle 解析、签名去重和执行证据汇总
-│   └── utils/             # gofmt/hash 辅助
-├── testdata/
-│   ├── gobench/nonblocking_origin/ # 35 个未插桩对照案例
-│   ├── gobench/nonblocking/        # 对应的 35 个已插桩案例
-│   └── myTest/                     # 小型实验样例，含历史残留
-├── bin/                    # 当前提交的是 Windows x86-64 PE 工具
-├── testbins/               # 当前提交的是 Windows x86-64 PE 测试二进制
-├── script/run_all.ps1      # 7 组 GoBench 的 bins + full PowerShell 脚本
-├── raceResult/             # 历史汇总，当前代码没有自动生成入口
-└── zgortResult/            # 历史 full 输出
-```
-
-GoBench 子集包含 cockroach 2、etcd 4、grpc 4、istio 4、kubernetes 12、moby 3、serving 6，共 35 个案例。`testdata/gobench/README.md` 是不完整的上游残留说明，其中提到的 Makefile、artifact.pdf 等并不存在。
-
-## 构建与验证
-
-### 构建命令
-
-```shell
-go build -o ./bin ./cmd/...
-```
-
-Unix 产物通常是 `bin/fuzz` 和 `bin/inst`，Windows 才是 `fuzz.exe` 和 `inst.exe`。仓库当前提交的 `bin/*.exe` 与 `testbins/**/*.exe` 都是 Windows x86-64 PE；在 macOS/Linux 上必须本机重建。
-
-### 当前可靠的核心测试
-
-```shell
-go test ./cmd ./pkg/...
-```
-
-该命令当前通过。不要把 `go test ./...` 作为现状下的绿色基线：
-
-- `cmd/fuzz/inst.go` 当前会触发 vet：`fmt.Println arg list ends with redundant newline`。
-- `cmd/fuzz/main_test.go` 使用硬编码 Windows 绝对路径；找不到测试时 `Lite` 可能无限空转。
-- Go 会跳过名为 `testdata` 的目录，因此 `./...` 本来也不会验证 GoBench fixtures。
-- `pkg/goroutine`、`pkg/sched`、`pkg/inst/passes` 和 `pkg/utils/hash` 当前没有单元测试。
-- `testdata/testinst`、`testdata/myTest/recycle` 仍引用已删除的 `toolkit/pkg/callstack`，不代表当前架构。
-
-需要只检查 `cmd/fuzz` 是否可编译时，可使用：
-
-```shell
-go test -vet=off ./cmd/fuzz -run '^$'
-```
-
-## CLI 实际行为
-
-### 推荐实验流程
-
-确保目标源码处于可恢复状态，然后执行：
-
-```shell
-# 1. 原地插桩目标源码
-./bin/fuzz --task inst --path path/to/target
-
-# 2. 将每个含 Go 文件的目录编译成 -race 测试二进制
-./bin/fuzz --task bins --path path/to/target -o testbins/local
-
-# 3. 对仅含本机测试二进制的目录运行调度搜索
-./bin/fuzz --task full --path testbins/local
-```
-
-插桩固定加入 `toolkit/pkg/goroutine` 和 `toolkit/pkg/sched`。仓库内 fixtures 可直接解析；外部模块必须自行让这两个 import 可见，例如在目标 `go.mod` 中增加对 `toolkit` 的 `require` 和指向本仓库的本地 `replace`。工具不会修改目标 `go.mod`。
-
-### `fuzz` flags
-
-| 参数 | 实际作用域和行为 |
-|---|---|
-| `--task` | 必填路由：`inst` / `bins` / `full` / `lite`。 |
-| `--path` | `inst/bins` 时是源码树；`full` 时是测试二进制目录；`lite` 时是单个测试二进制。 |
-| `--output` / `-o` | 仅 `bins` 使用，默认 `testbins`。 |
-| `--func` | 仅 `lite` 使用，指定 `TestXxx_1`。`full` 忽略。 |
-| `--timeout` | 仅 `lite` 解析为 Executor 子进程秒数；缺省值会以 0 覆盖 Config，导致 context 立即过期。`full` 忽略并固定为 30 秒。 |
-| `--recovertimeout` | 仅 `lite` 解析；`full` 固定为 200 秒。值只被写入无人读取的 `RECOVER_TIMEOUT` 环境变量。 |
-| `--max` | `full` 中控制并行 Monitor 数，默认 24；每个 Monitor 内仍固定 4 worker。`lite --func` 中控制重复启动的 Monitor 数，必须大于 0。 |
-| `--llevel` | `debug` / `info` / 其他值（normal 行为），供 `full/lite` 使用。 |
-| `--feature` | 仅 `full`。`mu` 令 `UseMutate=false`，只停止应用反馈；`fb` 设置了未被读取的 `UseFeedBack=false`，当前无实际效果。 |
-| `--check` | 传给 `TestPass.Pos`，但该字段未被读取，当前无实际效果。 |
-
-`full` 对 `--path` 下所有 Walk 结果调用 `ListTests`，包括根目录、子目录和杂项文件；路径最好是只含本机测试二进制的平坦目录。`ListTests` 通过 `-test.list _1` 只收集名称以 `Test` 开头、以 `_1` 结尾的测试。
-
-`lite` 在未提供数值参数时会用 0 覆盖 `DefaultConfig`。尤其是带 `--func` 却没有正数 `--max` 时不会启动任务且会无限空转，不要依赖 Config 中看似存在的默认值。
-
-### 独立 `inst` flags
-
-`cmd/inst` 支持 `--file`、`--out`、`--dir`、`--onlygoleak`、`--checkpos`：
-
-- `--dir` 优先于 `--file`，缺省原地覆盖。
-- 目录模式没有禁止 `--out`，多个源文件会写向同一个目标，不能这样组合使用。
-- `--onlygoleak` 未使用；`--checkpos` 虽传入 `TestPass.Pos`，也未使用。
-
-## AST 插桩
-
-### Pass 框架
-
-`InstContext` 为每个源文件保存原始内容、独立 `token.FileSet`、AST、单文件 `types.Info`、metadata 和 ID 计数器。类型检查错误只记录日志，不会阻止插桩。
-
-Registry 按注册顺序创建新的 Pass 实例；没有依赖解析。每个 Pass 都执行：
-
-```text
-Before -> astutil.Apply(pre, post) -> After
-```
-
-当前顺序固定为：
-
-```text
-gort -> channel -> select -> waitgroup -> test
-```
-
-`FunctionPass` 未注册；`passes/global.go` 的 `id_map` 目前只有写入，没有 `Find` 调用，属于遗留结构。
-
-### 各 Pass 的真实覆盖范围
-
-| Pass | 注入行为 | 当前边界/语义风险 |
-|---|---|---|
-| `GoroutinePass` | 把 `go f(args)` 包成匿名 goroutine，子 goroutine 调用 `Enter(gid,parent)` 并 defer `Exit(gid)`。 | 只有 `CurrentGid()` 实参在父 goroutine 求值；原函数值和参数被移入子 goroutine 求值，可能改变原 Go 语义。 |
-| `ChRecPass` | 普通 send 前后插 `InstChBF/AF`；普通或 defer `close` 前后插 hook。 | 不处理 receive/make；`close` 参数必须是简单标识符；AF 会再次求值 channel 表达式。select send 的 BF 插入失败后由 SelectPass 处理。 |
-| `SelectPass` | 只在 select 的 send case body 开头插 `InstChSelectAF`。 | 不处理 receive；只有 AF，所以该操作只能作为 OP 调度的 pre，不能作为 next。 |
-| `WgPass` | 对表达式语句/defer 形式的 `Add/Done` 插 `InstWgBF/AF`。 | 不处理 `Wait`；未知 receiver 类型默认接受，可能误插自定义 `Add/Done`；`&receiver` 可能重求值或记录错误地址。 |
-| `TestPass` | 浅复制原测试函数体，追加 `TestXxx_1` 并注入 main 生命周期、输入解析和结果打印 hook。 | 只识别参数名恰为 `t`、语法恰为 `*testing.T` 且名称不以 `_1` 结尾的函数；不是调用原测试。 |
-
-defer close/WaitGroup 会被改成 defer 闭包，receiver/参数由"注册 defer 时求值"变成"执行 defer 时求值"，这同样可能改变被测程序语义。
-
-### 测试包装函数
-
-生成的 `TestXxx_1` 逻辑顺序为：
-
-```go
-goroutine.EnterMain()
-defer goroutine.ExitMain()
-goroutine.ParseInput()
-sched.ParseInput()
-defer goroutine.PrintGoroutinePairs()
-// 浅复制的原测试体
-```
-
-defer 按 LIFO 执行，所以 `PrintGoroutinePairs` 在 `ExitMain` 之前运行。
-
-### 静态 ID
-
-goroutine 创建点 ID 和操作 ID 共用同一个"每文件"计数器：
-
-```go
-context.opid = uint64(hash.Hash32(sourcePath)) << 32
-id := atomic.AddUint64(&context.opid, 1) // 第一个 ID 是文件前缀 + 1
-```
-
-这些 ID 不是动态 goroutine 实例 ID，也不是真正全局唯一：
-
-- ID 依赖传给插桩器的原始路径字符串；相对/绝对路径、路径分隔符和 Pass/源码变化都会改变它。
-- `Hash32` 使用 MD5 前 4 字节的小端 uint32 作为文件前缀；它修复了原先只使用首字节的问题，但 32 bit hash 仍不保证绝对无碰撞。
-- 低 32 位计数器只在单个 `InstContext` 内递增，所有启用 Pass 共用。
-- 插桩没有把创建位置传给 runtime；`CallLoc` 当前通常输出为 `:0`，不能依靠 ID 反查源码位置。
-- 哈希修复只影响之后重新插桩生成的 ID；仓库中已经插桩的 fixtures 不会自动改号。
-
-### 写回与幂等性
-
-- `fuzz --task inst` 原地覆盖所有 `.go` 文件，不排除 vendor、generated、origin 或已插桩文件。
-- 再次插桩会重复包装 go、重复插 hook，并从原 `TestXxx` 再生成同名 `TestXxx_1`；它不是幂等操作。
-- 写回后只用 `go fmt` 检查语法，不能发现类型错误或重复声明。
-- 独立 `inst` 多处忽略 `HandleSrcFile` 错误，`fuzz inst` 的成功统计可能误报。
-- `DumpAstFile` 打开已有文件时没有 `O_TRUNC`，若新内容更短可能残留旧尾部。
-- `fuzz inst` 在消费结果前先投递全部任务，结果 channel 容量 100；文件数达到约 117 时可能因 16 个 worker 同时阻塞而死锁。
-
-## Goroutine 运行时与推断
-
-### 生命周期
-
-包初始化时创建全局 Config/Tracker，并且只读取一次 `RECORD_STACK`。`CurrentGid` 通过 `runtime.Stack` 解析的是 Go runtime goroutine ID，不是 OS 线程 ID，再由 `gidMap` 映射到静态创建点 ID。
-
-`Enter` 的顺序是：
-
-1. 先执行 `pointControl(gid)`。
-2. 若未跳过记录，再写 `runtime goroutine ID -> static gid` 映射。
-3. 记录 start 和 parent。
-
-因此 barrier 等待时间不计入生命周期重叠窗口。`Exit` 删除映射，并结束该静态 gid 最近一个尚未结束的动态实例。
-
-### 预执行并发对
-
-`PrintGoroutinePairs` 固定 sleep 500ms 等待子 goroutine。直接重叠检测只使用已结束实例：它先把同一静态 gid 的所有完成实例压缩成 `[min(start), max(end)]`，再对不同 gid 做 O(n²) 区间比较。这不是逐实例的精确重叠，实例间空档也会被算入，可能产生假阳性；500ms 后仍运行的实例不会进入直接重叠检测。不过结构推断读取的是 `childMap`，运行中实例已经登记的父子关系仍可能参与 sibling/adjacent 推断。
-
-推断规则如下：
-
-| 来源 | 函数 | 置信度 | 含义 |
-|---|---|---|---:|
-| 直接观测 | `DetectGoroutineOverlaps` | 1.0 | 聚合生命周期区间重叠，输出 `[COVERED]`。 |
-| 纯结构兄弟 | `InferAllSiblingPairs` | 0.5 | 同一 parent 的 children 两两组合。 |
-| 邻接父子 | `InferAdjacentPairs` | parent 方向 0.5，child 方向 0.3 | 从 observed 对向父/子一跳扩展。 |
-| 邻接兄弟 | `InferSiblingAdjacentPairs` | 0.5 | 从 observed 对向双方兄弟扩展。 |
-
-最终按无序 `(gid1,gid2)` 合并，保留更高置信度并过滤 gid 0。输出 map 未排序，顺序不稳定。
-
-已知推断限制：
-
-- `childMap` 按动态实例追加静态 child gid，不去重。同一 go 点执行多次时可能推断出 `(gid,gid)` 自配对。
-- parent 取某静态 gid 第一个实例的 `ParentGid`；同一创建点在不同父上下文执行时可能不准确。
-- `CallLoc` 没有被当前 `Enter` 路径填充，格式虽含 `file:line`，实际通常为空路径和 0 行。
-
-### 双栏调度
-
-`Input` 格式为 `(gid1,gid2)(gid3,gid4)...`。每对创建一个双方共享的 `barrierGate`，任一参与 gid 到达 `Enter` 时原子增加 arrived：
-
-- 第二次总到达仅在 gate 尚未过期时关闭 release，并向 stdout 打印 `{COVERED}`；若第一次已超时，后续到达不会关闭 release 或补发 covered。
-- 第一次到达最多等待 10ms，超时向 stdout 打印 `{TIMEOUT}`。
-
-计数只看总到达次数，不验证是两个不同 ID。相同静态 go 点的两个动态实例可能替代配对另一方；gate 也是一次性状态。一次 Input 含多对时，同一 gid 会按 slice 顺序经过它参与的所有 gate。
-
-## 操作级运行时
-
-预执行时，AF hook 使用内建 `print` 向 stderr 输出：
-
-```text
-[FB]chan: obj=<addr>; opId=<id>; gid=<gid>; op=send|close;
-[FB]chan: obj=<addr>; opId=<id>; gid=<gid>; op=send; select=1;
-[FB]wg: obj=<addr>; opId=<id>; gid=<gid>; op=add|done;
-```
-
-对象地址来自运行时指针，只能在同一次进程执行的快照内比较。`CorpusOp` 在 phase 保持 0 时只接受第一批非空 OP 日志，后续 phase 0 结果会被跳过。
-
-`MatchOpPair` 只生成同种类、同对象地址的三类有向危险组合：
-
-- `close -> send`
-- 不同 OpId 的 `close -> close`
-- `done -> add`
-
-OP 调度使用 `InputOp=(preId,nextId)...`：
-
-- pre 的 AF 完成后把 `preId` 写入全局 `event`。
-- next 的 BF 忙等 `LoadAndDelete(preId)`。
-- 成功消费后打印 `{COVERED_OP}`；4 秒内未消费打印 `{TIMEOUT_OP}`。
-
-事件是一次性消费。同一个 pre 被多个 next 依赖时，通常只有一个 next 能成功。`{COVERED_OP}` 只表示 next 的 BF 看到了 pre 已完成，不表示 next 操作已经完成，更不表示已经触发 bug。
-
-## 两阶段 Corpus 与反馈
-
-`Config.GortPhase` 是两个 Corpus 共享的原子阶段标志：
-
-### Phase 0：预执行
-
-- `CorpusGort.Get` 和 `CorpusOp.Get` 返回 nil，Executor 传递空 `Input/InputOp`。
-- Executor 自身不追加 `RECORD_STACK` 和 `SCHED_DEBUG`，所以通常会收集生命周期、推断对和 `[FB]` 日志；但子进程继承父进程环境，启动工具前必须确保这两个变量未设为 1。
-- 每次预执行还输出逐行 `[GORT_EDGE] {"parent":...,"child":...,"count":...}`。父进程按无序执行批次合并拓扑并集，允许一个 child 对应多个 parent；本轮未出现的旧边不会被删除。
-- stderr 的 observed goroutine 对进入 `CorpusGort.CoveredConPairs`，inferred 对进入 `SusConPairs`。
-- pair 与唯一 topology edge 总数连续 3 个已处理结果不变，或达到 `MaxPreExecRound`（默认 30），`CorpusGort` 将 phase 切到 1。边的动态次数变化不会单独延长预执行。
-- 紧接着，`CorpusOp` 仅从当前 covered goroutine 对和第一批 OP 快照生成初始操作对。
-
-这里没有 worker barrier。4 个并发预执行 worker 中已在途的结果可能在 phase 切换后返回，阶段边界不是严格批次边界。此时 `CorpusOp.Add` 的 phase 0 跳过条件已经失效，可能把其他进程的对象地址混入索引；初始 OP 全量生成又不会为已有 covered goroutine 对重新执行。
-
-### Phase 1：调度搜索
-
-- `CorpusGort.Get` 和 `CorpusOp.Get` 返回当前 `TryPairs`，序列化到 `Input/InputOp`。
-- 只要 gort input 对象非 nil，Executor 就设置 `RECORD_STACK=1` 和 `SCHED_DEBUG=1`。
-- 变量名具有误导性：`RECORD_STACK=1` 实际令 `skipRecord=true`，关闭生命周期、gidMap 和并发对打印；`Enter` 中位于判断前的 `pointControl` 仍会执行。
-- `SCHED_DEBUG=1` 关闭 `[FB]` 详情日志；OP BF/AF 调度仍工作。
-- stdout 信号只有在 `UseMutate=true` 时才应用到 corpus。
-- 新覆盖的 goroutine suspect 会标记为 `fuzz_verified` 并晋升到 covered。
-- `CorpusGort` 使用预执行缓存的多 parent 拓扑，从新 covered 对向 parent、child、sibling 各扩展一跳，产生 `fuzz_inferred_adjacent` / `fuzz_inferred_sibling` 新种子；整个过程只发生在 fuzz 父进程内。
-- 新 covered 同时触发 `CorpusOp.OnGortCovered` 增量派生操作对。
-- phase 切换后晚到的预执行边仍会合并，并基于全部 covered 对补做推断和刷新 `TryPairs`。
-
-当前没有实现带采集的 discovery replay。fuzz 子进程仍不输出拓扑，因此增量推断只能使用预执行阶段已经观察到的拓扑边，不能发现初始预执行从未执行到的新 goroutine 路径。
-
-### 选种与淘汰
-
-- Goroutine 分数：`confidence * 10 - timeoutCount * 2`。
-- OP 分数：固定基准 `5 - timeoutCount * 2`（即 `0.5 * 10 - timeoutCount * 2`），不继承 goroutine 置信度。
-- 两类 corpus 初始各选 1 个 suspect；无 covered 但有 timeout 时 `selectNum` 翻倍，上限 64。
-- 单对累计 5 次 timeout 后移入 `InfeasiblePairs`。
-- covered 信号只晋升当前 `TryPairs` 中匹配的项。
-- 没有任何信号的高分种子不会降权，可能长期占据 `TryPairs`。
-- Goroutine 信号按无序 gid 对匹配；OP 信号按 `pre -> next` 有向匹配。
-
-两个 Corpus 都用 `sync.RWMutex`，但它们并不"完全对称"：来源、key 方向、评分、生成时机和返回值都不同。
-
-## 输出协议
-
-必须区分 stderr 的"预执行观测/推断"和 stdout 的"强制调度反馈"：
-
-| 流 | 格式 | 含义 |
-|---|---|---|
-| stderr | `[COVERED] gid1,gid2\|loc1,loc2\|1.00\|observed;` | 生命周期聚合区间被直接观测为重叠。 |
-| stderr | `[SUSPECT] gid1,gid2\|loc1,loc2\|confidence\|source;` | 结构推断的 goroutine 对。 |
-| stderr | `[GORT_EDGE] {"parent":p,"child":c,"count":n}` | 单次预执行内聚合、排序后的静态父子边和动态出现次数。 |
-| stderr | `[FB]chan: ...` / `[FB]wg: ...` | 预执行的操作快照。 |
-| stdout | `{COVERED} {gid1, gid2}` | 未过期双栏累计到第二次到达。 |
-| stdout | `{TIMEOUT} {gid1, gid2}` | 双栏首个到达者等待超时。 |
-| stdout | `{COVERED_OP} {pre, next}` | next BF 消费了 pre event。 |
-| stdout | `{TIMEOUT_OP} {pre, next}` | next BF 未等到 pre event。 |
-
-这些 `COVERED` 信号都不是 bug 结论。当前判定层级必须严格区分：
-
-- `Observed`：phase 0 插桩执行中，两个静态 gid 的聚合生命周期区间重叠。
-- `Verified`：phase 1 下发的 goroutine/OP 输入对，在同次轻量执行中出现匹配的 `{COVERED}` / `{COVERED_OP}`。
-- `BugTriggered`：同次执行被结构化 oracle 解析为 data race、普通 panic 或 fatal error。
-- `Associated`：validate 执行同时满足输入对匹配成功和 `BugTriggered`；它只是同次执行相关性，不是归因或因果结论。
-- `BugConfirmed`：针对候选调度做独立 replay 并稳定复现；当前尚未实现。
-
-测试框架超时 panic 和 runtime deadlock 暂记为 `HangCandidate`。普通进程/context 超时以及 `{TIMEOUT}` / `{TIMEOUT_OP}` 都不属于 `BugTriggered`。
-
-## 超时与并发层次
-
-当前存在多套互不联动的超时：
-
-| 层次 | 当前值/来源 | 实际作用 |
-|---|---|---|
-| Executor 子进程 | `Config.TimeOut`；full 固定 30s，lite 取 CLI | `context.WithTimeout` 终止测试进程；0 会立即过期。 |
-| Monitor watchdog | 固定 1 分钟 | worker 放弃等待本轮结果，但不会直接取消 Executor；Executor 仍由自身 context 管理。 |
-| Goroutine barrier | 固定 10ms | `pointControl` 等待配对方。 |
-| OP BF | 固定 `20s / 5 = 4s` | next 等待 pre event。 |
-| Recover timeout | full 200s / lite CLI | 只写 `RECOVER_TIMEOUT` 环境变量，仓库内没有读取者。 |
-
-Executor 也写入 `TIMEOUT` 环境变量，但 goroutine/sched runtime 没有读取它。不要把 CLI timeout 误认为 barrier 或 OP 等待时间。
-
-并发层次也要区分：
-
-- `full --max`：并行 Monitor（测试函数）数量，默认 24。
-- `Monitor.Start`：无条件把 `cfg.MaxWorker` 改为 4，每个测试固定 4 个 Executor worker。
-- 传入 Monitor 的 `ticket` channel 当前未使用。
-
-## Monitor 终止与结果
-
-每个 worker 执行：
-
-```text
-test binary -test.v -test.run <TestXxx_1>
-```
-
-Monitor 处理每份结果时：
-
-1. 先解析 stdout 调度信号，再从 stdout/stderr 解析结构化 oracle，并用本次输入、成功 covered、退出错误和耗时构造 execution evidence。
-2. 解析 stderr 中的 pair、OP 和 `GORT_EDGE`，更新两个 corpus 与 goroutine 拓扑并集。
-3. 检查是否切换阶段。
-4. 在 `UseMutate` 开启时应用已经解析的调度信号。
-5. 新增 goroutine covered 或首次出现新的 oracle finding 时重置 `MaxQuit`；否则将其减 1。重复 finding、OP covered 和仅新增拓扑边不会重置。
-
-`pkg/bug` 的 oracle 规则如下：
-
-- 每个 `WARNING: DATA RACE` block 独立解析；取冲突访问各自第一个业务 `.go:<line>` frame，忽略地址、goroutine 编号、栈偏移和访问先后顺序后生成 SHA-256 签名。栈恢复失败时退回规范化 block 签名。
-- panic/fatal 只接受 trim 后以 `panic:` / `fatal error:` 开头的行；签名由规范化消息和第一个非 runtime/testing/插桩 frame 组成。recovered/repanicked 重复头会去重。
-- `panic: test timed out after ...` 和 `fatal error: all goroutines are asleep - deadlock!` 归为 `HangCandidate`，会记录但不触发失败。
-- 每个 Monitor 持有独立的并发安全 `bug.Set`。相同 kind/signature 累加 `Count` 和 `AssociatedCount`，并保留 First/Last evidence；当前没有跨 Monitor 共享汇总。
-
-`MaxQuit` 现在表示连续没有新增 goroutine covered 或新 oracle finding 的预算。新的 `HangCandidate` 也算 finding 进展，但不算 `BugTriggered`。`MaxExecution` 先从 `int` 转为 `int32`；默认的 10,000,000,000 会截断为 1,410,065,408，更大的配置还可能变成负数并立即退出。Monitor 使用 `etimes >= max`，未溢出时最多处理 `max` 份结果。
-
-`SingleCrash=true` 会在第一次 data race、普通 panic 或 fatal 后结束 Monitor；HangCandidate 不触发该开关。`UseFeedBack`、`UseCoveredSched`、`UseStates`、`UseAnalysis`、`UseGuide`、`InitTurnCnt` 当前未被 Monitor 使用。`UseMutate=false` 只停止反馈应用，并不会停止取种子或运行时调度，因此会重复执行同一批种子。
-
-所有退出路径都遵守固定返回契约：触发型 oracle 存在时返回 `(true, []string{"FAIL", summary})`，否则返回 `(false, []string{"PASS", ""})`，避免 `full/lite` 读取 `detail[1]` 越界。`FAIL` 证明 oracle 在某次执行中被触发；`Associated` 仍只表示同执行相关。只有未来的 replay 才能把它提升为 `BugConfirmed` 或做目标 pair 归因。
-
-## Fixtures、脚本与产物
-
-- `testdata/gobench/nonblocking_origin` 是未插桩对照；`nonblocking` 已保留原测试并新增 `TestXxx_1`。
-- `testdata/myTest/corpus` 和 `corpus1` 是当前 goroutine/op 小样例；其他目录可能是旧 callstack 实验。
-- `script/run_all.ps1` 不执行插桩。它对 7 个已插桩 GoBench 目录依次运行 `bins`，再运行 `full` 并把 stdout 重定向到 `zgortResult/<name>.txt`。
-- 该脚本不生成 `raceResult`；其中内容是历史实验汇总。
-- 结果目录、测试二进制和工具二进制均已纳入 Git，且 `.gitignore` 只忽略 IDE/编辑器文件。运行构建或实验前先检查 `git status`，不要意外提交大体积产物。
-
-## 开发约定
+- 以代码实际行为为准；注释和字段名可能落后于实现
+- 修改保持范围小并复用现有结构
+- 插桩会原地覆盖源码且不幂等，不要对 `testdata/gobench/nonblocking_origin` 或未备份源码执行插桩
+- 不要把 `bin/`、`testbins/`、`raceResult/`、`zgortResult/` 当作可靠构建产物
 
 ### 修改插桩
 
-新增 Pass 时：
-
-1. 在 `pkg/inst/passes/` 实现 `InstPass` 的 `Before/GetPreApply/GetPostApply/After`。
-2. 在 `cmd/inst/inst.go` 的两个 registry 分支中都注册，明确顺序依赖。
-3. 检查表达式求值次数、defer 求值时机、select AST 位置和 import alias 冲突。
-4. 为 Pass 增加最小输入到期望 AST/可编译输出测试；当前这层测试覆盖很弱。
+1. 在 `pkg/inst/passes/` 实现 `InstPass` 接口
+2. 在 `cmd/inst/inst.go` 两个 registry 分支注册，明确顺序依赖
+3. 检查表达式求值次数、defer 求值时机和 import alias 冲突
 
 ### 修改协议或 Corpus
 
-- stderr/stdout 文本是 runtime 与 `feedback` parser 的内部协议，修改生产端时必须同步修改解析器和 parser tests。
-- `GORT_EDGE` 是逐行 JSON 协议；解析器会保留合法边并报告首个畸形协议行，Monitor 仍合并已成功解析的部分。
-- `GortPhase` 跨 worker/Corpus 共享，继续使用 atomic；map/slice 访问保持在对应 `sync.RWMutex` 下。
-- OP 的对象地址不能跨测试进程混合；改变预执行收集策略时必须先解决执行快照边界。
-- `event.LoadAndDelete` 是一次性依赖消费；改变一对多语义时需要重新设计，而不是只调整 Corpus。
+- stderr/stdout 文本修改时须同步更新 `feedback` parser
+- `GortPhase` 用 atomic；map/slice 访问保持 `sync.RWMutex`
+- OP 对象地址不能跨进程混合
+- `event.LoadAndDelete` 是一次性依赖消费
 
-### 验证顺序
-
-对普通核心代码变更，至少执行：
+### 验证
 
 ```shell
 go test ./cmd ./pkg/...
 ```
 
-涉及插桩或运行时调度时，还应在干净副本上完成 `inst -> bins -> lite/full` 集成验证，并分别检查：
-
-- 插桩结果能通过编译和 `go test -race -c`。
-- stderr 预执行协议可被 `ParseGortPairs` 解析。
-- stdout 四种调度信号可被 `ParseSignals` 解析。
-- race/panic/fatal 能进入结构化 oracle 并令 Monitor 返回 `FAIL`；HangCandidate 被记录但不令结果失败。
+涉及插桩或调度时，在干净副本完成 `inst → bins → lite/full` 集成验证。

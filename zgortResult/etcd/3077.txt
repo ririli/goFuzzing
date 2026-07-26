@@ -1,0 +1,3482 @@
+bin =  testbins/nonblocking/etcd/3077
+bin =  testbins\nonblocking\etcd\3077\D__gopath_src_gopie_testdata_gobench_nonblocking_etcd_3077.exe
+----len bin2tests= 2
+--len tests= 0
+--len tests= 1
+m.max= 10000
+m.etimes= 0
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.3044719 +0800 CST m=+1.630245001 [WORKER] 2026-07-26 21:54:52.294952 +0800 CST m=+1.620725101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=true count=1 associated=false execution=1 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+2026-07-26 21:54:52.3044719 +0800 CST m=+1.630245001 [WORKER] 2026-07-26 21:54:52.3044719 +0800 CST m=+1.630245001	[ORACLE REPORT] kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085
+WARNING: DATA RACE
+Read at 0x00c0000b8998 by goroutine 8:
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:48 +0x3d
+  runtime.deferreturn()
+      D:/Program Files/GO/go1.19.1/src/runtime/panic.go:476 +0x32
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).start.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:67 +0x68
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).start.func2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:68 +0x47
+
+Previous write at 0x00c0000b8998 by goroutine 9:
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:17 +0x68
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:43 +0x6a
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func3()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:44 +0x47
+
+Goroutine 8 (running) created at:
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).start()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:64 +0x1b7
+  toolkit/testdata/gobench/nonblocking/etcd/3077.TestEtcd3077_1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:97 +0xe7
+  testing.tRunner()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1446 +0x216
+  testing.(*T).Run.func1()
+      D:/Program Files/GO/go1.19.1/src/testing/testing.go:1493 +0x47
+
+Goroutine 9 (running) created at:
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:39 +0x130
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).start.func1()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:67 +0x68
+  toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).start.func2()
+      D:/gopath/src/gopie/testdata/gobench/nonblocking/etcd/3077/etcd3077_test.go:68 +0x47
+==================
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.54s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 200
+m.etimes= 1
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.3044719 +0800 CST m=+1.630245001 [WORKER] 2026-07-26 21:54:52.3044719 +0800 CST m=+1.630245001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=2 associated=false execution=2 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.54s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 199
+m.etimes= 2
+2026-07-26 21:54:52.3044719 +0800 CST m=+1.630245001 [WORKER] 2026-07-26 21:54:52.3044719 +0800 CST m=+1.630245001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=3 associated=false execution=3 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.54s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 198
+m.etimes= 3
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.3044719 +0800 CST m=+1.630245001 [WORKER] 2026-07-26 21:54:52.3044719 +0800 CST m=+1.630245001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=4 associated=false execution=4 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+[PRESTAGE] Pre-execution finished, total gort pairs: cover=1, suspect=0, topology_edges=2
+[OP_PRESTAGE] Generated 0 op pairs from 1 covered goroutine pairs
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.54s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 197
+m.etimes= 4
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.8584005 +0800 CST m=+2.184173601 [WORKER] 2026-07-26 21:54:52.8584005 +0800 CST m=+2.184173601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=5 associated=false execution=5 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.52s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 196
+m.etimes= 5
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.8584005 +0800 CST m=+2.184173601 [WORKER] 2026-07-26 21:54:52.8584005 +0800 CST m=+2.184173601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=6 associated=false execution=6 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.52s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 195
+m.etimes= 6
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.8584005 +0800 CST m=+2.184173601 [WORKER] 2026-07-26 21:54:52.8584005 +0800 CST m=+2.184173601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=7 associated=false execution=7 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.53s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 194
+m.etimes= 7
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.859409 +0800 CST m=+2.185182101 [WORKER] 2026-07-26 21:54:52.859409 +0800 CST m=+2.185182101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=8 associated=false execution=8 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.52s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 193
+m.etimes= 8
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.9033626 +0800 CST m=+2.229135701 [WORKER] 2026-07-26 21:54:52.9033626 +0800 CST m=+2.229135701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=9 associated=false execution=9 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 192
+m.etimes= 9
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.9033626 +0800 CST m=+2.229135701 [WORKER] 2026-07-26 21:54:52.9033626 +0800 CST m=+2.229135701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=10 associated=false execution=10 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 191
+m.etimes= 10
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.9033626 +0800 CST m=+2.229135701 [WORKER] 2026-07-26 21:54:52.9033626 +0800 CST m=+2.229135701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=11 associated=false execution=11 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 190
+m.etimes= 11
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.9040087 +0800 CST m=+2.229781801 [WORKER] 2026-07-26 21:54:52.9033626 +0800 CST m=+2.229135701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=12 associated=false execution=12 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 189
+m.etimes= 12
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 188
+m.etimes= 13
+2026-07-26 21:54:52.9494009 +0800 CST m=+2.275174001 [WORKER] 2026-07-26 21:54:52.9494009 +0800 CST m=+2.275174001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=13 associated=false execution=13 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 187
+m.etimes= 14
+2026-07-26 21:54:52.9494009 +0800 CST m=+2.275174001 [WORKER] 2026-07-26 21:54:52.9494009 +0800 CST m=+2.275174001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=14 associated=false execution=14 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 186
+m.etimes= 15
+2026-07-26 21:54:52.9494009 +0800 CST m=+2.275174001 [WORKER] 2026-07-26 21:54:52.9494009 +0800 CST m=+2.275174001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=15 associated=false execution=15 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.9494009 +0800 CST m=+2.275174001 [WORKER] 2026-07-26 21:54:52.9494009 +0800 CST m=+2.275174001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=16 associated=false execution=16 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 185
+m.etimes= 16
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.9953779 +0800 CST m=+2.321151001 [WORKER] 2026-07-26 21:54:52.9953779 +0800 CST m=+2.321151001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=17 associated=false execution=17 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 184
+m.etimes= 17
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.9953779 +0800 CST m=+2.321151001 [WORKER] 2026-07-26 21:54:52.9953779 +0800 CST m=+2.321151001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=18 associated=false execution=18 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 183
+m.etimes= 18
+2026-07-26 21:54:52.9953779 +0800 CST m=+2.321151001 [WORKER] 2026-07-26 21:54:52.9953779 +0800 CST m=+2.321151001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=19 associated=false execution=19 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 182
+m.etimes= 19
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:52.9953779 +0800 CST m=+2.321151001 [WORKER] 2026-07-26 21:54:52.9953779 +0800 CST m=+2.321151001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=20 associated=false execution=20 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 181
+m.etimes= 20
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.0415694 +0800 CST m=+2.367342501 [WORKER] 2026-07-26 21:54:53.0415694 +0800 CST m=+2.367342501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=21 associated=false execution=21 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 180
+m.etimes= 21
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.0415694 +0800 CST m=+2.367342501 [WORKER] 2026-07-26 21:54:53.0415694 +0800 CST m=+2.367342501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=22 associated=false execution=22 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 179
+m.etimes= 22
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 178
+m.etimes= 23
+2026-07-26 21:54:53.0415694 +0800 CST m=+2.367342501 [WORKER] 2026-07-26 21:54:53.0415694 +0800 CST m=+2.367342501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=23 associated=false execution=23 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.0421608 +0800 CST m=+2.367933901 [WORKER] 2026-07-26 21:54:53.0421608 +0800 CST m=+2.367933901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=24 associated=false execution=24 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 177
+m.etimes= 24
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.0872775 +0800 CST m=+2.413050601 [WORKER] 2026-07-26 21:54:53.0872775 +0800 CST m=+2.413050601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=25 associated=false execution=25 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 176
+m.etimes= 25
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.0872775 +0800 CST m=+2.413050601 [WORKER] 2026-07-26 21:54:53.0872775 +0800 CST m=+2.413050601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=26 associated=false execution=26 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 175
+m.etimes= 26
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.0872775 +0800 CST m=+2.413050601 [WORKER] 2026-07-26 21:54:53.0872775 +0800 CST m=+2.413050601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=27 associated=false execution=27 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 174
+m.etimes= 27
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.0878967 +0800 CST m=+2.413669801 [WORKER] 2026-07-26 21:54:53.0872775 +0800 CST m=+2.413050601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=28 associated=false execution=28 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 173
+m.etimes= 28
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.1328997 +0800 CST m=+2.458672801 [WORKER] 2026-07-26 21:54:53.1328997 +0800 CST m=+2.458672801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=29 associated=false execution=29 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 172
+m.etimes= 29
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.1328997 +0800 CST m=+2.458672801 [WORKER] 2026-07-26 21:54:53.1328997 +0800 CST m=+2.458672801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=30 associated=false execution=30 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 171
+m.etimes= 30
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.1328997 +0800 CST m=+2.458672801 [WORKER] 2026-07-26 21:54:53.1328997 +0800 CST m=+2.458672801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=31 associated=false execution=31 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 170
+m.etimes= 31
+=====strPair====
+2026-07-26 21:54:53.1328997 +0800 CST m=+2.458672801 [WORKER] 2026-07-26 21:54:53.1328997 +0800 CST m=+2.458672801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=32 associated=false execution=32 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 169
+m.etimes= 32
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.1788398 +0800 CST m=+2.504612901 [WORKER] 2026-07-26 21:54:53.1788398 +0800 CST m=+2.504612901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=33 associated=false execution=33 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 168
+m.etimes= 33
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.1788398 +0800 CST m=+2.504612901 [WORKER] 2026-07-26 21:54:53.1788398 +0800 CST m=+2.504612901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=34 associated=false execution=34 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 167
+m.etimes= 34
+2026-07-26 21:54:53.179479 +0800 CST m=+2.505252101 [WORKER] 2026-07-26 21:54:53.1788398 +0800 CST m=+2.504612901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=35 associated=false execution=35 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 166
+m.etimes= 35
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.179479 +0800 CST m=+2.505252101 [WORKER] 2026-07-26 21:54:53.179479 +0800 CST m=+2.505252101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=36 associated=false execution=36 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 165
+m.etimes= 36
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.2253448 +0800 CST m=+2.551117901 [WORKER] 2026-07-26 21:54:53.2253448 +0800 CST m=+2.551117901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=37 associated=false execution=37 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 164
+m.etimes= 37
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.2253448 +0800 CST m=+2.551117901 [WORKER] 2026-07-26 21:54:53.2253448 +0800 CST m=+2.551117901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=38 associated=false execution=38 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 163
+m.etimes= 38
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.2253448 +0800 CST m=+2.551117901 [WORKER] 2026-07-26 21:54:53.2253448 +0800 CST m=+2.551117901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=39 associated=false execution=39 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 162
+m.etimes= 39
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.2253448 +0800 CST m=+2.551117901 [WORKER] 2026-07-26 21:54:53.2253448 +0800 CST m=+2.551117901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=40 associated=false execution=40 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 161
+m.etimes= 40
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.2720161 +0800 CST m=+2.597789201 [WORKER] 2026-07-26 21:54:53.2720161 +0800 CST m=+2.597789201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=41 associated=false execution=41 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 160
+m.etimes= 41
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.2720161 +0800 CST m=+2.597789201 [WORKER] 2026-07-26 21:54:53.2720161 +0800 CST m=+2.597789201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=42 associated=false execution=42 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 159
+m.etimes= 42
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.2720161 +0800 CST m=+2.597789201 [WORKER] 2026-07-26 21:54:53.2720161 +0800 CST m=+2.597789201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=43 associated=false execution=43 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 158
+m.etimes= 43
+2026-07-26 21:54:53.2720161 +0800 CST m=+2.597789201 [WORKER] 2026-07-26 21:54:53.2720161 +0800 CST m=+2.597789201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=44 associated=false execution=44 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 157
+m.etimes= 44
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.3179267 +0800 CST m=+2.643699801 [WORKER] 2026-07-26 21:54:53.3179267 +0800 CST m=+2.643699801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=45 associated=false execution=45 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 156
+m.etimes= 45
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.3179267 +0800 CST m=+2.643699801 [WORKER] 2026-07-26 21:54:53.3179267 +0800 CST m=+2.643699801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=46 associated=false execution=46 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 155
+m.etimes= 46
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.3179267 +0800 CST m=+2.643699801 [WORKER] 2026-07-26 21:54:53.3179267 +0800 CST m=+2.643699801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=47 associated=false execution=47 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 154
+m.etimes= 47
+2026-07-26 21:54:53.3179267 +0800 CST m=+2.643699801 [WORKER] 2026-07-26 21:54:53.3179267 +0800 CST m=+2.643699801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=48 associated=false execution=48 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 153
+m.etimes= 48
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.3639745 +0800 CST m=+2.689747601 [WORKER] 2026-07-26 21:54:53.3639745 +0800 CST m=+2.689747601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=49 associated=false execution=49 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 152
+m.etimes= 49
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.3646417 +0800 CST m=+2.690414801 [WORKER] 2026-07-26 21:54:53.3646417 +0800 CST m=+2.690414801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=50 associated=false execution=50 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 151
+m.etimes= 50
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.3646417 +0800 CST m=+2.690414801 [WORKER] 2026-07-26 21:54:53.3646417 +0800 CST m=+2.690414801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=51 associated=false execution=51 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 150
+m.etimes= 51
+2026-07-26 21:54:53.3646417 +0800 CST m=+2.690414801 [WORKER] 2026-07-26 21:54:53.3646417 +0800 CST m=+2.690414801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=52 associated=false execution=52 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 149
+m.etimes= 52
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.4100678 +0800 CST m=+2.735840901 [WORKER] 2026-07-26 21:54:53.4100678 +0800 CST m=+2.735840901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=53 associated=false execution=53 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 148
+m.etimes= 53
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.4100678 +0800 CST m=+2.735840901 [WORKER] 2026-07-26 21:54:53.4100678 +0800 CST m=+2.735840901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=54 associated=false execution=54 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 147
+m.etimes= 54
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.4100678 +0800 CST m=+2.735840901 [WORKER] 2026-07-26 21:54:53.4100678 +0800 CST m=+2.735840901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=55 associated=false execution=55 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 146
+m.etimes= 55
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.4107299 +0800 CST m=+2.736503001 [WORKER] 2026-07-26 21:54:53.4100678 +0800 CST m=+2.735840901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=56 associated=false execution=56 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 145
+m.etimes= 56
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.4557122 +0800 CST m=+2.781485301 [WORKER] 2026-07-26 21:54:53.4557122 +0800 CST m=+2.781485301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=57 associated=false execution=57 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 144
+m.etimes= 57
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.4557122 +0800 CST m=+2.781485301 [WORKER] 2026-07-26 21:54:53.4557122 +0800 CST m=+2.781485301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=58 associated=false execution=58 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 143
+m.etimes= 58
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.4557122 +0800 CST m=+2.781485301 [WORKER] 2026-07-26 21:54:53.4557122 +0800 CST m=+2.781485301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=59 associated=false execution=59 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 142
+m.etimes= 59
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 141
+m.etimes= 60
+2026-07-26 21:54:53.4557122 +0800 CST m=+2.781485301 [WORKER] 2026-07-26 21:54:53.4557122 +0800 CST m=+2.781485301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=60 associated=false execution=60 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 140
+m.etimes= 61
+2026-07-26 21:54:53.5016705 +0800 CST m=+2.827443601 [WORKER] 2026-07-26 21:54:53.5016705 +0800 CST m=+2.827443601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=61 associated=false execution=61 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+====stdout_start=====
+2026-07-26 21:54:53.5016705 +0800 CST m=+2.827443601 [WORKER] 2026-07-26 21:54:53.5016705 +0800 CST m=+2.827443601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=62 associated=false execution=62 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 139
+m.etimes= 62
+InputOp=
+2026-07-26 21:54:53.5016705 +0800 CST m=+2.827443601 [WORKER] 2026-07-26 21:54:53.5016705 +0800 CST m=+2.827443601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=63 associated=false execution=63 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 138
+m.etimes= 63
+2026-07-26 21:54:53.5016705 +0800 CST m=+2.827443601 [WORKER] 2026-07-26 21:54:53.5016705 +0800 CST m=+2.827443601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=64 associated=false execution=64 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 137
+m.etimes= 64
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.5480864 +0800 CST m=+2.873859501 [WORKER] 2026-07-26 21:54:53.5480864 +0800 CST m=+2.873859501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=65 associated=false execution=65 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 136
+m.etimes= 65
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.5480864 +0800 CST m=+2.873859501 [WORKER] 2026-07-26 21:54:53.5480864 +0800 CST m=+2.873859501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=66 associated=false execution=66 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 135
+m.etimes= 66
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.5480864 +0800 CST m=+2.873859501 [WORKER] 2026-07-26 21:54:53.5480864 +0800 CST m=+2.873859501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=67 associated=false execution=67 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 134
+m.etimes= 67
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.5480864 +0800 CST m=+2.873859501 [WORKER] 2026-07-26 21:54:53.5480864 +0800 CST m=+2.873859501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=68 associated=false execution=68 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 133
+m.etimes= 68
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.5940318 +0800 CST m=+2.919804901 [WORKER] 2026-07-26 21:54:53.5940318 +0800 CST m=+2.919804901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=69 associated=false execution=69 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 132
+m.etimes= 69
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.5940318 +0800 CST m=+2.919804901 [WORKER] 2026-07-26 21:54:53.5940318 +0800 CST m=+2.919804901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=70 associated=false execution=70 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 131
+m.etimes= 70
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.5940318 +0800 CST m=+2.919804901 [WORKER] 2026-07-26 21:54:53.5940318 +0800 CST m=+2.919804901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=71 associated=false execution=71 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 130
+m.etimes= 71
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.5946783 +0800 CST m=+2.920451401 [WORKER] 2026-07-26 21:54:53.5946783 +0800 CST m=+2.920451401	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=72 associated=false execution=72 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 129
+m.etimes= 72
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 128
+m.etimes= 73
+2026-07-26 21:54:53.6395178 +0800 CST m=+2.965290901 [WORKER] 2026-07-26 21:54:53.6395178 +0800 CST m=+2.965290901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=73 associated=false execution=73 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.6395178 +0800 CST m=+2.965290901 [WORKER] 2026-07-26 21:54:53.6395178 +0800 CST m=+2.965290901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=74 associated=false execution=74 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 127
+m.etimes= 74
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.6395178 +0800 CST m=+2.965290901 [WORKER] 2026-07-26 21:54:53.6395178 +0800 CST m=+2.965290901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=75 associated=false execution=75 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 126
+m.etimes= 75
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.6395178 +0800 CST m=+2.965290901 [WORKER] 2026-07-26 21:54:53.6395178 +0800 CST m=+2.965290901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=76 associated=false execution=76 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 125
+m.etimes= 76
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.6855815 +0800 CST m=+3.011354601 [WORKER] 2026-07-26 21:54:53.6855815 +0800 CST m=+3.011354601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=77 associated=false execution=77 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 124
+m.etimes= 77
+2026-07-26 21:54:53.6855815 +0800 CST m=+3.011354601 [WORKER] 2026-07-26 21:54:53.6855815 +0800 CST m=+3.011354601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=78 associated=false execution=78 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 123
+m.etimes= 78
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.6855815 +0800 CST m=+3.011354601 [WORKER] 2026-07-26 21:54:53.6855815 +0800 CST m=+3.011354601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=79 associated=false execution=79 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 122
+m.etimes= 79
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.6855815 +0800 CST m=+3.011354601 [WORKER] 2026-07-26 21:54:53.6855815 +0800 CST m=+3.011354601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=80 associated=false execution=80 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 121
+m.etimes= 80
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.7318167 +0800 CST m=+3.057589801 [WORKER] 2026-07-26 21:54:53.7318167 +0800 CST m=+3.057589801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=81 associated=false execution=81 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 120
+m.etimes= 81
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.7318167 +0800 CST m=+3.057589801 [WORKER] 2026-07-26 21:54:53.7318167 +0800 CST m=+3.057589801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=82 associated=false execution=82 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 119
+m.etimes= 82
+2026-07-26 21:54:53.7318167 +0800 CST m=+3.057589801 [WORKER] 2026-07-26 21:54:53.7318167 +0800 CST m=+3.057589801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=83 associated=false execution=83 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 118
+m.etimes= 83
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.7318167 +0800 CST m=+3.057589801 [WORKER] 2026-07-26 21:54:53.7318167 +0800 CST m=+3.057589801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=84 associated=false execution=84 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 117
+m.etimes= 84
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.7776405 +0800 CST m=+3.103413601 [WORKER] 2026-07-26 21:54:53.7776405 +0800 CST m=+3.103413601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=85 associated=false execution=85 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 116
+m.etimes= 85
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.7776405 +0800 CST m=+3.103413601 [WORKER] 2026-07-26 21:54:53.7776405 +0800 CST m=+3.103413601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=86 associated=false execution=86 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 115
+m.etimes= 86
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.7776405 +0800 CST m=+3.103413601 [WORKER] 2026-07-26 21:54:53.7776405 +0800 CST m=+3.103413601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=87 associated=false execution=87 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 114
+m.etimes= 87
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+2026-07-26 21:54:53.7782225 +0800 CST m=+3.103995601 [WORKER] 2026-07-26 21:54:53.7776405 +0800 CST m=+3.103413601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=88 associated=false execution=88 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 113
+m.etimes= 88
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.8247365 +0800 CST m=+3.150509601 [WORKER] 2026-07-26 21:54:53.8247365 +0800 CST m=+3.150509601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=89 associated=false execution=89 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 112
+m.etimes= 89
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.8247365 +0800 CST m=+3.150509601 [WORKER] 2026-07-26 21:54:53.8247365 +0800 CST m=+3.150509601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=90 associated=false execution=90 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 111
+m.etimes= 90
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.8247365 +0800 CST m=+3.150509601 [WORKER] 2026-07-26 21:54:53.8247365 +0800 CST m=+3.150509601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=91 associated=false execution=91 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 110
+m.etimes= 91
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.8247365 +0800 CST m=+3.150509601 [WORKER] 2026-07-26 21:54:53.8247365 +0800 CST m=+3.150509601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=92 associated=false execution=92 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 109
+m.etimes= 92
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.8700496 +0800 CST m=+3.195822701 [WORKER] 2026-07-26 21:54:53.8700496 +0800 CST m=+3.195822701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=93 associated=false execution=93 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 108
+m.etimes= 93
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.8853018 +0800 CST m=+3.211074901 [WORKER] 2026-07-26 21:54:53.8853018 +0800 CST m=+3.211074901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=94 associated=false execution=94 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.03s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 107
+m.etimes= 94
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.8853018 +0800 CST m=+3.211074901 [WORKER] 2026-07-26 21:54:53.8853018 +0800 CST m=+3.211074901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=95 associated=false execution=95 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.03s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 106
+m.etimes= 95
+2026-07-26 21:54:53.8853018 +0800 CST m=+3.211074901 [WORKER] 2026-07-26 21:54:53.8853018 +0800 CST m=+3.211074901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=96 associated=false execution=96 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.03s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 105
+m.etimes= 96
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.9161191 +0800 CST m=+3.241892201 [WORKER] 2026-07-26 21:54:53.9161191 +0800 CST m=+3.241892201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=97 associated=false execution=97 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 104
+m.etimes= 97
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.9314062 +0800 CST m=+3.257179301 [WORKER] 2026-07-26 21:54:53.9314062 +0800 CST m=+3.257179301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=98 associated=false execution=98 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 103
+m.etimes= 98
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.9314062 +0800 CST m=+3.257179301 [WORKER] 2026-07-26 21:54:53.9314062 +0800 CST m=+3.257179301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=99 associated=false execution=99 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 102
+m.etimes= 99
+=====strPair====
+2026-07-26 21:54:53.9314062 +0800 CST m=+3.257179301 [WORKER] 2026-07-26 21:54:53.9314062 +0800 CST m=+3.257179301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=100 associated=false execution=100 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 101
+m.etimes= 100
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.9617959 +0800 CST m=+3.287569001 [WORKER] 2026-07-26 21:54:53.9617959 +0800 CST m=+3.287569001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=101 associated=false execution=101 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 100
+m.etimes= 101
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.9769347 +0800 CST m=+3.302707801 [WORKER] 2026-07-26 21:54:53.9769347 +0800 CST m=+3.302707801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=102 associated=false execution=102 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 99
+m.etimes= 102
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:53.9769347 +0800 CST m=+3.302707801 [WORKER] 2026-07-26 21:54:53.9769347 +0800 CST m=+3.302707801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=103 associated=false execution=103 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 98
+m.etimes= 103
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 97
+m.etimes= 104
+2026-07-26 21:54:53.9769347 +0800 CST m=+3.302707801 [WORKER] 2026-07-26 21:54:53.9769347 +0800 CST m=+3.302707801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=104 associated=false execution=104 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.0077218 +0800 CST m=+3.333494901 [WORKER] 2026-07-26 21:54:54.0077218 +0800 CST m=+3.333494901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=105 associated=false execution=105 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 96
+m.etimes= 105
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.0231681 +0800 CST m=+3.348941201 [WORKER] 2026-07-26 21:54:54.0231681 +0800 CST m=+3.348941201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=106 associated=false execution=106 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 95
+m.etimes= 106
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.0231681 +0800 CST m=+3.348941201 [WORKER] 2026-07-26 21:54:54.0231681 +0800 CST m=+3.348941201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=107 associated=false execution=107 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 94
+m.etimes= 107
+2026-07-26 21:54:54.0231681 +0800 CST m=+3.348941201 [WORKER] 2026-07-26 21:54:54.0231681 +0800 CST m=+3.348941201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=108 associated=false execution=108 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 93
+m.etimes= 108
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.0539239 +0800 CST m=+3.379697001 [WORKER] 2026-07-26 21:54:54.0539239 +0800 CST m=+3.379697001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=109 associated=false execution=109 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 92
+m.etimes= 109
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.0694568 +0800 CST m=+3.395229901 [WORKER] 2026-07-26 21:54:54.0694568 +0800 CST m=+3.395229901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=110 associated=false execution=110 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 91
+m.etimes= 110
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.0694568 +0800 CST m=+3.395229901 [WORKER] 2026-07-26 21:54:54.0694568 +0800 CST m=+3.395229901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=111 associated=false execution=111 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 90
+m.etimes= 111
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.0694568 +0800 CST m=+3.395229901 [WORKER] 2026-07-26 21:54:54.0694568 +0800 CST m=+3.395229901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=112 associated=false execution=112 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 89
+m.etimes= 112
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.1003525 +0800 CST m=+3.426125601 [WORKER] 2026-07-26 21:54:54.1003525 +0800 CST m=+3.426125601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=113 associated=false execution=113 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 88
+m.etimes= 113
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.1157788 +0800 CST m=+3.441551901 [WORKER] 2026-07-26 21:54:54.1157788 +0800 CST m=+3.441551901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=114 associated=false execution=114 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 87
+m.etimes= 114
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.1157788 +0800 CST m=+3.441551901 [WORKER] 2026-07-26 21:54:54.1157788 +0800 CST m=+3.441551901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=115 associated=false execution=115 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 86
+m.etimes= 115
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.1157788 +0800 CST m=+3.441551901 [WORKER] 2026-07-26 21:54:54.1157788 +0800 CST m=+3.441551901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=116 associated=false execution=116 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 85
+m.etimes= 116
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.1471239 +0800 CST m=+3.472897001 [WORKER] 2026-07-26 21:54:54.1471239 +0800 CST m=+3.472897001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=117 associated=false execution=117 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 84
+m.etimes= 117
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.1619325 +0800 CST m=+3.487705601 [WORKER] 2026-07-26 21:54:54.1619325 +0800 CST m=+3.487705601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=118 associated=false execution=118 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 83
+m.etimes= 118
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.1619325 +0800 CST m=+3.487705601 [WORKER] 2026-07-26 21:54:54.1619325 +0800 CST m=+3.487705601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=119 associated=false execution=119 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 82
+m.etimes= 119
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.1619325 +0800 CST m=+3.487705601 [WORKER] 2026-07-26 21:54:54.1619325 +0800 CST m=+3.487705601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=120 associated=false execution=120 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 81
+m.etimes= 120
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.1930971 +0800 CST m=+3.518870201 [WORKER] 2026-07-26 21:54:54.1930971 +0800 CST m=+3.518870201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=121 associated=false execution=121 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 80
+m.etimes= 121
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.2083196 +0800 CST m=+3.534092701 [WORKER] 2026-07-26 21:54:54.2083196 +0800 CST m=+3.534092701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=122 associated=false execution=122 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 79
+m.etimes= 122
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.2083196 +0800 CST m=+3.534092701 [WORKER] 2026-07-26 21:54:54.2083196 +0800 CST m=+3.534092701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=123 associated=false execution=123 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 78
+m.etimes= 123
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.2083196 +0800 CST m=+3.534092701 [WORKER] 2026-07-26 21:54:54.2083196 +0800 CST m=+3.534092701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=124 associated=false execution=124 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 77
+m.etimes= 124
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.2393503 +0800 CST m=+3.565123401 [WORKER] 2026-07-26 21:54:54.2393503 +0800 CST m=+3.565123401	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=125 associated=false execution=125 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 76
+m.etimes= 125
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.2545936 +0800 CST m=+3.580366701 [WORKER] 2026-07-26 21:54:54.2545936 +0800 CST m=+3.580366701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=126 associated=false execution=126 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 75
+m.etimes= 126
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.2545936 +0800 CST m=+3.580366701 [WORKER] 2026-07-26 21:54:54.2545936 +0800 CST m=+3.580366701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=127 associated=false execution=127 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 74
+m.etimes= 127
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.2545936 +0800 CST m=+3.580366701 [WORKER] 2026-07-26 21:54:54.2545936 +0800 CST m=+3.580366701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=128 associated=false execution=128 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 73
+m.etimes= 128
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.2855299 +0800 CST m=+3.611303001 [WORKER] 2026-07-26 21:54:54.2855299 +0800 CST m=+3.611303001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=129 associated=false execution=129 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 72
+m.etimes= 129
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.30091 +0800 CST m=+3.626683101 [WORKER] 2026-07-26 21:54:54.30091 +0800 CST m=+3.626683101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=130 associated=false execution=130 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 71
+m.etimes= 130
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.30091 +0800 CST m=+3.626683101 [WORKER] 2026-07-26 21:54:54.30091 +0800 CST m=+3.626683101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=131 associated=false execution=131 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 70
+m.etimes= 131
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.30091 +0800 CST m=+3.626683101 [WORKER] 2026-07-26 21:54:54.30091 +0800 CST m=+3.626683101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=132 associated=false execution=132 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 69
+m.etimes= 132
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.3316852 +0800 CST m=+3.657458301 [WORKER] 2026-07-26 21:54:54.3316852 +0800 CST m=+3.657458301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=133 associated=false execution=133 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 68
+m.etimes= 133
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.3470704 +0800 CST m=+3.672843501 [WORKER] 2026-07-26 21:54:54.3470704 +0800 CST m=+3.672843501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=134 associated=false execution=134 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 67
+m.etimes= 134
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.3470704 +0800 CST m=+3.672843501 [WORKER] 2026-07-26 21:54:54.3470704 +0800 CST m=+3.672843501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=135 associated=false execution=135 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 66
+m.etimes= 135
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.3479417 +0800 CST m=+3.673714801 [WORKER] 2026-07-26 21:54:54.3470704 +0800 CST m=+3.672843501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=136 associated=false execution=136 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 65
+m.etimes= 136
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.3781161 +0800 CST m=+3.703889201 [WORKER] 2026-07-26 21:54:54.3781161 +0800 CST m=+3.703889201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=137 associated=false execution=137 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 64
+m.etimes= 137
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.3935277 +0800 CST m=+3.719300801 [WORKER] 2026-07-26 21:54:54.3935277 +0800 CST m=+3.719300801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=138 associated=false execution=138 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 63
+m.etimes= 138
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.3935277 +0800 CST m=+3.719300801 [WORKER] 2026-07-26 21:54:54.3935277 +0800 CST m=+3.719300801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=139 associated=false execution=139 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 62
+m.etimes= 139
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.3935277 +0800 CST m=+3.719300801 [WORKER] 2026-07-26 21:54:54.3935277 +0800 CST m=+3.719300801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=140 associated=false execution=140 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 61
+m.etimes= 140
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.4243683 +0800 CST m=+3.750141401 [WORKER] 2026-07-26 21:54:54.4243683 +0800 CST m=+3.750141401	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=141 associated=false execution=141 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 60
+m.etimes= 141
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.4402711 +0800 CST m=+3.766044201 [WORKER] 2026-07-26 21:54:54.4394776 +0800 CST m=+3.765250701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=142 associated=false execution=142 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 59
+m.etimes= 142
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.4402711 +0800 CST m=+3.766044201 [WORKER] 2026-07-26 21:54:54.4402711 +0800 CST m=+3.766044201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=143 associated=false execution=143 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 58
+m.etimes= 143
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.4402711 +0800 CST m=+3.766044201 [WORKER] 2026-07-26 21:54:54.4402711 +0800 CST m=+3.766044201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=144 associated=false execution=144 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 57
+m.etimes= 144
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.4705294 +0800 CST m=+3.796302501 [WORKER] 2026-07-26 21:54:54.4705294 +0800 CST m=+3.796302501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=145 associated=false execution=145 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 56
+m.etimes= 145
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.485693 +0800 CST m=+3.811466101 [WORKER] 2026-07-26 21:54:54.485693 +0800 CST m=+3.811466101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=146 associated=false execution=146 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 55
+m.etimes= 146
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.485693 +0800 CST m=+3.811466101 [WORKER] 2026-07-26 21:54:54.485693 +0800 CST m=+3.811466101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=147 associated=false execution=147 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 54
+m.etimes= 147
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.485693 +0800 CST m=+3.811466101 [WORKER] 2026-07-26 21:54:54.485693 +0800 CST m=+3.811466101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=148 associated=false execution=148 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 53
+m.etimes= 148
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.516432 +0800 CST m=+3.842205101 [WORKER] 2026-07-26 21:54:54.516432 +0800 CST m=+3.842205101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=149 associated=false execution=149 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 52
+m.etimes= 149
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.5319285 +0800 CST m=+3.857701601 [WORKER] 2026-07-26 21:54:54.5319285 +0800 CST m=+3.857701601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=150 associated=false execution=150 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 51
+m.etimes= 150
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.5325701 +0800 CST m=+3.858343201 [WORKER] 2026-07-26 21:54:54.5325701 +0800 CST m=+3.858343201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=151 associated=false execution=151 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 50
+m.etimes= 151
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.5325701 +0800 CST m=+3.858343201 [WORKER] 2026-07-26 21:54:54.5325701 +0800 CST m=+3.858343201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=152 associated=false execution=152 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 49
+m.etimes= 152
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.5626528 +0800 CST m=+3.888425901 [WORKER] 2026-07-26 21:54:54.5626528 +0800 CST m=+3.888425901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=153 associated=false execution=153 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 48
+m.etimes= 153
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.5778266 +0800 CST m=+3.903599701 [WORKER] 2026-07-26 21:54:54.5778266 +0800 CST m=+3.903599701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=154 associated=false execution=154 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 47
+m.etimes= 154
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.5778266 +0800 CST m=+3.903599701 [WORKER] 2026-07-26 21:54:54.5778266 +0800 CST m=+3.903599701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=155 associated=false execution=155 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 46
+m.etimes= 155
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.5778266 +0800 CST m=+3.903599701 [WORKER] 2026-07-26 21:54:54.5778266 +0800 CST m=+3.903599701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=156 associated=false execution=156 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 45
+m.etimes= 156
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.6086278 +0800 CST m=+3.934400901 [WORKER] 2026-07-26 21:54:54.6086278 +0800 CST m=+3.934400901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=157 associated=false execution=157 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 44
+m.etimes= 157
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.6239786 +0800 CST m=+3.949751701 [WORKER] 2026-07-26 21:54:54.6239786 +0800 CST m=+3.949751701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=158 associated=false execution=158 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 43
+m.etimes= 158
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.6239786 +0800 CST m=+3.949751701 [WORKER] 2026-07-26 21:54:54.6239786 +0800 CST m=+3.949751701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=159 associated=false execution=159 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 42
+m.etimes= 159
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.6239786 +0800 CST m=+3.949751701 [WORKER] 2026-07-26 21:54:54.6239786 +0800 CST m=+3.949751701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=160 associated=false execution=160 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 41
+m.etimes= 160
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.6544131 +0800 CST m=+3.980186201 [WORKER] 2026-07-26 21:54:54.6544131 +0800 CST m=+3.980186201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=161 associated=false execution=161 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 40
+m.etimes= 161
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.6694181 +0800 CST m=+3.995191201 [WORKER] 2026-07-26 21:54:54.6694181 +0800 CST m=+3.995191201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=162 associated=false execution=162 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 39
+m.etimes= 162
+2026-07-26 21:54:54.6694181 +0800 CST m=+3.995191201 [WORKER] 2026-07-26 21:54:54.6694181 +0800 CST m=+3.995191201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=163 associated=false execution=163 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 38
+m.etimes= 163
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.6701374 +0800 CST m=+3.995910501 [WORKER] 2026-07-26 21:54:54.6701374 +0800 CST m=+3.995910501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=164 associated=false execution=164 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 37
+m.etimes= 164
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.6998234 +0800 CST m=+4.025596501 [WORKER] 2026-07-26 21:54:54.6998234 +0800 CST m=+4.025596501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=165 associated=false execution=165 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 36
+m.etimes= 165
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.7152345 +0800 CST m=+4.041007601 [WORKER] 2026-07-26 21:54:54.7152345 +0800 CST m=+4.041007601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=166 associated=false execution=166 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 35
+m.etimes= 166
+=====strPair====
+Input=
+2026-07-26 21:54:54.7152345 +0800 CST m=+4.041007601 [WORKER] 2026-07-26 21:54:54.7152345 +0800 CST m=+4.041007601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=167 associated=false execution=167 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 34
+m.etimes= 167
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.7152345 +0800 CST m=+4.041007601 [WORKER] 2026-07-26 21:54:54.7152345 +0800 CST m=+4.041007601	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=168 associated=false execution=168 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 33
+m.etimes= 168
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.7454416 +0800 CST m=+4.071214701 [WORKER] 2026-07-26 21:54:54.7454416 +0800 CST m=+4.071214701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=169 associated=false execution=169 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 32
+m.etimes= 169
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.7610601 +0800 CST m=+4.086833201 [WORKER] 2026-07-26 21:54:54.7610601 +0800 CST m=+4.086833201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=170 associated=false execution=170 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 31
+m.etimes= 170
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.7610601 +0800 CST m=+4.086833201 [WORKER] 2026-07-26 21:54:54.7610601 +0800 CST m=+4.086833201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=171 associated=false execution=171 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 30
+m.etimes= 171
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.7610601 +0800 CST m=+4.086833201 [WORKER] 2026-07-26 21:54:54.7610601 +0800 CST m=+4.086833201	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=172 associated=false execution=172 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 29
+m.etimes= 172
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.7915194 +0800 CST m=+4.117292501 [WORKER] 2026-07-26 21:54:54.7915194 +0800 CST m=+4.117292501	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=173 associated=false execution=173 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 28
+m.etimes= 173
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.8065369 +0800 CST m=+4.132310001 [WORKER] 2026-07-26 21:54:54.8065369 +0800 CST m=+4.132310001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=174 associated=false execution=174 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 27
+m.etimes= 174
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.8065369 +0800 CST m=+4.132310001 [WORKER] 2026-07-26 21:54:54.8065369 +0800 CST m=+4.132310001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=175 associated=false execution=175 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 26
+m.etimes= 175
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.8065369 +0800 CST m=+4.132310001 [WORKER] 2026-07-26 21:54:54.8065369 +0800 CST m=+4.132310001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=176 associated=false execution=176 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 25
+m.etimes= 176
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.8374722 +0800 CST m=+4.163245301 [WORKER] 2026-07-26 21:54:54.8374722 +0800 CST m=+4.163245301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=177 associated=false execution=177 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 24
+m.etimes= 177
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.8524139 +0800 CST m=+4.178187001 [WORKER] 2026-07-26 21:54:54.8524139 +0800 CST m=+4.178187001	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=178 associated=false execution=178 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 23
+m.etimes= 178
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 22
+m.etimes= 179
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 21
+m.etimes= 180
+2026-07-26 21:54:54.8530372 +0800 CST m=+4.178810301 [WORKER] 2026-07-26 21:54:54.8530372 +0800 CST m=+4.178810301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=179 associated=false execution=179 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+2026-07-26 21:54:54.8530372 +0800 CST m=+4.178810301 [WORKER] 2026-07-26 21:54:54.8530372 +0800 CST m=+4.178810301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=180 associated=false execution=180 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.882486 +0800 CST m=+4.208259101 [WORKER] 2026-07-26 21:54:54.882486 +0800 CST m=+4.208259101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=181 associated=false execution=181 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 20
+m.etimes= 181
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.897792 +0800 CST m=+4.223565101 [WORKER] 2026-07-26 21:54:54.897792 +0800 CST m=+4.223565101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=182 associated=false execution=182 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 19
+m.etimes= 182
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.897792 +0800 CST m=+4.223565101 [WORKER] 2026-07-26 21:54:54.897792 +0800 CST m=+4.223565101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=183 associated=false execution=183 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 18
+m.etimes= 183
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.897792 +0800 CST m=+4.223565101 [WORKER] 2026-07-26 21:54:54.897792 +0800 CST m=+4.223565101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=184 associated=false execution=184 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 17
+m.etimes= 184
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.928787 +0800 CST m=+4.254560101 [WORKER] 2026-07-26 21:54:54.928787 +0800 CST m=+4.254560101	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=185 associated=false execution=185 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 16
+m.etimes= 185
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.9441573 +0800 CST m=+4.269930401 [WORKER] 2026-07-26 21:54:54.9441573 +0800 CST m=+4.269930401	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=186 associated=false execution=186 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 15
+m.etimes= 186
+2026-07-26 21:54:54.9441573 +0800 CST m=+4.269930401 [WORKER] 2026-07-26 21:54:54.9441573 +0800 CST m=+4.269930401	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=187 associated=false execution=187 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 14
+m.etimes= 187
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.9441573 +0800 CST m=+4.269930401 [WORKER] 2026-07-26 21:54:54.9441573 +0800 CST m=+4.269930401	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=188 associated=false execution=188 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 13
+m.etimes= 188
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.9749516 +0800 CST m=+4.300724701 [WORKER] 2026-07-26 21:54:54.9749516 +0800 CST m=+4.300724701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=189 associated=false execution=189 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 12
+m.etimes= 189
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.9902716 +0800 CST m=+4.316044701 [WORKER] 2026-07-26 21:54:54.9902716 +0800 CST m=+4.316044701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=190 associated=false execution=190 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 11
+m.etimes= 190
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.9909748 +0800 CST m=+4.316747901 [WORKER] 2026-07-26 21:54:54.9909748 +0800 CST m=+4.316747901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=191 associated=false execution=191 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 10
+m.etimes= 191
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:54.9909748 +0800 CST m=+4.316747901 [WORKER] 2026-07-26 21:54:54.9909748 +0800 CST m=+4.316747901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=192 associated=false execution=192 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 9
+m.etimes= 192
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:55.0208486 +0800 CST m=+4.346621701 [WORKER] 2026-07-26 21:54:55.0208486 +0800 CST m=+4.346621701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=193 associated=false execution=193 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 8
+m.etimes= 193
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:55.0360766 +0800 CST m=+4.361849701 [WORKER] 2026-07-26 21:54:55.0360766 +0800 CST m=+4.361849701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=194 associated=false execution=194 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 7
+m.etimes= 194
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+2026-07-26 21:54:55.0360766 +0800 CST m=+4.361849701 [WORKER] 2026-07-26 21:54:55.0360766 +0800 CST m=+4.361849701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=195 associated=false execution=195 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 6
+m.etimes= 195
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:55.0360766 +0800 CST m=+4.361849701 [WORKER] 2026-07-26 21:54:55.0360766 +0800 CST m=+4.361849701	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=196 associated=false execution=196 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 5
+m.etimes= 196
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:55.0670087 +0800 CST m=+4.392781801 [WORKER] 2026-07-26 21:54:55.0670087 +0800 CST m=+4.392781801	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=197 associated=false execution=197 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 4
+m.etimes= 197
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:55.0820318 +0800 CST m=+4.407804901 [WORKER] 2026-07-26 21:54:55.0820318 +0800 CST m=+4.407804901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=198 associated=false execution=198 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 3
+m.etimes= 198
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:55.0820318 +0800 CST m=+4.407804901 [WORKER] 2026-07-26 21:54:55.0820318 +0800 CST m=+4.407804901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=199 associated=false execution=199 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 2
+m.etimes= 199
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:55.0820318 +0800 CST m=+4.407804901 [WORKER] 2026-07-26 21:54:55.0820318 +0800 CST m=+4.407804901	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=200 associated=false execution=200 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.01s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 1
+m.etimes= 200
+=====strPair====
+Input=
+InputOp=
+2026-07-26 21:54:55.1123132 +0800 CST m=+4.438086301 [WORKER] 2026-07-26 21:54:55.1123132 +0800 CST m=+4.438086301	[WORKER 1] ORACLE kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 new=false count=201 associated=false execution=201 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+====stdout_start=====
+=== RUN   TestEtcd3077_1
+    testing.go:1319: race detected during execution of test
+--- FAIL: TestEtcd3077_1 (0.02s)
+=== CONT  
+    testing.go:1319: race detected during execution of test
+FAIL
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 0
+exit loop
+[FUZZER] TestEtcd3077_1 elapsed: 3.394s, etimes=201
+cancel and return done
+2026-07-26 21:54:55.1123132 +0800 CST m=+4.438086301 [1/1]	TestEtcd3077_1	FAIL	kind=data_race signature=c911cc9dd28388b5ec50f9e2c0b382f041d466b13df23c296e5ff5569986b085 count=201 associated=0 message="read toolkit/testdata/gobench/nonblocking/etcd/3077.(*EtcdServer).run.func2@etcd3077_test.go:48 <-> write toolkit/testdata/gobench/nonblocking/etcd/3077.(*raftNode).run@etcd3077_test.go:17"
+cancel and return done
+2026-07-26 21:54:55.1123132 +0800 CST m=+4.438086301 [Fuzzer] Finish, elapsed: 4.435s
+cancel and return done
