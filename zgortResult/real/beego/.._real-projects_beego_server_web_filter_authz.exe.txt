@@ -1,0 +1,5 @@
+﻿bin =  D:\gopath\src\gopie\testbins\beego\.._real-projects_beego_server_web_filter_authz.exe
+----len bin2tests= 1
+--len tests= 0
+no tests found
+2026-07-27 22:33:39.4771821 +0800 CST m=+1.122673901 [Fuzzer] Finish, elapsed: 1.121s

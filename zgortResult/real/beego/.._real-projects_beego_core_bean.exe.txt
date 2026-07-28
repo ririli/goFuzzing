@@ -1,0 +1,7870 @@
+﻿bin =  D:\gopath\src\gopie\testbins\beego\.._real-projects_beego_core_bean.exe
+----len bin2tests= 1
+--len tests= 3
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 199
+m.etimes= 1
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 198
+m.etimes= 2
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+[PRESTAGE] Pre-execution finished, total gort pairs: cover=0, suspect=0, topology_edges=0
+[OP_PRESTAGE] Generated 0 op pairs from 0 covered goroutine pairs
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 197
+m.etimes= 3
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 199
+m.etimes= 1
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 198
+m.etimes= 2
+[PRESTAGE] Pre-execution finished, total gort pairs: cover=0, suspect=0, topology_edges=0
+[OP_PRESTAGE] Generated 0 op pairs from 0 covered goroutine pairs
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 197
+m.etimes= 3
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 196
+m.etimes= 4
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 199
+m.etimes= 1
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 196
+m.etimes= 4
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 198
+m.etimes= 2
+[PRESTAGE] Pre-execution finished, total gort pairs: cover=0, suspect=0, topology_edges=0
+[OP_PRESTAGE] Generated 0 op pairs from 0 covered goroutine pairs
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 197
+m.etimes= 3
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 196
+m.etimes= 4
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 195
+m.etimes= 5
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 195
+=====strPair====
+Input=
+InputOp=
+m.etimes= 5
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 195
+m.etimes= 5
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 194
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 194
+m.etimes= 6
+Input=
+m.etimes= 6
+=====strPair====
+Input=
+InputOp=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 193
+m.etimes= 7
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 193
+m.etimes= 7
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.50s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 194
+m.etimes= 6
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.50s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+Input=
+InputOp=
+quit= 193
+m.etimes= 7
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.50s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 192
+m.etimes= 8
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 192
+m.etimes= 8
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 192
+m.etimes= 8
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 191
+m.etimes= 9
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+quit= 191
+m.etimes= 9
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 191
+m.etimes= 9
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 190
+m.etimes= 10
+====stdout_start=====
+=====strPair====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 190
+m.etimes= 10
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 189
+m.etimes= 11
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 189
+m.etimes= 11
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 190
+m.etimes= 10
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+=======鍙嶉淇″彿_end=======
+quit= 188
+m.etimes= 12
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 188
+m.etimes= 12
+=====strPair====
+Input=
+=====strPair====
+Input=
+InputOp=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 189
+m.etimes= 11
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 188
+m.etimes= 12
+=====strPair====
+Input=
+InputOp=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 187
+m.etimes= 13
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 187
+m.etimes= 13
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 186
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 187
+m.etimes= 13
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 186
+m.etimes= 14
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 185
+m.etimes= 15
+InputOp=
+m.etimes= 14
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 185
+m.etimes= 15
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+quit= 186
+m.etimes= 14
+====stdout_start=====
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 184
+m.etimes= 16
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 184
+m.etimes= 16
+=====strPair====
+Input=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 185
+m.etimes= 15
+====stdout_start=====
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 184
+m.etimes= 16
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 183
+m.etimes= 17
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 183
+m.etimes= 17
+=======鍙嶉淇″彿_end=======
+quit= 183
+m.etimes= 17
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 182
+m.etimes= 18
+=====strPair====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 182
+m.etimes= 18
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 181
+m.etimes= 19
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 181
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+m.etimes= 19
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 180
+m.etimes= 20
+=======鍙嶉淇″彿_end=======
+quit= 180
+m.etimes= 20
+Input=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 182
+m.etimes= 18
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 181
+m.etimes= 19
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 180
+m.etimes= 20
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 179
+m.etimes= 21
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 179
+m.etimes= 21
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 178
+m.etimes= 22
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 177
+=====strPair====
+Input=
+InputOp=
+m.etimes= 23
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 179
+m.etimes= 21
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 178
+m.etimes= 22
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 177
+m.etimes= 23
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 178
+m.etimes= 22
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 176
+m.etimes= 24
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 176
+m.etimes= 24
+quit= 177
+m.etimes= 23
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 176
+m.etimes= 24
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 175
+m.etimes= 25
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 175
+m.etimes= 25
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+=======鍙嶉淇″彿_end=======
+quit= 175
+m.etimes= 25
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 174
+m.etimes= 26
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 173
+m.etimes= 27
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 174
+m.etimes= 26
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 173
+m.etimes= 27
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 174
+m.etimes= 26
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 173
+m.etimes= 27
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 172
+m.etimes= 28
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 172
+m.etimes= 28
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 172
+m.etimes= 28
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 171
+m.etimes= 29
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+Input=
+InputOp=
+quit= 171
+m.etimes= 29
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 170
+m.etimes= 30
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 169
+m.etimes= 31
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 171
+m.etimes= 29
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 170
+m.etimes= 30
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 169
+m.etimes= 31
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 170
+m.etimes= 30
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 169
+m.etimes= 31
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 168
+m.etimes= 32
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+quit= 168
+m.etimes= 32
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 168
+m.etimes= 32
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 167
+m.etimes= 33
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 167
+m.etimes= 33
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 166
+m.etimes= 34
+=====strPair====
+Input=
+InputOp=
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 167
+m.etimes= 33
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 166
+m.etimes= 34
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 165
+m.etimes= 35
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 165
+Input=
+InputOp=
+m.etimes= 35
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 166
+m.etimes= 34
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 165
+m.etimes= 35
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+=====strPair====
+Input=
+InputOp=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 164
+m.etimes= 36
+quit= 164
+m.etimes= 36
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 164
+m.etimes= 36
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 163
+m.etimes= 37
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 163
+m.etimes= 37
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 162
+m.etimes= 38
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 161
+m.etimes= 39
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 163
+=====strPair====
+Input=
+InputOp=
+m.etimes= 37
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 162
+m.etimes= 38
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 162
+m.etimes= 38
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 161
+=====strPair====
+Input=
+InputOp=
+quit= 161
+m.etimes= 39
+m.etimes= 39
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 160
+=====strPair====
+Input=
+InputOp=
+m.etimes= 40
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 160
+m.etimes= 40
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 160
+m.etimes= 40
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 159
+m.etimes= 41
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 159
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+m.etimes= 41
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 158
+m.etimes= 42
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 157
+m.etimes= 43
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 159
+m.etimes= 41
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 158
+m.etimes= 42
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 158
+m.etimes= 42
+quit= 157
+m.etimes= 43
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 157
+m.etimes= 43
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 156
+m.etimes= 44
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 156
+m.etimes= 44
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 156
+m.etimes= 44
+=====strPair====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 155
+m.etimes= 45
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 155
+m.etimes= 45
+=====strPair====
+Input=
+InputOp=
+Input=
+=====strPair====
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+Input=
+InputOp=
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 155
+m.etimes= 45
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 154
+m.etimes= 46
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 154
+m.etimes= 46
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 153
+m.etimes= 47
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 154
+m.etimes= 46
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 153
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 153
+m.etimes= 47
+Input=
+InputOp=
+m.etimes= 47
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+Input=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 152
+m.etimes= 48
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 152
+m.etimes= 48
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 152
+m.etimes= 48
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 151
+m.etimes= 49
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 151
+m.etimes= 49
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 151
+m.etimes= 49
+=====strPair====
+Input=
+InputOp=
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 150
+====stdout_start=====
+m.etimes= 50
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 150
+m.etimes= 50
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 149
+m.etimes= 51
+=====strPair====
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 150
+m.etimes= 50
+=======鍙嶉淇″彿_end=======
+quit= 149
+m.etimes= 51
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 149
+m.etimes= 51
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 148
+m.etimes= 52
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 148
+m.etimes= 52
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 148
+m.etimes= 52
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 147
+m.etimes= 53
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 147
+m.etimes= 53
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 146
+m.etimes= 54
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 147
+m.etimes= 53
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 146
+m.etimes= 54
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 145
+m.etimes= 55
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 146
+InputOp=
+m.etimes= 54
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 145
+m.etimes= 55
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 144
+m.etimes= 56
+=======鍙嶉淇″彿_end=======
+quit= 145
+m.etimes= 55
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 144
+Input=
+m.etimes= 56
+=====strPair====
+Input=
+InputOp=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 144
+m.etimes= 56
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 143
+m.etimes= 57
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 143
+m.etimes= 57
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 143
+m.etimes= 57
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 142
+m.etimes= 58
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 142
+m.etimes= 58
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 141
+m.etimes= 59
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 141
+m.etimes= 59
+Input=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 140
+m.etimes= 60
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 142
+m.etimes= 58
+InputOp=
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 141
+m.etimes= 59
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 140
+m.etimes= 60
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 140
+m.etimes= 60
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 139
+m.etimes= 61
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 139
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 139
+m.etimes= 61
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 138
+m.etimes= 62
+m.etimes= 61
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 138
+m.etimes= 62
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 137
+m.etimes= 63
+=====strPair====
+Input=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 137
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 138
+m.etimes= 62
+=====strPair====
+m.etimes= 63
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 136
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 137
+m.etimes= 63
+m.etimes= 64
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 136
+m.etimes= 64
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 136
+m.etimes= 64
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 135
+m.etimes= 65
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 135
+m.etimes= 65
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 135
+m.etimes= 65
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 134
+m.etimes= 66
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 134
+m.etimes= 66
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 133
+m.etimes= 67
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 134
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 132
+m.etimes= 68
+m.etimes= 66
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 133
+m.etimes= 67
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 133
+m.etimes= 67
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+=======鍙嶉淇″彿_end=======
+quit= 132
+m.etimes= 68
+=====strPair====
+InputOp=
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 132
+m.etimes= 68
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 131
+m.etimes= 69
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 131
+m.etimes= 69
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 130
+m.etimes= 70
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 129
+m.etimes= 71
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 131
+m.etimes= 69
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 130
+m.etimes= 70
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 128
+m.etimes= 72
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 130
+m.etimes= 70
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 129
+m.etimes= 71
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 128
+m.etimes= 72
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 129
+m.etimes= 71
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 128
+m.etimes= 72
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 127
+m.etimes= 73
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 127
+m.etimes= 73
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 126
+m.etimes= 74
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 125
+m.etimes= 75
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 127
+m.etimes= 73
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 126
+m.etimes= 74
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 125
+m.etimes= 75
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+quit= 124
+m.etimes= 76
+quit= 126
+m.etimes= 74
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 125
+m.etimes= 75
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 124
+m.etimes= 76
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 124
+m.etimes= 76
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 123
+m.etimes= 77
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 123
+m.etimes= 77
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 122
+m.etimes= 78
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 121
+m.etimes= 79
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 123
+m.etimes= 77
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 122
+m.etimes= 78
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+InputOp=
+quit= 121
+m.etimes= 79
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 120
+quit= 120
+m.etimes= 80
+=====strPair====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+Input=
+InputOp=
+quit= 122
+m.etimes= 78
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+m.etimes= 80
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 121
+m.etimes= 79
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 120
+m.etimes= 80
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 119
+m.etimes= 81
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 119
+m.etimes= 81
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 118
+m.etimes= 82
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 117
+m.etimes= 83
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 119
+m.etimes= 81
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 118
+m.etimes= 82
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 118
+m.etimes= 82
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 116
+m.etimes= 84
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 117
+m.etimes= 83
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 116
+m.etimes= 84
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 117
+m.etimes= 83
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 116
+m.etimes= 84
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 115
+m.etimes= 85
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 115
+m.etimes= 85
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 114
+m.etimes= 86
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 113
+m.etimes= 87
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 115
+m.etimes= 85
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 114
+m.etimes= 86
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 112
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 114
+m.etimes= 86
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 113
+m.etimes= 87
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 113
+m.etimes= 87
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 112
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+m.etimes= 88
+m.etimes= 88
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 112
+m.etimes= 88
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 111
+m.etimes= 89
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 111
+m.etimes= 89
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 110
+m.etimes= 90
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 109
+m.etimes= 91
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 111
+m.etimes= 89
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 110
+m.etimes= 90
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 108
+m.etimes= 92
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 109
+m.etimes= 91
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 110
+m.etimes= 90
+quit= 108
+m.etimes= 92
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 109
+m.etimes= 91
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 108
+m.etimes= 92
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 107
+m.etimes= 93
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 107
+m.etimes= 93
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 106
+m.etimes= 94
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 105
+m.etimes= 95
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 107
+m.etimes= 93
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 106
+m.etimes= 94
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 104
+m.etimes= 96
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 106
+m.etimes= 94
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 105
+m.etimes= 95
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 104
+m.etimes= 96
+quit= 105
+m.etimes= 95
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 104
+m.etimes= 96
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 103
+m.etimes= 97
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 103
+m.etimes= 97
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 102
+m.etimes= 98
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 101
+m.etimes= 99
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 103
+m.etimes= 97
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 102
+m.etimes= 98
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 102
+m.etimes= 98
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+Input=
+InputOp=
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 101
+m.etimes= 99
+quit= 101
+m.etimes= 99
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 100
+m.etimes= 100
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 100
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 100
+m.etimes= 100
+m.etimes= 100
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 99
+m.etimes= 101
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 99
+m.etimes= 101
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 98
+m.etimes= 102
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 97
+m.etimes= 103
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 99
+m.etimes= 101
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 98
+m.etimes= 102
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 98
+m.etimes= 102
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 97
+m.etimes= 103
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 97
+m.etimes= 103
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 96
+m.etimes= 104
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 96
+=====strPair====
+Input=
+InputOp=
+m.etimes= 104
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 96
+m.etimes= 104
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 95
+m.etimes= 105
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 95
+m.etimes= 105
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 94
+m.etimes= 106
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 93
+m.etimes= 107
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 95
+m.etimes= 105
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 94
+m.etimes= 106
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 93
+m.etimes= 107
+quit= 94
+m.etimes= 106
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 93
+m.etimes= 107
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 92
+m.etimes= 108
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 92
+m.etimes= 108
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 92
+m.etimes= 108
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 91
+m.etimes= 109
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 91
+m.etimes= 109
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 90
+m.etimes= 110
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 89
+m.etimes= 111
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 91
+m.etimes= 109
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 90
+m.etimes= 110
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 89
+m.etimes= 111
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 90
+m.etimes= 110
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 89
+m.etimes= 111
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 88
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 88
+m.etimes= 112
+m.etimes= 112
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 88
+m.etimes= 112
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 87
+m.etimes= 113
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 87
+m.etimes= 113
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 86
+m.etimes= 114
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 85
+m.etimes= 115
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 87
+m.etimes= 113
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 86
+m.etimes= 114
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 86
+m.etimes= 114
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====stdout_start=====
+InputOp=
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 85
+m.etimes= 115
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 85
+m.etimes= 115
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 84
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 84
+m.etimes= 116
+quit= 84
+m.etimes= 116
+m.etimes= 116
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 83
+m.etimes= 117
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 83
+m.etimes= 117
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 82
+m.etimes= 118
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+=====strPair====
+Input=
+InputOp=
+Input=
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 81
+InputOp=
+m.etimes= 119
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 83
+m.etimes= 117
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 82
+m.etimes= 118
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 82
+m.etimes= 118
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 81
+m.etimes= 119
+=====strPair====
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 81
+Input=
+InputOp=
+Input=
+InputOp=
+m.etimes= 119
+=====strPair====
+Input=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 80
+m.etimes= 120
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 80
+m.etimes= 120
+quit= 80
+m.etimes= 120
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 79
+m.etimes= 121
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 79
+m.etimes= 121
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 78
+m.etimes= 122
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 77
+m.etimes= 123
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 79
+=====strPair====
+Input=
+InputOp=
+m.etimes= 121
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 78
+m.etimes= 122
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 78
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 77
+m.etimes= 123
+m.etimes= 122
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=====strPair====
+Input=
+=====strPair====
+Input=
+InputOp=
+InputOp=
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 77
+m.etimes= 123
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 76
+m.etimes= 124
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 76
+m.etimes= 124
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 76
+m.etimes= 124
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 75
+m.etimes= 125
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 75
+m.etimes= 125
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 74
+m.etimes= 126
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 73
+m.etimes= 127
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 75
+m.etimes= 125
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 74
+m.etimes= 126
+Input=
+=====strPair====
+Input=
+InputOp=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 74
+m.etimes= 126
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 73
+m.etimes= 127
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 73
+m.etimes= 127
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 72
+m.etimes= 128
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 72
+m.etimes= 128
+=======鍙嶉淇″彿_end=======
+quit= 72
+m.etimes= 128
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 71
+m.etimes= 129
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 71
+m.etimes= 129
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 70
+m.etimes= 130
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 69
+m.etimes= 131
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 71
+m.etimes= 129
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 70
+m.etimes= 130
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 70
+m.etimes= 130
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 69
+m.etimes= 131
+quit= 69
+m.etimes= 131
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 68
+m.etimes= 132
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 68
+m.etimes= 132
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 68
+m.etimes= 132
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 67
+m.etimes= 133
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 67
+m.etimes= 133
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 66
+m.etimes= 134
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+quit= 65
+m.etimes= 135
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 67
+m.etimes= 133
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 66
+m.etimes= 134
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 65
+m.etimes= 135
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 66
+m.etimes= 134
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 65
+m.etimes= 135
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 64
+m.etimes= 136
+quit= 64
+m.etimes= 136
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 64
+m.etimes= 136
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 63
+m.etimes= 137
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 63
+m.etimes= 137
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 62
+m.etimes= 138
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 61
+m.etimes= 139
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 63
+m.etimes= 137
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 62
+m.etimes= 138
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 61
+m.etimes= 139
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 62
+m.etimes= 138
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 61
+m.etimes= 139
+=====strPair====
+Input=
+=====strPair====
+Input=
+InputOp=
+InputOp=
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+InputOp=
+quit= 60
+m.etimes= 140
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 60
+m.etimes= 140
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 60
+m.etimes= 140
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 59
+m.etimes= 141
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 59
+m.etimes= 141
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 58
+m.etimes= 142
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=====strPair====
+Input=
+InputOp=
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 57
+m.etimes= 143
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 59
+m.etimes= 141
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 58
+m.etimes= 142
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 57
+m.etimes= 143
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 58
+m.etimes= 142
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 57
+m.etimes= 143
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 56
+m.etimes= 144
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 56
+m.etimes= 144
+quit= 56
+m.etimes= 144
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 55
+m.etimes= 145
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 55
+m.etimes= 145
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 54
+m.etimes= 146
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 53
+m.etimes= 147
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 55
+m.etimes= 145
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 54
+m.etimes= 146
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 54
+m.etimes= 146
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 53
+m.etimes= 147
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 53
+m.etimes= 147
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 52
+m.etimes= 148
+=====strPair====
+Input=
+InputOp=
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 52
+m.etimes= 148
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 52
+m.etimes= 148
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 51
+m.etimes= 149
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 51
+m.etimes= 149
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 50
+m.etimes= 150
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 49
+m.etimes= 151
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 51
+m.etimes= 149
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 50
+m.etimes= 150
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 49
+m.etimes= 151
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 50
+m.etimes= 150
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 49
+m.etimes= 151
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+InputOp=
+quit= 48
+m.etimes= 152
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+quit= 48
+m.etimes= 152
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 48
+m.etimes= 152
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 47
+m.etimes= 153
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 47
+m.etimes= 153
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 46
+m.etimes= 154
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 45
+m.etimes= 155
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 47
+m.etimes= 153
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 46
+m.etimes= 154
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 46
+m.etimes= 154
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 45
+m.etimes= 155
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 45
+m.etimes= 155
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 44
+m.etimes= 156
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 44
+m.etimes= 156
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 44
+m.etimes= 156
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 43
+m.etimes= 157
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 43
+Input=
+InputOp=
+m.etimes= 157
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 42
+m.etimes= 158
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 41
+m.etimes= 159
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 43
+m.etimes= 157
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 42
+m.etimes= 158
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 41
+m.etimes= 159
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 42
+m.etimes= 158
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 41
+m.etimes= 159
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 40
+m.etimes= 160
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 40
+m.etimes= 160
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 40
+m.etimes= 160
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 39
+m.etimes= 161
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 39
+m.etimes= 161
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 38
+m.etimes= 162
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 37
+m.etimes= 163
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 39
+m.etimes= 161
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 38
+m.etimes= 162
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 38
+m.etimes= 162
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 37
+m.etimes= 163
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 37
+m.etimes= 163
+=====strPair====
+Input=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 36
+m.etimes= 164
+InputOp=
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 36
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 36
+m.etimes= 164
+m.etimes= 164
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 35
+m.etimes= 165
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 35
+m.etimes= 165
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+=====strPair====
+Input=
+InputOp=
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 34
+m.etimes= 166
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 33
+m.etimes= 167
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 35
+m.etimes= 165
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 34
+m.etimes= 166
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 34
+m.etimes= 166
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 33
+m.etimes= 167
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 33
+m.etimes= 167
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 32
+m.etimes= 168
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 32
+m.etimes= 168
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 32
+m.etimes= 168
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 31
+m.etimes= 169
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 31
+m.etimes= 169
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 30
+m.etimes= 170
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 29
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+m.etimes= 171
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 31
+m.etimes= 169
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 30
+m.etimes= 170
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 29
+m.etimes= 171
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 30
+m.etimes= 170
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 29
+m.etimes= 171
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 28
+m.etimes= 172
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 28
+m.etimes= 172
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 28
+m.etimes= 172
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 27
+m.etimes= 173
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 27
+m.etimes= 173
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 26
+m.etimes= 174
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 25
+m.etimes= 175
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 27
+m.etimes= 173
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 26
+m.etimes= 174
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 26
+m.etimes= 174
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 25
+m.etimes= 175
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 25
+m.etimes= 175
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 24
+m.etimes= 176
+quit= 24
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 24
+m.etimes= 176
+m.etimes= 176
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 23
+m.etimes= 177
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 23
+m.etimes= 177
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 22
+m.etimes= 178
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 21
+m.etimes= 179
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 23
+m.etimes= 177
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 22
+m.etimes= 178
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 22
+m.etimes= 178
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 21
+m.etimes= 179
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 21
+m.etimes= 179
+=====strPair====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 20
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+m.etimes= 180
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 20
+m.etimes= 180
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 20
+m.etimes= 180
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 19
+m.etimes= 181
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 19
+m.etimes= 181
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 18
+m.etimes= 182
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 17
+m.etimes= 183
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 19
+=====strPair====
+Input=
+InputOp=
+m.etimes= 181
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 18
+m.etimes= 182
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=====strPair====
+Input=
+=======stdout_end=========
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 17
+m.etimes= 183
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 18
+m.etimes= 182
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 17
+m.etimes= 183
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 16
+m.etimes= 184
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 16
+m.etimes= 184
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 16
+m.etimes= 184
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 15
+m.etimes= 185
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 15
+m.etimes= 185
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 14
+m.etimes= 186
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 13
+m.etimes= 187
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 15
+m.etimes= 185
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 14
+m.etimes= 186
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 14
+m.etimes= 186
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 13
+m.etimes= 187
+quit= 13
+m.etimes= 187
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 12
+m.etimes= 188
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+quit= 12
+m.etimes= 188
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 12
+m.etimes= 188
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 11
+m.etimes= 189
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 11
+m.etimes= 189
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 10
+m.etimes= 190
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 9
+m.etimes= 191
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 11
+m.etimes= 189
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 10
+m.etimes= 190
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 10
+m.etimes= 190
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 9
+m.etimes= 191
+=====strPair====
+Input=
+InputOp=
+quit= 9
+m.etimes= 191
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 8
+m.etimes= 192
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 8
+m.etimes= 192
+=======鍙嶉淇″彿_end=======
+quit= 8
+m.etimes= 192
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 7
+m.etimes= 193
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 7
+m.etimes= 193
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 6
+m.etimes= 194
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 5
+m.etimes= 195
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 7
+m.etimes= 193
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 6
+m.etimes= 194
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 6
+m.etimes= 194
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 5
+m.etimes= 195
+=====strPair====
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 5
+m.etimes= 195
+Input=
+=====strPair====
+Input=
+InputOp=
+InputOp=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====stdout_start=====
+====鍙嶉淇″彿_start=====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+quit= 4
+m.etimes= 196
+=======鍙嶉淇″彿_end=======
+quit= 4
+m.etimes= 196
+Input=
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 4
+m.etimes= 196
+=====strPair====
+InputOp=
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 3
+m.etimes= 197
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 3
+m.etimes= 197
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 2
+m.etimes= 198
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 3
+m.etimes= 197
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 1
+m.etimes= 199
+=======鍙嶉淇″彿_end=======
+quit= 2
+m.etimes= 198
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 1
+m.etimes= 199
+=====strPair====
+Input=
+InputOp=
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 2
+m.etimes= 198
+====stdout_start=====
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 1
+m.etimes= 199
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestMock_1
+--- PASS: TestMock_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 0
+exit loop
+[FUZZER] TestMock_1 elapsed: 53.388s, etimes=200
+Input=
+====stdout_start=====
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+cancel and return done
+cancel and return done
+====stdout_start=====
+=== RUN   TestTagAutoWireBeanFactory_AutoWire_1
+--- PASS: TestTagAutoWireBeanFactory_AutoWire_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 0
+=== RUN   TestTimeTypeAdapter_DefaultValue_1
+--- PASS: TestTimeTypeAdapter_DefaultValue_1 (0.00s)
+PASS
+
+InputOp=
+cancel and return done
+cancel and return done
+cancel and return done
+cancel and return done
+cancel and return done
+cancel and return done
+=======stdout_end=========
+exit loop
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 0
+exit loop
+[FUZZER] TestTimeTypeAdapter_DefaultValue_1 elapsed: 53.388s, etimes=200
+cancel and return done
+cancel and return done
+[FUZZER] TestTagAutoWireBeanFactory_AutoWire_1 elapsed: 53.388s, etimes=200
+cancel and return done
+cancel and return done
+2026-07-27 21:17:11.4926351 +0800 CST m=+54.476341101 [1/3]	TestMock_1	PASS
+2026-07-27 21:17:11.5061947 +0800 CST m=+54.489900701 [2/3]	TestTimeTypeAdapter_DefaultValue_1	PASS
+2026-07-27 21:17:11.5061947 +0800 CST m=+54.489900701 [3/3]	TestTagAutoWireBeanFactory_AutoWire_1	PASS
+2026-07-27 21:17:11.5061947 +0800 CST m=+54.489900701 [Fuzzer] Finish, elapsed: 54.477s

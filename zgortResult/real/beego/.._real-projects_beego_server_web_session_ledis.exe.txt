@@ -1,0 +1,2657 @@
+﻿bin =  D:\gopath\src\gopie\testbins\beego\.._real-projects_beego_server_web_session_ledis.exe
+----len bin2tests= 1
+--len tests= 1
+m.max= 10000
+m.etimes= 0
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+2026-07-27 22:37:26.7693856 +0800 CST m=+2.295038701 [WORKER] 2026-07-27 22:37:26.7552761 +0800 CST m=+2.280929201	[WORKER 1] ORACLE kind=panic signature=f9a9b7fdc770806949ca0f6e6fca6738f8d066f0c6617274bc2befb8a183ada0 new=true count=1 associated=false execution=1 message="runtime error: invalid memory address or nil pointer dereference"
+2026-07-27 22:37:26.7693856 +0800 CST m=+2.295038701 [WORKER] 2026-07-27 22:37:26.7693856 +0800 CST m=+2.295038701	[ORACLE REPORT] kind=panic signature=f9a9b7fdc770806949ca0f6e6fca6738f8d066f0c6617274bc2befb8a183ada0
+panic: runtime error: invalid memory address or nil pointer dereference
+[signal 0xc0000005 code=0x0 addr=0x0 pc=0x4b9b4c]
+
+goroutine 16 [running]:
+sync.(*RWMutex).RLock(0x0)
+	D:/Program Files/GO/go1.19.1/src/sync/rwmutex.go:66 +0x2c
+github.com/ledisdb/ledisdb/config.(*Config).GetReadonly(0xc000179340)
+	D:/gopath/pkg/mod/github.com/ledisdb/ledisdb@v0.0.0-20200510135210-d35789ec47e6/config/config.go:307 +0x45
+github.com/ledisdb/ledisdb/ledis.(*Ledis).IsReadOnly(0xc0001ce0c0)
+	D:/gopath/pkg/mod/github.com/ledisdb/ledisdb@v0.0.0-20200510135210-d35789ec47e6/ledis/ledis.go:190 +0x45
+github.com/ledisdb/ledisdb/ledis.(*Ledis).checkTTL.func1()
+	D:/gopath/pkg/mod/github.com/ledisdb/ledisdb@v0.0.0-20200510135210-d35789ec47e6/ledis/ledis.go:218 +0x3f2
+created by github.com/ledisdb/ledisdb/ledis.(*Ledis).checkTTL
+	D:/gopath/pkg/mod/github.com/ledisdb/ledisdb@v0.0.0-20200510135210-d35789ec47e6/ledis/ledis.go:209 +0x1e5
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.54s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 200
+m.etimes= 1
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 199
+m.etimes= 2
+[PRESTAGE] Pre-execution finished, total gort pairs: cover=0, suspect=0, topology_edges=0
+[OP_PRESTAGE] Generated 0 op pairs from 0 covered goroutine pairs
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 198
+m.etimes= 3
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 197
+m.etimes= 4
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.53s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+2026-07-27 22:37:27.8556818 +0800 CST m=+3.381334901 [WORKER] 2026-07-27 22:37:27.8556818 +0800 CST m=+3.381334901	[WORKER 1] ORACLE kind=panic signature=f9a9b7fdc770806949ca0f6e6fca6738f8d066f0c6617274bc2befb8a183ada0 new=false count=2 associated=false execution=5 message="runtime error: invalid memory address or nil pointer dereference"
+=======鍙嶉淇″彿_end=======
+quit= 196
+m.etimes= 5
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 195
+m.etimes= 6
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 194
+m.etimes= 7
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.50s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 193
+m.etimes= 8
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 192
+=====strPair====
+Input=
+InputOp=
+m.etimes= 9
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 191
+m.etimes= 10
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 190
+m.etimes= 11
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 189
+m.etimes= 12
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 188
+m.etimes= 13
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 187
+m.etimes= 14
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 186
+m.etimes= 15
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 185
+m.etimes= 16
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 184
+m.etimes= 17
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 183
+m.etimes= 18
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 182
+m.etimes= 19
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 181
+m.etimes= 20
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 180
+m.etimes= 21
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 179
+m.etimes= 22
+=====strPair====
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 178
+m.etimes= 23
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 177
+m.etimes= 24
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 176
+m.etimes= 25
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 175
+m.etimes= 26
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 174
+m.etimes= 27
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 173
+m.etimes= 28
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 172
+m.etimes= 29
+=====strPair====
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 171
+m.etimes= 30
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 170
+m.etimes= 31
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 169
+m.etimes= 32
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 168
+m.etimes= 33
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 167
+m.etimes= 34
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 166
+m.etimes= 35
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 165
+m.etimes= 36
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 164
+m.etimes= 37
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 163
+m.etimes= 38
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 162
+m.etimes= 39
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 161
+m.etimes= 40
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 160
+m.etimes= 41
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 159
+m.etimes= 42
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 158
+m.etimes= 43
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 157
+m.etimes= 44
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 156
+m.etimes= 45
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 155
+m.etimes= 46
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 154
+m.etimes= 47
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 153
+m.etimes= 48
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 152
+m.etimes= 49
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 151
+m.etimes= 50
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 150
+m.etimes= 51
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 149
+m.etimes= 52
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 148
+m.etimes= 53
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 147
+m.etimes= 54
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 146
+m.etimes= 55
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 145
+m.etimes= 56
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 144
+m.etimes= 57
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 143
+m.etimes= 58
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 142
+m.etimes= 59
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 141
+m.etimes= 60
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 140
+m.etimes= 61
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 139
+m.etimes= 62
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 138
+m.etimes= 63
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 137
+m.etimes= 64
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 136
+m.etimes= 65
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 135
+m.etimes= 66
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 134
+m.etimes= 67
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 133
+m.etimes= 68
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 132
+m.etimes= 69
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 131
+m.etimes= 70
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 130
+m.etimes= 71
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 129
+m.etimes= 72
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 128
+m.etimes= 73
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 127
+m.etimes= 74
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 126
+m.etimes= 75
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 125
+m.etimes= 76
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 124
+m.etimes= 77
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 123
+m.etimes= 78
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 122
+m.etimes= 79
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 121
+m.etimes= 80
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 120
+m.etimes= 81
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 119
+m.etimes= 82
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 118
+m.etimes= 83
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 117
+m.etimes= 84
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 116
+m.etimes= 85
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 115
+m.etimes= 86
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 114
+m.etimes= 87
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 113
+m.etimes= 88
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 112
+m.etimes= 89
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 111
+m.etimes= 90
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 110
+m.etimes= 91
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 109
+m.etimes= 92
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 108
+m.etimes= 93
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 107
+m.etimes= 94
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 106
+m.etimes= 95
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 105
+m.etimes= 96
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 104
+m.etimes= 97
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 103
+m.etimes= 98
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 102
+m.etimes= 99
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 101
+m.etimes= 100
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 100
+m.etimes= 101
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 99
+m.etimes= 102
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 98
+m.etimes= 103
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 97
+m.etimes= 104
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 96
+m.etimes= 105
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 95
+m.etimes= 106
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 94
+m.etimes= 107
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 93
+m.etimes= 108
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 92
+m.etimes= 109
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 91
+=====strPair====
+Input=
+InputOp=
+m.etimes= 110
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 90
+m.etimes= 111
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 89
+m.etimes= 112
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 88
+m.etimes= 113
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 87
+m.etimes= 114
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 86
+m.etimes= 115
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 85
+m.etimes= 116
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 84
+m.etimes= 117
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 83
+m.etimes= 118
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 82
+m.etimes= 119
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 81
+m.etimes= 120
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 80
+m.etimes= 121
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 79
+m.etimes= 122
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 78
+m.etimes= 123
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 77
+m.etimes= 124
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 76
+m.etimes= 125
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 75
+m.etimes= 126
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 74
+m.etimes= 127
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 73
+m.etimes= 128
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 72
+m.etimes= 129
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 71
+m.etimes= 130
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 70
+m.etimes= 131
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 69
+m.etimes= 132
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 68
+m.etimes= 133
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 67
+m.etimes= 134
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 66
+m.etimes= 135
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 65
+m.etimes= 136
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 64
+m.etimes= 137
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 63
+m.etimes= 138
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 62
+m.etimes= 139
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 61
+m.etimes= 140
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 60
+m.etimes= 141
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 59
+m.etimes= 142
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 58
+m.etimes= 143
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 57
+m.etimes= 144
+2026-07-27 22:38:04.3109287 +0800 CST m=+39.836581801 [WORKER] 2026-07-27 22:38:04.3109287 +0800 CST m=+39.836581801	[WORKER 1] ORACLE kind=panic signature=f9a9b7fdc770806949ca0f6e6fca6738f8d066f0c6617274bc2befb8a183ada0 new=false count=3 associated=false execution=144 message="runtime error: invalid memory address or nil pointer dereference"
+=====strPair====
+====stdout_start=====
+Input=
+InputOp=
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 56
+m.etimes= 145
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 55
+m.etimes= 146
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 54
+m.etimes= 147
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 53
+m.etimes= 148
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 52
+m.etimes= 149
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 51
+m.etimes= 150
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 50
+m.etimes= 151
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 49
+m.etimes= 152
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 48
+m.etimes= 153
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 47
+m.etimes= 154
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 46
+m.etimes= 155
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 45
+m.etimes= 156
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 44
+m.etimes= 157
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 43
+m.etimes= 158
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 42
+m.etimes= 159
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 41
+m.etimes= 160
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 40
+m.etimes= 161
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 39
+m.etimes= 162
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 38
+m.etimes= 163
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 37
+m.etimes= 164
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 36
+m.etimes= 165
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 35
+m.etimes= 166
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 34
+m.etimes= 167
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 33
+m.etimes= 168
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 32
+m.etimes= 169
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 31
+m.etimes= 170
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 30
+m.etimes= 171
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 29
+m.etimes= 172
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 28
+m.etimes= 173
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 27
+m.etimes= 174
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 26
+m.etimes= 175
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 25
+m.etimes= 176
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 24
+m.etimes= 177
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 23
+m.etimes= 178
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 22
+m.etimes= 179
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 21
+m.etimes= 180
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 20
+m.etimes= 181
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 19
+m.etimes= 182
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 18
+m.etimes= 183
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 17
+m.etimes= 184
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 16
+m.etimes= 185
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 15
+m.etimes= 186
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 14
+m.etimes= 187
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 13
+m.etimes= 188
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 12
+m.etimes= 189
+=====strPair====
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 11
+m.etimes= 190
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 10
+m.etimes= 191
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 9
+m.etimes= 192
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 8
+m.etimes= 193
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 7
+m.etimes= 194
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 6
+m.etimes= 195
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 5
+m.etimes= 196
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 4
+m.etimes= 197
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 3
+m.etimes= 198
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 2
+m.etimes= 199
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.03s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 1
+m.etimes= 200
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestProvider_SessionInit_1
+--- PASS: TestProvider_SessionInit_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 0
+exit loop
+cancel and return done
+cancel and return done
+cancel and return done
+cancel and return done
+[FUZZER] TestProvider_SessionInit_1 elapsed: 53.991s, etimes=201
+2026-07-27 22:38:19.5647975 +0800 CST m=+55.090450601 [1/1]	TestProvider_SessionInit_1	FAIL	kind=panic signature=f9a9b7fdc770806949ca0f6e6fca6738f8d066f0c6617274bc2befb8a183ada0 count=3 associated=0 message="runtime error: invalid memory address or nil pointer dereference"
+2026-07-27 22:38:19.5647975 +0800 CST m=+55.090450601 [Fuzzer] Finish, elapsed: 55.076s

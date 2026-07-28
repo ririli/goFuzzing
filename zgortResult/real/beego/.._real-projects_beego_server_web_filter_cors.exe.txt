@@ -1,0 +1,5 @@
+﻿bin =  D:\gopath\src\gopie\testbins\beego\.._real-projects_beego_server_web_filter_cors.exe
+no tests found
+----len bin2tests= 1
+--len tests= 0
+2026-07-27 22:33:40.6294441 +0800 CST m=+1.124155101 [Fuzzer] Finish, elapsed: 1.130s

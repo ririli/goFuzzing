@@ -1,0 +1,5248 @@
+﻿bin =  D:\gopath\src\gopie\testbins\beego\.._real-projects_beego_core_config_xml.exe
+----len bin2tests= 1
+--len tests= 2
+m.max= 10000
+m.etimes= 0
+m.max= 10000
+m.etimes= 0
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 199
+m.etimes= 1
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 198
+m.etimes= 2
+[PRESTAGE] Pre-execution finished, total gort pairs: cover=0, suspect=0, topology_edges=0
+[OP_PRESTAGE] Generated 0 op pairs from 0 covered goroutine pairs
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 197
+m.etimes= 3
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.51s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 196
+m.etimes= 4
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.53s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 199
+m.etimes= 1
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.53s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 198
+m.etimes= 2
+[PRESTAGE] Pre-execution finished, total gort pairs: cover=0, suspect=0, topology_edges=0
+[OP_PRESTAGE] Generated 0 op pairs from 0 covered goroutine pairs
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.53s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 197
+m.etimes= 3
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.53s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 196
+m.etimes= 4
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 195
+m.etimes= 5
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 194
+m.etimes= 6
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 193
+m.etimes= 7
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 195
+m.etimes= 5
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 194
+m.etimes= 6
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 193
+m.etimes= 7
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.50s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 192
+m.etimes= 8
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.52s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 192
+m.etimes= 8
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 191
+m.etimes= 9
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 190
+m.etimes= 10
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 189
+m.etimes= 11
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 191
+m.etimes= 9
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 190
+m.etimes= 10
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 189
+m.etimes= 11
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 188
+m.etimes= 12
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 188
+m.etimes= 12
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 187
+m.etimes= 13
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 186
+m.etimes= 14
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 185
+m.etimes= 15
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 187
+m.etimes= 13
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 186
+m.etimes= 14
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 185
+m.etimes= 15
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 184
+m.etimes= 16
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 184
+m.etimes= 16
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 183
+m.etimes= 17
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 182
+m.etimes= 18
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 181
+m.etimes= 19
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 183
+m.etimes= 17
+=====strPair====
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 182
+m.etimes= 18
+=====strPair====
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 181
+m.etimes= 19
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 180
+m.etimes= 20
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 180
+m.etimes= 20
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 179
+m.etimes= 21
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 178
+m.etimes= 22
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 177
+m.etimes= 23
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 179
+=====strPair====
+Input=
+InputOp=
+m.etimes= 21
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 178
+m.etimes= 22
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 177
+m.etimes= 23
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 176
+m.etimes= 24
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 176
+m.etimes= 24
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 175
+m.etimes= 25
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 174
+m.etimes= 26
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 173
+m.etimes= 27
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 175
+m.etimes= 25
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 174
+m.etimes= 26
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 173
+m.etimes= 27
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 172
+m.etimes= 28
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 172
+m.etimes= 28
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 171
+m.etimes= 29
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 170
+m.etimes= 30
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 169
+m.etimes= 31
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 171
+m.etimes= 29
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 170
+m.etimes= 30
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 169
+m.etimes= 31
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 168
+m.etimes= 32
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 168
+m.etimes= 32
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 167
+m.etimes= 33
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 166
+m.etimes= 34
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 165
+m.etimes= 35
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 167
+m.etimes= 33
+=====strPair====
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 166
+m.etimes= 34
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 165
+m.etimes= 35
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 164
+m.etimes= 36
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 164
+m.etimes= 36
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 163
+m.etimes= 37
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 162
+m.etimes= 38
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 161
+m.etimes= 39
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 163
+m.etimes= 37
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 162
+m.etimes= 38
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 161
+m.etimes= 39
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 160
+m.etimes= 40
+Input=
+InputOp=
+=====strPair====
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 160
+m.etimes= 40
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 159
+m.etimes= 41
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 158
+m.etimes= 42
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 157
+m.etimes= 43
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 159
+m.etimes= 41
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 158
+m.etimes= 42
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 157
+m.etimes= 43
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 156
+m.etimes= 44
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 156
+m.etimes= 44
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 155
+m.etimes= 45
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 154
+m.etimes= 46
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 153
+m.etimes= 47
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 155
+m.etimes= 45
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 154
+m.etimes= 46
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 153
+m.etimes= 47
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 152
+m.etimes= 48
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 152
+m.etimes= 48
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 151
+m.etimes= 49
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 150
+m.etimes= 50
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 149
+m.etimes= 51
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 151
+m.etimes= 49
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 150
+m.etimes= 50
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 149
+m.etimes= 51
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 148
+m.etimes= 52
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 148
+m.etimes= 52
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 147
+m.etimes= 53
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 146
+m.etimes= 54
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 145
+m.etimes= 55
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 147
+m.etimes= 53
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 146
+m.etimes= 54
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 145
+m.etimes= 55
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 144
+m.etimes= 56
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 144
+m.etimes= 56
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 143
+m.etimes= 57
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 142
+m.etimes= 58
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 141
+m.etimes= 59
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 143
+m.etimes= 57
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 142
+m.etimes= 58
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 141
+m.etimes= 59
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 140
+m.etimes= 60
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 140
+m.etimes= 60
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 139
+m.etimes= 61
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 138
+m.etimes= 62
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 137
+m.etimes= 63
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 139
+m.etimes= 61
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 138
+m.etimes= 62
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 137
+m.etimes= 63
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 136
+m.etimes= 64
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 136
+m.etimes= 64
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 135
+m.etimes= 65
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 134
+m.etimes= 66
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 133
+m.etimes= 67
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 135
+m.etimes= 65
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 134
+=====strPair====
+Input=
+InputOp=
+m.etimes= 66
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 133
+m.etimes= 67
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 132
+m.etimes= 68
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 132
+m.etimes= 68
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 131
+m.etimes= 69
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 130
+m.etimes= 70
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 129
+m.etimes= 71
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 131
+m.etimes= 69
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 130
+m.etimes= 70
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 129
+m.etimes= 71
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 128
+m.etimes= 72
+=====strPair====
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 128
+m.etimes= 72
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 127
+m.etimes= 73
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 126
+m.etimes= 74
+=====strPair====
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 125
+m.etimes= 75
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 127
+m.etimes= 73
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+InputOp=
+quit= 126
+m.etimes= 74
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 125
+m.etimes= 75
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 124
+m.etimes= 76
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 124
+m.etimes= 76
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 123
+m.etimes= 77
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 122
+m.etimes= 78
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 121
+m.etimes= 79
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 123
+m.etimes= 77
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 122
+m.etimes= 78
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 121
+m.etimes= 79
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 120
+m.etimes= 80
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 120
+m.etimes= 80
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 119
+m.etimes= 81
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 119
+m.etimes= 81
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 118
+m.etimes= 82
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 117
+m.etimes= 83
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 118
+m.etimes= 82
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 117
+m.etimes= 83
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 116
+m.etimes= 84
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 116
+m.etimes= 84
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 115
+m.etimes= 85
+====stdout_start=====
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 114
+m.etimes= 86
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 115
+m.etimes= 85
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 113
+m.etimes= 87
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 114
+m.etimes= 86
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.01s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 113
+m.etimes= 87
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 112
+m.etimes= 88
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 112
+m.etimes= 88
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 111
+m.etimes= 89
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 110
+m.etimes= 90
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 109
+m.etimes= 91
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 111
+m.etimes= 89
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 110
+m.etimes= 90
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=====strPair====
+Input=
+InputOp=
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 109
+m.etimes= 91
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 108
+m.etimes= 92
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 108
+m.etimes= 92
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 107
+m.etimes= 93
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 106
+m.etimes= 94
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 105
+m.etimes= 95
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 107
+m.etimes= 93
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 106
+m.etimes= 94
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 105
+m.etimes= 95
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 104
+m.etimes= 96
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 104
+m.etimes= 96
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 103
+m.etimes= 97
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 102
+m.etimes= 98
+=====strPair====
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 101
+m.etimes= 99
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 103
+m.etimes= 97
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 102
+m.etimes= 98
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 101
+m.etimes= 99
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 100
+m.etimes= 100
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 100
+m.etimes= 100
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 99
+m.etimes= 101
+====stdout_start=====
+=====strPair====
+Input=
+InputOp=
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 98
+m.etimes= 102
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 97
+m.etimes= 103
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 99
+m.etimes= 101
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 98
+m.etimes= 102
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 97
+m.etimes= 103
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 96
+m.etimes= 104
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 96
+m.etimes= 104
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 95
+m.etimes= 105
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 94
+m.etimes= 106
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 93
+m.etimes= 107
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 95
+m.etimes= 105
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 94
+m.etimes= 106
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 93
+m.etimes= 107
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 92
+m.etimes= 108
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 92
+m.etimes= 108
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 91
+m.etimes= 109
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 90
+m.etimes= 110
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+quit= 89
+m.etimes= 111
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 91
+m.etimes= 109
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 90
+m.etimes= 110
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 89
+m.etimes= 111
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 88
+m.etimes= 112
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 88
+m.etimes= 112
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 87
+m.etimes= 113
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 87
+m.etimes= 113
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 86
+m.etimes= 114
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 85
+m.etimes= 115
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 86
+m.etimes= 114
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 85
+m.etimes= 115
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 84
+m.etimes= 116
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 84
+m.etimes= 116
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 83
+m.etimes= 117
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 82
+m.etimes= 118
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 81
+m.etimes= 119
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 83
+m.etimes= 117
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 82
+m.etimes= 118
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 81
+m.etimes= 119
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 80
+m.etimes= 120
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 80
+m.etimes= 120
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 79
+m.etimes= 121
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 78
+m.etimes= 122
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 77
+m.etimes= 123
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 79
+m.etimes= 121
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 78
+m.etimes= 122
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 77
+m.etimes= 123
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 76
+m.etimes= 124
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 76
+m.etimes= 124
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 75
+m.etimes= 125
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 74
+m.etimes= 126
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 73
+m.etimes= 127
+=====strPair====
+=====strPair====
+Input=
+InputOp=
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 75
+m.etimes= 125
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 74
+m.etimes= 126
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 73
+m.etimes= 127
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 72
+m.etimes= 128
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 72
+m.etimes= 128
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 71
+m.etimes= 129
+=====strPair====
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 71
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+m.etimes= 129
+Input=
+InputOp=
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 70
+m.etimes= 130
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 69
+m.etimes= 131
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 70
+m.etimes= 130
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 69
+m.etimes= 131
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 68
+m.etimes= 132
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 68
+m.etimes= 132
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 67
+m.etimes= 133
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 66
+m.etimes= 134
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 65
+m.etimes= 135
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 67
+m.etimes= 133
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 66
+m.etimes= 134
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 65
+m.etimes= 135
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+InputOp=
+quit= 64
+m.etimes= 136
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 64
+m.etimes= 136
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 63
+m.etimes= 137
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 62
+m.etimes= 138
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 61
+m.etimes= 139
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 63
+m.etimes= 137
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+quit= 62
+InputOp=
+m.etimes= 138
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 61
+m.etimes= 139
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 60
+m.etimes= 140
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 60
+m.etimes= 140
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 59
+m.etimes= 141
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 58
+m.etimes= 142
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 57
+m.etimes= 143
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 59
+m.etimes= 141
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 58
+m.etimes= 142
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 57
+m.etimes= 143
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 56
+m.etimes= 144
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 56
+m.etimes= 144
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 55
+m.etimes= 145
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 54
+m.etimes= 146
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 53
+m.etimes= 147
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 55
+m.etimes= 145
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 54
+m.etimes= 146
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 53
+m.etimes= 147
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 52
+m.etimes= 148
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 52
+m.etimes= 148
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 51
+m.etimes= 149
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 50
+m.etimes= 150
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 49
+m.etimes= 151
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 51
+m.etimes= 149
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 50
+m.etimes= 150
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 49
+=====strPair====
+Input=
+InputOp=
+m.etimes= 151
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 48
+m.etimes= 152
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 48
+m.etimes= 152
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 47
+m.etimes= 153
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 46
+m.etimes= 154
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 45
+m.etimes= 155
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 47
+m.etimes= 153
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 46
+m.etimes= 154
+=====strPair====
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 45
+m.etimes= 155
+Input=
+=====strPair====
+Input=
+InputOp=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 44
+m.etimes= 156
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 44
+m.etimes= 156
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 43
+m.etimes= 157
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 42
+m.etimes= 158
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 41
+m.etimes= 159
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 43
+m.etimes= 157
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 42
+m.etimes= 158
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 41
+m.etimes= 159
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 40
+m.etimes= 160
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 40
+m.etimes= 160
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 39
+m.etimes= 161
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 38
+m.etimes= 162
+=====strPair====
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 37
+=====strPair====
+Input=
+Input=
+InputOp=
+m.etimes= 163
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 39
+m.etimes= 161
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 38
+m.etimes= 162
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 37
+m.etimes= 163
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 36
+m.etimes= 164
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 36
+m.etimes= 164
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 35
+m.etimes= 165
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 34
+m.etimes= 166
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 33
+m.etimes= 167
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 35
+m.etimes= 165
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 34
+m.etimes= 166
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 33
+m.etimes= 167
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 32
+m.etimes= 168
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 32
+m.etimes= 168
+=====strPair====
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 31
+m.etimes= 169
+Input=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 30
+m.etimes= 170
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 29
+m.etimes= 171
+=====strPair====
+=====strPair====
+Input=
+Input=
+InputOp=
+InputOp=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 31
+m.etimes= 169
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 30
+m.etimes= 170
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 29
+m.etimes= 171
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 28
+m.etimes= 172
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 28
+m.etimes= 172
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 27
+m.etimes= 173
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 26
+m.etimes= 174
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+quit= 25
+m.etimes= 175
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 27
+m.etimes= 173
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 26
+m.etimes= 174
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 25
+m.etimes= 175
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 24
+m.etimes= 176
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 24
+m.etimes= 176
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 23
+m.etimes= 177
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 22
+m.etimes= 178
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=====strPair====
+Input=
+InputOp=
+=======鍙嶉淇″彿_end=======
+quit= 21
+m.etimes= 179
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 23
+m.etimes= 177
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 22
+m.etimes= 178
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 21
+m.etimes= 179
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 20
+m.etimes= 180
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 20
+m.etimes= 180
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 19
+m.etimes= 181
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 18
+m.etimes= 182
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 17
+m.etimes= 183
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 19
+m.etimes= 181
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 18
+m.etimes= 182
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 17
+m.etimes= 183
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 16
+m.etimes= 184
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 16
+m.etimes= 184
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 15
+m.etimes= 185
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 14
+m.etimes= 186
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 13
+m.etimes= 187
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 15
+m.etimes= 185
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 14
+m.etimes= 186
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 13
+m.etimes= 187
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 12
+m.etimes= 188
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 12
+m.etimes= 188
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 11
+m.etimes= 189
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 10
+m.etimes= 190
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 9
+m.etimes= 191
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 11
+m.etimes= 189
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 10
+m.etimes= 190
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 9
+m.etimes= 191
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 8
+m.etimes= 192
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 8
+m.etimes= 192
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 7
+m.etimes= 193
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 6
+m.etimes= 194
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+quit= 5
+m.etimes= 195
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 7
+m.etimes= 193
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 6
+m.etimes= 194
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 5
+m.etimes= 195
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 4
+m.etimes= 196
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 4
+m.etimes= 196
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 3
+m.etimes= 197
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 2
+m.etimes= 198
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 1
+m.etimes= 199
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 3
+m.etimes= 197
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 2
+m.etimes= 198
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 1
+m.etimes= 199
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+=====strPair====
+Input=
+InputOp=
+====stdout_start=====
+=== RUN   TestXMLMissConfig_1
+--- PASS: TestXMLMissConfig_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 0
+exit loop
+cancel and return done
+cancel and return done
+[FUZZER] TestXMLMissConfig_1 elapsed: 53.175s, etimes=200
+cancel and return done
+cancel and return done
+2026-07-27 21:25:19.0138189 +0800 CST m=+54.258763301 [1/2]	TestXMLMissConfig_1	PASS
+=====strPair====
+====stdout_start=====
+=== RUN   TestXML_1
+--- PASS: TestXML_1 (0.00s)
+PASS
+
+=======stdout_end=========
+====鍙嶉淇″彿_start=====
+=======鍙嶉淇″彿_end=======
+quit= 0
+exit loop
+Input=
+cancel and return done
+InputOp=
+cancel and return done
+cancel and return done
+cancel and return done
+[FUZZER] TestXML_1 elapsed: 53.221s, etimes=200
+2026-07-27 21:25:19.0600846 +0800 CST m=+54.305029001 [2/2]	TestXML_1	PASS
+2026-07-27 21:25:19.0600846 +0800 CST m=+54.305029001 [Fuzzer] Finish, elapsed: 54.291s
