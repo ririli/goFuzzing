@@ -1,7 +1,9 @@
 package passes
 
 import (
+	"fmt"
 	"go/ast"
+	"go/token"
 	"io/ioutil"
 	"log"
 	"toolkit/pkg/inst"
@@ -73,10 +75,21 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 		case *ast.SendStmt:
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
-			ch := concrete.Chan
+
+			// 引入临时变量，避免 channel 表达式被双重求值
+			tmpIdent := &ast.Ident{Name: fmt.Sprintf("_ch_%d", id)}
+			tmpAssign := &ast.AssignStmt{
+				Tok: token.DEFINE,
+				Lhs: []ast.Expr{tmpIdent},
+				Rhs: []ast.Expr{concrete.Chan},
+			}
+			c.InsertBefore(tmpAssign)
+
+			// SendStmt 和 AF 都使用临时变量，channel 表达式只求值一次
+			concrete.Chan = tmpIdent
 			before := GenInstCallBF("InstChBF", id)
 			c.InsertBefore(before)
-			after := GenInstCallWithType("InstChAF", ch, id, "send")
+			after := GenInstCallWithType("InstChAF", tmpIdent, id, "send")
 			c.InsertAfter(after)
 
 			iCtx.SetMetadata(ChannelNeedInst, true)
@@ -90,15 +103,23 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 						Add(concrete.Pos(), id)
 						args := callExpr.Args
 						if len(args) == 1 {
-							if ch, ok := args[0].(*ast.Ident); ok {
-								before := GenInstCallBF("InstChBF", id)
-								c.InsertBefore(before)
-
-								after := GenInstCallWithType("InstChAF", ch, id, "close")
-								c.InsertAfter(after)
-
-								iCtx.SetMetadata(ChannelNeedInst, true)
+							// 引入临时变量，不再限制 channel 表达式类型
+							tmpIdent := &ast.Ident{Name: fmt.Sprintf("_ch_%d", id)}
+							tmpAssign := &ast.AssignStmt{
+								Tok: token.DEFINE,
+								Lhs: []ast.Expr{tmpIdent},
+								Rhs: []ast.Expr{args[0]},
 							}
+							c.InsertBefore(tmpAssign)
+
+							// close 参数和 AF 都使用临时变量
+							callExpr.Args[0] = tmpIdent
+							before := GenInstCallBF("InstChBF", id)
+							c.InsertBefore(before)
+							after := GenInstCallWithType("InstChAF", tmpIdent, id, "close")
+							c.InsertAfter(after)
+
+							iCtx.SetMetadata(ChannelNeedInst, true)
 						}
 					}
 				}
@@ -112,29 +133,33 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 					Add(concrete.Pos(), id)
 					args := callExpr.Args
 					if len(args) == 1 {
-						if ch, ok := args[0].(*ast.Ident); ok {
-							before := GenInstCallBF("InstChBF", id)
-							after := GenInstCallWithType("InstChAF", ch, id, "close")
-
-							body := &ast.BlockStmt{List: []ast.Stmt{
-								before,
-								NewArgCallExpr("", "close", callExpr.Args),
-								after,
-							}}
-
-							deferStmt := &ast.DeferStmt{
-								Call: &ast.CallExpr{
-									Fun: &ast.FuncLit{
-										Type: &ast.FuncType{Params: &ast.FieldList{List: nil}},
-										Body: body,
-									},
-									Args: []ast.Expr{},
-								},
-							}
-
-							c.Replace(deferStmt)
-							iCtx.SetMetadata(ChannelNeedInst, true)
+						// 临时变量在 defer 外部求值，保证求值时机与原 defer 参数语义一致
+						tmpIdent := &ast.Ident{Name: fmt.Sprintf("_ch_%d", id)}
+						tmpAssign := &ast.AssignStmt{
+							Tok: token.DEFINE,
+							Lhs: []ast.Expr{tmpIdent},
+							Rhs: []ast.Expr{args[0]},
 						}
+						c.InsertBefore(tmpAssign)
+
+						body := &ast.BlockStmt{List: []ast.Stmt{
+							GenInstCallBF("InstChBF", id),
+							NewArgCallExpr("", "close", []ast.Expr{tmpIdent}),
+							GenInstCallWithType("InstChAF", tmpIdent, id, "close"),
+						}}
+
+						deferStmt := &ast.DeferStmt{
+							Call: &ast.CallExpr{
+								Fun: &ast.FuncLit{
+									Type: &ast.FuncType{Params: &ast.FieldList{List: nil}},
+									Body: body,
+								},
+								Args: []ast.Expr{},
+							},
+						}
+
+						c.Replace(deferStmt)
+						iCtx.SetMetadata(ChannelNeedInst, true)
 					}
 				}
 			}

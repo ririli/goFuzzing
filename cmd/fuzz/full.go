@@ -7,7 +7,13 @@ import (
 	"toolkit/pkg/fuzzer"
 )
 
-func Full(path string, llevel string, feature string, maxworker int) {
+func Full(path string, llevel string, feature string, maxworker int, timeout, rtimeout int) {
+	if timeout == 0 {
+		timeout = 30
+	}
+	if rtimeout == 0 {
+		rtimeout = 200
+	}
 	startTime := time.Now()
 	resCh := make(chan string, 100000)
 	logCh := make(chan string, 100000)
@@ -49,8 +55,8 @@ func Full(path string, llevel string, feature string, maxworker int) {
 				cfg.Bin = bin
 				cfg.Fn = test
 				cfg.MaxWorker = 4
-				cfg.TimeOut = 30
-				cfg.RecoverTimeOut = 200
+				cfg.TimeOut = timeout
+				cfg.RecoverTimeOut = rtimeout
 				cfg.LogCh = logCh
 				cfg.MaxQuit = 200 // 推出循环次数
 				cfg.MaxExecution = 10000

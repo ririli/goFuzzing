@@ -1,6 +1,7 @@
 package passes
 
 import (
+	"fmt"
 	"go/ast"
 	"go/token"
 	"toolkit/pkg/inst"
@@ -105,14 +106,31 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
 
-			wg := selectorExpr.X
-			p_wg := &ast.UnaryExpr{Op: token.AND, X: wg}
+			// 提取 receiver 到临时变量（defer 注册时求值，避免闭包延迟求值）
+			tmpIdent := &ast.Ident{Name: fmt.Sprintf("_wg_%d", id)}
+			tmpAssign := &ast.AssignStmt{
+				Tok: token.DEFINE,
+				Lhs: []ast.Expr{tmpIdent},
+				Rhs: []ast.Expr{selectorExpr.X},
+			}
+			c.InsertBefore(tmpAssign)
+
+			// 重建方法调用：_wg_N.Done() 或 _wg_N.Add(args...)
+			tmpSelector := &ast.SelectorExpr{
+				X:   tmpIdent,
+				Sel: selectorExpr.Sel,
+			}
+			tmpCall := &ast.CallExpr{
+				Fun:  tmpSelector,
+				Args: callExpr.Args,
+			}
+
 			before := GenInstCallBF("InstWgBF", id)
-			after := GenInstCallWithType("InstWgAF", p_wg, id, opType)
+			after := GenInstCallWithType("InstWgAF", &ast.UnaryExpr{Op: token.AND, X: tmpIdent}, id, opType)
 
 			body := &ast.BlockStmt{List: []ast.Stmt{
 				before,
-				&ast.ExprStmt{callExpr},
+				&ast.ExprStmt{X: tmpCall},
 				after,
 			}}
 

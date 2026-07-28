@@ -1,6 +1,7 @@
 package passes
 
 import (
+	"fmt"
 	"go/ast"
 	"go/token"
 	"strconv"
@@ -58,7 +59,23 @@ func (p *GoroutinePass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id) // 注册goroutine ID到全局map（供其他pass查找）
 
-			newStmt := wrapGoStmt(concrete, id)
+			// 提取 go 语句的参数到临时变量（在父 goroutine 中求值）
+			args := concrete.Call.Args
+			var argIdents []ast.Expr
+			if len(args) > 0 {
+				for i, arg := range args {
+					tmpIdent := &ast.Ident{Name: fmt.Sprintf("_arg_%d_%d", id, i)}
+					tmpAssign := &ast.AssignStmt{
+						Tok: token.DEFINE,
+						Lhs: []ast.Expr{tmpIdent},
+						Rhs: []ast.Expr{arg},
+					}
+					c.InsertBefore(tmpAssign)
+					argIdents = append(argIdents, tmpIdent)
+				}
+			}
+
+			newStmt := wrapGoStmt(concrete, id, argIdents)
 			c.Replace(newStmt)
 			iCtx.SetMetadata(GoroutineInstNeed, true)
 		}
@@ -72,8 +89,8 @@ func (p *GoroutinePass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Curso
 
 // wrapGoStmt 将go语句包装为带生命周期hook的匿名函数调用
 // 统一处理 go f(args) 和 go func(){body}() 两种形式
-// 通过匿名函数参数将父goroutine的gid传入子goroutine（参数在父goroutine中求值）
-func wrapGoStmt(goStmt *ast.GoStmt, id uint64) *ast.GoStmt {
+// argIdents: 已在父 goroutine 求值的临时变量引用，用于替换原始参数
+func wrapGoStmt(goStmt *ast.GoStmt, id uint64, argIdents []ast.Expr) *ast.GoStmt {
 	// _parentGid 形参
 	parentGidIdent := &ast.Ident{Name: "_parentGid"}
 	paramField := &ast.Field{
@@ -102,12 +119,21 @@ func wrapGoStmt(goStmt *ast.GoStmt, id uint64) *ast.GoStmt {
 		}),
 	}
 
-	// 函数体: { goroutine.Enter(id, _parentGid); defer goroutine.Exit(id); <原始调用> }
+	// 构建内部调用：原始函数 + 临时变量参数
+	innerCall := goStmt.Call
+	if len(argIdents) > 0 {
+		innerCall = &ast.CallExpr{
+			Fun:  goStmt.Call.Fun,
+			Args: argIdents,
+		}
+	}
+
+	// 函数体: { goroutine.Enter(id, _parentGid); defer goroutine.Exit(id); <innerCall> }
 	body := &ast.BlockStmt{
 		List: []ast.Stmt{
 			enterCall,
 			exitDefer,
-			&ast.ExprStmt{X: goStmt.Call}, // 将原始调用作为最后一条语句
+			&ast.ExprStmt{X: innerCall},
 		},
 	}
 

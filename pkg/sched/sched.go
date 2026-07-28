@@ -25,7 +25,7 @@ var debugSched bool
 func init() {
 	config = NewConfig()
 	cancel = make(chan struct{})
-	timeout = time.Second * 20
+	timeout = time.Second * 5 // /5 = 1s OP 配对超时
 	recovertimeout = time.Second * 1
 
 	// SCHED_DEBUG=1 时关闭操作详情日志（fuzzing执行阶段）

@@ -56,15 +56,22 @@ func main() {
 		}
 		Lite(opts.PATH, opts.Fn, opts.LL, int(timeout), int(rtimeout), maxworker)
 	case "full":
+		var timeout, rtimeout int64
+		if opts.RT != "" {
+			rtimeout, _ = strconv.ParseInt(opts.RT, 10, 32)
+		}
+		if opts.T != "" {
+			timeout, _ = strconv.ParseInt(opts.T, 10, 32)
+		}
 		var maxworker int
 		if opts.MaxWoker != "" {
 			max, _ := strconv.ParseInt(opts.MaxWoker, 10, 32)
 			maxworker = int(max)
 		}
-		Full(opts.PATH, opts.LL, opts.Feature, maxworker)
+		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout))
 	case "inst":
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
-			return strings.HasSuffix(s, ".go")
+			return strings.HasSuffix(s, "_test.go")
 		})
 		pos := "outside"
 		if opts.LeakCheck != "" {
@@ -73,7 +80,7 @@ func main() {
 		Inst(paths, pos)
 	case "bins":
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
-			return strings.HasSuffix(s, ".go")
+			return strings.HasSuffix(s, "_test.go")
 		})
 		Bins(paths, opts.Output)
 	default:

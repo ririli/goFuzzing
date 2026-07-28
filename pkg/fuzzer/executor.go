@@ -106,6 +106,11 @@ func (e *Executor) Run(in Input) Output {
 	<-stdoutDone
 	<-stderrDone
 
+	// 8. 如果执行因超时被杀，追加标记
+	if ctx.Err() == context.DeadlineExceeded {
+		fmt.Fprintf(stdoutBuf, "{TIMEOUT_EXEC} execution timed out after %ds\n", in.timeout)
+	}
+
 	stdoutContent := stdoutBuf.String()
 	stderrContent := stderrBuf.String()
 	return Output{

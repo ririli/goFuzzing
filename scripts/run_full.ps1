@@ -1,13 +1,17 @@
 # run_full.ps1
 # Run fuzz --task full on each binary in a directory, one txt per binary
-# Usage: .\scripts\run_full.ps1 -BinDir testbins\beego -OutDir zgortResult\beego
+# Usage: .\scripts\run_full.ps1 -BinDir testbins\beego -OutDir zgortResult\beego -Timeout 60 -RecoverTimeout 300
 
 param(
     [Parameter(Mandatory=$true)]
     [string]$BinDir,
 
     [Parameter(Mandatory=$true)]
-    [string]$OutDir
+    [string]$OutDir,
+
+    [int]$Timeout = 30,
+
+    [int]$RecoverTimeout = 200
 )
 
 $ErrorActionPreference = "Stop"
@@ -30,6 +34,7 @@ if ($bins.Count -eq 0) {
 
 Write-Host "BinDir: $BinDir"
 Write-Host "OutDir: $OutDir"
+Write-Host "Timeout: ${Timeout}s, RecoverTimeout: ${RecoverTimeout}s"
 Write-Host "Found $($bins.Count) binaries"
 Write-Host ""
 
@@ -40,7 +45,7 @@ foreach ($bin in $bins) {
     $outFile = Join-Path $OutDir "$($bin.Name).txt"
     Write-Host "[$($OK + $FAIL + 1)/$($bins.Count)] $($bin.Name) -> $outFile"
 
-    $captured = (& .\bin\fuzz --task full --path $bin.FullName 2>&1)
+    $captured = (& .\bin\fuzz --task full --path $bin.FullName /timeout:$Timeout /recovertimeout:$RecoverTimeout 2>&1)
     $rc = $LASTEXITCODE
 
     $captured | Out-File -FilePath $outFile -Encoding UTF8

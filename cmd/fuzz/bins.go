@@ -21,6 +21,7 @@ func Bins(paths []string, outputDir string) {
 		fmt.Println("Error: go compiler not found in PATH")
 		return
 	}
+	fmt.Printf("[DEBUG] goPath = %s\n", goPath)
 
 	limit := make(chan struct{}, 32)
 	for i := 0; i < 16; i++ {
@@ -48,7 +49,14 @@ func Bins(paths []string, outputDir string) {
 			limit <- struct{}{}
 		}()
 		replacer := strings.NewReplacer(":", "_", "\\", "_", "/", "_")
-		opath := filepath.Join(workpath, outputDir, replacer.Replace(dir))
+		replacedDir := replacer.Replace(dir)
+		// 如果 path 为 "."，replacedDir 也是 "."，filepath.Join 会把它清掉导致路径错误
+		// 此时用绝对路径的目录名作为二进制名称
+		if replacedDir == "." {
+			absDir, _ := filepath.Abs(dir)
+			replacedDir = filepath.Base(absDir)
+		}
+		opath := filepath.Join(workpath, outputDir, replacedDir)
 		// On Windows the go tool will produce a .exe file. Make the output
 		// filename explicitly include the suffix so downstream callers that
 		// try to execute the binary can find it reliably.
