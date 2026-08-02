@@ -44,6 +44,6 @@ func NewInstContext(goSrcFile string) (*InstContext, error) {
 		Type:            info,
 		AstFile:         astF,
 		Metadata:        make(map[string]interface{}),
-		opid:            uint64(hash.Hash32(goSrcFile)) << 32, // add prefix to get a global unique id
+		opid:            hash.Hash64(goSrcFile), // 使用64位hash作为ID前缀，避免跨文件碰撞
 	}, nil
 }

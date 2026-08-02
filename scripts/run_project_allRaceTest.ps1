@@ -1,26 +1,26 @@
 <#
 .SYNOPSIS
-    Run go test -race on all test packages in a Go project and collect race detector warnings and panics.
+    对 Go 项目中所有测试包运行 go test -race，收集 race detector 警告和 panic 信息。
 .DESCRIPTION
-    This scripts:
-      1. Discovers all test packages via 'go list ./...'
-      2. Runs 'go test -race -json' on each package sequentially
-      3. Saves per-package JSON output to a timestamped result directory
-      4. Generates a summary report listing all packages with DATA RACE warnings and panics
+    本脚本执行以下步骤:
+      1. 通过 'go list ./...' 发现所有测试包
+      2. 按顺序对每个包运行 'go test -race -json'
+      3. 将每个包的 JSON 输出保存到带时间戳的结果目录
+      4. 生成汇总报告，列出所有包含 DATA RACE 警告和 panic 的包
 .PARAMETER ProjectPath
-    Absolute or relative path to the target Go project root.
+    目标 Go 项目根目录的绝对路径或相对路径。
 .PARAMETER OutputDir
-    Directory to store results. Default: ./race_results/<project>_<timestamp> under current directory.
+    存放结果的目录。默认值: 当前目录下的 ./race_results/<项目>_<时间戳>。
 .PARAMETER Count
-    How many times each test function is executed (-count flag). Default: 1.
+    每个测试函数执行的次数（-count 参数）。默认值: 1。
 .PARAMETER TimeoutMinutes
-    Per-package timeout in minutes. Default: 5.
+    每个包的测试超时时间（分钟）。默认值: 5。
 .EXAMPLE
-    # Run on beego with 3 iterations
+    # 对 beego 运行 3 次迭代
     .\scripts\race_test.ps1 -ProjectPath D:\gopath\src\beego -Count 3
 
 .EXAMPLE
-    # Run on gin, custom timeout and output dir
+    # 对 gin 运行，自定义超时和输出目录
     .\scripts\race_test.ps1 -ProjectPath D:\gopath\src\gin -TimeoutMinutes 10 -OutputDir D:\results\gin_race -Count 10
 #>
 
