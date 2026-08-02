@@ -1,6 +1,6 @@
 # run_full.ps1
-# Run fuzz --task full on each binary in a directory, one txt per binary
-# Usage: .\scripts\run_full.ps1 -BinDir testbins\beego -OutDir zgortResult\beego -Timeout 60 -RecoverTimeout 300
+# 对指定目录下的每个二进制文件运行 fuzz --task full，每个二进制生成一个 txt 结果文件
+# 用法: .\scripts\run_full.ps1 -BinDir testbins\beego -OutDir zgortResult\beego -Timeout 60 -RecoverTimeout 300
 
 param(
     [Parameter(Mandatory=$true)]

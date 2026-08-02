@@ -1,5 +1,5 @@
 ﻿## Usage
-1. `GoPie` has been implemented using `Go 1.19.1`. 
+1. `GoPie` has been implemented using `Go 1.25.1`. 
 
     Follow https://go.dev/doc/install to install the right version of Go.
 2. Build the binary under `cmd` with `go build -o ./bin ./cmd/...`. There will be two binaries after compilation, the `inst` and `fuzz`. 

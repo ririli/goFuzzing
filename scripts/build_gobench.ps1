@@ -1,7 +1,7 @@
 # build_gobench.ps1
-# Batch build all GoBench test binaries under testdata/gobench/nonblocking/
-# Uses project's own "bins" command to ensure correct .exe handling
-# Output: testbins/nonblocking/<project>/<number>/<binary>
+# 批量编译 testdata/gobench/nonblocking/ 下的所有 GoBench 测试二进制
+# 使用项目自带的 "bins" 命令，确保正确的 .exe 处理
+# 输出目录: testbins/nonblocking/<项目>/<编号>/<二进制文件>
 
 $ErrorActionPreference = "Stop"
 

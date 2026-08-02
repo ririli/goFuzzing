@@ -71,7 +71,7 @@ func main() {
 		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout))
 	case "inst":
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
-			return strings.HasSuffix(s, "_test.go")
+			return strings.HasSuffix(s, ".go")
 		})
 		pos := "outside"
 		if opts.LeakCheck != "" {

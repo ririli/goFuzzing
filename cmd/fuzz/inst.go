@@ -34,7 +34,7 @@ func Inst(paths []string, check_pos string) {
 		return
 	}
 
-	resCh := make(chan string, 100)
+	resCh := make(chan string, len(paths))
 	toolpath := getInstPath()
 	// ✅ 新增：限制最大并发数为 16
 	maxWorkers := 16
