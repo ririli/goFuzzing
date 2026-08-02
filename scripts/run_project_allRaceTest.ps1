@@ -17,11 +17,11 @@
     每个包的测试超时时间（分钟）。默认值: 5。
 .EXAMPLE
     # 对 beego 运行 3 次迭代
-    .\scripts\race_test.ps1 -ProjectPath D:\gopath\src\beego -Count 3
+    .\scripts\run_project_allRaceTest.ps1 -ProjectPath D:\gopath\src\beego -Count 3
 
 .EXAMPLE
     # 对 gin 运行，自定义超时和输出目录
-    .\scripts\race_test.ps1 -ProjectPath D:\gopath\src\gin -TimeoutMinutes 10 -OutputDir D:\results\gin_race -Count 10
+    .\scripts\run_project_allRaceTest.ps1 -ProjectPath D:\gopath\src\gin -TimeoutMinutes 10 -OutputDir D:\results\gin_race -Count 10
 #>
 
 param(
@@ -378,11 +378,11 @@ $testTimeSec = [math]::Round(($results | Measure-Object -Property ElapsedSeconds
 
 Write-Host "[4/4] Generating summary..." -ForegroundColor Yellow
 
-$passCount = ($results | Where-Object { $_.Result -eq "PASS" -and $_.RaceCount -eq 0 -and $_.PanicCount -eq 0 }).Count
-$failCount = ($results | Where-Object { $_.Result -eq "FAIL" }).Count
-$cmdFailCount = ($results | Where-Object { $_.Result -eq "CMDFAIL" }).Count
-$racePkgCount = ($results | Where-Object { $_.RaceCount -gt 0 }).Count
-$panicPkgCount = ($results | Where-Object { $_.PanicCount -gt 0 }).Count
+$passCount = @($results | Where-Object { $_.Result -eq "PASS" -and $_.RaceCount -eq 0 -and $_.PanicCount -eq 0 }).Count
+$failCount = @($results | Where-Object { $_.Result -eq "FAIL" }).Count
+$cmdFailCount = @($results | Where-Object { $_.Result -eq "CMDFAIL" }).Count
+$racePkgCount = @($results | Where-Object { $_.RaceCount -gt 0 }).Count
+$panicPkgCount = @($results | Where-Object { $_.PanicCount -gt 0 }).Count
 $totalRaces = ($results | Measure-Object -Property RaceCount -Sum).Sum
 $totalPanics = ($results | Measure-Object -Property PanicCount -Sum).Sum
 
