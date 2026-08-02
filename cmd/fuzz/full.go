@@ -59,7 +59,7 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 				cfg.RecoverTimeOut = rtimeout
 				cfg.LogCh = logCh
 				cfg.MaxQuit = 200 // 推出循环次数
-				cfg.MaxExecution = 10000
+				cfg.MaxExecution = 250
 				cfg.LogLevel = llevel
 				if feature == "mu" {
 					cfg.UseMutate = false

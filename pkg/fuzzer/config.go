@@ -31,7 +31,7 @@ type Config struct {
 func DefaultConfig() *Config {
 	c := &Config{
 		MaxWorker:       5,
-		MaxExecution:    10000000000,
+		MaxExecution:    10000,
 		SingleCrash:     false,
 		LogLevel:        "normal",
 		UseFeedBack:     true,
