@@ -30,6 +30,7 @@ type Input struct {
 	recovertimeout int
 	//
 	gortPair  *feedback.InputGortPair // goroutine对
+	funcPair  *feedback.InputPair     // 函数对（函数颗粒度模式）
 	tryOpPair *feedback.InputOpPair
 }
 
@@ -60,7 +61,9 @@ func (e *Executor) Run(in Input) Output {
 	command := exec.CommandContext(ctx, in.cmd, in.args...)
 
 	var strPair string
-	if in.gortPair == nil {
+	if in.funcPair != nil {
+		strPair = "Input=" + in.funcPair.ToString()
+	} else if in.gortPair == nil {
 		strPair = "Input="
 	} else {
 		strPair = "Input=" + in.gortPair.ToString()
@@ -82,7 +85,7 @@ func (e *Executor) Run(in Input) Output {
 		command.Env = append(command.Env, fmt.Sprintf("RECOVER_TIMEOUT=%v", in.recovertimeout))
 	}
 	// 传递是否记录调用栈的标志
-	if in.gortPair != nil {
+	if in.gortPair != nil || in.funcPair != nil {
 		command.Env = append(command.Env, "RECORD_STACK=1")
 		command.Env = append(command.Env, "SCHED_DEBUG=1")
 	}

@@ -267,7 +267,7 @@ func TestCorpusOp_TryEndPreExec(t *testing.T) {
 		CallLoc2:   feedback.CallLocationInfo{File: "b.go", Line: 2},
 		IsObserved: true,
 	}
-	cg.CoveredConPairs[gortPairKey(cgPair)] = cgPair
+	cg.CoveredConPairs[feedback.GortPairKey(cgPair)] = cgPair
 
 	co.TryEndPreExec(cg)
 

@@ -18,11 +18,11 @@ func TestGortPairKey(t *testing.T) {
 		Gid1: 100, Gid2: 50,
 		CallLoc1: loc1, CallLoc2: loc2,
 	}
-	key := gortPairKey(pair)
+	key := feedback.GortPairKey(pair)
 	// 50-100，callLoc 对应 gid 顺序也要交换
 	want := "50-100|b.go:20-a.go:10"
 	if key != want {
-		t.Errorf("gortPairKey() = %q, want %q", key, want)
+		t.Errorf("feedback.GortPairKey() = %q, want %q", key, want)
 	}
 
 	// 已有序时不变
@@ -30,10 +30,10 @@ func TestGortPairKey(t *testing.T) {
 		Gid1: 10, Gid2: 20,
 		CallLoc1: loc1, CallLoc2: loc2,
 	}
-	key2 := gortPairKey(pair2)
+	key2 := feedback.GortPairKey(pair2)
 	want2 := "10-20|a.go:10-b.go:20"
 	if key2 != want2 {
-		t.Errorf("gortPairKey() = %q, want %q", key2, want2)
+		t.Errorf("feedback.GortPairKey() = %q, want %q", key2, want2)
 	}
 }
 
@@ -224,7 +224,7 @@ func TestCorpusGort_AddPair_PhaseOneRefills(t *testing.T) {
 
 	cg.AddPair([]*feedback.GortPairInfo{pair})
 
-	if _, ok := cg.TryPairs[gortPairKey(pair)]; !ok {
+	if _, ok := cg.TryPairs[feedback.GortPairKey(pair)]; !ok {
 		t.Error("new fuzz-stage suspect should be immediately selectable")
 	}
 }
@@ -238,7 +238,7 @@ func TestCorpusGort_AddPair_EnforcesGidPairStateExclusivity(t *testing.T) {
 		CallLoc1:   feedback.CallLocationInfo{File: "suspect.go", Line: 1},
 		Confidence: 0.5,
 	}
-	suspectKey := gortPairKey(suspect)
+	suspectKey := feedback.GortPairKey(suspect)
 	cg.AddPair([]*feedback.GortPairInfo{suspect})
 	cg.pairTimeouts[suspectKey] = 2
 	cg.TryPairs[suspectKey] = suspect
@@ -302,7 +302,7 @@ func TestCorpusGort_GortScore(t *testing.T) {
 		Confidence: 0.9,
 	}
 	cg.AddPair([]*feedback.GortPairInfo{pair})
-	key := gortPairKey(pair)
+	key := feedback.GortPairKey(pair)
 
 	// 无超时：score = 0.9*10 - 0*2 = 9.0
 	if score := cg.gortScore(key); score != 9.0 {
@@ -436,7 +436,7 @@ func TestCorpusGort_ApplySignals_Covered(t *testing.T) {
 		CallLoc1: loc1, CallLoc2: loc2,
 		IsObserved: false, Confidence: 0.7,
 	}
-	key := gortPairKey(pair)
+	key := feedback.GortPairKey(pair)
 	cg.SusConPairs[key] = pair
 	cg.TryPairs[key] = pair
 
@@ -472,7 +472,7 @@ func TestCorpusGort_ApplySignals_InfersFromCachedTopology(t *testing.T) {
 	})
 
 	anchor := &feedback.GortPairInfo{Gid1: 10, Gid2: 20, Confidence: 0.6}
-	anchorKey := gortPairKey(anchor)
+	anchorKey := feedback.GortPairKey(anchor)
 	cg.SusConPairs[anchorKey] = anchor
 	cg.TryPairs[anchorKey] = anchor
 	lowConfidence := &feedback.GortPairInfo{
@@ -481,7 +481,7 @@ func TestCorpusGort_ApplySignals_InfersFromCachedTopology(t *testing.T) {
 		Confidence: 0.1,
 		SourceType: "old_inference",
 	}
-	cg.SusConPairs[gortPairKey(lowConfidence)] = lowConfidence
+	cg.SusConPairs[feedback.GortPairKey(lowConfidence)] = lowConfidence
 
 	newly := cg.ApplySignals([]*feedback.CoverageSignal{{
 		PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalGortCovered,
@@ -512,7 +512,7 @@ func TestCorpusGort_ApplySignals_FiltersKnownGidPairs(t *testing.T) {
 	})
 
 	anchor := &feedback.GortPairInfo{Gid1: 10, Gid2: 20, Confidence: 0.6}
-	anchorKey := gortPairKey(anchor)
+	anchorKey := feedback.GortPairKey(anchor)
 	cg.SusConPairs[anchorKey] = anchor
 	cg.TryPairs[anchorKey] = anchor
 	covered := &feedback.GortPairInfo{
@@ -523,8 +523,8 @@ func TestCorpusGort_ApplySignals_FiltersKnownGidPairs(t *testing.T) {
 		Gid1: 20, Gid2: 11,
 		CallLoc1: feedback.CallLocationInfo{File: "different.go", Line: 2},
 	}
-	cg.CoveredConPairs[gortPairKey(covered)] = covered
-	cg.InfeasiblePairs[gortPairKey(infeasible)] = infeasible
+	cg.CoveredConPairs[feedback.GortPairKey(covered)] = covered
+	cg.InfeasiblePairs[feedback.GortPairKey(infeasible)] = infeasible
 
 	cg.ApplySignals([]*feedback.CoverageSignal{{
 		PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalGortCovered,
@@ -547,7 +547,7 @@ func TestCorpusGort_AddEdges_PhaseOneInfersFromAllCovered(t *testing.T) {
 	anchor := &feedback.GortPairInfo{
 		Gid1: 10, Gid2: 20, Confidence: 1, IsObserved: true,
 	}
-	cg.CoveredConPairs[gortPairKey(anchor)] = anchor
+	cg.CoveredConPairs[feedback.GortPairKey(anchor)] = anchor
 
 	added := cg.AddEdges([]*feedback.GortEdge{
 		{ParentGid: 0, ChildGid: 10, Count: 1},
@@ -574,7 +574,7 @@ func TestCorpusGort_ApplySignals_TimeoutRemoval(t *testing.T) {
 		Gid1: 10, Gid2: 20,
 		CallLoc1: loc1, CallLoc2: loc2,
 	}
-	key := gortPairKey(pair)
+	key := feedback.GortPairKey(pair)
 	cg.SusConPairs[key] = pair
 	cg.TryPairs[key] = pair
 
@@ -609,7 +609,7 @@ func TestCorpusGort_ApplySignals_SelectNumExpansion(t *testing.T) {
 		Gid1: 10, Gid2: 20,
 		CallLoc1: loc1, CallLoc2: loc2,
 	}
-	key := gortPairKey(pair)
+	key := feedback.GortPairKey(pair)
 	cg.SusConPairs[key] = pair
 	cg.TryPairs[key] = pair
 	origSelectNum := cg.selectNum
@@ -636,7 +636,7 @@ func TestCorpusGort_Get_PreExecReturnsNil(t *testing.T) {
 		Gid1: 10, Gid2: 20,
 		CallLoc1: loc1, CallLoc2: loc2,
 	}
-	cg.TryPairs[gortPairKey(pair)] = pair
+	cg.TryPairs[feedback.GortPairKey(pair)] = pair
 
 	if out := cg.Get(); out != nil {
 		t.Error("Get() should return nil during pre-exec phase")

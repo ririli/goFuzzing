@@ -183,7 +183,12 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	}
 
 	var corpusGort *CorpusGort
-	corpusGort = NewCorpusGort(&cfg.GortPhase)
+	var corpusFunc *CorpusFunc
+	if cfg.Granularity == ModeFunction {
+		corpusFunc = NewCorpusFunc(&cfg.GortPhase)
+	} else {
+		corpusGort = NewCorpusGort(&cfg.GortPhase)
+	}
 	var corpusOp *CorpusOp
 	corpusOp = NewCorpusOp(&cfg.GortPhase)
 	wid := atomic.AddUint32(&workerID, 1)
@@ -202,11 +207,18 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			default:
 			}
 
-			gortPair := corpusGort.Get()
+			var gortPair *feedback.InputGortPair
+			var funcPair *feedback.InputPair
+			if cfg.Granularity == ModeFunction {
+				funcPair = corpusFunc.Get()
+			} else {
+				gortPair = corpusGort.Get()
+			}
 			opPair := corpusOp.Get()
 			e := Executor{}
 			in := Input{
 				gortPair:       gortPair,
+				funcPair:       funcPair,
 				tryOpPair:      opPair,
 				cmd:            cfg.Bin,
 				args:           []string{"-test.v", "-test.run", cfg.Fn},
@@ -267,28 +279,52 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 
 		analysis := analyzeRun(ctx, executionID, m.bugs)
 		logBugFindings(cfg.LogCh, wid, executionID, analysis.findings)
-		// stderr → 种子信息
-		pair_st, opInfos, err := feedback.ParseGortPairs(ctx.Out.Trace)
-		if err == nil {
-			if len(pair_st) > 0 {
-				corpusGort.AddPair(pair_st)
+		// stderr → 种子信息（按颗粒度分发）
+		if cfg.Granularity == ModeFunction {
+			funcPairs, opInfos, err := feedback.ParseStdPairs(ctx.Out.Trace)
+			if err == nil {
+				if len(funcPairs) > 0 {
+					corpusFunc.AddPair(funcPairs)
+				}
+				if len(opInfos) > 0 {
+					corpusOp.Add(opInfos)
+				}
 			}
-			if len(opInfos) > 0 {
-				corpusOp.Add(opInfos)
+			funcEdges, err := feedback.ParseFuncEdges(ctx.Out.Trace)
+			if len(funcEdges) > 0 {
+				corpusFunc.AddFuncEdges(funcEdges)
 			}
-		}
-		edges, err := feedback.ParseGortEdges(ctx.Out.Trace)
-		if len(edges) > 0 {
-			corpusGort.AddEdges(edges)
-		}
-		if err != nil && debug {
-			sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Failed to parse some goroutine topology edges: %v", time.Now().String(), wid, err))
+			if err != nil && debug {
+				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Failed to parse some function topology edges: %v", time.Now().String(), wid, err))
+			}
+		} else {
+			pair_st, opInfos, err := feedback.ParseGortPairs(ctx.Out.Trace)
+			if err == nil {
+				if len(pair_st) > 0 {
+					corpusGort.AddPair(pair_st)
+				}
+				if len(opInfos) > 0 {
+					corpusOp.Add(opInfos)
+				}
+			}
+			edges, err := feedback.ParseGortEdges(ctx.Out.Trace)
+			if len(edges) > 0 {
+				corpusGort.AddEdges(edges)
+			}
+			if err != nil && debug {
+				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Failed to parse some goroutine topology edges: %v", time.Now().String(), wid, err))
+			}
 		}
 
-		// 预执行阶段判断
+		// 预执行阶段判断（按颗粒度分发）
 		if atomic.LoadUint32(&cfg.GortPhase) == 0 {
-			corpusGort.TryEndPreExec(cfg.MaxPreExecRound)
-			corpusOp.TryEndPreExec(corpusGort)
+			if cfg.Granularity == ModeFunction {
+				corpusFunc.TryEndPreExec(cfg.MaxPreExecRound)
+				corpusOp.TryEndPreExecForFunc(corpusFunc)
+			} else {
+				corpusGort.TryEndPreExec(cfg.MaxPreExecRound)
+				corpusOp.TryEndPreExec(corpusGort)
+			}
 		}
 
 		// fuzzing 阶段
@@ -306,11 +342,20 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 		fmt.Println("=======反馈信号_end=======")
 		madeProgress := analysis.newOracleFinding
 		if cfg.UseMutate {
-			if len(gortSignals) > 0 {
-				newlyCovered := corpusGort.ApplySignals(gortSignals)
-				if len(newlyCovered) > 0 {
-					madeProgress = true
-					corpusOp.OnGortCovered(newlyCovered)
+			if cfg.Granularity == ModeFunction {
+				if len(gortSignals) > 0 {
+					newlyCovered := corpusFunc.ApplySignals(gortSignals)
+					if len(newlyCovered) > 0 {
+						madeProgress = true
+					}
+				}
+			} else {
+				if len(gortSignals) > 0 {
+					newlyCovered := corpusGort.ApplySignals(gortSignals)
+					if len(newlyCovered) > 0 {
+						madeProgress = true
+						corpusOp.OnGortCovered(newlyCovered)
+					}
 				}
 			}
 			if len(opSingnals) > 0 {

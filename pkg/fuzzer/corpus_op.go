@@ -175,6 +175,24 @@ func (co *CorpusOp) TryEndPreExec(cg *CorpusGort) {
 		len(co.SusConPairs), len(cg.CoveredConPairs))
 }
 
+// TryEndPreExecForFunc 是函数模式下的 TryEndPreExec 对应方法。
+// 函数模式下不通过 goroutine 对生成 OP 对，因为操作收集在 goroutine 上下文中，
+// 而调度是基于函数的。跳过 OP 种子生成，仅标记阶段切换。
+func (co *CorpusOp) TryEndPreExecForFunc(cf *CorpusFunc) {
+	if atomic.LoadUint32(co.gortPhase) == 0 {
+		return
+	}
+	co.mu.Lock()
+	defer co.mu.Unlock()
+
+	if co.generated {
+		return
+	}
+
+	co.generated = true
+	fmt.Printf("[OP_PRESTAGE] Function mode: OP pair generation skipped (goroutine→op mapping unavailable)\n")
+}
+
 // Get 返回 TryPairs 作为 InputOpPair
 // 预执行阶段（generated=false）返回 nil；fuzzing 阶段返回 TryPairs 副本
 func (co *CorpusOp) Get() *feedback.InputOpPair {

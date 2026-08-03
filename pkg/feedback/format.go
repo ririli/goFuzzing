@@ -362,6 +362,34 @@ func ParseGortEdges(s string) ([]*GortEdge, error) {
 	return edges, firstErr
 }
 
+const funcEdgePrefix = "[FUNC_EDGE]"
+
+// ParseFuncEdges 从 stderr 解析 JSON 格式的函数调用者-被调用者边。
+// 格式: [FUNC_EDGE] {"caller":...,"callee":...,"count":...}
+func ParseFuncEdges(s string) ([]*FuncEdge, error) {
+	var edges []*FuncEdge
+	var firstErr error
+
+	for lineNumber, line := range strings.Split(s, "\n") {
+		line = strings.TrimSpace(line)
+		if !strings.HasPrefix(line, funcEdgePrefix) {
+			continue
+		}
+
+		payload := strings.TrimSpace(strings.TrimPrefix(line, funcEdgePrefix))
+		var edge FuncEdge
+		if err := json.Unmarshal([]byte(payload), &edge); err != nil {
+			if firstErr == nil {
+				firstErr = fmt.Errorf("parse function edge on line %d: %w", lineNumber+1, err)
+			}
+			continue
+		}
+		edges = append(edges, &edge)
+	}
+
+	return edges, firstErr
+}
+
 // parseGortPair 解析单行goroutine对信息，返回 GortPairInfo
 func parseGortPair(line string) (*GortPairInfo, error) {
 	var isObserved bool

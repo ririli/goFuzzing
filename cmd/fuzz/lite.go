@@ -6,7 +6,7 @@ import (
 	"toolkit/pkg/fuzzer"
 )
 
-func Lite(bin, fn string, llevel string, timeout, recovertimeout int, maxworker int) {
+func Lite(bin, fn string, llevel string, timeout, recovertimeout int, maxworker int, granularity string) {
 	resCh := make(chan string, 100)
 	logCh := make(chan string, 100)
 	//bugset := bug.NewBugSet()
@@ -20,6 +20,7 @@ func Lite(bin, fn string, llevel string, timeout, recovertimeout int, maxworker 
 		cfg.TimeOut = timeout
 		cfg.RecoverTimeOut = recovertimeout
 		cfg.MaxWorker = maxworker
+		cfg.Granularity = fuzzer.GranularityMode(granularity)
 
 		ok, detail := m.Start(cfg, nolimit)
 		var res string

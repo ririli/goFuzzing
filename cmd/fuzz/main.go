@@ -11,16 +11,17 @@ import (
 )
 
 var opts struct {
-	T         string `long:"timeout" description:"Instrument single go source file"`
-	RT        string `long:"recovertimeout" description:"Output instrumented golang source file to the given file. Only allow when instrumenting single golang source file"`
-	PATH      string `long:"path" description:"path"`
-	TASK      string `long:"task" description:"task"`
-	LL        string `long:"llevel" description:"log level [info, debug, normal]"`
-	MaxWoker  string `long:"max" description:"max workers"`
-	Fn        string `long:"func" description:"function"`
-	Feature   string `long:"feature" description:"[full, fb (without feedback), mu (without mutation)]"`
-	LeakCheck string `long:"check" description:"the position of leakcheck [inside, outside]"`
-	Output    string `long:"output" short:"o" description:"output directory for binary files"`
+	T           string `long:"timeout" description:"Instrument single go source file"`
+	RT          string `long:"recovertimeout" description:"Output instrumented golang source file to the given file. Only allow when instrumenting single golang source file"`
+	PATH        string `long:"path" description:"path"`
+	TASK        string `long:"task" description:"task"`
+	LL          string `long:"llevel" description:"log level [info, debug, normal]"`
+	MaxWoker    string `long:"max" description:"max workers"`
+	Fn          string `long:"func" description:"function"`
+	Feature     string `long:"feature" description:"[full, fb (without feedback), mu (without mutation)]"`
+	LeakCheck   string `long:"check" description:"the position of leakcheck [inside, outside]"`
+	Output      string `long:"output" short:"o" description:"output directory for binary files"`
+	Granularity string `long:"granularity" description:"fuzzing granularity [goroutine, function]" default:"goroutine"`
 }
 
 func ParseFlags() {
@@ -54,7 +55,7 @@ func main() {
 			max, _ := strconv.ParseInt(opts.MaxWoker, 10, 32)
 			maxworker = int(max)
 		}
-		Lite(opts.PATH, opts.Fn, opts.LL, int(timeout), int(rtimeout), maxworker)
+		Lite(opts.PATH, opts.Fn, opts.LL, int(timeout), int(rtimeout), maxworker, opts.Granularity)
 	case "full":
 		var timeout, rtimeout int64
 		if opts.RT != "" {
@@ -68,7 +69,7 @@ func main() {
 			max, _ := strconv.ParseInt(opts.MaxWoker, 10, 32)
 			maxworker = int(max)
 		}
-		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout))
+		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout), opts.Granularity)
 	case "inst":
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
 			return strings.HasSuffix(s, ".go")
@@ -77,7 +78,7 @@ func main() {
 		if opts.LeakCheck != "" {
 			pos = opts.LeakCheck
 		}
-		Inst(paths, pos)
+		Inst(paths, pos, opts.Granularity)
 	case "bins":
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
 			return strings.HasSuffix(s, "_test.go")

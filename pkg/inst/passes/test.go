@@ -9,15 +9,20 @@ import (
 )
 
 type TestPass struct {
-	Pos string
+	Pos         string
+	Granularity string // "goroutine" 或 "function"
 }
 
 var (
-	TestNeedInst    = "NEED_TEST_INST"
-	GortImportName  = "goroutine"
-	GortImportPath  = "toolkit/pkg/goroutine"
-	SchedImportName = "sched"
-	SchedImportPath = "toolkit/pkg/sched"
+	TestNeedInst         = "NEED_TEST_INST"
+	GortImportName       = "goroutine"
+	GortImportPath       = "toolkit/pkg/goroutine"
+	SchedImportName      = "sched"
+	SchedImportPath      = "toolkit/pkg/sched"
+	BreakpointImportName = "breakpoint"
+	BreakpointImportPath = "toolkit/pkg/breakpoint"
+	CalltreeImportName   = "calltree"
+	CalltreeImportPath   = "toolkit/pkg/calltree"
 )
 
 func (p *TestPass) Before(ctx *inst.InstContext) {
@@ -27,9 +32,15 @@ func (p *TestPass) Before(ctx *inst.InstContext) {
 func (p *TestPass) After(ctx *inst.InstContext) {
 	need, _ := ctx.GetMetadata(TestNeedInst)
 	needinst := need.(bool)
-	if needinst {
+	if !needinst {
+		return
+	}
+	inst.AddImport(ctx.FS, ctx.AstFile, SchedImportName, SchedImportPath)
+	if p.Granularity == "function" {
+		inst.AddImport(ctx.FS, ctx.AstFile, BreakpointImportName, BreakpointImportPath)
+		inst.AddImport(ctx.FS, ctx.AstFile, CalltreeImportName, CalltreeImportPath)
+	} else {
 		inst.AddImport(ctx.FS, ctx.AstFile, GortImportName, GortImportPath)
-		inst.AddImport(ctx.FS, ctx.AstFile, SchedImportName, SchedImportPath)
 	}
 }
 
@@ -37,7 +48,6 @@ func (p *TestPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) boo
 	return func(c *astutil.Cursor) bool {
 		defer func() {
 			if r := recover(); r != nil { // This is allowed. If we insert node into nodes not in slice, we will meet a panic
-				// For example, we may identified a receive in select and wanted to insert a function call before it, then this function will panic
 			}
 		}()
 
@@ -66,7 +76,7 @@ func (p *TestPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) boo
 				}
 			}
 			if check_ok && strings.HasPrefix(name, "Test") && !strings.HasSuffix(name, "_1") {
-				testDecl := genTestDeclWithParseInput(name, concrete)
+				testDecl := p.genTestDecl(name, concrete)
 				iCtx.AstFile.Decls = append(iCtx.AstFile.Decls, testDecl)
 				iCtx.SetMetadata(TestNeedInst, true)
 			}
@@ -79,91 +89,131 @@ func (p *TestPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 	return nil
 }
 
-func genTestDeclWithParseInput(name string, fn *ast.FuncDecl) *ast.FuncDecl {
+// genTestDecl 根据 Granularity 生成模式专用的 TestXxx_1 包装函数。
+func (p *TestPass) genTestDecl(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	testname := name + "_1"
-
-	// 创建 goroutine.EnterMain() 调用语句
-	enterMainCall := &ast.ExprStmt{
-		X: &ast.CallExpr{
-			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "goroutine"},
-				Sel: &ast.Ident{Name: "EnterMain"},
-			},
-			Args: []ast.Expr{},
-		},
-	}
-
-	// 创建 defer goroutine.ExitMain() 调用语句
-	exitMainDefer := &ast.DeferStmt{
-		Call: &ast.CallExpr{
-			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "goroutine"},
-				Sel: &ast.Ident{Name: "ExitMain"},
-			},
-			Args: []ast.Expr{},
-		},
-	}
-
-	// 创建 goroutine.ParseInput() 调用语句
-	parseInputCall := &ast.ExprStmt{
-		X: &ast.CallExpr{
-			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "goroutine"},
-				Sel: &ast.Ident{Name: "ParseInput"},
-			},
-			Args: []ast.Expr{},
-		},
-	}
-
-	// 创建 sched.ParseInput() 调用语句（解析 InputOp 环境变量，使操作对调度生效）
-	schedParseInputCall := &ast.ExprStmt{
-		X: &ast.CallExpr{
-			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "sched"},
-				Sel: &ast.Ident{Name: "ParseInput"},
-			},
-			Args: []ast.Expr{},
-		},
-	}
-
-	// 创建 defer goroutine.PrintGoroutinePairs() 调用语句
-	printGoroutinePairsCall := &ast.DeferStmt{
-		Call: &ast.CallExpr{
-			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "goroutine"},
-				Sel: &ast.Ident{Name: "PrintGoroutinePairs"},
-			},
-			Args: []ast.Expr{},
-		},
-	}
 
 	// 复制原始函数体语句
 	testbodylst := make([]ast.Stmt, len(fn.Body.List))
 	copy(testbodylst, fn.Body.List)
 
-	// 在函数体开头插入 goroutine.EnterMain()、defer goroutine.ExitMain()、
-	// goroutine.ParseInput()、sched.ParseInput() 和 defer goroutine.PrintGoroutinePairs()
-	block := &ast.BlockStmt{
-		List: append([]ast.Stmt{enterMainCall, exitMainDefer, parseInputCall, schedParseInputCall, printGoroutinePairsCall}, testbodylst...),
+	var wrapperStmts []ast.Stmt
+
+	if p.Granularity == "function" {
+		// 函数模式：calltree + breakpoint + sched
+		wrapperStmts = []ast.Stmt{
+			// calltree.EnterMain()
+			&ast.ExprStmt{
+				X: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "calltree"},
+						Sel: &ast.Ident{Name: "EnterMain"},
+					},
+				},
+			},
+			// defer calltree.ExitMain()
+			&ast.DeferStmt{
+				Call: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "calltree"},
+						Sel: &ast.Ident{Name: "ExitMain"},
+					},
+				},
+			},
+			// breakpoint.ParseInput()
+			&ast.ExprStmt{
+				X: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "breakpoint"},
+						Sel: &ast.Ident{Name: "ParseInput"},
+					},
+				},
+			},
+			// sched.ParseInput()
+			&ast.ExprStmt{
+				X: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "sched"},
+						Sel: &ast.Ident{Name: "ParseInput"},
+					},
+				},
+			},
+			// defer calltree.PrintFunctionPairs()
+			&ast.DeferStmt{
+				Call: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "calltree"},
+						Sel: &ast.Ident{Name: "PrintFunctionPairs"},
+					},
+				},
+			},
+		}
+	} else {
+		// goroutine 模式（默认）：goroutine + sched
+		wrapperStmts = []ast.Stmt{
+			// goroutine.EnterMain()
+			&ast.ExprStmt{
+				X: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "goroutine"},
+						Sel: &ast.Ident{Name: "EnterMain"},
+					},
+				},
+			},
+			// defer goroutine.ExitMain()
+			&ast.DeferStmt{
+				Call: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "goroutine"},
+						Sel: &ast.Ident{Name: "ExitMain"},
+					},
+				},
+			},
+			// goroutine.ParseInput()
+			&ast.ExprStmt{
+				X: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "goroutine"},
+						Sel: &ast.Ident{Name: "ParseInput"},
+					},
+				},
+			},
+			// sched.ParseInput()
+			&ast.ExprStmt{
+				X: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "sched"},
+						Sel: &ast.Ident{Name: "ParseInput"},
+					},
+				},
+			},
+			// defer goroutine.PrintGoroutinePairs()
+			&ast.DeferStmt{
+				Call: &ast.CallExpr{
+					Fun: &ast.SelectorExpr{
+						X:   &ast.Ident{Name: "goroutine"},
+						Sel: &ast.Ident{Name: "PrintGoroutinePairs"},
+					},
+				},
+			},
+		}
 	}
 
-	testdecl := &ast.FuncDecl{
+	block := &ast.BlockStmt{
+		List: append(wrapperStmts, testbodylst...),
+	}
+
+	return &ast.FuncDecl{
 		Name: &ast.Ident{Name: testname},
 		Type: &ast.FuncType{
 			Params: &ast.FieldList{
 				List: []*ast.Field{
 					&ast.Field{
-						Names: []*ast.Ident{
-							&ast.Ident{Name: "t"},
-						},
+						Names: []*ast.Ident{&ast.Ident{Name: "t"}},
 						Type: &ast.StarExpr{
 							X: &ast.SelectorExpr{
-								X: &ast.Ident{
-									Name: "testing",
-								},
-								Sel: &ast.Ident{
-									Name: "T",
-								},
+								X:   &ast.Ident{Name: "testing"},
+								Sel: &ast.Ident{Name: "T"},
 							},
 						},
 					},
@@ -172,5 +222,4 @@ func genTestDeclWithParseInput(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 		},
 		Body: block,
 	}
-	return testdecl
 }

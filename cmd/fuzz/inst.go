@@ -27,7 +27,7 @@ func getInstPath() string {
 	return filepath.Join("bin", "inst")
 }
 
-func Inst(paths []string, check_pos string) {
+func Inst(paths []string, check_pos string, granularity string) {
 	// 检查是否有文件需要处理
 	if len(paths) == 0 {
 		fmt.Println("No Go files found in the specified path")
@@ -46,7 +46,7 @@ func Inst(paths []string, check_pos string) {
 	var failedFiles []string
 
 	dowork := func(path string) {
-		command := exec.Command(toolpath, "--file", path, "--checkpos", check_pos)
+		command := exec.Command(toolpath, "--file", path, "--checkpos", check_pos, "--granularity", granularity)
 		var out, out2 bytes.Buffer
 		command.Stdout = &out
 		command.Stderr = &out2

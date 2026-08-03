@@ -7,7 +7,7 @@ import (
 	"toolkit/pkg/fuzzer"
 )
 
-func Full(path string, llevel string, feature string, maxworker int, timeout, rtimeout int) {
+func Full(path string, llevel string, feature string, maxworker int, timeout, rtimeout int, granularity string) {
 	if timeout == 0 {
 		timeout = 30
 	}
@@ -61,6 +61,7 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 				cfg.MaxQuit = 200 // 推出循环次数
 				cfg.MaxExecution = 250
 				cfg.LogLevel = llevel
+				cfg.Granularity = fuzzer.GranularityMode(granularity)
 				if feature == "mu" {
 					cfg.UseMutate = false
 				}

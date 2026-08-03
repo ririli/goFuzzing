@@ -9,25 +9,6 @@ import (
 	"toolkit/pkg/feedback"
 )
 
-// gortPairKey 生成goroutine并发对的唯一键（基于 Gid 和 CallLoc）
-func gortPairKey(pair *feedback.GortPairInfo) string {
-	var gid1, gid2 uint64
-	var loc1, loc2 feedback.CallLocationInfo
-
-	if pair.Gid1 <= pair.Gid2 {
-		gid1, gid2 = pair.Gid1, pair.Gid2
-		loc1, loc2 = pair.CallLoc1, pair.CallLoc2
-	} else {
-		gid1, gid2 = pair.Gid2, pair.Gid1
-		loc1, loc2 = pair.CallLoc2, pair.CallLoc1
-	}
-
-	return fmt.Sprintf("%d-%d|%s:%d-%s:%d",
-		gid1, gid2,
-		loc1.File, loc1.Line,
-		loc2.File, loc2.Line)
-}
-
 // gortSignalKey 生成goroutine调度信号的查找键（仅基于 Gid，不含 CallLoc）
 func gortSignalKey(preID, nextID uint64) string {
 	if preID <= nextID {
@@ -114,7 +95,7 @@ func (p *CorpusGort) AddPair(feedPair []*feedback.GortPairInfo) {
 		if pair == nil || pair.Gid1 == 0 || pair.Gid2 == 0 || pair.Gid1 == pair.Gid2 {
 			continue
 		}
-		key := gortPairKey(pair)
+		key := feedback.GortPairKey(pair)
 		signalKey := gortSignalKey(pair.Gid1, pair.Gid2)
 		if pair.IsObserved {
 			if hasGortSignalPair(p.CoveredConPairs, signalKey) {
@@ -346,7 +327,7 @@ func (p *CorpusGort) addInferredPairLocked(gid1, gid2 uint64, confidence float64
 		SourceType: sourceType,
 		IsObserved: false,
 	}
-	p.SusConPairs[gortPairKey(pair)] = pair
+	p.SusConPairs[feedback.GortPairKey(pair)] = pair
 	return true
 }
 
