@@ -29,8 +29,9 @@ type Input struct {
 	timeout        int
 	recovertimeout int
 	//
-	gortPair  *feedback.InputGortPair // goroutine对
-	funcPair  *feedback.InputPair     // 函数对（函数颗粒度模式）
+	pairInput *PairInput              // 统一的并发对输入（goroutine或函数模式）
+	gortPair  *feedback.InputGortPair // 已废弃，保留用于兼容
+	funcPair  *feedback.InputPair     // 已废弃，保留用于兼容
 	tryOpPair *feedback.InputOpPair
 }
 
@@ -61,12 +62,10 @@ func (e *Executor) Run(in Input) Output {
 	command := exec.CommandContext(ctx, in.cmd, in.args...)
 
 	var strPair string
-	if in.funcPair != nil {
-		strPair = "Input=" + in.funcPair.ToString()
-	} else if in.gortPair == nil {
-		strPair = "Input="
+	if in.pairInput != nil && !in.pairInput.IsEmpty() {
+		strPair = "Input=" + in.pairInput.ToString()
 	} else {
-		strPair = "Input=" + in.gortPair.ToString()
+		strPair = "Input="
 	}
 	var strOpPair string
 	if in.tryOpPair == nil {
@@ -85,7 +84,7 @@ func (e *Executor) Run(in Input) Output {
 		command.Env = append(command.Env, fmt.Sprintf("RECOVER_TIMEOUT=%v", in.recovertimeout))
 	}
 	// 传递是否记录调用栈的标志
-	if in.gortPair != nil || in.funcPair != nil {
+	if in.pairInput != nil && !in.pairInput.IsEmpty() {
 		command.Env = append(command.Env, "RECORD_STACK=1")
 		command.Env = append(command.Env, "SCHED_DEBUG=1")
 	}

@@ -165,34 +165,3 @@ func GenInstCallWithType(f string, obj ast.Expr, id uint64, opType string) *ast.
 		},
 	})
 }
-
-// GenInstFunction 生成插桩的具体语句
-func GenInstFunction(id uint64) *ast.DeferStmt {
-	// 生成 defer Trace(funcID)() 语句
-
-	// 创建 Trace(funcID) 调用
-	traceCall := NewArgCall("callstack", "Trace", []ast.Expr{
-		&ast.BasicLit{
-			ValuePos: 0,
-			Kind:     token.INT,
-			Value:    strconv.FormatUint(id, 10),
-		},
-	})
-
-	// 创建 Trace(funcID)() 调用（立即调用）
-	immediateCall := &ast.CallExpr{
-		Fun:      traceCall,
-		Lparen:   token.NoPos,
-		Args:     []ast.Expr{},
-		Ellipsis: token.NoPos,
-		Rparen:   token.NoPos,
-	}
-
-	// 创建 defer 语句
-	deferStmt := &ast.DeferStmt{
-		Defer: token.NoPos,
-		Call:  immediateCall,
-	}
-
-	return deferStmt
-}

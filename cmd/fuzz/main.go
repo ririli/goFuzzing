@@ -21,7 +21,7 @@ var opts struct {
 	Feature     string `long:"feature" description:"[full, fb (without feedback), mu (without mutation)]"`
 	LeakCheck   string `long:"check" description:"the position of leakcheck [inside, outside]"`
 	Output      string `long:"output" short:"o" description:"output directory for binary files"`
-	Granularity string `long:"granularity" description:"fuzzing granularity [goroutine, function]" default:"goroutine"`
+	Granularity string `long:"granularity" description:"fuzzing granularity [goroutine, function]. Overrides FUZZ_MODE env var."`
 }
 
 func ParseFlags() {
@@ -39,8 +39,23 @@ func ParseFlags() {
 	}
 }
 
+// resolveGranularity 解析颗粒度：CLI 标志优先，否则从 FUZZ_MODE 环境变量读取，默认 goroutine。
+func resolveGranularity() string {
+	if opts.Granularity != "" {
+		return opts.Granularity
+	}
+	mode := os.Getenv("FUZZ_MODE")
+	if mode != "" {
+		return mode
+	}
+	return "goroutine"
+}
+
 func main() {
 	ParseFlags()
+	granularity := resolveGranularity()
+	fmt.Printf("[FUZZ] Granularity mode: %s\n", granularity)
+
 	switch opts.TASK {
 	case "lite":
 		var timeout, rtimeout int64
@@ -55,7 +70,7 @@ func main() {
 			max, _ := strconv.ParseInt(opts.MaxWoker, 10, 32)
 			maxworker = int(max)
 		}
-		Lite(opts.PATH, opts.Fn, opts.LL, int(timeout), int(rtimeout), maxworker, opts.Granularity)
+		Lite(opts.PATH, opts.Fn, opts.LL, int(timeout), int(rtimeout), maxworker, granularity)
 	case "full":
 		var timeout, rtimeout int64
 		if opts.RT != "" {
@@ -69,7 +84,7 @@ func main() {
 			max, _ := strconv.ParseInt(opts.MaxWoker, 10, 32)
 			maxworker = int(max)
 		}
-		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout), opts.Granularity)
+		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout), granularity)
 	case "inst":
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
 			return strings.HasSuffix(s, ".go")
@@ -78,7 +93,7 @@ func main() {
 		if opts.LeakCheck != "" {
 			pos = opts.LeakCheck
 		}
-		Inst(paths, pos, opts.Granularity)
+		Inst(paths, pos, granularity)
 	case "bins":
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
 			return strings.HasSuffix(s, "_test.go")

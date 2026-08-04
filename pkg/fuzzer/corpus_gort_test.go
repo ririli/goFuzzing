@@ -85,13 +85,13 @@ func TestNewCorpusGort(t *testing.T) {
 	}
 }
 
-// ---------- AddEdges ----------
+// ---------- AddGortEdges ----------
 
-func TestCorpusGort_AddEdges_MultiRunUnion(t *testing.T) {
+func TestCorpusGort_AddGortEdges_MultiRunUnion(t *testing.T) {
 	var phase uint32
 	cg := NewCorpusGort(&phase)
 
-	added := cg.AddEdges([]*feedback.GortEdge{
+	added := cg.AddGortEdges([]*feedback.GortEdge{
 		{ParentGid: 0, ChildGid: 10, Count: 2},
 		{ParentGid: 0, ChildGid: 10, Count: 3},
 		{ParentGid: 20, ChildGid: 30, Count: 1},
@@ -101,7 +101,7 @@ func TestCorpusGort_AddEdges_MultiRunUnion(t *testing.T) {
 		nil,
 	})
 	if added != 2 {
-		t.Fatalf("AddEdges() added = %d, want 2", added)
+		t.Fatalf("AddGortEdges() added = %d, want 2", added)
 	}
 
 	topLevel := gortEdgeKey{parent: 0, child: 10}
@@ -113,12 +113,12 @@ func TestCorpusGort_AddEdges_MultiRunUnion(t *testing.T) {
 		t.Error("parent 0 should be retained in topology")
 	}
 
-	added = cg.AddEdges([]*feedback.GortEdge{
+	added = cg.AddGortEdges([]*feedback.GortEdge{
 		{ParentGid: 0, ChildGid: 10, Count: 4},
 		{ParentGid: 99, ChildGid: 10, Count: 2},
 	})
 	if added != 1 {
-		t.Fatalf("second AddEdges() added = %d, want 1", added)
+		t.Fatalf("second AddGortEdges() added = %d, want 1", added)
 	}
 	if cg.edgeHits[topLevel] != 9 || cg.edgeRuns[topLevel] != 2 {
 		t.Errorf("merged edge stats = (%d hits, %d runs), want (9, 2)",
@@ -274,7 +274,7 @@ func TestCorpusGort_AddPair_EnforcesGidPairStateExclusivity(t *testing.T) {
 func TestCorpusGort_AddPair_PhaseOneObservedInfersFromTopology(t *testing.T) {
 	var phase uint32 = 1
 	cg := NewCorpusGort(&phase)
-	cg.AddEdges([]*feedback.GortEdge{
+	cg.AddGortEdges([]*feedback.GortEdge{
 		{ParentGid: 1, ChildGid: 10, Count: 1},
 		{ParentGid: 1, ChildGid: 11, Count: 1},
 	})
@@ -378,10 +378,10 @@ func TestCorpusGort_TryEndPreExec_TopologyGrowthResetsStability(t *testing.T) {
 	var phase uint32
 	cg := NewCorpusGort(&phase)
 
-	cg.AddEdges([]*feedback.GortEdge{{ParentGid: 0, ChildGid: 10, Count: 1}})
+	cg.AddGortEdges([]*feedback.GortEdge{{ParentGid: 0, ChildGid: 10, Count: 1}})
 	cg.TryEndPreExec(100) // new total
 	cg.TryEndPreExec(100) // stable once
-	cg.AddEdges([]*feedback.GortEdge{{ParentGid: 10, ChildGid: 20, Count: 1}})
+	cg.AddGortEdges([]*feedback.GortEdge{{ParentGid: 10, ChildGid: 20, Count: 1}})
 	cg.TryEndPreExec(100) // topology growth must reset stability
 
 	if atomic.LoadUint32(&phase) != 0 {
@@ -464,7 +464,7 @@ func TestCorpusGort_ApplySignals_Covered(t *testing.T) {
 func TestCorpusGort_ApplySignals_InfersFromCachedTopology(t *testing.T) {
 	var phase uint32 = 1
 	cg := NewCorpusGort(&phase)
-	cg.AddEdges([]*feedback.GortEdge{
+	cg.AddGortEdges([]*feedback.GortEdge{
 		{ParentGid: 1, ChildGid: 10, Count: 1},
 		{ParentGid: 1, ChildGid: 12, Count: 1},
 		{ParentGid: 10, ChildGid: 11, Count: 1},
@@ -505,7 +505,7 @@ func TestCorpusGort_ApplySignals_InfersFromCachedTopology(t *testing.T) {
 func TestCorpusGort_ApplySignals_FiltersKnownGidPairs(t *testing.T) {
 	var phase uint32 = 1
 	cg := NewCorpusGort(&phase)
-	cg.AddEdges([]*feedback.GortEdge{
+	cg.AddGortEdges([]*feedback.GortEdge{
 		{ParentGid: 1, ChildGid: 10, Count: 1},
 		{ParentGid: 10, ChildGid: 11, Count: 1},
 		{ParentGid: 1, ChildGid: 12, Count: 1},
@@ -541,7 +541,7 @@ func TestCorpusGort_ApplySignals_FiltersKnownGidPairs(t *testing.T) {
 	}
 }
 
-func TestCorpusGort_AddEdges_PhaseOneInfersFromAllCovered(t *testing.T) {
+func TestCorpusGort_AddGortEdges_PhaseOneInfersFromAllCovered(t *testing.T) {
 	var phase uint32 = 1
 	cg := NewCorpusGort(&phase)
 	anchor := &feedback.GortPairInfo{
@@ -549,13 +549,13 @@ func TestCorpusGort_AddEdges_PhaseOneInfersFromAllCovered(t *testing.T) {
 	}
 	cg.CoveredConPairs[feedback.GortPairKey(anchor)] = anchor
 
-	added := cg.AddEdges([]*feedback.GortEdge{
+	added := cg.AddGortEdges([]*feedback.GortEdge{
 		{ParentGid: 0, ChildGid: 10, Count: 1},
 		{ParentGid: 0, ChildGid: 12, Count: 1},
 	})
 
 	if added != 2 {
-		t.Fatalf("AddEdges() added = %d, want 2", added)
+		t.Fatalf("AddGortEdges() added = %d, want 2", added)
 	}
 	assertGortCandidate(t, cg, 12, 20, 0.5, "fuzz_inferred_sibling")
 	if len(cg.TryPairs) != 1 {

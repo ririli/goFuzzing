@@ -85,6 +85,53 @@ func (p *CorpusFunc) Get() *feedback.InputPair {
 	return &feedback.InputPair{TryPair: result}
 }
 
+// --- PairCorpus interface methods ---
+
+// GetInput implements PairCorpus.
+func (p *CorpusFunc) GetInput() *PairInput {
+	fp := p.Get()
+	if fp == nil || len(fp.TryPair) == 0 {
+		return nil
+	}
+	return &PairInput{Pairs: funcToConcurrencyPairs(fp.TryPair)}
+}
+
+// AddConcurrencyPairs implements PairCorpus.
+func (p *CorpusFunc) AddConcurrencyPairs(pairs []feedback.ConcurrencyPair) {
+	p.AddPair(toFuncPairs(pairs))
+}
+
+// AddConcurrencyEdges implements PairCorpus.
+func (p *CorpusFunc) AddConcurrencyEdges(edges []feedback.ConcurrencyEdge) int {
+	funcEdges := make([]*feedback.FuncEdge, 0, len(edges))
+	for _, e := range edges {
+		if fe, ok := e.(*feedback.FuncEdge); ok {
+			funcEdges = append(funcEdges, fe)
+		}
+	}
+	return p.AddFuncEdges(funcEdges)
+}
+
+// OnCoveredByOp implements PairCorpus. No-op for function mode.
+func (p *CorpusFunc) OnCoveredByOp(opCorpus *CorpusOp, pairs []feedback.ConcurrencyPair) {
+	// Function mode does not generate OP pairs from goroutine pairs.
+}
+
+// InPreExec implements PairCorpus.
+func (p *CorpusFunc) InPreExec() bool {
+	return atomic.LoadUint32(p.phase) == 0
+}
+
+// ModeName implements PairCorpus.
+func (p *CorpusFunc) ModeName() string {
+	return "function"
+}
+
+// ApplyConcurrencySignals implements PairCorpus.
+func (p *CorpusFunc) ApplyConcurrencySignals(signals []*feedback.CoverageSignal) []feedback.ConcurrencyPair {
+	return funcToConcurrencyPairs(p.ApplySignals(signals))
+}
+
 // AddPair merges observed/inferred function pairs from a single execution.
 func (p *CorpusFunc) AddPair(feedPair []*feedback.SuspiciousPairInfo) {
 	p.mu.Lock()

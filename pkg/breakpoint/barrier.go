@@ -1,6 +1,9 @@
 // Package breakpoint 提供函数级别的双栏断点控制，用于函数颗粒度 fuzzing。
-// 对标 pkg/goroutine，但操作对象是函数 ID 而非 goroutine ID。
+// 对标 pkg/goroutine 的断点机制，但操作对象是函数 ID 而非 goroutine ID。
 // PointControl 由插桩代码注入调用；ParseInput 读取 Input 环境变量。
+//
+// 实现完全遵循 deve_goroutine 分支的 goroutine 断点控制模式：
+// barrierGate 双栏栅栏 → Config 管理屏障 → PointControl 作为公共入口。
 package breakpoint
 
 import (
@@ -15,25 +18,31 @@ import (
 // barrierGate 表示一对函数 ID 之间的双栏栅栏。
 // 两个函数都必须到达入口点才能放行。
 type barrierGate struct {
-	id1, id2 uint64
+	id1, id2 uint64        // 该 barrier 对应的两个函数 ID
 	arrived  int32         // 原子计数：0 → 1 → 2
 	release  chan struct{} // 计数到 2 时关闭
 	expired  int32         // 原子标志：0=活跃，1=已超时
 }
 
 // Config 保存函数级调度状态。
+// 对标 goroutine.Config，但使用 active 而非 activeMap。
 type Config struct {
-	mu             sync.RWMutex
-	barriers       map[uint64][]*barrierGate // funcID → 该 ID 参与的所有 barrierGate
-	active         map[uint64]struct{}       // 本轮执行中需要调度的函数 ID 集合
-	hasActive      uint32                    // 原子标志：1 表示 active 集合非空
+	mu        sync.RWMutex
+	barriers  map[uint64][]*barrierGate // funcID → 该 ID 参与的所有 barrierGate
+	activeMap map[uint64]struct{}       // 本轮执行中需要调度的函数 ID 集合
+	hasActive uint32                    // 原子标志：1 表示 activeMap 集合非空
+	// BarrierTimeout 单个 barrier 等待超时时间
 	BarrierTimeout time.Duration
 }
 
-var cfg = &Config{
-	barriers:       make(map[uint64][]*barrierGate),
-	active:         make(map[uint64]struct{}),
-	BarrierTimeout: 10 * time.Millisecond,
+var cfg *Config
+
+func init() {
+	cfg = &Config{
+		barriers:       make(map[uint64][]*barrierGate),
+		activeMap:      make(map[uint64]struct{}),
+		BarrierTimeout: 10 * time.Millisecond,
+	}
 }
 
 // PointControl 是注入到函数入口的双栏会合点。
@@ -78,7 +87,7 @@ func PointControl(funcID uint64) {
 func isActive(funcID uint64) bool {
 	cfg.mu.RLock()
 	defer cfg.mu.RUnlock()
-	_, ok := cfg.active[funcID]
+	_, ok := cfg.activeMap[funcID]
 	return ok
 }
 
@@ -95,7 +104,7 @@ func ParseInput() {
 		return
 	}
 	parsePairs(input)
-	if len(cfg.active) > 0 {
+	if len(cfg.activeMap) > 0 {
 		atomic.StoreUint32(&cfg.hasActive, 1)
 	}
 }
@@ -122,8 +131,8 @@ func parsePairs(s string) {
 		var id1, id2 uint64
 		_, err := fmt.Sscanf(pairStr, "%d,%d", &id1, &id2)
 		if err == nil {
-			cfg.active[id1] = struct{}{}
-			cfg.active[id2] = struct{}{}
+			cfg.activeMap[id1] = struct{}{}
+			cfg.activeMap[id2] = struct{}{}
 
 			gate := &barrierGate{
 				id1:     id1,

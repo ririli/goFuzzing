@@ -1,5 +1,10 @@
 package fuzzer
 
+import (
+	"os"
+	"strings"
+)
+
 // GranularityMode 定义 fuzzing 颗粒度级别。
 type GranularityMode string
 
@@ -9,6 +14,23 @@ const (
 	// ModeFunction 调度函数调用对（函数入口级别）。
 	ModeFunction GranularityMode = "function"
 )
+
+// ParseGranularity 从字符串解析颗粒度模式（不区分大小写），非法值默认返回 goroutine。
+func ParseGranularity(s string) GranularityMode {
+	switch strings.ToLower(strings.TrimSpace(s)) {
+	case "function", "func":
+		return ModeFunction
+	default:
+		return ModeGoroutine
+	}
+}
+
+// GetGranularityFromEnv 从环境变量 FUZZ_MODE 读取颗粒度设置。
+// 未设置时默认返回 goroutine 模式。
+func GetGranularityFromEnv() GranularityMode {
+	mode := os.Getenv("FUZZ_MODE")
+	return ParseGranularity(mode)
+}
 
 type Config struct {
 	Bin string

@@ -82,6 +82,53 @@ func (p *CorpusGort) Get() *feedback.InputGortPair {
 	}
 }
 
+// --- PairCorpus interface methods ---
+
+// GetInput implements PairCorpus.
+func (p *CorpusGort) GetInput() *PairInput {
+	gp := p.Get()
+	if gp == nil || len(gp.TryPair) == 0 {
+		return nil
+	}
+	return &PairInput{Pairs: gortToConcurrencyPairs(gp.TryPair)}
+}
+
+// AddConcurrencyPairs implements PairCorpus. Converts and delegates to AddPair.
+func (p *CorpusGort) AddConcurrencyPairs(pairs []feedback.ConcurrencyPair) {
+	p.AddPair(toGortPairs(pairs))
+}
+
+// AddConcurrencyEdges implements PairCorpus. Converts and delegates to AddGortEdges.
+func (p *CorpusGort) AddConcurrencyEdges(edges []feedback.ConcurrencyEdge) int {
+	gortEdges := make([]*feedback.GortEdge, 0, len(edges))
+	for _, e := range edges {
+		if ge, ok := e.(*feedback.GortEdge); ok {
+			gortEdges = append(gortEdges, ge)
+		}
+	}
+	return p.AddGortEdges(gortEdges)
+}
+
+// OnCoveredByOp implements PairCorpus.
+func (p *CorpusGort) OnCoveredByOp(opCorpus *CorpusOp, pairs []feedback.ConcurrencyPair) {
+	opCorpus.OnGortCovered(toGortPairs(pairs))
+}
+
+// InPreExec implements PairCorpus.
+func (p *CorpusGort) InPreExec() bool {
+	return atomic.LoadUint32(p.gortPhase) == 0
+}
+
+// ModeName implements PairCorpus.
+func (p *CorpusGort) ModeName() string {
+	return "goroutine"
+}
+
+// ApplyConcurrencySignals implements PairCorpus. Wraps ApplySignals.
+func (p *CorpusGort) ApplyConcurrencySignals(signals []*feedback.CoverageSignal) []feedback.ConcurrencyPair {
+	return gortToConcurrencyPairs(p.ApplySignals(signals))
+}
+
 // AddPair 添加goroutine并发对到对应集合
 // IsObserved → CoveredConPairs（Rule 0直接观测）
 // !IsObserved → SusConPairs（Rule 1-4推测）
@@ -141,9 +188,9 @@ func (p *CorpusGort) AddPair(feedPair []*feedback.GortPairInfo) {
 	}
 }
 
-// AddEdges merges one execution's static goroutine topology into the corpus.
+// AddGortEdges merges one execution's static goroutine topology into the corpus.
 // The topology is monotonic across executions: missing edges never remove old data.
-func (p *CorpusGort) AddEdges(edges []*feedback.GortEdge) int {
+func (p *CorpusGort) AddGortEdges(edges []*feedback.GortEdge) int {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
