@@ -80,8 +80,8 @@ func TestNewCorpusGort(t *testing.T) {
 	if cg.selectNum != 1 {
 		t.Errorf("selectNum = %d, want 1", cg.selectNum)
 	}
-	if cg.gortPhase != &phase {
-		t.Error("gortPhase should point to phase")
+	if cg.phase != &phase {
+		t.Error("phase should point to phase")
 	}
 }
 
@@ -343,7 +343,7 @@ func TestCorpusGort_TryEndPreExec_StableThreshold(t *testing.T) {
 	}
 
 	if atomic.LoadUint32(&phase) != 1 {
-		t.Errorf("GortPhase should be 1 after stable rounds, got %d", phase)
+		t.Errorf("Phase should be 1 after stable rounds, got %d", phase)
 	}
 	if len(cg.TryPairs) == 0 {
 		t.Error("TryPairs should be filled after pre-exec ends")
@@ -370,7 +370,7 @@ func TestCorpusGort_TryEndPreExec_MaxRounds(t *testing.T) {
 	}
 
 	if atomic.LoadUint32(&phase) != 1 {
-		t.Errorf("GortPhase should be 1 after maxRounds, got %d", phase)
+		t.Errorf("Phase should be 1 after maxRounds, got %d", phase)
 	}
 }
 
@@ -441,7 +441,7 @@ func TestCorpusGort_ApplySignals_Covered(t *testing.T) {
 	cg.TryPairs[key] = pair
 
 	signals := []*feedback.CoverageSignal{
-		{PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalGortCovered},
+		{PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalPairCovered},
 	}
 	newly := cg.ApplySignals(signals)
 
@@ -484,7 +484,7 @@ func TestCorpusGort_ApplySignals_InfersFromCachedTopology(t *testing.T) {
 	cg.SusConPairs[feedback.GortPairKey(lowConfidence)] = lowConfidence
 
 	newly := cg.ApplySignals([]*feedback.CoverageSignal{{
-		PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalGortCovered,
+		PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalPairCovered,
 	}})
 	if len(newly) != 1 || newly[0] != anchor {
 		t.Fatalf("ApplySignals() newly covered = %v, want anchor", newly)
@@ -527,7 +527,7 @@ func TestCorpusGort_ApplySignals_FiltersKnownGidPairs(t *testing.T) {
 	cg.InfeasiblePairs[feedback.GortPairKey(infeasible)] = infeasible
 
 	cg.ApplySignals([]*feedback.CoverageSignal{{
-		PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalGortCovered,
+		PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalPairCovered,
 	}})
 
 	if countGortSignalPairs(cg.SusConPairs, 1, 20) != 0 {
@@ -580,7 +580,7 @@ func TestCorpusGort_ApplySignals_TimeoutRemoval(t *testing.T) {
 
 	// 累积 gortMaxTimeouts 次超时
 	signal := &feedback.CoverageSignal{
-		PreID: 10, NextID: 20, Success: false, Kind: feedback.SignalGortTimeout,
+		PreID: 10, NextID: 20, Success: false, Kind: feedback.SignalPairTimeout,
 	}
 	for i := 0; i < gortMaxTimeouts; i++ {
 		cg.ApplySignals([]*feedback.CoverageSignal{signal})
@@ -616,7 +616,7 @@ func TestCorpusGort_ApplySignals_SelectNumExpansion(t *testing.T) {
 
 	// TIMEOUT 信号，无 COVERED → selectNum 翻倍
 	cg.ApplySignals([]*feedback.CoverageSignal{
-		{PreID: 10, NextID: 20, Success: false, Kind: feedback.SignalGortTimeout},
+		{PreID: 10, NextID: 20, Success: false, Kind: feedback.SignalPairTimeout},
 	})
 	if cg.selectNum != origSelectNum*2 {
 		t.Errorf("selectNum = %d, want %d (doubled)", cg.selectNum, origSelectNum*2)

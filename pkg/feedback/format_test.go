@@ -130,6 +130,38 @@ func TestParseFBOp_NotFBPrefix(t *testing.T) {
 	}
 }
 
+func TestParseFBOp_FuncStackAttribution(t *testing.T) {
+	// function 粒度：fids 为操作发生时的函数栈（外层到内层）
+	line := "[FB]chan: obj=1234; opId=5; gid=0; op=send; fids=3,7;"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(op.FuncIDs) != 2 || op.FuncIDs[0] != 3 || op.FuncIDs[1] != 7 {
+		t.Errorf("FuncIDs = %v, want [3 7]", op.FuncIDs)
+	}
+}
+
+func TestParseFBOp_NoFidsBackwardCompatible(t *testing.T) {
+	// goroutine 粒度的旧格式日志不带 fids，解析结果 FuncIDs 为空
+	line := "[FB]wg: obj=5678; opId=8; gid=12; op=done;"
+	op, err := parseFBOp(line)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(op.FuncIDs) != 0 {
+		t.Errorf("FuncIDs = %v, want empty", op.FuncIDs)
+	}
+}
+
+func TestParseFBOp_InvalidFids(t *testing.T) {
+	line := "[FB]chan: obj=1; opId=2; gid=0; op=send; fids=3,abc;"
+	_, err := parseFBOp(line)
+	if err == nil {
+		t.Error("expected error for invalid fids, got nil")
+	}
+}
+
 func TestParseStdPairs_OnlyCovered(t *testing.T) {
 	input := "[COVERED] 100,200|gopie/testdata/my.go:10,gopie/testdata/my.go:20|1.00|observed;"
 	pairs, ops, err := ParseStdPairs(input)
@@ -368,5 +400,145 @@ func TestParseGortEdges_NoEdges(t *testing.T) {
 	}
 	if len(edges) != 0 {
 		t.Fatalf("len(edges) = %d, want 0", len(edges))
+	}
+}
+
+// ---------- ParseStdPairs 函数粒度补充 ----------
+
+func TestParseStdPairs_CalltreeEmptyFileFormat(t *testing.T) {
+	// calltree.PrintFunctionPairs 实际输出位置部分为 ":line"（无文件名）
+	input := strings.Join([]string{
+		"[COVERED] 1,2|:10,:20|1.00|observed;",
+		"[SUSPECT] 1,3|:10,:30|0.50|inferred_adjacent;",
+	}, "\n")
+
+	pairs, ops, err := ParseStdPairs(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(pairs) != 2 || len(ops) != 0 {
+		t.Fatalf("ParseStdPairs() = %d pairs, %d ops; want 2, 0", len(pairs), len(ops))
+	}
+	p := pairs[0]
+	if !p.IsObserved || p.Confidence != 1.0 {
+		t.Errorf("pairs[0] = observed:%v confidence:%.2f, want true/1.00", p.IsObserved, p.Confidence)
+	}
+	if p.CallLoc1.File != "" || p.CallLoc1.Line != 10 {
+		t.Errorf("CallLoc1 = %q:%d, want \"\":10", p.CallLoc1.File, p.CallLoc1.Line)
+	}
+	if p.CallLoc2.File != "" || p.CallLoc2.Line != 20 {
+		t.Errorf("CallLoc2 = %q:%d, want \"\":20", p.CallLoc2.File, p.CallLoc2.Line)
+	}
+	if pairs[1].IsObserved || pairs[1].SourceType != "inferred_adjacent" {
+		t.Errorf("pairs[1] = observed:%v source:%q", pairs[1].IsObserved, pairs[1].SourceType)
+	}
+}
+
+// ---------- ParseGortPairs ----------
+
+func TestParseGortPairs_Mixed(t *testing.T) {
+	input := strings.Join([]string{
+		"[COVERED] 10,20|main.go:5,main.go:9|1.00|observed;",
+		"[SUSPECT] 10,30|main.go:5,main.go:12|0.50|inferred_sibling;",
+		"[FB]chan: obj=1234; opId=5; gid=10; op=send;",
+		"noise line",
+	}, "\n")
+
+	pairs, ops, err := ParseGortPairs(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(pairs) != 2 {
+		t.Fatalf("len(pairs) = %d, want 2", len(pairs))
+	}
+	if pairs[0].Gid1 != 10 || pairs[0].Gid2 != 20 || !pairs[0].IsObserved {
+		t.Errorf("pairs[0] = %+v", pairs[0])
+	}
+	if pairs[1].SourceType != "inferred_sibling" || pairs[1].IsObserved {
+		t.Errorf("pairs[1] = %+v", pairs[1])
+	}
+	if len(ops) != 1 || ops[0].OpId != 5 || ops[0].Gid != 10 {
+		t.Fatalf("ops = %+v, want one op with opId=5 gid=10", ops)
+	}
+}
+
+func TestParseGortPairs_Empty(t *testing.T) {
+	pairs, ops, err := ParseGortPairs("")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if len(pairs) != 0 || len(ops) != 0 {
+		t.Fatalf("ParseGortPairs(\"\") = %d pairs, %d ops; want 0, 0", len(pairs), len(ops))
+	}
+}
+
+// ---------- ParseFuncEdges ----------
+
+func TestParseFuncEdges_MixedOutput(t *testing.T) {
+	input := strings.Join([]string{
+		"test log before protocol output",
+		`[FUNC_EDGE] {"caller":1,"callee":10,"count":3}`,
+		"[COVERED] 1,2|:10,:20|1.00|observed;",
+		`[FUNC_EDGE] {"caller":10,"callee":11,"count":1}`,
+		`[GORT_EDGE] {"parent":0,"child":10,"count":2}`, // 异模式前缀忽略
+	}, "\n")
+
+	edges, err := ParseFuncEdges(input)
+	if err != nil {
+		t.Fatalf("ParseFuncEdges() error = %v", err)
+	}
+	if len(edges) != 2 {
+		t.Fatalf("len(edges) = %d, want 2", len(edges))
+	}
+	if got := *edges[0]; got != (FuncEdge{Caller: 1, Callee: 10, Count: 3}) {
+		t.Errorf("edges[0] = %+v", got)
+	}
+	if got := *edges[1]; got != (FuncEdge{Caller: 10, Callee: 11, Count: 1}) {
+		t.Errorf("edges[1] = %+v", got)
+	}
+}
+
+func TestParseFuncEdges_ReturnsValidEdgesWithProtocolError(t *testing.T) {
+	input := strings.Join([]string{
+		`[FUNC_EDGE] {"caller":1,"callee":10,"count":3}`,
+		"[FUNC_EDGE] not-json",
+	}, "\n")
+
+	edges, err := ParseFuncEdges(input)
+	if err == nil {
+		t.Fatal("ParseFuncEdges() error = nil, want protocol error")
+	}
+	if len(edges) != 1 || edges[0].Callee != 10 {
+		t.Fatalf("edges = %+v, want one valid edge", edges)
+	}
+}
+
+// ---------- ParseSignals ----------
+
+func TestParseSignals_PairAndOpSplits(t *testing.T) {
+	input := strings.Join([]string{
+		"{COVERED} {10, 20}",
+		"{TIMEOUT} {30, 40}",
+		"{COVERED_OP} {5, 6}",
+		"{TIMEOUT_OP} {7, 8}",
+		"noise",
+	}, "\n")
+
+	pairSignals, opSignals := ParseSignals(input)
+	if len(pairSignals) != 2 || len(opSignals) != 2 {
+		t.Fatalf("ParseSignals() = %d pair, %d op signals; want 2, 2", len(pairSignals), len(opSignals))
+	}
+	// {COVERED}/{TIMEOUT} 为两种粒度共用的中性信号
+	if pairSignals[0].Kind != SignalPairCovered || !pairSignals[0].Success {
+		t.Errorf("pairSignals[0] = %+v", pairSignals[0])
+	}
+	if pairSignals[1].Kind != SignalPairTimeout || pairSignals[1].Success {
+		t.Errorf("pairSignals[1] = %+v", pairSignals[1])
+	}
+	if pairSignals[0].PreID != 10 || pairSignals[0].NextID != 20 {
+		t.Errorf("pairSignals[0] ids = (%d,%d), want (10,20)", pairSignals[0].PreID, pairSignals[0].NextID)
+	}
+	if opSignals[0].Kind != SignalOpCovered || opSignals[1].Kind != SignalOpTimeout {
+		t.Errorf("op signal kinds = %q/%q", opSignals[0].Kind, opSignals[1].Kind)
 	}
 }

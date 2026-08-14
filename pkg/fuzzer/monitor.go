@@ -37,7 +37,7 @@ type bugFinding struct {
 }
 
 type runAnalysis struct {
-	gortSignals      []*feedback.CoverageSignal
+	pairSignals      []*feedback.CoverageSignal
 	opSignals        []*feedback.CoverageSignal
 	findings         []bugFinding
 	newOracleFinding bool
@@ -45,35 +45,35 @@ type runAnalysis struct {
 }
 
 func analyzeRun(ctx RunContext, executionID uint64, bugs *bug.Set) runAnalysis {
-	gortSignals, opSignals := feedback.ParseSignals(ctx.Out.O)
+	pairSignals, opSignals := feedback.ParseSignals(ctx.Out.O)
 	result := runAnalysis{
-		gortSignals: gortSignals,
+		pairSignals: pairSignals,
 		opSignals:   opSignals,
 	}
 
 	evidence := bug.Evidence{
 		ExecutionID: executionID,
 		Mode:        "preexec",
-		GortCovered: coveredPairs(gortSignals),
+		PairCovered: coveredPairs(pairSignals),
 		OpCovered:   coveredPairs(opSignals),
 		Duration:    ctx.Out.Time,
 	}
 	hasInput := false
 	if ctx.In.pairInput != nil && !ctx.In.pairInput.IsEmpty() {
 		evidence.Mode = "validate"
-		evidence.GortInput = ctx.In.pairInput.ToString()
+		evidence.PairInput = ctx.In.pairInput.ToString()
 		hasInput = true
 	} else if ctx.In.gortPair != nil && len(ctx.In.gortPair.TryPair) > 0 {
 		evidence.Mode = "validate"
-		evidence.GortInput = ctx.In.gortPair.ToString()
+		evidence.PairInput = ctx.In.gortPair.ToString()
 		hasInput = true
 	} else if ctx.In.funcPair != nil && len(ctx.In.funcPair.TryPair) > 0 {
 		evidence.Mode = "validate"
-		evidence.GortInput = ctx.In.funcPair.ToString()
+		evidence.PairInput = ctx.In.funcPair.ToString()
 		hasInput = true
 	}
 	if hasInput {
-		evidence.Associated = matchesCoveredInput(ctx.In, gortSignals, opSignals)
+		evidence.Associated = matchesCoveredInput(ctx.In, pairSignals, opSignals)
 	}
 	if ctx.In.tryOpPair != nil {
 		evidence.OpInput = ctx.In.tryOpPair.ToString()
@@ -108,38 +108,38 @@ func coveredPairs(signals []*feedback.CoverageSignal) []bug.Pair {
 	return pairs
 }
 
-func matchesCoveredInput(in Input, gortSignals, opSignals []*feedback.CoverageSignal) bool {
+func matchesCoveredInput(in Input, pairSignals, opSignals []*feedback.CoverageSignal) bool {
 	// Check unified pairInput first, then fall back to legacy fields
-	matchGort := func() bool {
+	matchPair := func() bool {
 		if in.pairInput != nil && !in.pairInput.IsEmpty() {
-			for _, signal := range gortSignals {
+			for _, signal := range pairSignals {
 				if signal == nil || !signal.Success {
 					continue
 				}
 				for _, pair := range in.pairInput.Pairs {
-					if pair != nil && gortSignalKey(pair.ID1(), pair.ID2()) == gortSignalKey(signal.PreID, signal.NextID) {
+					if pair != nil && pairSignalKey(pair.ID1(), pair.ID2()) == pairSignalKey(signal.PreID, signal.NextID) {
 						return true
 					}
 				}
 			}
 		} else if in.gortPair != nil && len(in.gortPair.TryPair) > 0 {
-			for _, signal := range gortSignals {
+			for _, signal := range pairSignals {
 				if signal == nil || !signal.Success {
 					continue
 				}
 				for _, pair := range in.gortPair.TryPair {
-					if pair != nil && gortSignalKey(pair.Gid1, pair.Gid2) == gortSignalKey(signal.PreID, signal.NextID) {
+					if pair != nil && pairSignalKey(pair.Gid1, pair.Gid2) == pairSignalKey(signal.PreID, signal.NextID) {
 						return true
 					}
 				}
 			}
 		} else if in.funcPair != nil && len(in.funcPair.TryPair) > 0 {
-			for _, signal := range gortSignals {
+			for _, signal := range pairSignals {
 				if signal == nil || !signal.Success {
 					continue
 				}
 				for _, pair := range in.funcPair.TryPair {
-					if pair != nil && gortSignalKey(pair.FuncID1, pair.FuncID2) == gortSignalKey(signal.PreID, signal.NextID) {
+					if pair != nil && pairSignalKey(pair.FuncID1, pair.FuncID2) == pairSignalKey(signal.PreID, signal.NextID) {
 						return true
 					}
 				}
@@ -147,7 +147,7 @@ func matchesCoveredInput(in Input, gortSignals, opSignals []*feedback.CoverageSi
 		}
 		return false
 	}
-	if gortOk := matchGort(); gortOk {
+	if pairOk := matchPair(); pairOk {
 		return true
 	}
 	if in.tryOpPair == nil {
@@ -222,16 +222,11 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	default:
 	}
 
-	// 根据颗粒度创建 PairCorpus 实现
+	// 根据颗粒度创建 adapter 与 PairCorpus（统一入口，避免多处模式分支）
 	adapter := GetAdapter(cfg.Granularity)
-	var pairCorpus PairCorpus
-	if cfg.Granularity == ModeFunction {
-		pairCorpus = NewCorpusFunc(&cfg.GortPhase)
-	} else {
-		pairCorpus = NewCorpusGort(&cfg.GortPhase)
-	}
+	pairCorpus := adapter.NewCorpus(&cfg.Phase)
 
-	corpusOp := NewCorpusOp(&cfg.GortPhase)
+	corpusOp := NewCorpusOp(&cfg.Phase)
 	wid := atomic.AddUint32(&workerID, 1)
 	ch := make(chan RunContext)
 	cancel := make(chan struct{})
@@ -243,7 +238,6 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			timeoutTimer.Reset(1 * time.Minute)
 			select {
 			case <-cancel:
-				fmt.Println("cancel and return1")
 				return
 			default:
 			}
@@ -273,7 +267,6 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			case <-timeoutTimer.C:
 				istimeout = true
 			case <-cancel:
-				fmt.Println("cancel and return done")
 				return
 			}
 			if o == nil {
@@ -284,19 +277,18 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			}
 			select {
 			case <-cancel:
-				fmt.Println("cancel and return before send")
 				return
 			case ch <- RunContext{In: in, Out: *o, timeout: istimeout}:
 			}
 		}
 	}
-	cfg.MaxWorker = 4
+	if cfg.MaxWorker <= 0 {
+		cfg.MaxWorker = DefaultConfig().MaxWorker
+	}
 	for i := 0; i < cfg.MaxWorker; i++ {
 		go dowork()
 	}
-	fmt.Println("m.max=", m.max)
 	for {
-		fmt.Println("m.etimes=", m.etimes)
 		if m.etimes >= m.max {
 			close(cancel)
 			return monitorResult(m.bugs)
@@ -333,39 +325,28 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 		}
 
 		// 预执行阶段判断（通过接口统一调用）
-		if atomic.LoadUint32(&cfg.GortPhase) == 0 {
+		if atomic.LoadUint32(&cfg.Phase) == 0 {
 			pairCorpus.TryEndPreExec(cfg.MaxPreExecRound)
-			if gortCorpus, ok := pairCorpus.(*CorpusGort); ok {
-				corpusOp.TryEndPreExec(gortCorpus)
-			} else {
-				corpusOp.TryEndPreExecForFunc(nil)
-			}
+			pairCorpus.OnPreExecEnd(corpusOp)
 		}
 
 		// fuzzing 阶段
-		gortSignals, opSingnals := analysis.gortSignals, analysis.opSignals
-		fmt.Println("====stdout_start=====")
-		fmt.Println(ctx.Out.O)
-		fmt.Println("=======stdout_end=========")
-		fmt.Println("====反馈信号_start=====")
-		for _, signal := range gortSignals {
-			fmt.Println(signal.PreID, signal.NextID, signal.Success, signal.Kind)
+		pairSignals, opSignals := analysis.pairSignals, analysis.opSignals
+		if debug {
+			sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Signals: pair=%d op=%d",
+				time.Now().String(), wid, len(pairSignals), len(opSignals)))
 		}
-		for _, singnal := range opSingnals {
-			fmt.Println(singnal.PreID, singnal.NextID, singnal.Success, singnal.Kind)
-		}
-		fmt.Println("=======反馈信号_end=======")
 		madeProgress := analysis.newOracleFinding
 		if cfg.UseMutate {
-			if len(gortSignals) > 0 {
-				newlyCovered := pairCorpus.ApplyConcurrencySignals(gortSignals)
+			if len(pairSignals) > 0 {
+				newlyCovered := pairCorpus.ApplyConcurrencySignals(pairSignals)
 				if len(newlyCovered) > 0 {
 					madeProgress = true
 					pairCorpus.OnCoveredByOp(corpusOp, newlyCovered)
 				}
 			}
-			if len(opSingnals) > 0 {
-				corpusOp.ApplySignals(opSingnals)
+			if len(opSignals) > 0 {
+				corpusOp.ApplySignals(opSignals)
 			}
 		}
 
@@ -378,13 +359,11 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			close(cancel)
 			return monitorResult(m.bugs)
 		}
-		fmt.Println("quit=", quit)
 		if quit <= 0 {
 			if info {
 				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Fuzzing seems useless, QUIT", time.Now().String(), wid))
 			}
 			close(cancel)
-			fmt.Println("exit loop")
 			return monitorResult(m.bugs)
 		}
 	}

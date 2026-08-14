@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"os"
+	"strings"
 
 	flags "github.com/jessevdk/go-flags"
 )
@@ -13,6 +14,20 @@ var Opts struct {
 	OnlyGoleak  string `long:"onlygoleak" description:"only goleak inst"`
 	Pos         string `long:"checkpos" description:"leak check position"`
 	Granularity string `long:"granularity" description:"fuzzing granularity [goroutine, function]" default:"goroutine"`
+}
+
+// NormalizeGranularity 将颗粒度参数归一化为 "goroutine" 或 "function"：
+// 大小写不敏感，支持 function/func 别名，非法值回退为 goroutine。
+// 所有 CLI 入口（inst/full/lite）必须先经此函数归一化，
+// 禁止对颗粒度字符串直接做精确比较或类型强转；
+// 语义必须与 fuzzer.ParseGranularity 保持一致。
+func NormalizeGranularity(s string) string {
+	switch strings.ToLower(strings.TrimSpace(s)) {
+	case "function", "func":
+		return "function"
+	default:
+		return "goroutine"
+	}
 }
 
 func ParseFlags() {

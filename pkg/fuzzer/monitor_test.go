@@ -39,8 +39,8 @@ func TestAnalyzeRunValidateCoveredRaceIsAssociated(t *testing.T) {
 	if !analysis.triggered || !analysis.newOracleFinding {
 		t.Fatalf("analysis = triggered:%t new:%t, want both true", analysis.triggered, analysis.newOracleFinding)
 	}
-	if len(analysis.gortSignals) != 1 {
-		t.Fatalf("gort signals = %d, want 1", len(analysis.gortSignals))
+	if len(analysis.pairSignals) != 1 {
+		t.Fatalf("pair signals = %d, want 1", len(analysis.pairSignals))
 	}
 	records := bugs.Snapshot()
 	if len(records) != 1 {
@@ -53,11 +53,11 @@ func TestAnalyzeRunValidateCoveredRaceIsAssociated(t *testing.T) {
 	if !evidence.Associated {
 		t.Fatal("matching COVERED signal should associate the race with the validation execution")
 	}
-	if evidence.GortInput != "(20,10)" {
-		t.Fatalf("gort input = %q, want %q", evidence.GortInput, "(20,10)")
+	if evidence.PairInput != "(20,10)" {
+		t.Fatalf("pair input = %q, want %q", evidence.PairInput, "(20,10)")
 	}
-	if len(evidence.GortCovered) != 1 || evidence.GortCovered[0] != (bug.Pair{PreID: 10, NextID: 20}) {
-		t.Fatalf("covered pairs = %#v, want [{10 20}]", evidence.GortCovered)
+	if len(evidence.PairCovered) != 1 || evidence.PairCovered[0] != (bug.Pair{PreID: 10, NextID: 20}) {
+		t.Fatalf("covered pairs = %#v, want [{10 20}]", evidence.PairCovered)
 	}
 	if evidence.ExitError != "exit status 66" || evidence.Duration != 125*time.Millisecond {
 		t.Fatalf("exit evidence = %q/%s", evidence.ExitError, evidence.Duration)
@@ -115,7 +115,7 @@ func TestMatchesCoveredInputPairDirection(t *testing.T) {
 		{Gid1: 20, Gid2: 10},
 	}}}
 	if !matchesCoveredInput(gortInput, []*feedback.CoverageSignal{{
-		PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalGortCovered,
+		PreID: 10, NextID: 20, Success: true, Kind: feedback.SignalPairCovered,
 	}}, nil) {
 		t.Fatal("goroutine pair matching should be direction-insensitive")
 	}

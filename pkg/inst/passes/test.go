@@ -9,8 +9,11 @@ import (
 )
 
 type TestPass struct {
-	Pos         string
-	Granularity string // "goroutine" 或 "function"
+	Pos string
+	// Granularity 取值 "goroutine" 或 "function"。
+	// 构造方必须先经 cmd.NormalizeGranularity（或等价的 fuzzer.ParseGranularity）归一化，
+	// 本 pass 内部仅对归一化后的值做精确比较。
+	Granularity string
 }
 
 var (

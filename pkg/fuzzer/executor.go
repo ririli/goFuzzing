@@ -73,9 +73,6 @@ func (e *Executor) Run(in Input) Output {
 	} else {
 		strOpPair = "InputOp=" + in.tryOpPair.ToString()
 	}
-	fmt.Println("=====strPair====")
-	fmt.Println(strPair)
-	fmt.Println(strOpPair)
 	command.Env = append(os.Environ(), strPair, strOpPair)
 	if in.timeout != 0 {
 		command.Env = append(command.Env, fmt.Sprintf("TIMEOUT=%v", in.timeout))

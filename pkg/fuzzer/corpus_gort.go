@@ -11,10 +11,7 @@ import (
 
 // gortSignalKey 生成goroutine调度信号的查找键（仅基于 Gid，不含 CallLoc）
 func gortSignalKey(preID, nextID uint64) string {
-	if preID <= nextID {
-		return fmt.Sprintf("%d-%d", preID, nextID)
-	}
-	return fmt.Sprintf("%d-%d", nextID, preID)
+	return pairSignalKey(preID, nextID)
 }
 
 type gortEdgeKey struct {
@@ -41,7 +38,7 @@ type CorpusGort struct {
 	prevPairTotal int    // 上一轮 pair + topology edge 总数
 	stableCount   int    // 连续不变轮数
 
-	gortPhase *uint32 // 指向 cfg.GortPhase，预执行→fuzzing 转换时写入
+	phase *uint32 // 指向 cfg.Phase，预执行→fuzzing 转换时写入
 }
 
 // NewCorpusGort 初始化CorpusGort
@@ -60,13 +57,13 @@ func NewCorpusGort(phase *uint32) *CorpusGort {
 	p.preExecRound = 0
 	p.prevPairTotal = 0
 	p.stableCount = 0
-	p.gortPhase = phase
+	p.phase = phase
 	return &p
 }
 
 // Get 获取 TryPairs 作为 InputGortPair 返回
 func (p *CorpusGort) Get() *feedback.InputGortPair {
-	if atomic.LoadUint32(p.gortPhase) == uint32(0) {
+	if atomic.LoadUint32(p.phase) == uint32(0) {
 		return nil
 	}
 	p.mu.Lock()
@@ -114,9 +111,14 @@ func (p *CorpusGort) OnCoveredByOp(opCorpus *CorpusOp, pairs []feedback.Concurre
 	opCorpus.OnGortCovered(toGortPairs(pairs))
 }
 
+// OnPreExecEnd implements PairCorpus: goroutine 模式从已覆盖对生成 OP 种子。
+func (p *CorpusGort) OnPreExecEnd(opCorpus *CorpusOp) {
+	opCorpus.TryEndPreExec(p)
+}
+
 // InPreExec implements PairCorpus.
 func (p *CorpusGort) InPreExec() bool {
-	return atomic.LoadUint32(p.gortPhase) == 0
+	return atomic.LoadUint32(p.phase) == 0
 }
 
 // ModeName implements PairCorpus.
@@ -176,16 +178,30 @@ func (p *CorpusGort) AddPair(feedPair []*feedback.GortPairInfo) {
 		}
 	}
 
-	if atomic.LoadUint32(p.gortPhase) == 1 {
+	if atomic.LoadUint32(p.phase) == 1 {
 		for _, pair := range newlyObserved {
 			if p.inferFromAnchorLocked(pair) > 0 {
 				suspectsChanged = true
 			}
 		}
 	}
-	if (suspectsChanged || len(newlyObserved) > 0) && atomic.LoadUint32(p.gortPhase) == 1 {
+	if (suspectsChanged || len(newlyObserved) > 0) && atomic.LoadUint32(p.phase) == 1 {
 		p.RefillTryPairs()
 	}
+}
+
+// SnapshotCovered 返回当前已覆盖 goroutine 对的切片副本（持读锁，供外部安全读取）。
+func (p *CorpusGort) SnapshotCovered() []*feedback.GortPairInfo {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+
+	pairs := make([]*feedback.GortPairInfo, 0, len(p.CoveredConPairs))
+	for _, pair := range p.CoveredConPairs {
+		if pair != nil {
+			pairs = append(pairs, pair)
+		}
+	}
+	return pairs
 }
 
 // AddGortEdges merges one execution's static goroutine topology into the corpus.
@@ -220,7 +236,7 @@ func (p *CorpusGort) AddGortEdges(edges []*feedback.GortEdge) int {
 		p.edgeRuns[key]++
 	}
 
-	if newEdges > 0 && atomic.LoadUint32(p.gortPhase) == 1 {
+	if newEdges > 0 && atomic.LoadUint32(p.phase) == 1 {
 		p.inferFromAllCoveredLocked()
 		p.RefillTryPairs()
 	}
@@ -234,7 +250,7 @@ func (p *CorpusGort) TryEndPreExec(maxRounds int) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
-	if atomic.LoadUint32(p.gortPhase) == 1 {
+	if atomic.LoadUint32(p.phase) == 1 {
 		return
 	}
 
@@ -249,7 +265,7 @@ func (p *CorpusGort) TryEndPreExec(maxRounds int) {
 	}
 
 	if p.stableCount >= gortDefaultStableThreshold || int(round) >= maxRounds {
-		atomic.StoreUint32(p.gortPhase, 1)
+		atomic.StoreUint32(p.phase, 1)
 		p.RefillTryPairs()
 		fmt.Printf("[PRESTAGE] Pre-execution finished, total gort pairs: cover=%d, suspect=%d, topology_edges=%d\n",
 			len(p.CoveredConPairs), len(p.SusConPairs), len(p.edgeHits))
@@ -430,7 +446,7 @@ func (p *CorpusGort) ApplySignals(signals []*feedback.CoverageSignal) []*feedbac
 		if sig == nil {
 			continue
 		}
-		if sig.Kind != feedback.SignalGortCovered && sig.Kind != feedback.SignalGortTimeout {
+		if sig.Kind != feedback.SignalPairCovered && sig.Kind != feedback.SignalPairTimeout {
 			continue
 		}
 		sk := gortSignalKey(sig.PreID, sig.NextID)

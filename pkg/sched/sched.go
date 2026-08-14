@@ -9,6 +9,7 @@ import (
 	"sync"
 	"time"
 
+	"toolkit/pkg/calltree"
 	"toolkit/pkg/goroutine"
 )
 
@@ -144,14 +145,37 @@ func InstChBF(opId uint64) {
 	}
 }
 
+// formatFids 将当前函数栈格式化为 "3,7" 形式，无插桩函数在栈上时返回空串。
+// function 粒度下 fuzzer 据此将操作归属到函数；goroutine 粒度下
+// FunctionPass 未注入，栈恒为空，字段不输出，协议保持兼容。
+func formatFids() string {
+	fids := calltree.CurrentFuncStack()
+	if len(fids) == 0 {
+		return ""
+	}
+	parts := make([]string, len(fids))
+	for i, fid := range fids {
+		parts[i] = strconv.FormatUint(fid, 10)
+	}
+	return strings.Join(parts, ",")
+}
+
 // InstChAF channel 操作后记录，用于通知等待者并输出 ObjectID 日志
 func InstChAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, opType string) {
 	if debugSched {
 		addr := uint64(reflect.ValueOf(o).Pointer())
 		gid := goroutine.CurrentGid()
-		print("[FB]chan: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, ";\n")
+		print("[FB]chan: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, ";", formatFidsField(), "\n")
 	}
 	event.Store(opId, struct{}{})
+}
+
+// formatFidsField 返回 [FB] 日志中的 fids 字段（含分号），栈为空时返回空串。
+func formatFidsField() string {
+	if s := formatFids(); s != "" {
+		return " fids=" + s + ";"
+	}
+	return ""
 }
 
 // InstChSelectAF select 中的 channel 操作后记录（仅 AF，无 BF）
@@ -160,7 +184,7 @@ func InstChSelectAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, opTy
 	if debugSched {
 		addr := uint64(reflect.ValueOf(o).Pointer())
 		gid := goroutine.CurrentGid()
-		print("[FB]chan: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, "; select=1;\n")
+		print("[FB]chan: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, "; select=1;", formatFidsField(), "\n")
 	}
 	event.Store(opId, struct{}{})
 }
@@ -199,7 +223,7 @@ func InstWgAF(opId uint64, wg any, opType string) {
 	if debugSched {
 		addr := uint64(reflect.ValueOf(wg).Pointer())
 		gid := goroutine.CurrentGid()
-		print("[FB]wg: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, ";\n")
+		print("[FB]wg: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, ";", formatFidsField(), "\n")
 	}
 	event.Store(opId, struct{}{})
 }

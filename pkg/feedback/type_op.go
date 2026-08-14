@@ -37,8 +37,11 @@ func (d DangerType) String() string { return string(d) }
 
 // OpInfo 表示单个操作的信息（从 sched 日志解析）
 type OpInfo struct {
-	OpId     uint64 // 编译期唯一操作 ID
-	Gid      uint64 // 所在 goroutine 的静态 ID（gid=0 表示未知或主goroutine）
+	OpId uint64 // 编译期唯一操作 ID
+	Gid  uint64 // 所在 goroutine 的静态 ID（gid=0 表示未知或主goroutine）
+	// FuncIDs 操作发生时调用栈上的被插桩函数 ID（外层到内层）；
+	// function 粒度下用于将操作归属到函数，goroutine 粒度下为空。
+	FuncIDs  []uint64
 	ObjAddr  uint64 // 运行时对象地址（channel 指针或 wg 指针）
 	OpType   OpType // 操作类型
 	ObjKind  OpKind // 操作对象类型

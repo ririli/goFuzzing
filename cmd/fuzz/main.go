@@ -39,16 +39,13 @@ func ParseFlags() {
 	}
 }
 
-// resolveGranularity 解析颗粒度：CLI 标志优先，否则从 FUZZ_MODE 环境变量读取，默认 goroutine。
+// resolveGranularity 解析颗粒度：CLI 标志优先，否则从 FUZZ_MODE 环境变量读取，
+// 最终统一经 cmd.NormalizeGranularity 归一化（大小写不敏感，支持 func 别名，默认 goroutine）。
 func resolveGranularity() string {
 	if opts.Granularity != "" {
-		return opts.Granularity
+		return cmd.NormalizeGranularity(opts.Granularity)
 	}
-	mode := os.Getenv("FUZZ_MODE")
-	if mode != "" {
-		return mode
-	}
-	return "goroutine"
+	return cmd.NormalizeGranularity(os.Getenv("FUZZ_MODE"))
 }
 
 func main() {

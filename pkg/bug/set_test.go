@@ -17,7 +17,7 @@ func TestSetAddDeduplicatesAndTracksEvidence(t *testing.T) {
 	firstEvidence := Evidence{
 		ExecutionID: 1,
 		Mode:        "preexec",
-		GortCovered: []Pair{{PreID: 10, NextID: 20}},
+		PairCovered: []Pair{{PreID: 10, NextID: 20}},
 		Duration:    time.Second,
 	}
 	record, isNew := set.Add(event, firstEvidence)
@@ -26,11 +26,11 @@ func TestSetAddDeduplicatesAndTracksEvidence(t *testing.T) {
 	}
 
 	// Set must own its evidence rather than aliases supplied by the monitor.
-	firstEvidence.GortCovered[0].PreID = 999
+	firstEvidence.PairCovered[0].PreID = 999
 	secondEvidence := Evidence{
 		ExecutionID: 2,
 		Mode:        "validate",
-		GortCovered: []Pair{{PreID: 10, NextID: 20}},
+		PairCovered: []Pair{{PreID: 10, NextID: 20}},
 		Associated:  true,
 	}
 	record, isNew = set.Add(event, secondEvidence)
@@ -43,7 +43,7 @@ func TestSetAddDeduplicatesAndTracksEvidence(t *testing.T) {
 	if record.First.ExecutionID != 1 || record.Last.ExecutionID != 2 {
 		t.Fatalf("evidence bounds = (%d, %d), want (1, 2)", record.First.ExecutionID, record.Last.ExecutionID)
 	}
-	if record.First.GortCovered[0].PreID != 10 {
+	if record.First.PairCovered[0].PreID != 10 {
 		t.Fatal("stored evidence was mutated through the caller's slice")
 	}
 	if set.Len() != 1 || set.TriggeredLen() != 1 || !set.HasTriggered() {

@@ -51,9 +51,11 @@ func (e Event) Triggered() bool {
 type Evidence struct {
 	ExecutionID uint64
 	Mode        string
-	GortInput   string
+	// PairInput/PairCovered 为中性的并发对字段，
+	// goroutine 与 function 两种粒度共用。
+	PairInput   string
 	OpInput     string
-	GortCovered []Pair
+	PairCovered []Pair
 	OpCovered   []Pair
 	ExitError   string
 	Duration    time.Duration
@@ -181,7 +183,7 @@ func cloneRecord(record Record) Record {
 }
 
 func cloneEvidence(evidence Evidence) Evidence {
-	evidence.GortCovered = append([]Pair(nil), evidence.GortCovered...)
+	evidence.PairCovered = append([]Pair(nil), evidence.PairCovered...)
 	evidence.OpCovered = append([]Pair(nil), evidence.OpCovered...)
 	return evidence
 }

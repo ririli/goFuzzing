@@ -18,11 +18,20 @@ type EdgeParser func(stderr string) ([]TopologyEdge, error)
 
 // GranularityAdapter bundles mode-specific operations for the Monitor.
 // This is the primary abstraction for switching between goroutine-level
-// and function-level fuzzing granularities.
+// and function-level fuzzing granularities. Mode selection (parser and
+// corpus creation) must go through this adapter only.
 type GranularityAdapter struct {
 	Mode       GranularityMode
 	ParsePairs PairParser
 	ParseEdges EdgeParser
+}
+
+// NewCorpus creates the PairCorpus implementation matching this adapter's mode.
+func (a *GranularityAdapter) NewCorpus(phase *uint32) PairCorpus {
+	if a.Mode == ModeFunction {
+		return NewCorpusFunc(phase)
+	}
+	return NewCorpusGort(phase)
 }
 
 // GetAdapter returns the GranularityAdapter for the given mode.

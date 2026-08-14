@@ -74,8 +74,8 @@ func TestNewCorpusOp(t *testing.T) {
 	if co.generated {
 		t.Error("generated should be false")
 	}
-	if co.gortPhase != &phase {
-		t.Error("gortPhase should point to phase")
+	if co.phase != &phase {
+		t.Error("phase should point to phase")
 	}
 }
 
@@ -309,6 +309,71 @@ func TestCorpusOp_Get_AfterGenerated(t *testing.T) {
 	}
 	if len(out.TryPair) != 1 {
 		t.Errorf("TryPair len = %d, want 1", len(out.TryPair))
+	}
+}
+
+// ---------- byFunc 索引（function 粒度 OP 联动） ----------
+
+func TestCorpusOp_ByFuncIndex(t *testing.T) {
+	co := NewCorpusOp(new(uint32))
+
+	co.Add([]*feedback.OpInfo{
+		{OpId: 1, Gid: 0, ObjAddr: 0x1, OpType: feedback.OpTypeClose, ObjKind: feedback.OpKindChannel, FuncIDs: []uint64{5, 7}},
+		{OpId: 2, Gid: 0, ObjAddr: 0x1, OpType: feedback.OpTypeSend, ObjKind: feedback.OpKindChannel, FuncIDs: []uint64{0, 7}}, // fid=0 忽略
+		{OpId: 3, Gid: 0, ObjAddr: 0x2, OpType: feedback.OpTypeSend, ObjKind: feedback.OpKindChannel},                          // 无 fids（goroutine 粒度兼容）
+	})
+
+	if len(co.byFunc[5]) != 1 {
+		t.Errorf("byFunc[5] len = %d, want 1", len(co.byFunc[5]))
+	}
+	if len(co.byFunc[7]) != 2 {
+		t.Errorf("byFunc[7] len = %d, want 2 (操作归属于栈上全部函数)", len(co.byFunc[7]))
+	}
+	if _, ok := co.byFunc[0]; ok {
+		t.Error("funcID 0 must not be indexed")
+	}
+	if ops := co.getOpsByFunc(7); len(ops) != 2 {
+		t.Errorf("getOpsByFunc(7) = %d ops, want 2", len(ops))
+	}
+	if ops := co.getOpsByFunc(99); ops != nil {
+		t.Errorf("getOpsByFunc(99) = %v, want nil", ops)
+	}
+}
+
+func TestCorpusOp_OnFuncCovered(t *testing.T) {
+	var phase uint32 = 1
+	co := NewCorpusOp(&phase)
+	co.generated = true
+
+	co.Add([]*feedback.OpInfo{
+		{OpId: 1, Gid: 0, ObjAddr: 0x10, OpType: feedback.OpTypeClose, ObjKind: feedback.OpKindChannel, FuncIDs: []uint64{1}},
+		{OpId: 2, Gid: 0, ObjAddr: 0x10, OpType: feedback.OpTypeSend, ObjKind: feedback.OpKindChannel, FuncIDs: []uint64{2}},
+	})
+
+	co.OnFuncCovered([]*feedback.SuspiciousPairInfo{
+		{FuncID1: 1, FuncID2: 2},
+		nil,
+	})
+
+	if len(co.SusConPairs) != 1 {
+		t.Fatalf("SusConPairs = %d, want 1", len(co.SusConPairs))
+	}
+	for _, p := range co.SusConPairs {
+		if p.Danger != feedback.DangerCloseBeforeSend {
+			t.Errorf("danger = %q, want %q", p.Danger, feedback.DangerCloseBeforeSend)
+		}
+	}
+}
+
+func TestCorpusOp_OnFuncCovered_PreExecIsNoop(t *testing.T) {
+	var phase uint32 = 0
+	co := NewCorpusOp(&phase)
+	co.generated = true
+
+	co.OnFuncCovered([]*feedback.SuspiciousPairInfo{{FuncID1: 1, FuncID2: 2}})
+
+	if len(co.SusConPairs) != 0 {
+		t.Error("OnFuncCovered must not generate during pre-exec phase")
 	}
 }
 

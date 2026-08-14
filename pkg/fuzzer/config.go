@@ -10,12 +10,15 @@ type GranularityMode string
 
 const (
 	// ModeGoroutine 调度 goroutine 对（go 语句级别）。
-	ModeGoroutine GranularityMode = "goroutine"
 	// ModeFunction 调度函数调用对（函数入口级别）。
-	ModeFunction GranularityMode = "function"
+	// 取值必须与 cmd.NormalizeGranularity 的输出保持一致。
+	ModeGoroutine GranularityMode = "goroutine"
+	ModeFunction  GranularityMode = "function"
 )
 
 // ParseGranularity 从字符串解析颗粒度模式（不区分大小写），非法值默认返回 goroutine。
+// 作为 fuzzer 包边界的归一化入口，语义必须与 cmd.NormalizeGranularity 保持一致；
+// 请勿在包外直接对 GranularityMode 做字符串强转或精确比较。
 func ParseGranularity(s string) GranularityMode {
 	switch strings.ToLower(strings.TrimSpace(s)) {
 	case "function", "func":
@@ -55,7 +58,7 @@ type Config struct {
 	InitTurnCnt     int
 	MaxQuit         int
 	MaxPreExecRound int             // 预执行轮次上限
-	GortPhase       uint32          // 0=预执行种子收集, 1=fuzzing阶段 (CorpusGort/CorpusFunc写入, CorpusOp读取)
+	Phase           uint32          // 0=预执行种子收集, 1=fuzzing阶段 (CorpusGort/CorpusFunc写入, CorpusOp读取)
 	Granularity     GranularityMode // "goroutine" 或 "function"——调度哪种并发对
 
 	//BugSet *bug.BugSet

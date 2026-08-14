@@ -61,7 +61,7 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 				cfg.MaxQuit = 200 // 推出循环次数
 				cfg.MaxExecution = 250
 				cfg.LogLevel = llevel
-				cfg.Granularity = fuzzer.GranularityMode(granularity)
+				cfg.Granularity = fuzzer.ParseGranularity(granularity)
 				if feature == "mu" {
 					cfg.UseMutate = false
 				}

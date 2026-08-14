@@ -103,7 +103,7 @@ func Inst(paths []string, check_pos string, granularity string) {
 						fmt.Printf("  %d. %s\n", i+1, file)
 					}
 				}
-				fmt.Println("============================\n")
+				fmt.Println("============================")
 				return
 			}
 			//default:

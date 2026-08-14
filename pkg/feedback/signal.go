@@ -4,8 +4,10 @@ package feedback
 type SignalKind string
 
 const (
-	SignalGortCovered SignalKind = "gort_covered" // goroutine对调度成功
-	SignalGortTimeout SignalKind = "gort_timeout" // goroutine对调度超时
+	// SignalPairCovered/SignalPairTimeout 为中性的并发对信号种类，
+	// goroutine 与 function 两种粒度共用 {COVERED}/{TIMEOUT} 前缀。
+	SignalPairCovered SignalKind = "pair_covered" // 并发对调度成功
+	SignalPairTimeout SignalKind = "pair_timeout" // 并发对调度超时
 	SignalOpCovered   SignalKind = "op_covered"   // 操作对调度成功
 	SignalOpTimeout   SignalKind = "op_timeout"   // 操作对调度超时
 )

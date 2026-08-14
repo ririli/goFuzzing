@@ -20,7 +20,7 @@ func Lite(bin, fn string, llevel string, timeout, recovertimeout int, maxworker 
 		cfg.TimeOut = timeout
 		cfg.RecoverTimeOut = recovertimeout
 		cfg.MaxWorker = maxworker
-		cfg.Granularity = fuzzer.GranularityMode(granularity)
+		cfg.Granularity = fuzzer.ParseGranularity(granularity)
 
 		ok, detail := m.Start(cfg, nolimit)
 		var res string

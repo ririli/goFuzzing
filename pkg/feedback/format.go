@@ -10,15 +10,17 @@ import (
 const gortEdgePrefix = "[GORT_EDGE]"
 
 // ParseSignals 从 stdout 中解析调度有效性信号（轻量，无需调用栈）
-// 返回 gort 和 op 两份独立的信号切片
+// 返回并发对（pair）和 op 两份独立的信号切片；
+// {COVERED}/{TIMEOUT} 在 goroutine 与 function 两种粒度下共用，
+// 具体语义由调用方所处的颗粒度模式决定。
 //
 // 支持格式：
 //
-//	{COVERED} {gid1, gid2}
-//	{TIMEOUT} {gid1, gid2}
+//	{COVERED} {id1, id2}
+//	{TIMEOUT} {id1, id2}
 //	{COVERED_OP} {opId1, opId2}
 //	{TIMEOUT_OP} {opId1, opId2}
-func ParseSignals(s string) (gortSignals, opSignals []*CoverageSignal) {
+func ParseSignals(s string) (pairSignals, opSignals []*CoverageSignal) {
 	lines := strings.Split(s, "\n")
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
@@ -30,8 +32,8 @@ func ParseSignals(s string) (gortSignals, opSignals []*CoverageSignal) {
 			continue
 		}
 		switch sig.Kind {
-		case SignalGortCovered, SignalGortTimeout:
-			gortSignals = append(gortSignals, sig)
+		case SignalPairCovered, SignalPairTimeout:
+			pairSignals = append(pairSignals, sig)
 		case SignalOpCovered, SignalOpTimeout:
 			opSignals = append(opSignals, sig)
 		}
@@ -56,11 +58,11 @@ func parseSignal(line string) *CoverageSignal {
 		line = strings.TrimPrefix(line, "{TIMEOUT_OP}")
 	case strings.HasPrefix(line, "{COVERED}"):
 		success = true
-		kind = SignalGortCovered
+		kind = SignalPairCovered
 		line = strings.TrimPrefix(line, "{COVERED}")
 	case strings.HasPrefix(line, "{TIMEOUT}"):
 		success = false
-		kind = SignalGortTimeout
+		kind = SignalPairTimeout
 		line = strings.TrimPrefix(line, "{TIMEOUT}")
 	default:
 		return nil
@@ -127,8 +129,6 @@ func ParseStdPairs(s string) ([]*SuspiciousPairInfo, []*OpInfo, error) {
 			results = append(results, pair)
 		}
 	}
-	fmt.Println("ParseStdPairs\n", results)
-	fmt.Println("\nParseStdOps\n", ops)
 	return results, ops, nil
 }
 
@@ -240,6 +240,10 @@ func parseLocation(locStr string) (CallLocationInfo, error) {
 // select 中的操作额外带 select=1:
 //
 //	[FB]chan: obj=ADDR; opId=ID; gid=ID; op=TYPE; select=1;
+//
+// function 粒度下额外带 fids=外层,...,内层（操作发生时的函数栈）:
+//
+//	[FB]chan: obj=ADDR; opId=ID; gid=ID; op=TYPE; fids=3,7;
 func parseFBOp(line string) (*OpInfo, error) {
 	// 去除 [FB] 前缀
 	content := strings.TrimPrefix(line, "[FB]")
@@ -299,6 +303,18 @@ func parseFBOp(line string) (*OpInfo, error) {
 			op.OpType = OpType(val)
 		case "select":
 			op.IsSelect = val == "1"
+		case "fids":
+			for _, idStr := range strings.Split(val, ",") {
+				idStr = strings.TrimSpace(idStr)
+				if idStr == "" {
+					continue
+				}
+				v, err := strconv.ParseUint(idStr, 10, 64)
+				if err != nil {
+					return nil, fmt.Errorf("invalid fids: %v", err)
+				}
+				op.FuncIDs = append(op.FuncIDs, v)
+			}
 		}
 	}
 

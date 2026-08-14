@@ -11,10 +11,7 @@ import (
 
 // funcSignalKey generates a signal-matching key from two function IDs.
 func funcSignalKey(preID, nextID uint64) string {
-	if preID <= nextID {
-		return fmt.Sprintf("%d-%d", preID, nextID)
-	}
-	return fmt.Sprintf("%d-%d", nextID, preID)
+	return pairSignalKey(preID, nextID)
 }
 
 // funcEdgeKey is the dedup key for function caller-callee edges.
@@ -112,9 +109,30 @@ func (p *CorpusFunc) AddConcurrencyEdges(edges []feedback.ConcurrencyEdge) int {
 	return p.AddFuncEdges(funcEdges)
 }
 
-// OnCoveredByOp implements PairCorpus. No-op for function mode.
+// OnCoveredByOp implements PairCorpus.
+// 函数对被覆盖时，经 byFunc 索引（[FB] 日志 fids 字段）增量生成 OP 种子，
+// 与 goroutine 模式的 OnGortCovered 语义对齐。
 func (p *CorpusFunc) OnCoveredByOp(opCorpus *CorpusOp, pairs []feedback.ConcurrencyPair) {
-	// Function mode does not generate OP pairs from goroutine pairs.
+	opCorpus.OnFuncCovered(toFuncPairs(pairs))
+}
+
+// SnapshotCovered 返回当前已覆盖函数对的切片副本（持读锁，供外部安全读取）。
+func (p *CorpusFunc) SnapshotCovered() []*feedback.SuspiciousPairInfo {
+	p.mu.RLock()
+	defer p.mu.RUnlock()
+
+	pairs := make([]*feedback.SuspiciousPairInfo, 0, len(p.CoveredConPairs))
+	for _, pair := range p.CoveredConPairs {
+		if pair != nil {
+			pairs = append(pairs, pair)
+		}
+	}
+	return pairs
+}
+
+// OnPreExecEnd implements PairCorpus: 函数模式从已覆盖函数对生成 OP 种子。
+func (p *CorpusFunc) OnPreExecEnd(opCorpus *CorpusOp) {
+	opCorpus.TryEndPreExecForFunc(p)
 }
 
 // InPreExec implements PairCorpus.
@@ -417,7 +435,7 @@ func (p *CorpusFunc) ApplySignals(signals []*feedback.CoverageSignal) []*feedbac
 		if sig == nil {
 			continue
 		}
-		if sig.Kind != feedback.SignalGortCovered && sig.Kind != feedback.SignalGortTimeout {
+		if sig.Kind != feedback.SignalPairCovered && sig.Kind != feedback.SignalPairTimeout {
 			continue
 		}
 		sk := funcSignalKey(sig.PreID, sig.NextID)

@@ -25,6 +25,11 @@ type PairCorpus interface {
 	// transitioning to phase 1 (fuzzing) when stable or max rounds reached.
 	TryEndPreExec(maxRounds int)
 
+	// OnPreExecEnd hooks the OP corpus into the pre-exec→fuzzing transition.
+	// Must be called right after TryEndPreExec. Goroutine mode generates OP
+	// pairs from covered goroutine pairs; function mode skips generation.
+	OnPreExecEnd(opCorpus *CorpusOp)
+
 	// ApplyConcurrencySignals applies coverage/timeout signals from an execution.
 	// Returns newly covered pairs for OP corpus integration.
 	ApplyConcurrencySignals(signals []*feedback.CoverageSignal) []feedback.ConcurrencyPair
@@ -45,6 +50,15 @@ type PairCorpus interface {
 // It unifies goroutine pairs (GortPairInfo) and function pairs (SuspiciousPairInfo).
 type PairInput struct {
 	Pairs []feedback.ConcurrencyPair
+}
+
+// pairSignalKey 生成方向无关的信号匹配键（较小 ID 在前），
+// goroutine 与 function 两种粒度通用。
+func pairSignalKey(id1, id2 uint64) string {
+	if id1 <= id2 {
+		return fmt.Sprintf("%d-%d", id1, id2)
+	}
+	return fmt.Sprintf("%d-%d", id2, id1)
 }
 
 // ToString serializes pairs for the Input environment variable.
