@@ -9,8 +9,8 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
-// WgPass, WaitGroup Record Pass. This pass instruments
-// sync.WaitGroup operations: Add, Done
+// WgPass，WaitGroup Record Pass（WaitGroup 记录 Pass）。该 Pass 对
+// sync.WaitGroup 的 Add、Done 操作进行插桩
 
 var (
 	WgNeedInst   = "WgNeedInst"

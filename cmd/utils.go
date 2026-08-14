@@ -94,7 +94,7 @@ func HandleSrcFile(src string, reg *inst.PassRegistry, passes []string) error {
 	if Opts.Out != "" {
 		dst = Opts.Out
 	} else {
-		// dump AST in-place
+		// 就地导出 AST
 		dst = iCtx.File
 
 	}
@@ -103,10 +103,10 @@ func HandleSrcFile(src string, reg *inst.PassRegistry, passes []string) error {
 		return err
 	}
 
-	// check if output is valid, revert if error happened
+	// 检查输出是否有效，出错则回滚
 	if gofmt.HasSyntaxError(dst) {
-		// we simply ignored the instrumented result,
-		// and revert the file content back to original version.
+		// 直接丢弃插桩结果，
+		// 并将文件内容还原为原始版本。
 		err = ioutil.WriteFile(dst, iCtx.OriginalContent, 0777)
 		if err != nil {
 			log.Panicf("failed to recover file '%s'", dst)

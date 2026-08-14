@@ -57,7 +57,7 @@ func Inst(paths []string, check_pos string, granularity string) {
 		} else {
 			result = fmt.Sprintf("Handle\t%s FAIL", path)
 		}
-		<-limit // release slot before writing result, so dispatcher never deadlocks
+		<-limit // 写入结果前先释放槽位，避免分发器死锁
 		resCh <- result
 	}
 

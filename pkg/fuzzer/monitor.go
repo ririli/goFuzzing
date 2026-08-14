@@ -89,8 +89,8 @@ func analyzeRun(ctx RunContext, executionID uint64, bugs *bug.Set) runAnalysis {
 			record: record,
 			isNew:  isNew,
 		})
-		// Novel hang candidates are retained as oracle progress even though they
-		// do not make the run fail until replay confirmation is implemented.
+		// 新的 hang 候选即使不会让本次运行失败（回放确认实现之前），
+		// 仍会作为 oracle 进展保留。
 		result.newOracleFinding = result.newOracleFinding || isNew
 		result.triggered = result.triggered || event.Triggered()
 	}
@@ -109,7 +109,7 @@ func coveredPairs(signals []*feedback.CoverageSignal) []bug.Pair {
 }
 
 func matchesCoveredInput(in Input, pairSignals, opSignals []*feedback.CoverageSignal) bool {
-	// Check unified pairInput first, then fall back to legacy fields
+	// 先检查统一的 pairInput，再回退到旧字段
 	matchPair := func() bool {
 		if in.pairInput != nil && !in.pairInput.IsEmpty() {
 			for _, signal := range pairSignals {

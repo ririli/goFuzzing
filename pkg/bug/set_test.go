@@ -25,7 +25,7 @@ func TestSetAddDeduplicatesAndTracksEvidence(t *testing.T) {
 		t.Fatalf("first Add() = (%#v, %v), want a new count-1 record", record, isNew)
 	}
 
-	// Set must own its evidence rather than aliases supplied by the monitor.
+	// Set 必须持有自己的 evidence 副本，而不是监视器传入的别名引用。
 	firstEvidence.PairCovered[0].PreID = 999
 	secondEvidence := Evidence{
 		ExecutionID: 2,

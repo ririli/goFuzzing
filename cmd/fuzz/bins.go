@@ -57,9 +57,8 @@ func Bins(paths []string, outputDir string) {
 			replacedDir = filepath.Base(absDir)
 		}
 		opath := filepath.Join(workpath, outputDir, replacedDir)
-		// On Windows the go tool will produce a .exe file. Make the output
-		// filename explicitly include the suffix so downstream callers that
-		// try to execute the binary can find it reliably.
+		// 在 Windows 上 go 工具会生成 .exe 文件。让输出文件名显式带上
+		// 该后缀，以便下游尝试执行二进制文件的调用方能够可靠地找到它。
 		if runtime.GOOS == "windows" {
 			opath = opath + ".exe"
 		}

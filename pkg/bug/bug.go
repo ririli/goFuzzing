@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-// Kind identifies the runtime oracle that produced an event.
+// Kind 标识产生事件的运行时预言机。
 type Kind string
 
 const (
@@ -18,14 +18,14 @@ const (
 	KindHangCandidate Kind = "hang_candidate"
 )
 
-// Pair records one successful scheduling signal without importing feedback.
+// Pair 记录一个成功的调度信号，不导入 feedback 包。
 type Pair struct {
 	PreID  uint64
 	NextID uint64
 }
 
-// Event is a normalized runtime oracle event. Signature is stable across
-// dynamic addresses, goroutine numbers, stack offsets, and race access order.
+// Event 是归一化后的运行时预言机事件。Signature 在动态地址、
+// goroutine 编号、栈偏移和数据竞争访问顺序变化时保持稳定。
 type Event struct {
 	Kind      Kind
 	Signature string
@@ -33,9 +33,9 @@ type Event struct {
 	Report    string
 }
 
-// Triggered reports whether the event is strong enough to count as a bug.
-// Timeouts and runtime deadlock reports remain candidates until replay can
-// distinguish a target bug from an expected test timeout or harness stall.
+// Triggered 报告该事件是否足够强，可算作一个 bug。
+// 超时和运行时死锁报告在重放能区分目标 bug 与预期的测试超时或
+// 测试框架停顿之前，仍保持候选状态。
 func (e Event) Triggered() bool {
 	switch e.Kind {
 	case KindDataRace, KindPanic, KindFatal:
@@ -45,9 +45,9 @@ func (e Event) Triggered() bool {
 	}
 }
 
-// Evidence describes the execution in which an event was observed.
-// Associated means that the same validation execution also covered its input
-// pair. It is correlation evidence, not replay-confirmed causality.
+// Evidence 描述观察到事件的那次执行。
+// Associated 表示同一次验证执行也覆盖了其输入对。
+// 这是相关性证据，而非经重放确认的因果关系。
 type Evidence struct {
 	ExecutionID uint64
 	Mode        string
@@ -62,7 +62,7 @@ type Evidence struct {
 	Associated  bool
 }
 
-// Record aggregates repeated observations of one normalized event.
+// Record 汇总对同一归一化事件的重复观测。
 type Record struct {
 	Event
 	Count           int
@@ -71,7 +71,7 @@ type Record struct {
 	Last            Evidence
 }
 
-// Set is a concurrency-safe collection of distinct normalized events.
+// Set 是不同归一化事件的并发安全集合。
 type Set struct {
 	mu      sync.RWMutex
 	records map[string]*Record
@@ -81,8 +81,8 @@ func NewSet() *Set {
 	return &Set{records: make(map[string]*Record)}
 }
 
-// Add inserts or updates an event. isNew is true only for the first
-// observation of a kind/signature pair.
+// Add 插入或更新一个事件。仅当某个 kind/signature 组合首次被观测到时，
+// isNew 为 true。
 func (s *Set) Add(event Event, evidence Evidence) (Record, bool) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -116,14 +116,14 @@ func (s *Set) Add(event Event, evidence Evidence) (Record, bool) {
 	return cloneRecord(*stored), true
 }
 
-// Len returns the number of distinct events, including hang candidates.
+// Len 返回不同事件的数量，包括挂起候选（hang candidate）。
 func (s *Set) Len() int {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return len(s.records)
 }
 
-// TriggeredLen returns the number of distinct race, panic, and fatal events.
+// TriggeredLen 返回不同数据竞争、panic 和 fatal 事件的数量。
 func (s *Set) TriggeredLen() int {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -141,7 +141,7 @@ func (s *Set) HasTriggered() bool {
 	return s.TriggeredLen() != 0
 }
 
-// Snapshot returns a deep copy in deterministic kind/signature order.
+// Snapshot 按确定的 kind/signature 顺序返回深拷贝。
 func (s *Set) Snapshot() []Record {
 	s.mu.RLock()
 	defer s.mu.RUnlock()
@@ -159,7 +159,7 @@ func (s *Set) Snapshot() []Record {
 	return records
 }
 
-// Summary provides one stable, concise line per distinct event.
+// Summary 为每个不同事件提供一行稳定、简洁的描述。
 func (s *Set) Summary() string {
 	records := s.Snapshot()
 	lines := make([]string, 0, len(records))

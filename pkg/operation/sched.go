@@ -33,7 +33,7 @@ func init() {
 	debugSched = os.Getenv("SCHED_DEBUG") != "1"
 }
 
-// find sender with current wait ID
+// 查找当前等待 ID 对应的前置操作
 func (c *Config) findPrev(opId uint64) []uint64 {
 	c.mu.RLock()
 	defer c.mu.RUnlock()

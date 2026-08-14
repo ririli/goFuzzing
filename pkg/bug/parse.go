@@ -46,9 +46,9 @@ func (a raceAccess) String() string {
 	return strings.ToLower(a.kind) + " " + a.frame.String()
 }
 
-// Parse extracts and deduplicates runtime oracle events from one execution.
-// Both streams are inspected because Go may write test output and diagnostics
-// to different descriptors depending on how the binary was launched.
+// Parse 从一次执行中提取并去重运行时预言机事件。
+// 两个输出流都会被检查，因为 Go 可能根据二进制文件的启动方式，
+// 将测试输出和诊断信息写入不同的描述符（stderr/stdout）。
 func Parse(stdout, stderr string) []Event {
 	seen := make(map[string]struct{})
 	var events []Event

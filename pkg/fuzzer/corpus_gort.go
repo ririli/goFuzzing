@@ -31,8 +31,8 @@ type CorpusGort struct {
 	selectNum       int                               // 从 SusConPairs 选取的数量，初始=1，自适应调整（上限64）
 	parents         map[uint64]map[uint64]struct{}    // child gid -> observed parent gids
 	children        map[uint64]map[uint64]struct{}    // parent gid -> observed child gids
-	edgeHits        map[gortEdgeKey]uint64            // edge -> dynamic occurrence count
-	edgeRuns        map[gortEdgeKey]uint64            // edge -> number of executions that observed it
+	edgeHits        map[gortEdgeKey]uint64            // 边 -> 动态出现次数
+	edgeRuns        map[gortEdgeKey]uint64            // 边 -> 观测到它的执行次数
 
 	preExecRound  uint32 // 预执行当前轮次
 	prevPairTotal int    // 上一轮 pair + topology edge 总数
@@ -79,9 +79,9 @@ func (p *CorpusGort) Get() *feedback.InputGortPair {
 	}
 }
 
-// --- PairCorpus interface methods ---
+// --- PairCorpus 接口方法 ---
 
-// GetInput implements PairCorpus.
+// GetInput 实现了 PairCorpus 接口。
 func (p *CorpusGort) GetInput() *PairInput {
 	gp := p.Get()
 	if gp == nil || len(gp.TryPair) == 0 {
@@ -90,12 +90,12 @@ func (p *CorpusGort) GetInput() *PairInput {
 	return &PairInput{Pairs: gortToConcurrencyPairs(gp.TryPair)}
 }
 
-// AddConcurrencyPairs implements PairCorpus. Converts and delegates to AddPair.
+// AddConcurrencyPairs 实现了 PairCorpus 接口。转换后委托给 AddPair。
 func (p *CorpusGort) AddConcurrencyPairs(pairs []feedback.ConcurrencyPair) {
 	p.AddPair(toGortPairs(pairs))
 }
 
-// AddConcurrencyEdges implements PairCorpus. Converts and delegates to AddGortEdges.
+// AddConcurrencyEdges 实现了 PairCorpus 接口。转换后委托给 AddGortEdges。
 func (p *CorpusGort) AddConcurrencyEdges(edges []feedback.ConcurrencyEdge) int {
 	gortEdges := make([]*feedback.GortEdge, 0, len(edges))
 	for _, e := range edges {
@@ -106,27 +106,27 @@ func (p *CorpusGort) AddConcurrencyEdges(edges []feedback.ConcurrencyEdge) int {
 	return p.AddGortEdges(gortEdges)
 }
 
-// OnCoveredByOp implements PairCorpus.
+// OnCoveredByOp 实现了 PairCorpus 接口。
 func (p *CorpusGort) OnCoveredByOp(opCorpus *CorpusOp, pairs []feedback.ConcurrencyPair) {
 	opCorpus.OnGortCovered(toGortPairs(pairs))
 }
 
-// OnPreExecEnd implements PairCorpus: goroutine 模式从已覆盖对生成 OP 种子。
+// OnPreExecEnd 实现了 PairCorpus 接口：goroutine 模式从已覆盖对生成 OP 种子。
 func (p *CorpusGort) OnPreExecEnd(opCorpus *CorpusOp) {
 	opCorpus.TryEndPreExec(p)
 }
 
-// InPreExec implements PairCorpus.
+// InPreExec 实现了 PairCorpus 接口。
 func (p *CorpusGort) InPreExec() bool {
 	return atomic.LoadUint32(p.phase) == 0
 }
 
-// ModeName implements PairCorpus.
+// ModeName 实现了 PairCorpus 接口。
 func (p *CorpusGort) ModeName() string {
 	return "goroutine"
 }
 
-// ApplyConcurrencySignals implements PairCorpus. Wraps ApplySignals.
+// ApplyConcurrencySignals 实现了 PairCorpus 接口。封装 ApplySignals。
 func (p *CorpusGort) ApplyConcurrencySignals(signals []*feedback.CoverageSignal) []feedback.ConcurrencyPair {
 	return gortToConcurrencyPairs(p.ApplySignals(signals))
 }
@@ -204,8 +204,8 @@ func (p *CorpusGort) SnapshotCovered() []*feedback.GortPairInfo {
 	return pairs
 }
 
-// AddGortEdges merges one execution's static goroutine topology into the corpus.
-// The topology is monotonic across executions: missing edges never remove old data.
+// AddGortEdges 将单次执行的静态 goroutine 拓扑合并进语料库。
+// 拓扑跨执行单调递增：缺失的边不会移除旧数据。
 func (p *CorpusGort) AddGortEdges(edges []*feedback.GortEdge) int {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -350,9 +350,9 @@ func removeGortSignalPairs(
 	}
 }
 
-// addInferredPairLocked adds a candidate unless its unordered gid pair has
-// already been covered or declared infeasible. Existing suspects are upgraded
-// in place so their call-location key remains stable.
+// addInferredPairLocked 添加候选对，除非其无序 gid 对已被覆盖
+// 或已声明不可行。已有可疑对就地升级，
+// 使其调用位置键保持稳定。
 func (p *CorpusGort) addInferredPairLocked(gid1, gid2 uint64, confidence float64, sourceType string) bool {
 	if gid1 == 0 || gid2 == 0 || gid1 == gid2 {
 		return false

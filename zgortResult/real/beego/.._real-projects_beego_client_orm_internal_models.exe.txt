@@ -1,5 +1,0 @@
-﻿bin =  D:\gopath\src\gopie\testbins\beego\.._real-projects_beego_client_orm_internal_models.exe
-no tests found
-----len bin2tests= 1
---len tests= 0
-2026-07-27 21:13:27.6583604 +0800 CST m=+1.092128501 [Fuzzer] Finish, elapsed: 1.095s

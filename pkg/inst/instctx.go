@@ -11,7 +11,7 @@ import (
 	"toolkit/pkg/utils/hash"
 )
 
-// NewInstContext creates a InstContext by given Golang source file
+// NewInstContext 根据给定的 Golang 源文件创建 InstContext
 func NewInstContext(goSrcFile string) (*InstContext, error) {
 	oldSource, err := ioutil.ReadFile(goSrcFile)
 	if err != nil {

@@ -50,7 +50,7 @@ func (p *GoroutinePass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor
 	return func(c *astutil.Cursor) bool {
 		defer func() {
 			if r := recover(); r != nil {
-				// This is allowed. If we insert node into nodes not in slice, we will meet a panic
+				// 这是允许的。如果向非切片中的节点插入节点，会触发 panic
 			}
 		}()
 

@@ -1,5 +1,0 @@
-﻿bin =  D:\gopath\src\gopie\testbins\beego\.._real-projects_beego_server_web_session_redis_sentinel.exe
-----len bin2tests= 1
-no tests found
---len tests= 0
-2026-07-27 22:38:23.031462 +0800 CST m=+1.099884201 [Fuzzer] Finish, elapsed: 1.090s

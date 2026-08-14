@@ -9,20 +9,20 @@ import (
 	"toolkit/pkg/feedback"
 )
 
-// funcSignalKey generates a signal-matching key from two function IDs.
+// funcSignalKey 由两个函数 ID 生成信号匹配键。
 func funcSignalKey(preID, nextID uint64) string {
 	return pairSignalKey(preID, nextID)
 }
 
-// funcEdgeKey is the dedup key for function caller-callee edges.
+// funcEdgeKey 是函数调用者-被调用者边的去重键。
 type funcEdgeKey struct {
 	caller uint64
 	callee uint64
 }
 
-// CorpusFunc manages function-level concurrent pair discovery and scheduling.
-// It mirrors CorpusGort but operates on function IDs (SuspiciousPairInfo)
-// instead of goroutine IDs (GortPairInfo).
+// CorpusFunc 管理函数级别的并发对发现与调度。
+// 对标 CorpusGort，但使用函数 ID（SuspiciousPairInfo）
+// 而非 goroutine ID（GortPairInfo）。
 type CorpusFunc struct {
 	mu              sync.RWMutex
 	CoveredConPairs map[string]*feedback.SuspiciousPairInfo
@@ -50,7 +50,7 @@ const (
 	funcMaxSelectNum           = 64
 )
 
-// NewCorpusFunc creates a new function-level pair corpus.
+// NewCorpusFunc 创建函数级别的并发对语料库。
 func NewCorpusFunc(phase *uint32) *CorpusFunc {
 	return &CorpusFunc{
 		CoveredConPairs: make(map[string]*feedback.SuspiciousPairInfo),
@@ -67,7 +67,7 @@ func NewCorpusFunc(phase *uint32) *CorpusFunc {
 	}
 }
 
-// Get returns TryPairs as input for the next execution.
+// Get 返回 TryPairs 作为下一次执行的输入。
 func (p *CorpusFunc) Get() *feedback.InputPair {
 	if atomic.LoadUint32(p.phase) == uint32(0) {
 		return nil
@@ -82,9 +82,9 @@ func (p *CorpusFunc) Get() *feedback.InputPair {
 	return &feedback.InputPair{TryPair: result}
 }
 
-// --- PairCorpus interface methods ---
+// --- PairCorpus 接口方法 ---
 
-// GetInput implements PairCorpus.
+// GetInput 实现了 PairCorpus 接口。
 func (p *CorpusFunc) GetInput() *PairInput {
 	fp := p.Get()
 	if fp == nil || len(fp.TryPair) == 0 {
@@ -93,12 +93,12 @@ func (p *CorpusFunc) GetInput() *PairInput {
 	return &PairInput{Pairs: funcToConcurrencyPairs(fp.TryPair)}
 }
 
-// AddConcurrencyPairs implements PairCorpus.
+// AddConcurrencyPairs 实现了 PairCorpus 接口。
 func (p *CorpusFunc) AddConcurrencyPairs(pairs []feedback.ConcurrencyPair) {
 	p.AddPair(toFuncPairs(pairs))
 }
 
-// AddConcurrencyEdges implements PairCorpus.
+// AddConcurrencyEdges 实现了 PairCorpus 接口。
 func (p *CorpusFunc) AddConcurrencyEdges(edges []feedback.ConcurrencyEdge) int {
 	funcEdges := make([]*feedback.FuncEdge, 0, len(edges))
 	for _, e := range edges {
@@ -109,7 +109,7 @@ func (p *CorpusFunc) AddConcurrencyEdges(edges []feedback.ConcurrencyEdge) int {
 	return p.AddFuncEdges(funcEdges)
 }
 
-// OnCoveredByOp implements PairCorpus.
+// OnCoveredByOp 实现了 PairCorpus 接口。
 // 函数对被覆盖时，经 byFunc 索引（[FB] 日志 fids 字段）增量生成 OP 种子，
 // 与 goroutine 模式的 OnGortCovered 语义对齐。
 func (p *CorpusFunc) OnCoveredByOp(opCorpus *CorpusOp, pairs []feedback.ConcurrencyPair) {
@@ -130,27 +130,27 @@ func (p *CorpusFunc) SnapshotCovered() []*feedback.SuspiciousPairInfo {
 	return pairs
 }
 
-// OnPreExecEnd implements PairCorpus: 函数模式从已覆盖函数对生成 OP 种子。
+// OnPreExecEnd 实现了 PairCorpus 接口：函数模式从已覆盖函数对生成 OP 种子。
 func (p *CorpusFunc) OnPreExecEnd(opCorpus *CorpusOp) {
 	opCorpus.TryEndPreExecForFunc(p)
 }
 
-// InPreExec implements PairCorpus.
+// InPreExec 实现了 PairCorpus 接口。
 func (p *CorpusFunc) InPreExec() bool {
 	return atomic.LoadUint32(p.phase) == 0
 }
 
-// ModeName implements PairCorpus.
+// ModeName 实现了 PairCorpus 接口。
 func (p *CorpusFunc) ModeName() string {
 	return "function"
 }
 
-// ApplyConcurrencySignals implements PairCorpus.
+// ApplyConcurrencySignals 实现了 PairCorpus 接口。
 func (p *CorpusFunc) ApplyConcurrencySignals(signals []*feedback.CoverageSignal) []feedback.ConcurrencyPair {
 	return funcToConcurrencyPairs(p.ApplySignals(signals))
 }
 
-// AddPair merges observed/inferred function pairs from a single execution.
+// AddPair 合并单次执行中观测/推测出的函数对。
 func (p *CorpusFunc) AddPair(feedPair []*feedback.SuspiciousPairInfo) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -207,7 +207,7 @@ func (p *CorpusFunc) AddPair(feedPair []*feedback.SuspiciousPairInfo) {
 	}
 }
 
-// AddFuncEdges merges function caller-callee edges from one execution.
+// AddFuncEdges 合并单次执行中的函数调用者-被调用者边。
 func (p *CorpusFunc) AddFuncEdges(edges []*feedback.FuncEdge) int {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -245,7 +245,7 @@ func (p *CorpusFunc) AddFuncEdges(edges []*feedback.FuncEdge) int {
 	return newEdges
 }
 
-// TryEndPreExec checks whether pre-execution seed collection should end.
+// TryEndPreExec 判断预执行种子收集是否应结束。
 func (p *CorpusFunc) TryEndPreExec(maxRounds int) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
@@ -272,7 +272,7 @@ func (p *CorpusFunc) TryEndPreExec(maxRounds int) {
 	}
 }
 
-// RefillTryPairs replaces TryPairs with top-scored SusConPairs.
+// RefillTryPairs 用得分最高的 SusConPairs 替换 TryPairs。
 func (p *CorpusFunc) RefillTryPairs() {
 	p.TryPairs = make(map[string]*feedback.SuspiciousPairInfo)
 	if len(p.SusConPairs) == 0 {
@@ -424,7 +424,7 @@ func (p *CorpusFunc) inferFromAllCoveredLocked() int {
 	return changed
 }
 
-// ApplySignals applies function-level coverage/timeout signals.
+// ApplySignals 应用函数级别的覆盖/超时信号。
 func (p *CorpusFunc) ApplySignals(signals []*feedback.CoverageSignal) []*feedback.SuspiciousPairInfo {
 	p.mu.Lock()
 	defer p.mu.Unlock()

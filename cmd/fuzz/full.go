@@ -17,7 +17,7 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 	startTime := time.Now()
 	resCh := make(chan string, 100000)
 	logCh := make(chan string, 100000)
-	// control
+	// 并发控制
 	max := 24
 	if maxworker != 0 {
 		max = maxworker
@@ -36,7 +36,7 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 		return true
 	})
 
-	// bind tests and visitor to bins
+	// 将测试与 visitor 绑定到各二进制文件
 	total := 0
 	for _, bin := range bins {
 		tests := cmd.ListTests(bin)
@@ -49,8 +49,8 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 		for bin, tests := range bin2tests {
 			fmt.Println("--len tests=", len(tests)) // 单个文件测试函数的数量
 			for _, test := range tests {
-				cfg := fuzzer.DefaultConfig() //fuzzing Config
-				// shared bugset
+				cfg := fuzzer.DefaultConfig() //fuzzing 配置
+				// 共享 bugset
 				//cfg.BugSet = bugset
 				cfg.Bin = bin
 				cfg.Fn = test
@@ -58,7 +58,7 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 				cfg.TimeOut = timeout
 				cfg.RecoverTimeOut = rtimeout
 				cfg.LogCh = logCh
-				cfg.MaxQuit = 200 // 推出循环次数
+				cfg.MaxQuit = 200 // 退出循环次数
 				cfg.MaxExecution = 250
 				cfg.LogLevel = llevel
 				cfg.Granularity = fuzzer.ParseGranularity(granularity)

@@ -12,9 +12,9 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
-// ChResPass, Channel Record Pass. This pass instrumented at
-// following four channel related operations:
-// send, recv, make, close
+// ChResPass，Channel Record Pass（通道记录 Pass）。该 Pass 对以下
+// 四种通道相关操作进行插桩：
+// send、recv、make、close
 
 var (
 	ChannelNeedInst   = "ChannelNeedInst"
@@ -71,7 +71,7 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 
 		switch concrete := c.Node().(type) {
 
-		// channel send operation
+		// channel send（发送）操作
 		case *ast.SendStmt:
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
@@ -97,7 +97,7 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 		case *ast.ExprStmt:
 			if callExpr, ok := concrete.X.(*ast.CallExpr); ok {
 				if funcIdent, ok := callExpr.Fun.(*ast.Ident); ok {
-					// channel close operation
+					// channel close（关闭）操作
 					if funcIdent.Name == "close" {
 						id := iCtx.GetNewOpId()
 						Add(concrete.Pos(), id)
@@ -127,7 +127,7 @@ func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 		case *ast.DeferStmt:
 			callExpr := concrete.Call
 			if funcIdent, ok := callExpr.Fun.(*ast.Ident); ok {
-				// channel close operation
+				// channel close（关闭）操作
 				if funcIdent.Name == "close" {
 					id := iCtx.GetNewOpId()
 					Add(concrete.Pos(), id)

@@ -1,7 +1,7 @@
 package feedback
 
-// ConcurrencyPair is the common interface for concurrent entity pairs.
-// Implemented by GortPairInfo (goroutine mode) and SuspiciousPairInfo (function mode).
+// ConcurrencyPair 是并发实体对的公共接口。
+// 由 GortPairInfo（goroutine 模式）和 SuspiciousPairInfo（function 模式）实现。
 type ConcurrencyPair interface {
 	ID1() uint64
 	ID2() uint64
@@ -14,14 +14,14 @@ type ConcurrencyPair interface {
 	GetObserved() bool
 	SetObserved(bool)
 
-	// PairKey returns a normalized dedup key (smaller ID first, includes call locations).
+	// PairKey 返回归一化的去重键（较小 ID 在前，包含调用位置）。
 	PairKey() string
-	// SignalKey returns a normalized signal-matching key (smaller ID first, no locations).
+	// SignalKey 返回归一化的信号匹配键（较小 ID 在前，不含位置）。
 	SignalKey() string
 }
 
-// ConcurrencyEdge is the common interface for topology edges.
-// Implemented by GortEdge (goroutine parent-child) and FuncEdge (function caller-callee).
+// ConcurrencyEdge 是拓扑边的公共接口。
+// 由 GortEdge（goroutine 父子关系）和 FuncEdge（函数调用者-被调用者关系）实现。
 type ConcurrencyEdge interface {
 	Parent() uint64
 	Child() uint64

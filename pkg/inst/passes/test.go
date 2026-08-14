@@ -46,7 +46,7 @@ func (p *TestPass) After(ctx *inst.InstContext) {
 func (p *TestPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
 	return func(c *astutil.Cursor) bool {
 		defer func() {
-			if r := recover(); r != nil { // This is allowed. If we insert node into nodes not in slice, we will meet a panic
+			if r := recover(); r != nil { // 这是允许的。如果向非切片中的节点插入节点，会触发 panic
 			}
 		}()
 

@@ -2,31 +2,30 @@ package fuzzer
 
 import "toolkit/pkg/feedback"
 
-// ConcurrentPair is the common interface for pairs of concurrent entities.
-// Both goroutine pairs (GortPairInfo) and function pairs (SuspiciousPairInfo)
-// implement this interface via their accessor methods.
+// ConcurrentPair 是并发实体对的公共接口。
+// goroutine 对（GortPairInfo）与函数对（SuspiciousPairInfo）
+// 均通过其访问器方法实现该接口。
 type ConcurrentPair = feedback.ConcurrencyPair
 
-// TopologyEdge is the common interface for topology edges.
+// TopologyEdge 是拓扑边的公共接口。
 type TopologyEdge = feedback.ConcurrencyEdge
 
-// PairParser parses stderr text into ConcurrentPairs and OpInfos.
+// PairParser 将 stderr 文本解析为 ConcurrentPairs 与 OpInfos。
 type PairParser func(stderr string) ([]ConcurrentPair, []*feedback.OpInfo, error)
 
-// EdgeParser parses stderr text into TopologyEdges.
+// EdgeParser 将 stderr 文本解析为 TopologyEdges。
 type EdgeParser func(stderr string) ([]TopologyEdge, error)
 
-// GranularityAdapter bundles mode-specific operations for the Monitor.
-// This is the primary abstraction for switching between goroutine-level
-// and function-level fuzzing granularities. Mode selection (parser and
-// corpus creation) must go through this adapter only.
+// GranularityAdapter 为 Monitor 聚合模式相关操作。
+// 这是在 goroutine 级与函数级 fuzzing 颗粒度之间切换的主要抽象。
+// 模式选择（parser 与语料库创建）必须仅通过该 adapter 进行。
 type GranularityAdapter struct {
 	Mode       GranularityMode
 	ParsePairs PairParser
 	ParseEdges EdgeParser
 }
 
-// NewCorpus creates the PairCorpus implementation matching this adapter's mode.
+// NewCorpus 创建与该 adapter 模式匹配的 PairCorpus 实现。
 func (a *GranularityAdapter) NewCorpus(phase *uint32) PairCorpus {
 	if a.Mode == ModeFunction {
 		return NewCorpusFunc(phase)
@@ -34,7 +33,7 @@ func (a *GranularityAdapter) NewCorpus(phase *uint32) PairCorpus {
 	return NewCorpusGort(phase)
 }
 
-// GetAdapter returns the GranularityAdapter for the given mode.
+// GetAdapter 返回给定模式的 GranularityAdapter。
 func GetAdapter(mode GranularityMode) *GranularityAdapter {
 	switch mode {
 	case ModeFunction:
@@ -60,7 +59,7 @@ func functionAdapter() *GranularityAdapter {
 	}
 }
 
-// --- Parser wrappers: adapt concrete parser functions to the PairParser/EdgeParser signatures ---
+// --- 解析器包装：将具体解析函数适配为 PairParser/EdgeParser 签名 ---
 
 func wrapGortPairParser(stderr string) ([]ConcurrentPair, []*feedback.OpInfo, error) {
 	gortPairs, ops, err := feedback.ParseGortPairs(stderr)
