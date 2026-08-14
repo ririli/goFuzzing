@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
+	sched "toolkit/pkg/operation"
 )
 
 func TestGort(t *testing.T) {

@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
+	sched "toolkit/pkg/operation"
 )
 
 func RunCommandWithOutputForDuration(cmd *exec.Cmd, duration time.Duration) (output string, exitCode int, timedOut bool, err error) {

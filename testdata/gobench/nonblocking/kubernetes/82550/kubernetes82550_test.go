@@ -3,7 +3,7 @@ package kubernetes82550
 import (
 	"testing"
 	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
+	sched "toolkit/pkg/operation"
 )
 
 type DockerConfig map[string]DockerConfigEntry

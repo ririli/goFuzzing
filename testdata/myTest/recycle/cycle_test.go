@@ -3,7 +3,7 @@ package recycle
 import (
 	"testing"
 	callstack "toolkit/pkg/callstack"
-	"toolkit/pkg/sched"
+	"toolkit/pkg/operation"
 )
 
 func sum(n int) int {
@@ -26,7 +26,7 @@ func TestA(t *testing.T) {
 }
 func TestA_1(t *testing.T) {
 	callstack.ParseInput()
-	sched.ParseInput()
+	operation.ParseInput()
 	defer callstack.PrintTrees()
 	defer callstack.PrintSusConPairs()
 	defer callstack.Trace(665719930883)()

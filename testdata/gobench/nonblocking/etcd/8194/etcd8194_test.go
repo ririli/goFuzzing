@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
+	sched "toolkit/pkg/operation"
 )
 
 var leaseRevokeRate = 1000

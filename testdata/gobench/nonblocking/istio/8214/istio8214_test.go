@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 	"testing"
 	goroutine "toolkit/pkg/goroutine"
-	sched "toolkit/pkg/sched"
+	sched "toolkit/pkg/operation"
 )
 
 type internal_Cache interface {
