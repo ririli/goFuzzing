@@ -11,9 +11,8 @@ import (
 )
 
 var (
-	SelectInstNeed   = "SelectNeedInst"
-	SelectImportName = "sched"
-	SelectImportPath = "toolkit/pkg/sched"
+	SelectInstNeed = "SelectNeedInst"
+	// 导入常量复用 global.go 的 OperationImportName/OperationImportPath
 )
 
 type SelectPass struct {
@@ -46,7 +45,7 @@ func (p *SelectPass) After(iCtx *inst.InstContext) {
 	need, _ := iCtx.GetMetadata(SelectInstNeed)
 	needinst := need.(bool)
 	if needinst {
-		inst.AddImport(iCtx.FS, iCtx.AstFile, SelectImportName, SelectImportPath)
+		inst.AddImport(iCtx.FS, iCtx.AstFile, OperationImportName, OperationImportPath)
 	}
 }
 

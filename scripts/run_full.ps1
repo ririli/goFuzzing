@@ -10,7 +10,7 @@
 #                     该参数限制的是每一次调用的运行时长，并非整个流程的总超时
 #   -RecoverTimeout : panic 后恢复等待超时（秒），默认 200。当前预留参数，运行时尚未接线生效
 #
-# 用法: .\scripts\run_full.ps1 -OutDir zgortResult\nonblocking -Granularity function -Timeout 60 -RecoverTimeout 300
+# 用法: .\scripts\run_full.ps1 -BinDir  -OutDir zgortResult\nonblocking -Granularity function -Timeout 60 -RecoverTimeout 300
 
 param(
     [string]$BinDir = "testbins\nonblocking",

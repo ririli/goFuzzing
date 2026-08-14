@@ -139,7 +139,7 @@ func InstChBF(opId uint64) {
 			case <-timer:
 				fmt.Printf("{TIMEOUT_OP} {%v, %v}\n", preId, opId)
 				return
-			default:
+				//	default:
 			}
 		}
 	}
@@ -212,7 +212,7 @@ func InstWgBF(opId uint64) {
 			case <-timer:
 				fmt.Printf("{TIMEOUT_OP} {%v, %v}\n", preId, opId)
 				return
-			default:
+				//default:
 			}
 		}
 	}

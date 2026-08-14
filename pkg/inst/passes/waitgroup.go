@@ -13,9 +13,8 @@ import (
 // sync.WaitGroup 的 Add、Done 操作进行插桩
 
 var (
-	WgNeedInst   = "WgNeedInst"
-	WgImportName = "sched"
-	WgImportPath = "toolkit/pkg/sched"
+	WgNeedInst = "WgNeedInst"
+	// 导入常量复用 global.go 的 OperationImportName/OperationImportPath
 )
 
 type WgPass struct {
@@ -29,7 +28,7 @@ func (p *WgPass) After(iCtx *inst.InstContext) {
 	need, _ := iCtx.GetMetadata(WgNeedInst)
 	needinst := need.(bool)
 	if needinst {
-		inst.AddImport(iCtx.FS, iCtx.AstFile, WgImportName, WgImportPath)
+		inst.AddImport(iCtx.FS, iCtx.AstFile, OperationImportName, OperationImportPath)
 	}
 }
 

@@ -5,3 +5,6 @@
 *.swo
 *~
 *.exe
+testbins/
+testdata/
+zgortResult/

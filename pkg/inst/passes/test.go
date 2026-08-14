@@ -17,12 +17,11 @@ type TestPass struct {
 }
 
 var (
-	TestNeedInst    = "NEED_TEST_INST"
-	GortImportName  = "goroutine"
-	GortImportPath  = "toolkit/pkg/goroutine"
-	SchedImportName = "sched"
-	SchedImportPath = "toolkit/pkg/sched"
-	// FuncImportName/FuncImportPath 定义在 global.go，与 FunctionPass 共用
+	TestNeedInst   = "NEED_TEST_INST"
+	GortImportName = "goroutine"
+	GortImportPath = "toolkit/pkg/goroutine"
+	// FuncImportName/FuncImportPath、OperationImportName/OperationImportPath
+	// 定义在 global.go，与各插桩 pass 共用
 )
 
 func (p *TestPass) Before(ctx *inst.InstContext) {
@@ -35,7 +34,7 @@ func (p *TestPass) After(ctx *inst.InstContext) {
 	if !needinst {
 		return
 	}
-	inst.AddImport(ctx.FS, ctx.AstFile, SchedImportName, SchedImportPath)
+	inst.AddImport(ctx.FS, ctx.AstFile, OperationImportName, OperationImportPath)
 	if p.Granularity == "function" {
 		inst.AddImport(ctx.FS, ctx.AstFile, FuncImportName, FuncImportPath)
 	} else {
@@ -99,7 +98,7 @@ func (p *TestPass) genTestDecl(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	var wrapperStmts []ast.Stmt
 
 	if p.Granularity == "function" {
-		// 函数模式：function + sched
+		// 函数模式：function + operation
 		wrapperStmts = []ast.Stmt{
 			// function.EnterMain()
 			&ast.ExprStmt{
@@ -128,11 +127,11 @@ func (p *TestPass) genTestDecl(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 					},
 				},
 			},
-			// sched.ParseInput()
+			// operation.ParseInput()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "sched"},
+						X:   &ast.Ident{Name: "operation"},
 						Sel: &ast.Ident{Name: "ParseInput"},
 					},
 				},
@@ -148,7 +147,7 @@ func (p *TestPass) genTestDecl(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 			},
 		}
 	} else {
-		// goroutine 模式（默认）：goroutine + sched
+		// goroutine 模式（默认）：goroutine + operation
 		wrapperStmts = []ast.Stmt{
 			// goroutine.EnterMain()
 			&ast.ExprStmt{
@@ -177,11 +176,11 @@ func (p *TestPass) genTestDecl(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 					},
 				},
 			},
-			// sched.ParseInput()
+			// operation.ParseInput()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "sched"},
+						X:   &ast.Ident{Name: "operation"},
 						Sel: &ast.Ident{Name: "ParseInput"},
 					},
 				},

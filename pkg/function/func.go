@@ -85,7 +85,7 @@ func Trace(funcID uint64) func() {
 }
 
 // CurrentFuncStack 返回当前 OS goroutine 调用栈上所有未退出的被插桩函数 ID。
-// 供 sched 包在 [FB] 日志中归属操作所属函数：一个操作归属于栈上全部函数，
+// 供 operation 包在 [FB] 日志中归属操作所属函数：一个操作归属于栈上全部函数，
 // 对应 goroutine 粒度下"操作归属于所在协程"的语义。
 // funcID=0（主测试函数 EnterMain 压栈）不参与归属。
 func CurrentFuncStack() []uint64 {

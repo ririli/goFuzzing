@@ -321,7 +321,8 @@ func isApplicationFrame(frame stackFrame) bool {
 		"sync.",
 		"sync/",
 		"toolkit/pkg/goroutine.",
-		"toolkit/pkg/sched.",
+		"toolkit/pkg/operation.",
+		"toolkit/pkg/function.",
 		"toolkit/pkg/inst.",
 	}
 	for _, prefix := range excludedFunctions {
@@ -336,7 +337,8 @@ func isApplicationFrame(frame stackFrame) bool {
 		"/src/reflect/",
 		"/src/sync/",
 		"/toolkit/pkg/goroutine/",
-		"/toolkit/pkg/sched/",
+		"/toolkit/pkg/operation/",
+		"/toolkit/pkg/function/",
 		"/toolkit/pkg/inst/",
 	}
 	for _, fragment := range excludedPaths {

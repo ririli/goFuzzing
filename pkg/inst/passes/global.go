@@ -11,6 +11,13 @@ var (
 	FuncImportPath = "toolkit/pkg/function"
 )
 
+// operation 运行时包（OP 钩子/InputOp 解析）的导入名/路径，
+// ChRecPass/SelectPass/WgPass/TestPass 共用
+var (
+	OperationImportName = "operation"
+	OperationImportPath = "toolkit/pkg/operation"
+)
+
 var id_map sync.Map
 
 func Add(pos token.Pos, id uint64) {

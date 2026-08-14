@@ -17,9 +17,8 @@ import (
 // send、recv、make、close
 
 var (
-	ChannelNeedInst   = "ChannelNeedInst"
-	ChannelImportName = "sched"
-	ChannelImportPath = "toolkit/pkg/sched"
+	ChannelNeedInst = "ChannelNeedInst"
+	// 导入常量复用 global.go 的 OperationImportName/OperationImportPath
 )
 
 type ChRecPass struct {
@@ -52,7 +51,7 @@ func (p *ChRecPass) After(iCtx *inst.InstContext) {
 	need, _ := iCtx.GetMetadata(ChannelNeedInst)
 	needinst := need.(bool)
 	if needinst {
-		inst.AddImport(iCtx.FS, iCtx.AstFile, ChannelImportName, ChannelImportPath)
+		inst.AddImport(iCtx.FS, iCtx.AstFile, OperationImportName, OperationImportPath)
 	}
 }
 

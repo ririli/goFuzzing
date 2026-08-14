@@ -28,7 +28,7 @@ func init() {
 }
 
 // CurrentGid 返回当前OS goroutine对应的静态goroutine ID
-// 供sched包在[FB]日志中使用
+// 供operation包在[FB]日志中使用
 func CurrentGid() uint64 {
 	id := getCurrentGoroutineID()
 	if val, ok := gidMap.Load(id); ok {

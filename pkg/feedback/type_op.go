@@ -35,7 +35,7 @@ const (
 
 func (d DangerType) String() string { return string(d) }
 
-// OpInfo 表示单个操作的信息（从 sched 日志解析）
+// OpInfo 表示单个操作的信息（从 operation 包的 [FB] 日志解析）
 type OpInfo struct {
 	OpId uint64 // 编译期唯一操作 ID
 	Gid  uint64 // 所在 goroutine 的静态 ID（gid=0 表示未知或主goroutine）

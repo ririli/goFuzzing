@@ -23,7 +23,7 @@ GoPie 是 Go 并发缺陷实验的研究原型，通过 AST 插桩 + 调度搜�
 4. 编译测试二进制，产物将放在 `./testbins`：
 
     ~~~shell
-    ./bin/fuzz --task bins --path your_project_to_be_tested
+    ./bin/fuzz --task bins --path your_project_to_be_tested --granularity 
     ~~~
 
 5. 开始测试（可将输出重定向保存到文件）：

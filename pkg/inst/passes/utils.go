@@ -132,7 +132,7 @@ func IsTestFunc(n ast.Node) bool {
 }
 
 func GenInstCall(f string, ch ast.Expr, id uint64) *ast.ExprStmt {
-	return NewArgCallExpr("sched", f, []ast.Expr{&ast.BasicLit{
+	return NewArgCallExpr(OperationImportName, f, []ast.Expr{&ast.BasicLit{
 		ValuePos: 0,
 		Kind:     token.INT,
 		Value:    strconv.FormatUint(id, 10),
@@ -141,17 +141,17 @@ func GenInstCall(f string, ch ast.Expr, id uint64) *ast.ExprStmt {
 }
 
 // GenInstCallBF 生成单参数的 BF 插桩调用（仅 opId）
-// 生成: sched.InstXxxBF(opId)
+// 生成: operation.InstXxxBF(opId)
 func GenInstCallBF(f string, id uint64) *ast.ExprStmt {
-	return NewArgCallExpr("sched", f, []ast.Expr{
+	return NewArgCallExpr(OperationImportName, f, []ast.Expr{
 		&ast.BasicLit{Kind: token.INT, Value: strconv.FormatUint(id, 10)},
 	})
 }
 
 // GenInstCallWithType 生成带操作类型的插桩调用
-// 生成: sched.InstXxxBF(opId, obj, "opType")
+// 生成: operation.InstXxxAF(opId, obj, "opType")
 func GenInstCallWithType(f string, obj ast.Expr, id uint64, opType string) *ast.ExprStmt {
-	return NewArgCallExpr("sched", f, []ast.Expr{
+	return NewArgCallExpr(OperationImportName, f, []ast.Expr{
 		&ast.BasicLit{
 			ValuePos: 0,
 			Kind:     token.INT,
