@@ -405,8 +405,8 @@ func TestParseGortEdges_NoEdges(t *testing.T) {
 
 // ---------- ParseStdPairs 函数粒度补充 ----------
 
-func TestParseStdPairs_CalltreeEmptyFileFormat(t *testing.T) {
-	// calltree.PrintFunctionPairs 实际输出位置部分为 ":line"（无文件名）
+func TestParseStdPairs_FunctionEmptyFileFormat(t *testing.T) {
+	// function.PrintFunctionPairs 实际输出位置部分为 ":line"（无文件名）
 	input := strings.Join([]string{
 		"[COVERED] 1,2|:10,:20|1.00|observed;",
 		"[SUSPECT] 1,3|:10,:30|0.50|inferred_adjacent;",

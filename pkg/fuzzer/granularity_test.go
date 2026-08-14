@@ -60,7 +60,7 @@ func TestAdapter_ParsePairs_Goroutine(t *testing.T) {
 	}
 }
 
-// calltree.PrintFunctionPairs 的实际输出格式：位置部分为 ":line"（无文件名）
+// function.PrintFunctionPairs 的实际输出格式：位置部分为 ":line"（无文件名）
 const funcStderrSample = "" +
 	"[COVERED] 1,2|:10,:20|1.00|observed;\n" +
 	"[SUSPECT] 1,3|:10,:30|0.50|inferred_adjacent;\n" +
@@ -81,7 +81,7 @@ func TestAdapter_ParsePairs_Function(t *testing.T) {
 	if fp.ID1() != 1 || fp.ID2() != 2 {
 		t.Errorf("parsed func pair = (%d,%d), want (1,2)", fp.ID1(), fp.ID2())
 	}
-	// calltree 输出的位置不含文件名，解析后 File 为空、Line 有效
+	// function 包输出的位置不含文件名，解析后 File 为空、Line 有效
 	if fp.CallLocation1().File != "" || fp.CallLocation1().Line != 10 {
 		t.Errorf("CallLocation1 = %+v, want {File:\"\" Line:10}", fp.CallLocation1())
 	}

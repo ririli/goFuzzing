@@ -1,4 +1,4 @@
-package breakpoint
+package function
 
 import (
 	"sync"
@@ -16,12 +16,12 @@ func resetTestConfig(timeout time.Duration) {
 	}
 }
 
-// ---------- parsePairs ----------
+// ---------- ParsePairs ----------
 
 func TestParsePairs_SetsActiveAndBarriers(t *testing.T) {
 	resetTestConfig(10 * time.Millisecond)
 
-	parsePairs("(1,2)(3,4)")
+	ParsePairs("(1,2)(3,4)")
 
 	if len(cfg.activeMap) != 4 {
 		t.Fatalf("activeMap len = %d, want 4", len(cfg.activeMap))
@@ -43,7 +43,7 @@ func TestParsePairs_IgnoresMalformed(t *testing.T) {
 	resetTestConfig(10 * time.Millisecond)
 
 	// 非数字 ID 与缺少右括号的对都应被丢弃
-	parsePairs("(abc,def)(3")
+	ParsePairs("(abc,def)(3")
 
 	if len(cfg.activeMap) != 0 {
 		t.Errorf("activeMap len = %d, want 0 for malformed input", len(cfg.activeMap))
@@ -85,7 +85,7 @@ func TestPointControl_NoActiveReturnsImmediately(t *testing.T) {
 func TestPointControl_InactiveIDReturnsImmediately(t *testing.T) {
 	resetTestConfig(time.Second)
 	atomic.StoreUint32(&cfg.hasActive, 1)
-	parsePairs("(1,2)")
+	ParsePairs("(1,2)")
 
 	done := make(chan struct{})
 	go func() {
@@ -102,7 +102,7 @@ func TestPointControl_InactiveIDReturnsImmediately(t *testing.T) {
 func TestPointControl_RendezvousReleasesBoth(t *testing.T) {
 	resetTestConfig(time.Second)
 	atomic.StoreUint32(&cfg.hasActive, 1)
-	parsePairs("(10,20)")
+	ParsePairs("(10,20)")
 
 	var wg sync.WaitGroup
 	wg.Add(2)
@@ -133,7 +133,7 @@ func TestPointControl_RendezvousReleasesBoth(t *testing.T) {
 func TestPointControl_SingleArrivalTimesOut(t *testing.T) {
 	resetTestConfig(30 * time.Millisecond)
 	atomic.StoreUint32(&cfg.hasActive, 1)
-	parsePairs("(10,20)")
+	ParsePairs("(10,20)")
 
 	start := time.Now()
 	PointControl(10) // 伙伴永远不到达
@@ -151,7 +151,7 @@ func TestPointControl_SingleArrivalTimesOut(t *testing.T) {
 func TestPointControl_LateArrivalAfterExpiryDoesNotDeadlock(t *testing.T) {
 	resetTestConfig(20 * time.Millisecond)
 	atomic.StoreUint32(&cfg.hasActive, 1)
-	parsePairs("(10,20)")
+	ParsePairs("(10,20)")
 
 	PointControl(10) // 超时后返回，gate 标记 expired
 

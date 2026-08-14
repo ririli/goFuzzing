@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"toolkit/pkg/calltree"
+	"toolkit/pkg/function"
 	"toolkit/pkg/goroutine"
 )
 
@@ -149,7 +149,7 @@ func InstChBF(opId uint64) {
 // function 粒度下 fuzzer 据此将操作归属到函数；goroutine 粒度下
 // FunctionPass 未注入，栈恒为空，字段不输出，协议保持兼容。
 func formatFids() string {
-	fids := calltree.CurrentFuncStack()
+	fids := function.CurrentFuncStack()
 	if len(fids) == 0 {
 		return ""
 	}

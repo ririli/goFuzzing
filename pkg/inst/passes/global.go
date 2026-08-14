@@ -5,6 +5,12 @@ import (
 	"sync"
 )
 
+// function 运行时包的导入名/路径，FunctionPass 与 TestPass 共用
+var (
+	FuncImportName = "function"
+	FuncImportPath = "toolkit/pkg/function"
+)
+
 var id_map sync.Map
 
 func Add(pos token.Pos, id uint64) {

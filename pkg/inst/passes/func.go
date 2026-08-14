@@ -9,15 +9,14 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
-// FunctionPass 在函数入口注入 breakpoint.PointControl 和 calltree.Trace，
+// FunctionPass 在函数入口注入 function.PointControl 和 function.Trace，
 // 用于函数颗粒度 fuzzing。同时为 channel/wg/select 等 pass 分配 funcID。
 type FunctionPass struct{}
 
 func (p *FunctionPass) Before(iCtx *inst.InstContext) {}
 
 func (p *FunctionPass) After(iCtx *inst.InstContext) {
-	inst.AddImport(iCtx.FS, iCtx.AstFile, "breakpoint", "toolkit/pkg/breakpoint")
-	inst.AddImport(iCtx.FS, iCtx.AstFile, "calltree", "toolkit/pkg/calltree")
+	inst.AddImport(iCtx.FS, iCtx.AstFile, FuncImportName, FuncImportPath)
 }
 
 func (p *FunctionPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
@@ -52,22 +51,22 @@ func (p *FunctionPass) injectAtBody(body *ast.BlockStmt, iCtx *inst.InstContext)
 		Value: strconv.FormatUint(id, 10),
 	}
 
-	// breakpoint.PointControl(id)
+	// function.PointControl(id)
 	pcStmt := &ast.ExprStmt{
 		X: &ast.CallExpr{
 			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "breakpoint"},
+				X:   &ast.Ident{Name: "function"},
 				Sel: &ast.Ident{Name: "PointControl"},
 			},
 			Args: []ast.Expr{idLit},
 		},
 	}
 
-	// defer calltree.Trace(id)()
+	// defer function.Trace(id)()
 	traceDefer := &ast.DeferStmt{
 		Call: &ast.CallExpr{
 			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "calltree"},
+				X:   &ast.Ident{Name: "function"},
 				Sel: &ast.Ident{Name: "Trace"},
 			},
 			Args: []ast.Expr{idLit},

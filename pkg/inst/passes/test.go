@@ -17,15 +17,12 @@ type TestPass struct {
 }
 
 var (
-	TestNeedInst         = "NEED_TEST_INST"
-	GortImportName       = "goroutine"
-	GortImportPath       = "toolkit/pkg/goroutine"
-	SchedImportName      = "sched"
-	SchedImportPath      = "toolkit/pkg/sched"
-	BreakpointImportName = "breakpoint"
-	BreakpointImportPath = "toolkit/pkg/breakpoint"
-	CalltreeImportName   = "calltree"
-	CalltreeImportPath   = "toolkit/pkg/calltree"
+	TestNeedInst    = "NEED_TEST_INST"
+	GortImportName  = "goroutine"
+	GortImportPath  = "toolkit/pkg/goroutine"
+	SchedImportName = "sched"
+	SchedImportPath = "toolkit/pkg/sched"
+	// FuncImportName/FuncImportPath 定义在 global.go，与 FunctionPass 共用
 )
 
 func (p *TestPass) Before(ctx *inst.InstContext) {
@@ -40,8 +37,7 @@ func (p *TestPass) After(ctx *inst.InstContext) {
 	}
 	inst.AddImport(ctx.FS, ctx.AstFile, SchedImportName, SchedImportPath)
 	if p.Granularity == "function" {
-		inst.AddImport(ctx.FS, ctx.AstFile, BreakpointImportName, BreakpointImportPath)
-		inst.AddImport(ctx.FS, ctx.AstFile, CalltreeImportName, CalltreeImportPath)
+		inst.AddImport(ctx.FS, ctx.AstFile, FuncImportName, FuncImportPath)
 	} else {
 		inst.AddImport(ctx.FS, ctx.AstFile, GortImportName, GortImportPath)
 	}
@@ -103,31 +99,31 @@ func (p *TestPass) genTestDecl(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	var wrapperStmts []ast.Stmt
 
 	if p.Granularity == "function" {
-		// 函数模式：calltree + breakpoint + sched
+		// 函数模式：function + sched
 		wrapperStmts = []ast.Stmt{
-			// calltree.EnterMain()
+			// function.EnterMain()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "calltree"},
+						X:   &ast.Ident{Name: "function"},
 						Sel: &ast.Ident{Name: "EnterMain"},
 					},
 				},
 			},
-			// defer calltree.ExitMain()
+			// defer function.ExitMain()
 			&ast.DeferStmt{
 				Call: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "calltree"},
+						X:   &ast.Ident{Name: "function"},
 						Sel: &ast.Ident{Name: "ExitMain"},
 					},
 				},
 			},
-			// breakpoint.ParseInput()
+			// function.ParseInput()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "breakpoint"},
+						X:   &ast.Ident{Name: "function"},
 						Sel: &ast.Ident{Name: "ParseInput"},
 					},
 				},
@@ -141,11 +137,11 @@ func (p *TestPass) genTestDecl(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 					},
 				},
 			},
-			// defer calltree.PrintFunctionPairs()
+			// defer function.PrintFunctionPairs()
 			&ast.DeferStmt{
 				Call: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "calltree"},
+						X:   &ast.Ident{Name: "function"},
 						Sel: &ast.Ident{Name: "PrintFunctionPairs"},
 					},
 				},
