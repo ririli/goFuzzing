@@ -14,22 +14,21 @@ import (
 // 将 go f(args) 转换为:
 //
 //	go func(_parentGid uint64) {
-//	    goroutine.Enter(id, _parentGid)
-//	    defer goroutine.Exit(id)
+//	    gopie_goroutine.Enter(id, _parentGid)
+//	    defer gopie_goroutine.Exit(id)
 //	    f(args)
-//	}(goroutine.CurrentGid())
+//	}(gopie_goroutine.CurrentGid())
 //
 // 将 go func(){body}() 转换为:
 //
 //	go func(_parentGid uint64) {
-//	    goroutine.Enter(id, _parentGid)
-//	    defer goroutine.Exit(id)
+//	    gopie_goroutine.Enter(id, _parentGid)
+//	    defer gopie_goroutine.Exit(id)
 //	    func(){body}()
-//	}(goroutine.CurrentGid())
+//	}(gopie_goroutine.CurrentGid())
 var (
-	GoroutineInstNeed   = "GoroutineNeedInst"
-	GoroutineImportName = "goroutine"
-	GoroutineImportPath = "toolkit/pkg/goroutine"
+	GoroutineInstNeed = "GoroutineNeedInst"
+	// 导入名/路径复用 global.go 的 GortImportName/GortImportPath
 )
 
 type GoroutinePass struct{}
@@ -42,7 +41,7 @@ func (p *GoroutinePass) After(iCtx *inst.InstContext) {
 	need, _ := iCtx.GetMetadata(GoroutineInstNeed)
 	needinst := need.(bool)
 	if needinst {
-		inst.AddImport(iCtx.FS, iCtx.AstFile, GoroutineImportName, GoroutineImportPath)
+		inst.AddImport(iCtx.FS, iCtx.AstFile, GortImportName, GortImportPath)
 	}
 }
 
@@ -64,6 +63,12 @@ func (p *GoroutinePass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor
 			var argIdents []ast.Expr
 			if len(args) > 0 {
 				for i, arg := range args {
+					// 裸 nil 无法参与短变量声明（_arg := nil 会报
+					// use of untyped nil），且作为常量无需提前求值，直接内联
+					if ident, ok := arg.(*ast.Ident); ok && ident.Name == "nil" {
+						argIdents = append(argIdents, arg)
+						continue
+					}
 					tmpIdent := &ast.Ident{Name: fmt.Sprintf("_arg_%d_%d", id, i)}
 					tmpAssign := &ast.AssignStmt{
 						Tok: token.DEFINE,
@@ -98,8 +103,8 @@ func wrapGoStmt(goStmt *ast.GoStmt, id uint64, argIdents []ast.Expr) *ast.GoStmt
 		Type:  &ast.Ident{Name: "uint64"},
 	}
 
-	// goroutine.Enter(id, _parentGid)
-	enterCall := NewArgCallExpr("goroutine", "Enter", []ast.Expr{
+	// gopie_goroutine.Enter(id, _parentGid)
+	enterCall := NewArgCallExpr(GortImportName, "Enter", []ast.Expr{
 		&ast.BasicLit{
 			ValuePos: 0,
 			Kind:     token.INT,
@@ -108,9 +113,9 @@ func wrapGoStmt(goStmt *ast.GoStmt, id uint64, argIdents []ast.Expr) *ast.GoStmt
 		&ast.Ident{Name: "_parentGid"},
 	})
 
-	// defer goroutine.Exit(id)
+	// defer gopie_goroutine.Exit(id)
 	exitDefer := &ast.DeferStmt{
-		Call: NewArgCall("goroutine", "Exit", []ast.Expr{
+		Call: NewArgCall(GortImportName, "Exit", []ast.Expr{
 			&ast.BasicLit{
 				ValuePos: 0,
 				Kind:     token.INT,
@@ -120,15 +125,17 @@ func wrapGoStmt(goStmt *ast.GoStmt, id uint64, argIdents []ast.Expr) *ast.GoStmt
 	}
 
 	// 构建内部调用：原始函数 + 临时变量参数
+	// 保留 Ellipsis，避免 go f(args...) 丢失 ... 导致变参编译错误
 	innerCall := goStmt.Call
 	if len(argIdents) > 0 {
 		innerCall = &ast.CallExpr{
-			Fun:  goStmt.Call.Fun,
-			Args: argIdents,
+			Fun:      goStmt.Call.Fun,
+			Args:     argIdents,
+			Ellipsis: goStmt.Call.Ellipsis,
 		}
 	}
 
-	// 函数体: { goroutine.Enter(id, _parentGid); defer goroutine.Exit(id); <innerCall> }
+	// 函数体: { gopie_goroutine.Enter(id, _parentGid); defer gopie_goroutine.Exit(id); <innerCall> }
 	body := &ast.BlockStmt{
 		List: []ast.Stmt{
 			enterCall,
@@ -137,8 +144,8 @@ func wrapGoStmt(goStmt *ast.GoStmt, id uint64, argIdents []ast.Expr) *ast.GoStmt
 		},
 	}
 
-	// goroutine.CurrentGid() 调用 —— 作为匿名函数的实参，在父goroutine中求值
-	currentGidCall := NewArgCall("goroutine", "CurrentGid", []ast.Expr{})
+	// gopie_goroutine.CurrentGid() 调用 —— 作为匿名函数的实参，在父goroutine中求值
+	currentGidCall := NewArgCall(GortImportName, "CurrentGid", []ast.Expr{})
 
 	return &ast.GoStmt{
 		Go: goStmt.Go,

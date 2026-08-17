@@ -180,6 +180,12 @@ func shouldStopAfterRun(singleCrash bool, analysis runAnalysis) bool {
 	return singleCrash && analysis.triggered
 }
 
+// shouldStopByFuzzTime 判断是否已达到整个 fuzzing 流程的总时长上限。
+// maxFuzzTime <= 0 表示不限时，恒返回 false。
+func shouldStopByFuzzTime(startTime time.Time, maxFuzzTime int) bool {
+	return maxFuzzTime > 0 && time.Since(startTime) >= time.Duration(maxFuzzTime)*time.Second
+}
+
 func sendMonitorLog(logCh chan<- string, message string) {
 	if logCh == nil {
 		return
@@ -288,12 +294,29 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	for i := 0; i < cfg.MaxWorker; i++ {
 		go dowork()
 	}
+	// 周期 tick：worker 无结果（如子进程挂起被 1 分钟兜底丢弃）时，
+	// 主循环也能感知时间流逝并检查 MaxFuzzTime，否则会永远阻塞在 <-ch。
+	fuzzTick := time.NewTicker(time.Second)
+	defer fuzzTick.Stop()
 	for {
 		if m.etimes >= m.max {
 			close(cancel)
 			return monitorResult(m.bugs)
 		}
-		ctx := <-ch
+		if shouldStopByFuzzTime(startTime, cfg.MaxFuzzTime) {
+			if info {
+				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER] MaxFuzzTime %ds reached, elapsed %.3fs",
+					time.Now().String(), cfg.MaxFuzzTime, time.Since(startTime).Seconds()))
+			}
+			close(cancel)
+			return monitorResult(m.bugs)
+		}
+		var ctx RunContext
+		select {
+		case ctx = <-ch:
+		case <-fuzzTick.C:
+			continue
+		}
 		executionID := uint64(atomic.AddInt32(&m.etimes, 1))
 		var inputc string
 

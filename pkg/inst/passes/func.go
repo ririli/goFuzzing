@@ -9,14 +9,24 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
-// FunctionPass 在函数入口注入 function.PointControl 和 function.Trace，
+// FunctionPass 在函数入口注入 gopie_function.PointControl 和 gopie_function.Trace，
 // 用于函数颗粒度 fuzzing。同时为 channel/wg/select 等 pass 分配 funcID。
 type FunctionPass struct{}
 
-func (p *FunctionPass) Before(iCtx *inst.InstContext) {}
+// FuncNeedInst 标记本文件是否实际注入过函数粒度钩子，
+// 仅在注入过时才添加运行时包导入，避免 imported and not used
+const FuncNeedInst = "FuncNeedInst"
+
+func (p *FunctionPass) Before(iCtx *inst.InstContext) {
+	iCtx.SetMetadata(FuncNeedInst, false)
+}
 
 func (p *FunctionPass) After(iCtx *inst.InstContext) {
-	inst.AddImport(iCtx.FS, iCtx.AstFile, FuncImportName, FuncImportPath)
+	need, _ := iCtx.GetMetadata(FuncNeedInst)
+	needinst := need.(bool)
+	if needinst {
+		inst.AddImport(iCtx.FS, iCtx.AstFile, FuncImportName, FuncImportPath)
+	}
 }
 
 func (p *FunctionPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
@@ -51,22 +61,22 @@ func (p *FunctionPass) injectAtBody(body *ast.BlockStmt, iCtx *inst.InstContext)
 		Value: strconv.FormatUint(id, 10),
 	}
 
-	// function.PointControl(id)
+	// gopie_function.PointControl(id)
 	pcStmt := &ast.ExprStmt{
 		X: &ast.CallExpr{
 			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "function"},
+				X:   &ast.Ident{Name: FuncImportName},
 				Sel: &ast.Ident{Name: "PointControl"},
 			},
 			Args: []ast.Expr{idLit},
 		},
 	}
 
-	// defer function.Trace(id)()
+	// defer gopie_function.Trace(id)()
 	traceDefer := &ast.DeferStmt{
 		Call: &ast.CallExpr{
 			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: "function"},
+				X:   &ast.Ident{Name: FuncImportName},
 				Sel: &ast.Ident{Name: "Trace"},
 			},
 			Args: []ast.Expr{idLit},
@@ -74,6 +84,7 @@ func (p *FunctionPass) injectAtBody(body *ast.BlockStmt, iCtx *inst.InstContext)
 	}
 
 	body.List = append([]ast.Stmt{pcStmt, traceDefer}, body.List...)
+	iCtx.SetMetadata(FuncNeedInst, true)
 }
 
 func (p *FunctionPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {

@@ -9,6 +9,31 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
+// isWaitGroupReceiver 依据类型检查结果判断接收者是否为 sync.WaitGroup。
+// 类型未知时返回 false（宁缺毋滥），避免将 http.Header.Add 等
+// 同名方法误判为 WaitGroup.Add 而生成无法编译的代码。
+func isWaitGroupReceiver(iCtx *inst.InstContext, x ast.Expr) bool {
+	tv, ok := iCtx.Type.Types[x]
+	if !ok || tv.Type == nil {
+		return false
+	}
+	switch tv.Type.String() {
+	case "sync.WaitGroup", "*sync.WaitGroup":
+		return true
+	}
+	return false
+}
+
+// wgReceiverArg 生成 InstWgAF 的接收者实参：
+// typeSrc 用于查类型（可能是原接收者表达式），value 是实际传递的表达式。
+// 指针类型直接传递，值类型取地址（此时 value 必为可寻址表达式）
+func wgReceiverArg(iCtx *inst.InstContext, typeSrc, value ast.Expr) ast.Expr {
+	if tv, ok := iCtx.Type.Types[typeSrc]; ok && tv.Type != nil && tv.Type.String() == "*sync.WaitGroup" {
+		return value
+	}
+	return &ast.UnaryExpr{Op: token.AND, X: value}
+}
+
 // WgPass，WaitGroup Record Pass（WaitGroup 记录 Pass）。该 Pass 对
 // sync.WaitGroup 的 Add、Done 操作进行插桩
 
@@ -57,7 +82,7 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 				return true
 			}
 
-			if !SelectorCallerHasTypes(iCtx, selectorExpr, true, "sync.WaitGroup", "*sync.WaitGroup") {
+			if !isWaitGroupReceiver(iCtx, selectorExpr.X) {
 				return true
 			}
 
@@ -74,10 +99,9 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
 			wg := selectorExpr.X
-			p_wg := &ast.UnaryExpr{Op: token.AND, X: wg}
 			before := GenInstCallBF("InstWgBF", id)
 			c.InsertBefore(before)
-			after := GenInstCallWithType("InstWgAF", p_wg, id, opType)
+			after := GenInstCallWithType("InstWgAF", wgReceiverArg(iCtx, wg, wg), id, opType)
 			c.InsertAfter(after)
 			iCtx.SetMetadata(WgNeedInst, true)
 
@@ -88,7 +112,7 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 				return true
 			}
 
-			if !SelectorCallerHasTypes(iCtx, selectorExpr, true, "sync.WaitGroup", "*sync.WaitGroup") {
+			if !isWaitGroupReceiver(iCtx, selectorExpr.X) {
 				return true
 			}
 
@@ -125,7 +149,7 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 			}
 
 			before := GenInstCallBF("InstWgBF", id)
-			after := GenInstCallWithType("InstWgAF", &ast.UnaryExpr{Op: token.AND, X: tmpIdent}, id, opType)
+			after := GenInstCallWithType("InstWgAF", wgReceiverArg(iCtx, selectorExpr.X, tmpIdent), id, opType)
 
 			body := &ast.BlockStmt{List: []ast.Stmt{
 				before,

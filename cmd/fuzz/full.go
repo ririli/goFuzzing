@@ -7,13 +7,14 @@ import (
 	"toolkit/pkg/fuzzer"
 )
 
-func Full(path string, llevel string, feature string, maxworker int, timeout, rtimeout int, granularity string) {
+func Full(path string, llevel string, feature string, maxworker int, timeout, rtimeout, fuzztime int, granularity string) {
 	if timeout == 0 {
 		timeout = 30
 	}
 	if rtimeout == 0 {
 		rtimeout = 200
 	}
+	// fuzztime 不做 0→默认 归一化：0 表示"不限时"（与上方 timeout/rtimeout 的 0→默认 兜底语义相反，勿混淆）
 	startTime := time.Now()
 	resCh := make(chan string, 100000)
 	logCh := make(chan string, 100000)
@@ -57,6 +58,7 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 				cfg.MaxWorker = 4
 				cfg.TimeOut = timeout
 				cfg.RecoverTimeOut = rtimeout
+				cfg.MaxFuzzTime = fuzztime
 				cfg.LogCh = logCh
 				cfg.MaxQuit = 200 // 退出循环次数
 				cfg.MaxExecution = 250

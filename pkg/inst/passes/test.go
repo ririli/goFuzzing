@@ -1,7 +1,11 @@
 package passes
 
 import (
+	"bytes"
 	"go/ast"
+	"go/format"
+	"go/parser"
+	"go/token"
 	"strings"
 	"toolkit/pkg/inst"
 
@@ -17,11 +21,9 @@ type TestPass struct {
 }
 
 var (
-	TestNeedInst   = "NEED_TEST_INST"
-	GortImportName = "goroutine"
-	GortImportPath = "toolkit/pkg/goroutine"
-	// FuncImportName/FuncImportPath、OperationImportName/OperationImportPath
-	// 定义在 global.go，与各插桩 pass 共用
+	TestNeedInst = "NEED_TEST_INST"
+	// GortImportName/GortImportPath 定义在 global.go，
+	// FuncImportName/FuncImportPath、OperationImportName/OperationImportPath 同理
 )
 
 func (p *TestPass) Before(ctx *inst.InstContext) {
@@ -74,7 +76,7 @@ func (p *TestPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) boo
 				}
 			}
 			if check_ok && strings.HasPrefix(name, "Test") && !strings.HasSuffix(name, "_1") {
-				testDecl := p.genTestDecl(name, concrete)
+				testDecl := p.genTestDecl(iCtx, name, concrete)
 				iCtx.AstFile.Decls = append(iCtx.AstFile.Decls, testDecl)
 				iCtx.SetMetadata(TestNeedInst, true)
 			}
@@ -87,60 +89,83 @@ func (p *TestPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bo
 	return nil
 }
 
+// cloneBody 通过“序列化再重解析”深拷贝函数体语句。
+// 若直接共享原函数的 AST 节点，同一批节点会被打印两次，
+// go/printer 的位置信息会错乱，导致 format.Node internal error。
+func cloneBody(fset *token.FileSet, body *ast.BlockStmt) []ast.Stmt {
+	fallback := func() []ast.Stmt {
+		cp := make([]ast.Stmt, len(body.List))
+		copy(cp, body.List)
+		return cp
+	}
+	var buf bytes.Buffer
+	if err := format.Node(&buf, fset, body); err != nil {
+		return fallback()
+	}
+	src := "package p\nfunc _w() " + buf.String()
+	nf, err := parser.ParseFile(token.NewFileSet(), "clone.go", src, 0)
+	if err != nil || len(nf.Decls) == 0 {
+		return fallback()
+	}
+	if fd, ok := nf.Decls[0].(*ast.FuncDecl); ok && fd.Body != nil {
+		return fd.Body.List
+	}
+	return fallback()
+}
+
 // genTestDecl 根据 Granularity 生成模式专用的 TestXxx_1 包装函数。
-func (p *TestPass) genTestDecl(name string, fn *ast.FuncDecl) *ast.FuncDecl {
+func (p *TestPass) genTestDecl(iCtx *inst.InstContext, name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	testname := name + "_1"
 
-	// 复制原始函数体语句
-	testbodylst := make([]ast.Stmt, len(fn.Body.List))
-	copy(testbodylst, fn.Body.List)
+	// 深拷贝原始函数体语句（避免与原函数共享 AST 节点）
+	testbodylst := cloneBody(iCtx.FS, fn.Body)
 
 	var wrapperStmts []ast.Stmt
 
 	if p.Granularity == "function" {
 		// 函数模式：function + operation
 		wrapperStmts = []ast.Stmt{
-			// function.EnterMain()
+			// gopie_function.EnterMain()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "function"},
+						X:   &ast.Ident{Name: FuncImportName},
 						Sel: &ast.Ident{Name: "EnterMain"},
 					},
 				},
 			},
-			// defer function.ExitMain()
+			// defer gopie_function.ExitMain()
 			&ast.DeferStmt{
 				Call: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "function"},
+						X:   &ast.Ident{Name: FuncImportName},
 						Sel: &ast.Ident{Name: "ExitMain"},
 					},
 				},
 			},
-			// function.ParseInput()
+			// gopie_function.ParseInput()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "function"},
+						X:   &ast.Ident{Name: FuncImportName},
 						Sel: &ast.Ident{Name: "ParseInput"},
 					},
 				},
 			},
-			// operation.ParseInput()
+			// gopie_operation.ParseInput()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "operation"},
+						X:   &ast.Ident{Name: OperationImportName},
 						Sel: &ast.Ident{Name: "ParseInput"},
 					},
 				},
 			},
-			// defer function.PrintFunctionPairs()
+			// defer gopie_function.PrintFunctionPairs()
 			&ast.DeferStmt{
 				Call: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "function"},
+						X:   &ast.Ident{Name: FuncImportName},
 						Sel: &ast.Ident{Name: "PrintFunctionPairs"},
 					},
 				},
@@ -149,47 +174,47 @@ func (p *TestPass) genTestDecl(name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	} else {
 		// goroutine 模式（默认）：goroutine + operation
 		wrapperStmts = []ast.Stmt{
-			// goroutine.EnterMain()
+			// gopie_goroutine.EnterMain()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "goroutine"},
+						X:   &ast.Ident{Name: GortImportName},
 						Sel: &ast.Ident{Name: "EnterMain"},
 					},
 				},
 			},
-			// defer goroutine.ExitMain()
+			// defer gopie_goroutine.ExitMain()
 			&ast.DeferStmt{
 				Call: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "goroutine"},
+						X:   &ast.Ident{Name: GortImportName},
 						Sel: &ast.Ident{Name: "ExitMain"},
 					},
 				},
 			},
-			// goroutine.ParseInput()
+			// gopie_goroutine.ParseInput()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "goroutine"},
+						X:   &ast.Ident{Name: GortImportName},
 						Sel: &ast.Ident{Name: "ParseInput"},
 					},
 				},
 			},
-			// operation.ParseInput()
+			// gopie_operation.ParseInput()
 			&ast.ExprStmt{
 				X: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "operation"},
+						X:   &ast.Ident{Name: OperationImportName},
 						Sel: &ast.Ident{Name: "ParseInput"},
 					},
 				},
 			},
-			// defer goroutine.PrintGoroutinePairs()
+			// defer gopie_goroutine.PrintGoroutinePairs()
 			&ast.DeferStmt{
 				Call: &ast.CallExpr{
 					Fun: &ast.SelectorExpr{
-						X:   &ast.Ident{Name: "goroutine"},
+						X:   &ast.Ident{Name: GortImportName},
 						Sel: &ast.Ident{Name: "PrintGoroutinePairs"},
 					},
 				},

@@ -13,6 +13,7 @@ import (
 var opts struct {
 	T           string `long:"timeout" description:"Instrument single go source file"`
 	RT          string `long:"recovertimeout" description:"Output instrumented golang source file to the given file. Only allow when instrumenting single golang source file"`
+	FT          string `long:"fuzztime" description:"per-test total fuzzing session time limit in seconds, 0 = unlimited"`
 	PATH        string `long:"path" description:"path"`
 	TASK        string `long:"task" description:"task"`
 	LL          string `long:"llevel" description:"log level [info, debug, normal]"`
@@ -55,7 +56,7 @@ func main() {
 
 	switch opts.TASK {
 	case "lite":
-		var timeout, rtimeout int64
+		var timeout, rtimeout, fuzztime int64
 		var maxworker int
 		if opts.RT != "" {
 			rtimeout, _ = strconv.ParseInt(opts.RT, 10, 32)
@@ -63,25 +64,31 @@ func main() {
 		if opts.T != "" {
 			timeout, _ = strconv.ParseInt(opts.T, 10, 32)
 		}
+		if opts.FT != "" {
+			fuzztime, _ = strconv.ParseInt(opts.FT, 10, 32)
+		}
 		if opts.MaxWoker != "" {
 			max, _ := strconv.ParseInt(opts.MaxWoker, 10, 32)
 			maxworker = int(max)
 		}
-		Lite(opts.PATH, opts.Fn, opts.LL, int(timeout), int(rtimeout), maxworker, granularity)
+		Lite(opts.PATH, opts.Fn, opts.LL, int(timeout), int(rtimeout), int(fuzztime), maxworker, granularity)
 	case "full":
-		var timeout, rtimeout int64
+		var timeout, rtimeout, fuzztime int64
 		if opts.RT != "" {
 			rtimeout, _ = strconv.ParseInt(opts.RT, 10, 32)
 		}
 		if opts.T != "" {
 			timeout, _ = strconv.ParseInt(opts.T, 10, 32)
 		}
+		if opts.FT != "" {
+			fuzztime, _ = strconv.ParseInt(opts.FT, 10, 32)
+		}
 		var maxworker int
 		if opts.MaxWoker != "" {
 			max, _ := strconv.ParseInt(opts.MaxWoker, 10, 32)
 			maxworker = int(max)
 		}
-		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout), granularity)
+		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout), int(fuzztime), granularity)
 	case "inst":
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
 			return strings.HasSuffix(s, ".go")

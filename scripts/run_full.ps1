@@ -8,6 +8,8 @@
 #   -Granularity    : 调度颗粒度 [goroutine, function]，默认 goroutine，须与插桩时保持一致
 #   -Timeout        : 单次子进程执行超时时间（秒），默认 60。fuzz 会循环调用测试二进制数千次，
 #                     该参数限制的是每一次调用的运行时长，并非整个流程的总超时
+#   -FuzzTime       : 单个测试函数的整个 fuzzing 会话总时长上限（秒），默认 0 = 不限时。
+#                     与 -Timeout（单次执行超时）正交
 #   -RecoverTimeout : panic 后恢复等待超时（秒），默认 200。当前预留参数，运行时尚未接线生效
 #
 # 用法: .\scripts\run_full.ps1 -BinDir  -OutDir zgortResult\nonblocking -Granularity function -Timeout 60 -RecoverTimeout 300
@@ -21,6 +23,8 @@ param(
     [string]$Granularity = "goroutine",
 
     [int]$Timeout = 60,
+
+    [int]$FuzzTime = 0,
 
     [int]$RecoverTimeout = 200
 )
@@ -46,7 +50,7 @@ if ($bins.Count -eq 0) {
 
 Write-Host "BinDir: $BinDir"
 Write-Host "OutDir: $OutDir"
-Write-Host "Granularity: $Granularity, Timeout: ${Timeout}s, RecoverTimeout: ${RecoverTimeout}s"
+Write-Host "Granularity: $Granularity, Timeout: ${Timeout}s, FuzzTime: ${FuzzTime}s, RecoverTimeout: ${RecoverTimeout}s"
 Write-Host "Found $($bins.Count) binaries"
 Write-Host ""
 
@@ -57,7 +61,7 @@ foreach ($bin in $bins) {
     $outFile = Join-Path $OutDir "$($bin.Name).txt"
     Write-Host "[$($OK + $FAIL + 1)/$($bins.Count)] $($bin.Name) -> $outFile"
 
-    $captured = (& .\bin\fuzz --task full --path $bin.FullName /granularity:$Granularity /timeout:$Timeout /recovertimeout:$RecoverTimeout 2>&1)
+    $captured = (& .\bin\fuzz --task full --path $bin.FullName /granularity:$Granularity /timeout:$Timeout /fuzztime:$FuzzTime /recovertimeout:$RecoverTimeout 2>&1)
     $rc = $LASTEXITCODE
 
     $captured | Out-File -FilePath $outFile -Encoding UTF8

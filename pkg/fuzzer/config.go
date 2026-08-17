@@ -55,6 +55,7 @@ type Config struct {
 
 	TimeOut         int
 	RecoverTimeOut  int
+	MaxFuzzTime     int // 一次 Monitor.Start 整个 fuzzing 流程的墙钟时间上限（秒），0 = 不限时；与 TimeOut（单次执行超时）正交
 	InitTurnCnt     int
 	MaxQuit         int
 	MaxPreExecRound int             // 预执行轮次上限
@@ -78,6 +79,7 @@ func DefaultConfig() *Config {
 		UseGuide:        true,
 		TimeOut:         30,
 		RecoverTimeOut:  100,
+		MaxFuzzTime:     0, // 0 = 不限时，保持默认行为
 		InitTurnCnt:     100,
 		MaxQuit:         500,
 		MaxPreExecRound: 30,
@@ -100,6 +102,7 @@ func GokerConfig() *Config {
 		UseGuide:        true,
 		TimeOut:         30,
 		RecoverTimeOut:  100,
+		MaxFuzzTime:     0, // 0 = 不限时，保持默认行为
 		InitTurnCnt:     0,
 		MaxQuit:         10000,
 	}

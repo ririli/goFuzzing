@@ -54,8 +54,14 @@ func (e *Executor) Run(in Input) Output {
 		bufferPool.Put(stderrBuf)
 	}()
 
-	// 2. 创建带有超时的上下文
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(in.timeout)*time.Second)
+	// 2. 创建上下文：timeout<=0 表示不限单次执行时长
+	ctx := context.Background()
+	var cancel context.CancelFunc
+	if in.timeout > 0 {
+		ctx, cancel = context.WithTimeout(ctx, time.Duration(in.timeout)*time.Second)
+	} else {
+		cancel = func() {}
+	}
 	defer cancel()
 
 	// 3. 执行命令并绑定上下文

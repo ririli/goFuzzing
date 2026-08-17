@@ -200,3 +200,19 @@ func TestMonitorResultAlwaysHasCallerSafeDetail(t *testing.T) {
 		t.Fatalf("triggered result = %t, %#v", failed, detail)
 	}
 }
+
+func TestShouldStopByFuzzTime(t *testing.T) {
+	now := time.Now()
+	if shouldStopByFuzzTime(now, 0) {
+		t.Fatal("maxFuzzTime=0 must mean unlimited")
+	}
+	if shouldStopByFuzzTime(now, -1) {
+		t.Fatal("negative maxFuzzTime must mean unlimited")
+	}
+	if shouldStopByFuzzTime(now, 60) {
+		t.Fatal("must not stop before budget")
+	}
+	if !shouldStopByFuzzTime(now.Add(-61*time.Second), 60) {
+		t.Fatal("elapsed >= budget must stop")
+	}
+}
