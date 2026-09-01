@@ -4,8 +4,10 @@ package feedback
 type SignalKind string
 
 const (
-	SignalFuncCovered SignalKind = "func_covered" // 函数对调度成功
-	SignalFuncTimeout SignalKind = "func_timeout" // 函数对调度超时
+	// SignalPairCovered/SignalPairTimeout 为中性的并发对信号种类，
+	// goroutine 与 function 两种粒度共用 {COVERED}/{TIMEOUT} 前缀。
+	SignalPairCovered SignalKind = "pair_covered" // 并发对调度成功
+	SignalPairTimeout SignalKind = "pair_timeout" // 并发对调度超时
 	SignalOpCovered   SignalKind = "op_covered"   // 操作对调度成功
 	SignalOpTimeout   SignalKind = "op_timeout"   // 操作对调度超时
 )
@@ -15,5 +17,5 @@ type CoverageSignal struct {
 	PreID   uint64     // 前置 ID
 	NextID  uint64     // 后置 ID
 	Success bool       // true=covered成功, false=timeout超时
-	Kind    SignalKind // 信号种类: func / op
+	Kind    SignalKind // 信号种类: gort / op
 }

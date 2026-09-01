@@ -6,7 +6,7 @@ import (
 	"toolkit/pkg/fuzzer"
 )
 
-func Lite(bin, fn string, llevel string, timeout, recovertimeout int, maxworker int) {
+func Lite(bin, fn string, llevel string, timeout, recovertimeout, fuzztime int, maxworker int, granularity string) {
 	resCh := make(chan string, 100)
 	logCh := make(chan string, 100)
 	//bugset := bug.NewBugSet()
@@ -19,7 +19,9 @@ func Lite(bin, fn string, llevel string, timeout, recovertimeout int, maxworker 
 		cfg.LogLevel = llevel
 		cfg.TimeOut = timeout
 		cfg.RecoverTimeOut = recovertimeout
+		cfg.MaxFuzzTime = fuzztime // 0 = 不限时，直传（lite 无默认兜底，与 timeout 的 0 语义不同）
 		cfg.MaxWorker = maxworker
+		cfg.Granularity = fuzzer.ParseGranularity(granularity)
 
 		ok, detail := m.Start(cfg, nolimit)
 		var res string

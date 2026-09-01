@@ -6,7 +6,7 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
-// runPasses executes given passes with provided instrumentation context
+// runPasses 使用给定的插桩上下文执行指定的 Pass 列表
 func runPasses(iCtx *InstContext, passes []InstPass) error {
 	for _, p := range passes {
 		err := RunPass(p, iCtx)
@@ -17,7 +17,7 @@ func runPasses(iCtx *InstContext, passes []InstPass) error {
 	return nil
 }
 
-// Run executes passes with given a list of pass name and instrumentation context.
+// Run 使用给定的 Pass 名称列表和插桩上下文执行各 Pass。
 func Run(iCtx *InstContext, r *PassRegistry, passNames []string) error {
 	var passes = make([]InstPass, 0, len(passNames))
 	for _, passName := range passNames {

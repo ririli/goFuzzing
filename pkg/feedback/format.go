@@ -1,21 +1,26 @@
 package feedback
 
 import (
+	"encoding/json"
 	"fmt"
 	"strconv"
 	"strings"
 )
 
+const gortEdgePrefix = "[GORT_EDGE]"
+
 // ParseSignals 从 stdout 中解析调度有效性信号（轻量，无需调用栈）
-// 返回 func 和 op 两份独立的信号切片
+// 返回并发对（pair）和 op 两份独立的信号切片；
+// {COVERED}/{TIMEOUT} 在 goroutine 与 function 两种粒度下共用，
+// 具体语义由调用方所处的颗粒度模式决定。
 //
 // 支持格式：
 //
-//	{COVERED} {funcId1, funcId2}
-//	{TIMEOUT} {funcId1, funcId2}
+//	{COVERED} {id1, id2}
+//	{TIMEOUT} {id1, id2}
 //	{COVERED_OP} {opId1, opId2}
 //	{TIMEOUT_OP} {opId1, opId2}
-func ParseSignals(s string) (funcSignals, opSignals []*CoverageSignal) {
+func ParseSignals(s string) (pairSignals, opSignals []*CoverageSignal) {
 	lines := strings.Split(s, "\n")
 	for _, line := range lines {
 		line = strings.TrimSpace(line)
@@ -27,8 +32,8 @@ func ParseSignals(s string) (funcSignals, opSignals []*CoverageSignal) {
 			continue
 		}
 		switch sig.Kind {
-		case SignalFuncCovered, SignalFuncTimeout:
-			funcSignals = append(funcSignals, sig)
+		case SignalPairCovered, SignalPairTimeout:
+			pairSignals = append(pairSignals, sig)
 		case SignalOpCovered, SignalOpTimeout:
 			opSignals = append(opSignals, sig)
 		}
@@ -53,11 +58,11 @@ func parseSignal(line string) *CoverageSignal {
 		line = strings.TrimPrefix(line, "{TIMEOUT_OP}")
 	case strings.HasPrefix(line, "{COVERED}"):
 		success = true
-		kind = SignalFuncCovered
+		kind = SignalPairCovered
 		line = strings.TrimPrefix(line, "{COVERED}")
 	case strings.HasPrefix(line, "{TIMEOUT}"):
 		success = false
-		kind = SignalFuncTimeout
+		kind = SignalPairTimeout
 		line = strings.TrimPrefix(line, "{TIMEOUT}")
 	default:
 		return nil
@@ -92,8 +97,8 @@ func parseSignal(line string) *CoverageSignal {
 //
 //	[COVERED] FuncID1,FuncID2|File1:Line1,File2:Line2|Confidence|SourceType;
 //	[SUSPECT] FuncID1,FuncID2|File1:Line1,File2:Line2|Confidence|SourceType;
-//	[FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
-//	[FB]wg: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+//	[FB]chan: obj=ADDR; opId=ID; gid=ID; op=TYPE;
+//	[FB]wg: obj=ADDR; opId=ID; gid=ID; op=TYPE;
 func ParseStdPairs(s string) ([]*SuspiciousPairInfo, []*OpInfo, error) {
 	var results []*SuspiciousPairInfo
 	var ops []*OpInfo
@@ -124,8 +129,6 @@ func ParseStdPairs(s string) ([]*SuspiciousPairInfo, []*OpInfo, error) {
 			results = append(results, pair)
 		}
 	}
-	fmt.Println("ParseStdPairs\n", results)
-	fmt.Println("\nParseStdOps\n", ops)
 	return results, ops, nil
 }
 
@@ -230,13 +233,17 @@ func parseLocation(locStr string) (CallLocationInfo, error) {
 }
 
 // parseFBOp 解析 [FB] 格式的操作日志
-// 格式: [FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+// 格式: [FB]chan: obj=ADDR; opId=ID; gid=ID; op=TYPE;
 //
-//	[FB]wg: obj=ADDR; opId=ID; funcId=ID; op=TYPE;
+//	[FB]wg: obj=ADDR; opId=ID; gid=ID; op=TYPE;
 //
 // select 中的操作额外带 select=1:
 //
-//	[FB]chan: obj=ADDR; opId=ID; funcId=ID; op=TYPE; select=1;
+//	[FB]chan: obj=ADDR; opId=ID; gid=ID; op=TYPE; select=1;
+//
+// function 粒度下额外带 fids=外层,...,内层（操作发生时的函数栈）:
+//
+//	[FB]chan: obj=ADDR; opId=ID; gid=ID; op=TYPE; fids=3,7;
 func parseFBOp(line string) (*OpInfo, error) {
 	// 去除 [FB] 前缀
 	content := strings.TrimPrefix(line, "[FB]")
@@ -286,18 +293,166 @@ func parseFBOp(line string) (*OpInfo, error) {
 				return nil, fmt.Errorf("invalid opId: %v", err)
 			}
 			op.OpId = v
-		case "funcId":
+		case "gid":
 			v, err := strconv.ParseUint(val, 10, 64)
 			if err != nil {
-				return nil, fmt.Errorf("invalid funcId: %v", err)
+				return nil, fmt.Errorf("invalid gid: %v", err)
 			}
-			op.FuncId = v
+			op.Gid = v
 		case "op":
 			op.OpType = OpType(val)
 		case "select":
 			op.IsSelect = val == "1"
+		case "fids":
+			for _, idStr := range strings.Split(val, ",") {
+				idStr = strings.TrimSpace(idStr)
+				if idStr == "" {
+					continue
+				}
+				v, err := strconv.ParseUint(idStr, 10, 64)
+				if err != nil {
+					return nil, fmt.Errorf("invalid fids: %v", err)
+				}
+				op.FuncIDs = append(op.FuncIDs, v)
+			}
 		}
 	}
 
 	return op, nil
+}
+
+// ParseGortPairs 从stderr解析goroutine并发对信息和[FB]操作日志
+// 对标 ParseStdPairs，但返回 GortPairInfo 而非 SuspiciousPairInfo
+func ParseGortPairs(s string) ([]*GortPairInfo, []*OpInfo, error) {
+	var results []*GortPairInfo
+	var ops []*OpInfo
+
+	lines := strings.Split(s, "\n")
+
+	for _, line := range lines {
+		line = strings.TrimSpace(line)
+		if line == "" {
+			continue
+		}
+
+		if strings.HasPrefix(line, "[FB]") {
+			if op, err := parseFBOp(line); err == nil && op != nil {
+				ops = append(ops, op)
+			}
+			continue
+		}
+
+		pair, err := parseGortPair(line)
+		if err != nil {
+			continue
+		}
+		if pair != nil {
+			results = append(results, pair)
+		}
+	}
+	return results, ops, nil
+}
+
+// ParseGortEdges 从混合控制台输出中解析逐行JSON格式的goroutine父子边。
+func ParseGortEdges(s string) ([]*GortEdge, error) {
+	var edges []*GortEdge
+	var firstErr error
+
+	for lineNumber, line := range strings.Split(s, "\n") {
+		line = strings.TrimSpace(line)
+		if !strings.HasPrefix(line, gortEdgePrefix) {
+			continue
+		}
+
+		payload := strings.TrimSpace(strings.TrimPrefix(line, gortEdgePrefix))
+		var edge GortEdge
+		if err := json.Unmarshal([]byte(payload), &edge); err != nil {
+			if firstErr == nil {
+				firstErr = fmt.Errorf("parse goroutine edge on line %d: %w", lineNumber+1, err)
+			}
+			continue
+		}
+		edges = append(edges, &edge)
+	}
+
+	return edges, firstErr
+}
+
+const funcEdgePrefix = "[FUNC_EDGE]"
+
+// ParseFuncEdges 从 stderr 解析 JSON 格式的函数调用者-被调用者边。
+// 格式: [FUNC_EDGE] {"caller":...,"callee":...,"count":...}
+func ParseFuncEdges(s string) ([]*FuncEdge, error) {
+	var edges []*FuncEdge
+	var firstErr error
+
+	for lineNumber, line := range strings.Split(s, "\n") {
+		line = strings.TrimSpace(line)
+		if !strings.HasPrefix(line, funcEdgePrefix) {
+			continue
+		}
+
+		payload := strings.TrimSpace(strings.TrimPrefix(line, funcEdgePrefix))
+		var edge FuncEdge
+		if err := json.Unmarshal([]byte(payload), &edge); err != nil {
+			if firstErr == nil {
+				firstErr = fmt.Errorf("parse function edge on line %d: %w", lineNumber+1, err)
+			}
+			continue
+		}
+		edges = append(edges, &edge)
+	}
+
+	return edges, firstErr
+}
+
+// parseGortPair 解析单行goroutine对信息，返回 GortPairInfo
+func parseGortPair(line string) (*GortPairInfo, error) {
+	var isObserved bool
+	if strings.HasPrefix(line, "[COVERED]") {
+		isObserved = true
+		line = strings.TrimPrefix(line, "[COVERED]")
+	} else if strings.HasPrefix(line, "[SUSPECT]") {
+		isObserved = false
+		line = strings.TrimPrefix(line, "[SUSPECT]")
+	} else {
+		return nil, fmt.Errorf("invalid prefix: %s", line)
+	}
+
+	line = strings.TrimSpace(line)
+	line = strings.TrimSuffix(line, ";")
+
+	parts := strings.Split(line, "|")
+	if len(parts) != 4 {
+		return nil, fmt.Errorf("invalid format: expected 4 parts, got %d", len(parts))
+	}
+
+	ids := strings.Split(parts[0], ",")
+	if len(ids) != 2 {
+		return nil, fmt.Errorf("invalid goroutine IDs format: %s", parts[0])
+	}
+
+	gid1, _ := strconv.ParseUint(strings.TrimSpace(ids[0]), 10, 64)
+	gid2, _ := strconv.ParseUint(strings.TrimSpace(ids[1]), 10, 64)
+
+	locations := strings.Split(parts[1], ",")
+	if len(locations) != 2 {
+		return nil, fmt.Errorf("invalid locations format: %s", parts[1])
+	}
+
+	callLoc1, _ := parseLocation(locations[0])
+	callLoc2, _ := parseLocation(locations[1])
+
+	confidence, _ := strconv.ParseFloat(strings.TrimSpace(parts[2]), 64)
+	sourceType := strings.TrimSpace(parts[3])
+
+	return &GortPairInfo{
+		Gid1:       gid1,
+		Gid2:       gid2,
+		CallLoc1:   callLoc1,
+		CallLoc2:   callLoc2,
+		Confidence: confidence,
+		SourceType: sourceType,
+		IsObserved: isObserved,
+	}, nil
 }

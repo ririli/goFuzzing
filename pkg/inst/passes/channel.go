@@ -1,7 +1,9 @@
 package passes
 
 import (
+	"fmt"
 	"go/ast"
+	"go/token"
 	"io/ioutil"
 	"log"
 	"toolkit/pkg/inst"
@@ -10,25 +12,16 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
-// ChResPass, Channel Record Pass. This pass instrumented at
-// following four channel related operations:
-// send, recv, make, close
+// ChResPass，Channel Record Pass（通道记录 Pass）。该 Pass 对以下
+// 四种通道相关操作进行插桩：
+// send、recv、make、close
 
 var (
-	ChannelNeedInst   = "ChannelNeedInst"
-	ChannelImportName = "sched"
-	ChannelImportPath = "toolkit/pkg/sched"
+	ChannelNeedInst = "ChannelNeedInst"
+	// 导入常量复用 global.go 的 OperationImportName/OperationImportPath
 )
 
 type ChRecPass struct {
-	funcIdStack []uint64
-}
-
-func (p *ChRecPass) currentFuncId() uint64 {
-	if len(p.funcIdStack) > 0 {
-		return p.funcIdStack[len(p.funcIdStack)-1]
-	}
-	return 0
 }
 
 func RunChannelPass(in, out string) error {
@@ -46,7 +39,6 @@ func RunChannelPass(in, out string) error {
 		if err != nil {
 			log.Panicf("failed to recover file '%s'", out)
 		}
-		// do_retry(out, out, wp)
 	}
 	return nil
 }
@@ -59,18 +51,12 @@ func (p *ChRecPass) After(iCtx *inst.InstContext) {
 	need, _ := iCtx.GetMetadata(ChannelNeedInst)
 	needinst := need.(bool)
 	if needinst {
-		inst.AddImport(iCtx.FS, iCtx.AstFile, ChannelImportName, ChannelImportPath)
+		inst.AddImport(iCtx.FS, iCtx.AstFile, OperationImportName, OperationImportPath)
 	}
 }
 
 func (p *ChRecPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
 	return func(c *astutil.Cursor) bool {
-		switch c.Node().(type) {
-		case *ast.FuncDecl, *ast.FuncLit:
-			if len(p.funcIdStack) > 0 {
-				p.funcIdStack = p.funcIdStack[:len(p.funcIdStack)-1]
-			}
-		}
 		return true
 	}
 }
@@ -78,92 +64,101 @@ func (p *ChRecPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 func (p *ChRecPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
 	return func(c *astutil.Cursor) bool {
 		defer func() {
-			if r := recover(); r != nil { // This is allowed. If we insert node into nodes not in slice, we will meet a panic
-				// For example, we may identified a receive in select and wanted to insert a function call before it, then this function will panic
+			if r := recover(); r != nil {
 			}
 		}()
 
 		switch concrete := c.Node().(type) {
 
-		// 追踪函数边界，维护 funcId 栈
-		case *ast.FuncDecl:
-			if fid, ok := Find(concrete.Pos()); ok {
-				p.funcIdStack = append(p.funcIdStack, fid)
-			}
-		case *ast.FuncLit:
-			if fid, ok := Find(concrete.Pos()); ok {
-				p.funcIdStack = append(p.funcIdStack, fid)
-			}
-
-		// channel send operation
+		// channel send（发送）操作
 		case *ast.SendStmt:
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
-			ch := concrete.Chan
-			fid := p.currentFuncId()
-			before := GenInstCallWithType("InstChBF", ch, id, fid, "send")
+
+			// 引入临时变量，避免 channel 表达式被双重求值
+			tmpIdent := &ast.Ident{Name: fmt.Sprintf("_ch_%d", id)}
+			tmpAssign := &ast.AssignStmt{
+				Tok: token.DEFINE,
+				Lhs: []ast.Expr{tmpIdent},
+				Rhs: []ast.Expr{concrete.Chan},
+			}
+			c.InsertBefore(tmpAssign)
+
+			// SendStmt 和 AF 都使用临时变量，channel 表达式只求值一次
+			concrete.Chan = tmpIdent
+			before := GenInstCallBF("InstChBF", id)
 			c.InsertBefore(before)
-			after := GenInstCallWithType("InstChAF", ch, id, fid, "send")
+			after := GenInstCallWithType("InstChAF", tmpIdent, id, "send")
 			c.InsertAfter(after)
 
 			iCtx.SetMetadata(ChannelNeedInst, true)
 
 		case *ast.ExprStmt:
-			if callExpr, ok := concrete.X.(*ast.CallExpr); ok { // like `close(ch)` or `mu.Lock()`
-				if funcIdent, ok := callExpr.Fun.(*ast.Ident); ok { // like `close(ch)`
-					// channel close operation
+			if callExpr, ok := concrete.X.(*ast.CallExpr); ok {
+				if funcIdent, ok := callExpr.Fun.(*ast.Ident); ok {
+					// channel close（关闭）操作
 					if funcIdent.Name == "close" {
 						id := iCtx.GetNewOpId()
 						Add(concrete.Pos(), id)
 						args := callExpr.Args
 						if len(args) == 1 {
-							if ch, ok := args[0].(*ast.Ident); ok {
-								fid := p.currentFuncId()
-								before := GenInstCallWithType("InstChBF", ch, id, fid, "close")
-								c.InsertBefore(before)
-
-								after := GenInstCallWithType("InstChAF", ch, id, fid, "close")
-								c.InsertAfter(after)
-
-								iCtx.SetMetadata(ChannelNeedInst, true)
+							// 引入临时变量，不再限制 channel 表达式类型
+							tmpIdent := &ast.Ident{Name: fmt.Sprintf("_ch_%d", id)}
+							tmpAssign := &ast.AssignStmt{
+								Tok: token.DEFINE,
+								Lhs: []ast.Expr{tmpIdent},
+								Rhs: []ast.Expr{args[0]},
 							}
+							c.InsertBefore(tmpAssign)
+
+							// close 参数和 AF 都使用临时变量
+							callExpr.Args[0] = tmpIdent
+							before := GenInstCallBF("InstChBF", id)
+							c.InsertBefore(before)
+							after := GenInstCallWithType("InstChAF", tmpIdent, id, "close")
+							c.InsertAfter(after)
+
+							iCtx.SetMetadata(ChannelNeedInst, true)
 						}
 					}
 				}
 			}
 		case *ast.DeferStmt:
 			callExpr := concrete.Call
-			if funcIdent, ok := callExpr.Fun.(*ast.Ident); ok { // like `close(ch)`
-				// channel close operation
+			if funcIdent, ok := callExpr.Fun.(*ast.Ident); ok {
+				// channel close（关闭）操作
 				if funcIdent.Name == "close" {
 					id := iCtx.GetNewOpId()
 					Add(concrete.Pos(), id)
 					args := callExpr.Args
 					if len(args) == 1 {
-						if ch, ok := args[0].(*ast.Ident); ok {
-							fid := p.currentFuncId()
-							before := GenInstCallWithType("InstChBF", ch, id, fid, "close")
-							after := GenInstCallWithType("InstChAF", ch, id, fid, "close")
-
-							body := &ast.BlockStmt{List: []ast.Stmt{
-								before,
-								NewArgCallExpr("", "close", callExpr.Args),
-								after,
-							}}
-
-							deferStmt := &ast.DeferStmt{
-								Call: &ast.CallExpr{
-									Fun: &ast.FuncLit{
-										Type: &ast.FuncType{Params: &ast.FieldList{List: nil}},
-										Body: body,
-									},
-									Args: []ast.Expr{},
-								},
-							}
-
-							c.Replace(deferStmt)
-							iCtx.SetMetadata(ChannelNeedInst, true)
+						// 临时变量在 defer 外部求值，保证求值时机与原 defer 参数语义一致
+						tmpIdent := &ast.Ident{Name: fmt.Sprintf("_ch_%d", id)}
+						tmpAssign := &ast.AssignStmt{
+							Tok: token.DEFINE,
+							Lhs: []ast.Expr{tmpIdent},
+							Rhs: []ast.Expr{args[0]},
 						}
+						c.InsertBefore(tmpAssign)
+
+						body := &ast.BlockStmt{List: []ast.Stmt{
+							GenInstCallBF("InstChBF", id),
+							NewArgCallExpr("", "close", []ast.Expr{tmpIdent}),
+							GenInstCallWithType("InstChAF", tmpIdent, id, "close"),
+						}}
+
+						deferStmt := &ast.DeferStmt{
+							Call: &ast.CallExpr{
+								Fun: &ast.FuncLit{
+									Type: &ast.FuncType{Params: &ast.FieldList{List: nil}},
+									Body: body,
+								},
+								Args: []ast.Expr{},
+							},
+						}
+
+						c.Replace(deferStmt)
+						iCtx.SetMetadata(ChannelNeedInst, true)
 					}
 				}
 			}

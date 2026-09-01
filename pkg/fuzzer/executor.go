@@ -29,7 +29,9 @@ type Input struct {
 	timeout        int
 	recovertimeout int
 	//
-	tryPair   *feedback.InputPair
+	pairInput *PairInput              // 统一的并发对输入（goroutine或函数模式）
+	gortPair  *feedback.InputGortPair // 已废弃，保留用于兼容
+	funcPair  *feedback.InputPair     // 已废弃，保留用于兼容
 	tryOpPair *feedback.InputOpPair
 }
 
@@ -52,20 +54,24 @@ func (e *Executor) Run(in Input) Output {
 		bufferPool.Put(stderrBuf)
 	}()
 
-	// 2. 创建带有超时的上下文
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(in.timeout)*time.Second)
+	// 2. 创建上下文：timeout<=0 表示不限单次执行时长
+	ctx := context.Background()
+	var cancel context.CancelFunc
+	if in.timeout > 0 {
+		ctx, cancel = context.WithTimeout(ctx, time.Duration(in.timeout)*time.Second)
+	} else {
+		cancel = func() {}
+	}
 	defer cancel()
 
 	// 3. 执行命令并绑定上下文
 	command := exec.CommandContext(ctx, in.cmd, in.args...)
 
-	//command := exec.Command(in.cmd, in.args...) origin
-
 	var strPair string
-	if in.tryPair == nil {
-		strPair = "Input="
+	if in.pairInput != nil && !in.pairInput.IsEmpty() {
+		strPair = "Input=" + in.pairInput.ToString()
 	} else {
-		strPair = "Input=" + in.tryPair.ToString()
+		strPair = "Input="
 	}
 	var strOpPair string
 	if in.tryOpPair == nil {
@@ -73,8 +79,6 @@ func (e *Executor) Run(in Input) Output {
 	} else {
 		strOpPair = "InputOp=" + in.tryOpPair.ToString()
 	}
-	fmt.Println("=====strPair====")
-	fmt.Println(strPair)
 	command.Env = append(os.Environ(), strPair, strOpPair)
 	if in.timeout != 0 {
 		command.Env = append(command.Env, fmt.Sprintf("TIMEOUT=%v", in.timeout))
@@ -83,7 +87,7 @@ func (e *Executor) Run(in Input) Output {
 		command.Env = append(command.Env, fmt.Sprintf("RECOVER_TIMEOUT=%v", in.recovertimeout))
 	}
 	// 传递是否记录调用栈的标志
-	if in.tryPair != nil && !in.tryPair.RecordStack {
+	if in.pairInput != nil && !in.pairInput.IsEmpty() {
 		command.Env = append(command.Env, "RECORD_STACK=1")
 		command.Env = append(command.Env, "SCHED_DEBUG=1")
 	}
@@ -107,21 +111,13 @@ func (e *Executor) Run(in Input) Output {
 	<-stdoutDone
 	<-stderrDone
 
+	// 8. 如果执行因超时被杀，追加标记
+	if ctx.Err() == context.DeadlineExceeded {
+		fmt.Fprintf(stdoutBuf, "{TIMEOUT_EXEC} execution timed out after %ds\n", in.timeout)
+	}
+
 	stdoutContent := stdoutBuf.String()
 	stderrContent := stderrBuf.String()
-	//command.Stdout = &bytes.Buffer{}
-	//command.Stderr = &bytes.Buffer{}
-	//执行命令，直到命令结束
-	//start := time.Now()
-	//err := command.Run()
-	//打印命令行的标准输出
-	//return Output{
-	//	err,
-	//	command.Stdout.(*bytes.Buffer).String(),
-	//	command.Stderr.(*bytes.Buffer).String(),
-	//	time.Since(start),
-	//}
-	// 直接使用缓冲区内容，无需操作 cmd.Stdout
 	return Output{
 		Err:   err,
 		O:     stdoutContent,

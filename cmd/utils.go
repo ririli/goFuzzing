@@ -17,6 +17,12 @@ func ListFiles(d string, f func(s string) bool) []string {
 	var files []string
 
 	err := filepath.Walk(d, func(path string, info os.FileInfo, err error) error {
+		if info == nil {
+			return err
+		}
+		if info.IsDir() && info.Name() == "vendor" {
+			return filepath.SkipDir
+		}
 		if f(path) {
 			files = append(files, path)
 		}
@@ -48,7 +54,32 @@ func ListTests(bin string) []string {
 	return res
 }
 
+// isGeneratedFile 检查文件是否为 Go generated 文件
+// Go 惯例：generated 文件第一行为 "// Code generated <cmd> DO NOT EDIT."
+func isGeneratedFile(path string) bool {
+	f, err := os.Open(path)
+	if err != nil {
+		return false
+	}
+	defer f.Close()
+
+	var buf [256]byte
+	n, err := f.Read(buf[:])
+	if err != nil || n == 0 {
+		return false
+	}
+
+	firstLine := strings.SplitN(string(buf[:n]), "\n", 2)[0]
+	return strings.HasPrefix(firstLine, "// Code generated") &&
+		strings.Contains(firstLine, "DO NOT EDIT")
+}
+
 func HandleSrcFile(src string, reg *inst.PassRegistry, passes []string) error {
+	if isGeneratedFile(src) {
+		log.Printf("skip generated file: %s\n", src)
+		return nil
+	}
+
 	iCtx, err := inst.NewInstContext(src)
 	if err != nil {
 		return err
@@ -63,7 +94,7 @@ func HandleSrcFile(src string, reg *inst.PassRegistry, passes []string) error {
 	if Opts.Out != "" {
 		dst = Opts.Out
 	} else {
-		// dump AST in-place
+		// 就地导出 AST
 		dst = iCtx.File
 
 	}
@@ -72,10 +103,10 @@ func HandleSrcFile(src string, reg *inst.PassRegistry, passes []string) error {
 		return err
 	}
 
-	// check if output is valid, revert if error happened
+	// 检查输出是否有效，出错则回滚
 	if gofmt.HasSyntaxError(dst) {
-		// we simply ignored the instrumented result,
-		// and revert the file content back to original version.
+		// 直接丢弃插桩结果，
+		// 并将文件内容还原为原始版本。
 		err = ioutil.WriteFile(dst, iCtx.OriginalContent, 0777)
 		if err != nil {
 			log.Panicf("failed to recover file '%s'", dst)

@@ -27,14 +27,14 @@ func getInstPath() string {
 	return filepath.Join("bin", "inst")
 }
 
-func Inst(paths []string, check_pos string) {
+func Inst(paths []string, check_pos string, granularity string) {
 	// 检查是否有文件需要处理
 	if len(paths) == 0 {
 		fmt.Println("No Go files found in the specified path")
 		return
 	}
 
-	resCh := make(chan string, 100)
+	resCh := make(chan string, len(paths))
 	toolpath := getInstPath()
 	// ✅ 新增：限制最大并发数为 16
 	maxWorkers := 16
@@ -46,26 +46,28 @@ func Inst(paths []string, check_pos string) {
 	var failedFiles []string
 
 	dowork := func(path string) {
-		defer func() {
-			<-limit
-		}()
-		command := exec.Command(toolpath, "--file", path, "--checkpos", check_pos) // 执行inst二进制文件
+		command := exec.Command(toolpath, "--file", path, "--checkpos", check_pos, "--granularity", granularity)
 		var out, out2 bytes.Buffer
 		command.Stdout = &out
 		command.Stderr = &out2
 		err := command.Run()
+		var result string
 		if err == nil {
-			resCh <- fmt.Sprintf("Handle\t%s OK", path)
+			result = fmt.Sprintf("Handle\t%s OK", path)
 		} else {
-			resCh <- fmt.Sprintf("Handle\t%s FAIL", path)
+			result = fmt.Sprintf("Handle\t%s FAIL", path)
 		}
+		<-limit // 写入结果前先释放槽位，避免分发器死锁
+		resCh <- result
 	}
 
 	all := len(paths)
-	for _, p := range paths {
-		limit <- struct{}{}
-		go dowork(p)
-	}
+	go func() {
+		for _, p := range paths {
+			limit <- struct{}{}
+			go dowork(p)
+		}
+	}()
 
 	for {
 		select {
@@ -101,7 +103,7 @@ func Inst(paths []string, check_pos string) {
 						fmt.Printf("  %d. %s\n", i+1, file)
 					}
 				}
-				fmt.Println("============================\n")
+				fmt.Println("============================")
 				return
 			}
 			//default:

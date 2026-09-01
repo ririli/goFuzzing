@@ -8,18 +8,18 @@ import (
 	"sync/atomic"
 )
 
-// InstContext contains all information needed to instrument one single Golang source code.
+// InstContext 包含对单个 Golang 源码文件进行插桩所需的全部信息。
 type InstContext struct {
 	File            string
 	OriginalContent []byte
 	FS              *token.FileSet
 	AstFile         *ast.File
 	Type            *types.Info
-	Metadata        map[string]interface{} // user can set custom metadata come along with instrumentation context
+	Metadata        map[string]interface{} // 用户可设置随插桩上下文携带的自定义元数据
 	opid            uint64
 }
 
-// TODO : change this opid to a global one which is used to do something cross-file
+// TODO : 将 opid 改为全局唯一，用于跨文件操作
 func (i *InstContext) GetNewOpId() uint64 {
 	return atomic.AddUint64(&i.opid, 1)
 }
@@ -33,9 +33,9 @@ func (i *InstContext) GetMetadata(key string) (interface{}, bool) {
 	return val, exist
 }
 
-// InstPass shapes the pass used for instrumenting a single Golang source code
+// InstPass 定义了用于对单个 Golang 源码文件插桩的 Pass 形态
 type InstPass interface {
-	// Deps returns a list of dependent passes
+	// Deps 返回依赖的 Pass 列表
 	// Deps() []string
 
 	Before(iCtx *InstContext)
@@ -49,10 +49,10 @@ type InstPass interface {
 
 type InstPassConstructor func() InstPass
 
-// PassRegistry records all registered passes
+// PassRegistry 记录所有已注册的 Pass
 type PassRegistry struct {
-	// pass name => pass
+	// pass 名 => pass 构造器
 	n2p map[string]InstPassConstructor
-	// orders
+	// 注册顺序
 	o []string
 }

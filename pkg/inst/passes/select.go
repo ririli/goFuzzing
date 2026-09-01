@@ -10,25 +10,12 @@ import (
 	"golang.org/x/tools/go/ast/astutil"
 )
 
-// ChResPass, Channel Record Pass. This pass instrumented at
-// following four channel related operations:
-// send, recv, make, close
-
 var (
-	SelectInstNeed   = "SelectNeedInst"
-	SelectImportName = "sched"
-	SelectImportPath = "toolkit/pkg/sched"
+	SelectInstNeed = "SelectNeedInst"
+	// 导入常量复用 global.go 的 OperationImportName/OperationImportPath
 )
 
 type SelectPass struct {
-	funcIdStack []uint64
-}
-
-func (p *SelectPass) currentFuncId() uint64 {
-	if len(p.funcIdStack) > 0 {
-		return p.funcIdStack[len(p.funcIdStack)-1]
-	}
-	return 0
 }
 
 func RunSelectPass(in, out string) error {
@@ -46,7 +33,6 @@ func RunSelectPass(in, out string) error {
 		if err != nil {
 			log.Panicf("failed to recover file '%s'", out)
 		}
-		// do_retry(out, out, wp)
 	}
 	return nil
 }
@@ -59,18 +45,12 @@ func (p *SelectPass) After(iCtx *inst.InstContext) {
 	need, _ := iCtx.GetMetadata(SelectInstNeed)
 	needinst := need.(bool)
 	if needinst {
-		inst.AddImport(iCtx.FS, iCtx.AstFile, SelectImportName, SelectImportPath)
+		inst.AddImport(iCtx.FS, iCtx.AstFile, OperationImportName, OperationImportPath)
 	}
 }
 
 func (p *SelectPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
 	return func(c *astutil.Cursor) bool {
-		switch c.Node().(type) {
-		case *ast.FuncDecl, *ast.FuncLit:
-			if len(p.funcIdStack) > 0 {
-				p.funcIdStack = p.funcIdStack[:len(p.funcIdStack)-1]
-			}
-		}
 		return true
 	}
 }
@@ -78,24 +58,12 @@ func (p *SelectPass) GetPostApply(iCtx *inst.InstContext) func(*astutil.Cursor) 
 func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool {
 	return func(c *astutil.Cursor) bool {
 		defer func() {
-			if r := recover(); r != nil { // This is allowed. If we insert node into nodes not in slice, we will meet a panic
-				// For example, we may identified a receive in select and wanted to insert a function call before it, then this function will panic
+			if r := recover(); r != nil {
 			}
 		}()
 
 		switch concrete := c.Node().(type) {
 
-		// 追踪函数边界，维护 funcId 栈
-		case *ast.FuncDecl:
-			if fid, ok := Find(concrete.Pos()); ok {
-				p.funcIdStack = append(p.funcIdStack, fid)
-			}
-		case *ast.FuncLit:
-			if fid, ok := Find(concrete.Pos()); ok {
-				p.funcIdStack = append(p.funcIdStack, fid)
-			}
-
-		// channel send operation
 		case *ast.SelectStmt:
 			cases := concrete.Body.List
 			for _, x := range cases {
@@ -108,7 +76,7 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 					id := iCtx.GetNewOpId()
 					Add(concrete.Pos(), id)
 					ch := concrete.Chan
-					newCall := GenInstCallWithType("InstChSelectAF", ch, id, p.currentFuncId(), "send")
+					newCall := GenInstCallWithType("InstChSelectAF", ch, id, "send")
 					comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
 					iCtx.SetMetadata(SelectInstNeed, true)
 				}

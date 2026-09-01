@@ -3,9 +3,9 @@ package fuzzer
 import (
 	"fmt"
 	_ "net/http/pprof"
-	"strings"
 	"sync/atomic"
 	"time"
+	"toolkit/pkg/bug"
 	"toolkit/pkg/feedback"
 )
 
@@ -19,6 +19,7 @@ type Monitor struct {
 	etimes int32
 	max    int32
 	doinit uint32
+	bugs   *bug.Set
 }
 
 type RunContext struct {
@@ -29,8 +30,194 @@ type RunContext struct {
 
 var workerID uint32
 
+type bugFinding struct {
+	event  bug.Event
+	record bug.Record
+	isNew  bool
+}
+
+type runAnalysis struct {
+	pairSignals      []*feedback.CoverageSignal
+	opSignals        []*feedback.CoverageSignal
+	findings         []bugFinding
+	newOracleFinding bool
+	triggered        bool
+}
+
+// analyzeRun 解析一次执行的输出：信号与 bug 事件。
+// bugs 为本 Monitor 私有集合（驱动 fuzzing 进展判断）；shared 为可选的
+// 跨测试共享集合（非 nil 时同步写入，用于聚合报告）；bin/fn 记入证据供来源定位。
+func analyzeRun(ctx RunContext, executionID uint64, bugs, shared *bug.Set, bin, fn string) runAnalysis {
+	pairSignals, opSignals := feedback.ParseSignals(ctx.Out.O)
+	result := runAnalysis{
+		pairSignals: pairSignals,
+		opSignals:   opSignals,
+	}
+
+	evidence := bug.Evidence{
+		ExecutionID: executionID,
+		Mode:        "preexec",
+		Bin:         bin,
+		Fn:          fn,
+		PairCovered: coveredPairs(pairSignals),
+		OpCovered:   coveredPairs(opSignals),
+		Duration:    ctx.Out.Time,
+	}
+	hasInput := false
+	if ctx.In.pairInput != nil && !ctx.In.pairInput.IsEmpty() {
+		evidence.Mode = "validate"
+		evidence.PairInput = ctx.In.pairInput.ToString()
+		hasInput = true
+	} else if ctx.In.gortPair != nil && len(ctx.In.gortPair.TryPair) > 0 {
+		evidence.Mode = "validate"
+		evidence.PairInput = ctx.In.gortPair.ToString()
+		hasInput = true
+	} else if ctx.In.funcPair != nil && len(ctx.In.funcPair.TryPair) > 0 {
+		evidence.Mode = "validate"
+		evidence.PairInput = ctx.In.funcPair.ToString()
+		hasInput = true
+	}
+	if hasInput {
+		evidence.Associated = matchesCoveredInput(ctx.In, pairSignals, opSignals)
+	}
+	if ctx.In.tryOpPair != nil {
+		evidence.OpInput = ctx.In.tryOpPair.ToString()
+	}
+	if ctx.Out.Err != nil {
+		evidence.ExitError = ctx.Out.Err.Error()
+	}
+
+	for _, event := range bug.Parse(ctx.Out.O, ctx.Out.Trace) {
+		record, isNew := bugs.Add(event, evidence)
+		if shared != nil {
+			shared.Add(event, evidence)
+		}
+		result.findings = append(result.findings, bugFinding{
+			event:  event,
+			record: record,
+			isNew:  isNew,
+		})
+		// 新的 hang 候选即使不会让本次运行失败（回放确认实现之前），
+		// 仍会作为 oracle 进展保留。
+		result.newOracleFinding = result.newOracleFinding || isNew
+		result.triggered = result.triggered || event.Triggered()
+	}
+	return result
+}
+
+func coveredPairs(signals []*feedback.CoverageSignal) []bug.Pair {
+	pairs := make([]bug.Pair, 0, len(signals))
+	for _, signal := range signals {
+		if signal == nil || !signal.Success {
+			continue
+		}
+		pairs = append(pairs, bug.Pair{PreID: signal.PreID, NextID: signal.NextID})
+	}
+	return pairs
+}
+
+func matchesCoveredInput(in Input, pairSignals, opSignals []*feedback.CoverageSignal) bool {
+	// 先检查统一的 pairInput，再回退到旧字段
+	matchPair := func() bool {
+		if in.pairInput != nil && !in.pairInput.IsEmpty() {
+			for _, signal := range pairSignals {
+				if signal == nil || !signal.Success {
+					continue
+				}
+				for _, pair := range in.pairInput.Pairs {
+					if pair != nil && pairSignalKey(pair.ID1(), pair.ID2()) == pairSignalKey(signal.PreID, signal.NextID) {
+						return true
+					}
+				}
+			}
+		} else if in.gortPair != nil && len(in.gortPair.TryPair) > 0 {
+			for _, signal := range pairSignals {
+				if signal == nil || !signal.Success {
+					continue
+				}
+				for _, pair := range in.gortPair.TryPair {
+					if pair != nil && pairSignalKey(pair.Gid1, pair.Gid2) == pairSignalKey(signal.PreID, signal.NextID) {
+						return true
+					}
+				}
+			}
+		} else if in.funcPair != nil && len(in.funcPair.TryPair) > 0 {
+			for _, signal := range pairSignals {
+				if signal == nil || !signal.Success {
+					continue
+				}
+				for _, pair := range in.funcPair.TryPair {
+					if pair != nil && pairSignalKey(pair.FuncID1, pair.FuncID2) == pairSignalKey(signal.PreID, signal.NextID) {
+						return true
+					}
+				}
+			}
+		}
+		return false
+	}
+	if pairOk := matchPair(); pairOk {
+		return true
+	}
+	if in.tryOpPair == nil {
+		return false
+	}
+	for _, signal := range opSignals {
+		if signal == nil || !signal.Success {
+			continue
+		}
+		for _, pair := range in.tryOpPair.TryPair {
+			if pair == nil || pair.Op1 == nil || pair.Op2 == nil {
+				continue
+			}
+			if opSignalKey(pair.Op1.OpId, pair.Op2.OpId) == opSignalKey(signal.PreID, signal.NextID) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func monitorResult(bugs *bug.Set) (bool, []string) {
+	if bugs != nil && bugs.HasTriggered() {
+		return true, []string{"FAIL", bugs.Summary()}
+	}
+	return false, []string{"PASS", ""}
+}
+
+func shouldStopAfterRun(singleCrash bool, analysis runAnalysis) bool {
+	return singleCrash && analysis.triggered
+}
+
+// shouldStopByFuzzTime 判断是否已达到整个 fuzzing 流程的总时长上限。
+// maxFuzzTime <= 0 表示不限时，恒返回 false。
+func shouldStopByFuzzTime(startTime time.Time, maxFuzzTime int) bool {
+	return maxFuzzTime > 0 && time.Since(startTime) >= time.Duration(maxFuzzTime)*time.Second
+}
+
+func sendMonitorLog(logCh chan<- string, message string) {
+	if logCh == nil {
+		return
+	}
+	logCh <- message
+}
+
+func logBugFindings(logCh chan<- string, wid uint32, executionID uint64, findings []bugFinding) {
+	for _, finding := range findings {
+		if normal {
+			sendMonitorLog(logCh, fmt.Sprintf(
+				"%s\t[WORKER %v] ORACLE kind=%s signature=%s new=%t count=%d associated=%t execution=%d message=%q",
+				time.Now().String(), wid, finding.event.Kind, finding.event.Signature,
+				finding.isNew, finding.record.Count, finding.record.Last.Associated,
+				executionID, finding.event.Message))
+		}
+		if (finding.isNew || debug) && finding.event.Report != "" {
+			sendMonitorLog(logCh, fmt.Sprintf("%s\t[ORACLE REPORT] kind=%s signature=%s\n%s",
+				time.Now().String(), finding.event.Kind, finding.event.Signature, finding.event.Report))
+		}
+	}
+}
+
 func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
-	//log.Println(http.ListenAndServe(":6060", nil))
 	startTime := time.Now()
 	defer func() {
 		fmt.Printf("[FUZZER] %s elapsed: %.3fs, etimes=%d\n", cfg.Fn, time.Since(startTime).Seconds(), atomic.LoadInt32(&m.etimes))
@@ -39,6 +226,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 		m.max = int32(cfg.MaxExecution)
 	}
 	m.doinit = uint32(1)
+	m.bugs = bug.NewSet()
 	switch cfg.LogLevel {
 	case "debug":
 		debug = true
@@ -48,10 +236,11 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	default:
 	}
 
-	var corpusPair *CorpusPair
-	corpusPair = NewCorpusPair()
-	var corpusOp *CorpusOp
-	corpusOp = NewCorpusOp()
+	// 根据颗粒度创建 adapter 与 PairCorpus（统一入口，避免多处模式分支）
+	adapter := GetAdapter(cfg.Granularity)
+	pairCorpus := adapter.NewCorpus(&cfg.Phase)
+
+	corpusOp := NewCorpusOp(&cfg.Phase)
 	wid := atomic.AddUint32(&workerID, 1)
 	ch := make(chan RunContext)
 	cancel := make(chan struct{})
@@ -63,26 +252,22 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			timeoutTimer.Reset(1 * time.Minute)
 			select {
 			case <-cancel:
-				fmt.Println("cancel and return1")
 				return
 			default:
 			}
 
-			tryPair := corpusPair.Get()
-			tryOpPair := corpusOp.Get(corpusPair)
+			pairInput := pairCorpus.GetInput()
+			opPair := corpusOp.Get()
 			e := Executor{}
 			in := Input{
-				tryPair:   tryPair,
-				tryOpPair: tryOpPair,
-				cmd:       cfg.Bin,
-				args:      []string{"-test.v", "-test.run", cfg.Fn},
-				// args:           []string{"-test.v", "-test.run", cfg.Fn, "-test.timeout", "30s"},
+				pairInput:      pairInput,
+				tryOpPair:      opPair,
+				cmd:            cfg.Bin,
+				args:           []string{"-test.v", "-test.run", cfg.Fn},
 				timeout:        cfg.TimeOut,
 				recovertimeout: cfg.RecoverTimeOut,
 			}
-			// atomic.AddInt32(&m.etimes, 1)
 
-			//timeout := time.After(1 * time.Minute)
 			var istimeout bool
 			done := make(chan int)
 			var o *Output
@@ -95,122 +280,122 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			case <-done:
 			case <-timeoutTimer.C:
 				istimeout = true
-			case <-cancel: // 增加对 cancel 的监听
-				fmt.Println("cancel and return done")
+			case <-cancel:
 				return
 			}
 			if o == nil {
 				continue
 			}
 			if debug {
-				cfg.LogCh <- fmt.Sprintf("%s\t[EXECUTOR] Finish, USE %s", time.Now().String(), o.Time.String())
+				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[EXECUTOR] Finish, USE %s", time.Now().String(), o.Time.String()))
 			}
 			select {
 			case <-cancel:
-				fmt.Println("cancel and return before send")
 				return
-			default:
-				ch <- RunContext{In: in, Out: *o, timeout: istimeout}
+			case ch <- RunContext{In: in, Out: *o, timeout: istimeout}:
 			}
 		}
 	}
-	cfg.MaxWorker = 4
+	if cfg.MaxWorker <= 0 {
+		cfg.MaxWorker = DefaultConfig().MaxWorker
+	}
 	for i := 0; i < cfg.MaxWorker; i++ {
 		go dowork()
 	}
-	fmt.Println("m.max=", m.max) // 最大运行次数上限
+	// 周期 tick：worker 无结果（如子进程挂起被 1 分钟兜底丢弃）时，
+	// 主循环也能感知时间流逝并检查 MaxFuzzTime，否则会永远阻塞在 <-ch。
+	fuzzTick := time.NewTicker(time.Second)
+	defer fuzzTick.Stop()
 	for {
-		fmt.Println("m.etimes=", m.etimes) // 已执行的轮次
-		if m.etimes > m.max {
+		if m.etimes >= m.max {
 			close(cancel)
-			return false, []string{}
+			return monitorResult(m.bugs)
 		}
-		ctx := <-ch // 接收worker的执行结果
-		atomic.AddInt32(&m.etimes, 1)
+		if shouldStopByFuzzTime(startTime, cfg.MaxFuzzTime) {
+			if info {
+				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER] MaxFuzzTime %ds reached, elapsed %.3fs",
+					time.Now().String(), cfg.MaxFuzzTime, time.Since(startTime).Seconds()))
+			}
+			close(cancel)
+			return monitorResult(m.bugs)
+		}
+		var ctx RunContext
+		select {
+		case ctx = <-ch:
+		case <-fuzzTick.C:
+			continue
+		}
+		executionID := uint64(atomic.AddInt32(&m.etimes, 1))
 		var inputc string
 
 		inputc = "empty chain"
 
 		if debug {
-			cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] Input: %s", time.Now().String(), wid, inputc)
+			sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Input: %s", time.Now().String(), wid, inputc))
 		}
 
-		// panic收集：捕获 Go runtime panic 并输出完整堆栈
-		if strings.Contains(ctx.Out.O, "panic:") || strings.Contains(ctx.Out.Trace, "panic:") {
-			// 优先从 stdout 取，否则从 stderr 取
-			panicOutput := ctx.Out.O
-			if !strings.Contains(panicOutput, "panic:") {
-				panicOutput = ctx.Out.Trace
-			}
-			// 截取从 "panic:" 开始的所有内容（包含完整堆栈）
-			if idx := strings.Index(panicOutput, "panic:"); idx != -1 {
-				panicMsg := panicOutput[idx:]
-				if normal {
-					cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] PANIC [%v]\n%s", time.Now().String(), wid, atomic.LoadInt32(&m.etimes), panicMsg)
-				}
-				if debug {
-					cfg.LogCh <- fmt.Sprintf("%s\t[PANIC DEBUG] Full Trace:\n%s", time.Now().String(), panicMsg)
-				}
-				//close(cancel)
-				//return true, []string{inputc, "DATA RACE", ""}
-			}
-		}
-		// ✅ 新增：专门处理 -race 输出的逻辑
-		if strings.Contains(ctx.Out.Trace, "WARNING: DATA RACE") {
-			raceReport := ctx.Out.Trace
-			if normal {
-				cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] RACE DETECTED [%v]\n%s", time.Now().String(), wid, atomic.LoadInt32(&m.etimes), raceReport)
-			}
-			if debug {
-				cfg.LogCh <- fmt.Sprintf("%s\t[RACE DEBUG] Full Trace:\n%s", time.Now().String(), raceReport)
-			}
-			// 如果希望发现 Race 就停止，可以取消下面的注释
-			//close(cancel)
-			//return true, []string{inputc, "DATA RACE", raceReport}
-		}
-		// 输出台收集信息
-		// stderr → 种子信息（预执行和 fuzzing 全程收集）
-		pair_st, opInfos, err := feedback.ParseStdPairs(ctx.Out.Trace)
+		analysis := analyzeRun(ctx, executionID, m.bugs, cfg.SharedBugs, cfg.Bin, cfg.Fn)
+		logBugFindings(cfg.LogCh, wid, executionID, analysis.findings)
+
+		// stderr → 种子信息（通过 GranularityAdapter 解析，按颗粒度分发）
+		pairs, opInfos, err := adapter.ParsePairs(ctx.Out.Trace)
 		if err == nil {
-			if len(pair_st) > 0 {
-				corpusPair.AddPair(pair_st)
+			if len(pairs) > 0 {
+				pairCorpus.AddConcurrencyPairs(pairs)
 			}
 			if len(opInfos) > 0 {
 				corpusOp.Add(opInfos)
 			}
 		}
-
-		// 预执行阶段判断
-		if atomic.LoadUint32(&corpusPair.done) == 0 {
-			if corpusPair.TryEndPreExec(cfg.MaxPreExecRound) {
-				fmt.Printf("[PRESTAGE] Pre-execution finished, total pairs: cover=%d, sus=%d\n",
-					len(corpusPair.CoveredConPairs), len(corpusPair.SusConPairs))
-			}
-			//continue
+		edges, err := adapter.ParseEdges(ctx.Out.Trace)
+		if len(edges) > 0 {
+			pairCorpus.AddConcurrencyEdges(edges)
+		}
+		if err != nil && debug {
+			sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Failed to parse some topology edges: %v", time.Now().String(), wid, err))
 		}
 
-		// --- fuzzing 阶段 ---
-		// stdout → 调度有效性信号
-		funcSignals, opSignals := feedback.ParseSignals(ctx.Out.O)
+		// 预执行阶段判断（通过接口统一调用）
+		if atomic.LoadUint32(&cfg.Phase) == 0 {
+			pairCorpus.TryEndPreExec(cfg.MaxPreExecRound)
+			pairCorpus.OnPreExecEnd(corpusOp)
+		}
+
+		// fuzzing 阶段
+		pairSignals, opSignals := analysis.pairSignals, analysis.opSignals
+		if debug {
+			sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Signals: pair=%d op=%d",
+				time.Now().String(), wid, len(pairSignals), len(opSignals)))
+		}
+		madeProgress := analysis.newOracleFinding
 		if cfg.UseMutate {
-			if len(funcSignals) > 0 {
-				corpusPair.ApplySignals(funcSignals)
+			if len(pairSignals) > 0 {
+				newlyCovered := pairCorpus.ApplyConcurrencySignals(pairSignals)
+				if len(newlyCovered) > 0 {
+					madeProgress = true
+					pairCorpus.OnCoveredByOp(corpusOp, newlyCovered)
+				}
 			}
 			if len(opSignals) > 0 {
 				corpusOp.ApplySignals(opSignals)
 			}
 		}
 
-		// todo 有价值就继续fuzzing，不减quit
-		quit -= 1
-		fmt.Println("quit=", quit)
+		if madeProgress {
+			quit = cfg.MaxQuit
+		} else {
+			quit--
+		}
+		if shouldStopAfterRun(cfg.SingleCrash, analysis) {
+			close(cancel)
+			return monitorResult(m.bugs)
+		}
 		if quit <= 0 {
 			if info {
-				cfg.LogCh <- fmt.Sprintf("%s\t[WORKER %v] Fuzzing seems useless, QUIT", time.Now().String(), wid)
+				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Fuzzing seems useless, QUIT", time.Now().String(), wid))
 			}
 			close(cancel)
-			fmt.Println("exit loop")
-			return false, []string{}
+			return monitorResult(m.bugs)
 		}
 	}
 

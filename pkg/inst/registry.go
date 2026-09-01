@@ -7,7 +7,7 @@ func NewPassRegistry() *PassRegistry {
 	}
 }
 
-// AddPass adds a unique pass into registry
+// Register 将唯一的一个 Pass 注册进注册表
 func (r *PassRegistry) Register(name string, passc InstPassConstructor) error {
 	_, exist := r.n2p[name]
 	if exist {
@@ -18,7 +18,7 @@ func (r *PassRegistry) Register(name string, passc InstPassConstructor) error {
 	return nil
 }
 
-// GetPass returns the pass with given name
+// GetNewPassInstance 返回指定名称的 Pass 的新实例
 func (r *PassRegistry) GetNewPassInstance(name string) (InstPass, error) {
 	c, exist := r.n2p[name]
 	if exist {
@@ -39,7 +39,7 @@ func (r *PassRegistry) ListOfPassNames() []string {
 	return passes
 }
 
-// HasPass return true if pass registered, false otherwise
+// HasPass 若 Pass 已注册返回 true，否则返回 false
 func (r *PassRegistry) HasPass(name string) bool {
 	_, exist := r.n2p[name]
 	return exist
