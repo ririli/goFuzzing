@@ -35,7 +35,7 @@ func TestAnalyzeRunValidateCoveredRaceIsAssociated(t *testing.T) {
 		},
 	}
 
-	analysis := analyzeRun(ctx, 42, bugs)
+	analysis := analyzeRun(ctx, 42, bugs, nil, "", "")
 	if !analysis.triggered || !analysis.newOracleFinding {
 		t.Fatalf("analysis = triggered:%t new:%t, want both true", analysis.triggered, analysis.newOracleFinding)
 	}
@@ -66,7 +66,7 @@ func TestAnalyzeRunValidateCoveredRaceIsAssociated(t *testing.T) {
 
 func TestAnalyzeRunPreexecRaceTriggersWithoutAssociation(t *testing.T) {
 	bugs := bug.NewSet()
-	analysis := analyzeRun(RunContext{Out: Output{Trace: monitorRaceReport}}, 1, bugs)
+	analysis := analyzeRun(RunContext{Out: Output{Trace: monitorRaceReport}}, 1, bugs, nil, "", "")
 
 	if !analysis.triggered {
 		t.Fatal("pre-execution race should still trigger the bug oracle")
@@ -86,7 +86,7 @@ func TestAnalyzeRunRaceWithoutCoveredSignalIsNotAssociated(t *testing.T) {
 		Out: Output{Trace: monitorRaceReport},
 	}
 
-	analysis := analyzeRun(ctx, 2, bugs)
+	analysis := analyzeRun(ctx, 2, bugs, nil, "", "")
 	if !analysis.triggered {
 		t.Fatal("race should trigger independently of scheduling coverage")
 	}
@@ -98,8 +98,8 @@ func TestAnalyzeRunRaceWithoutCoveredSignalIsNotAssociated(t *testing.T) {
 func TestAnalyzeRunDuplicateBugIsNotNewProgress(t *testing.T) {
 	bugs := bug.NewSet()
 	ctx := RunContext{Out: Output{Trace: monitorRaceReport}}
-	first := analyzeRun(ctx, 1, bugs)
-	second := analyzeRun(ctx, 2, bugs)
+	first := analyzeRun(ctx, 1, bugs, nil, "", "")
+	second := analyzeRun(ctx, 2, bugs, nil, "", "")
 
 	if !first.newOracleFinding || second.newOracleFinding {
 		t.Fatalf("new finding flags = first:%t second:%t, want true/false", first.newOracleFinding, second.newOracleFinding)
@@ -145,7 +145,7 @@ func TestHangCandidateDoesNotFailOrStopSingleCrash(t *testing.T) {
 	bugs := bug.NewSet()
 	analysis := analyzeRun(RunContext{Out: Output{
 		Trace: "panic: test timed out after 30s\n\ngoroutine 1 [running]:\nexample.com/project.TestWork()\n\t/work/project/work_test.go:12 +0x20\n",
-	}}, 3, bugs)
+	}}, 3, bugs, nil, "", "")
 
 	if analysis.triggered {
 		t.Fatal("hang candidate must not be classified as BugTriggered")
@@ -164,7 +164,7 @@ func TestHangCandidateDoesNotFailOrStopSingleCrash(t *testing.T) {
 
 func TestNilMonitorLoggerDoesNotBlockFindingLogging(t *testing.T) {
 	bugs := bug.NewSet()
-	analysis := analyzeRun(RunContext{Out: Output{Trace: monitorRaceReport}}, 5, bugs)
+	analysis := analyzeRun(RunContext{Out: Output{Trace: monitorRaceReport}}, 5, bugs, nil, "", "")
 	done := make(chan struct{})
 	go func() {
 		logBugFindings(nil, 1, 5, analysis.findings)
@@ -191,7 +191,7 @@ func TestMonitorResultAlwaysHasCallerSafeDetail(t *testing.T) {
 	}
 
 	bugs := bug.NewSet()
-	analysis := analyzeRun(RunContext{Out: Output{Trace: monitorRaceReport}}, 4, bugs)
+	analysis := analyzeRun(RunContext{Out: Output{Trace: monitorRaceReport}}, 4, bugs, nil, "", "")
 	if !shouldStopAfterRun(true, analysis) {
 		t.Fatal("SingleCrash should stop after a race/panic/fatal event")
 	}

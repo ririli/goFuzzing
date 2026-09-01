@@ -129,12 +129,21 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
 
-			// 提取 receiver 到临时变量（defer 注册时求值，避免闭包延迟求值）
+			// 提取 receiver 到临时变量（defer 注册时求值，避免闭包延迟求值）。
+			// sync.WaitGroup 禁止值拷贝（go vet copylocks）：
+			//   - 指针接收者（*sync.WaitGroup）→ 直接拷贝指针；
+			//   - 值接收者（字段/局部变量）→ 取地址（_wg := &s.wg），
+			//     保证 Done/Add 作用于真实对象。直接值拷贝会引入 data race
+			//     （拷贝读 vs 真 wg 的 Wait 写）并破坏计数器语义。
 			tmpIdent := &ast.Ident{Name: fmt.Sprintf("_wg_%d", id)}
+			var recvExpr ast.Expr = selectorExpr.X
+			if tv, ok := iCtx.Type.Types[selectorExpr.X]; ok && tv.Type != nil && tv.Type.String() == "sync.WaitGroup" {
+				recvExpr = &ast.UnaryExpr{Op: token.AND, X: selectorExpr.X}
+			}
 			tmpAssign := &ast.AssignStmt{
 				Tok: token.DEFINE,
 				Lhs: []ast.Expr{tmpIdent},
-				Rhs: []ast.Expr{selectorExpr.X},
+				Rhs: []ast.Expr{recvExpr},
 			}
 			c.InsertBefore(tmpAssign)
 
@@ -149,7 +158,9 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 			}
 
 			before := GenInstCallBF("InstWgBF", id)
-			after := GenInstCallWithType("InstWgAF", wgReceiverArg(iCtx, selectorExpr.X, tmpIdent), id, opType)
+			// 此时 tmpIdent 必为 *sync.WaitGroup（值接收者已取地址），直接传递，
+			// 保证 [FB] 日志上报的 ObjAddr 与非 defer 分支一致（真实 wg 地址）
+			after := GenInstCallWithType("InstWgAF", tmpIdent, id, opType)
 
 			body := &ast.BlockStmt{List: []ast.Stmt{
 				before,

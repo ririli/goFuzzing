@@ -21,6 +21,8 @@ var (
 	spaceRE        = regexp.MustCompile(`\s+`)
 	boundsExprRE   = regexp.MustCompile(`\[[^]]*\]`)
 	boundsSizeRE   = regexp.MustCompile(`(?i)(\b(?:length|capacity)\s+)-?[0-9]+`)
+	// nilReceiverRE 匹配栈帧中方法接收者为 0x0 的形态，如 (*BeeMap).Count(0x0)
+	nilReceiverRE = regexp.MustCompile(`\)\.\w+\(0x0[,)]`)
 )
 
 type stackFrame struct {
@@ -166,6 +168,11 @@ func parseCrashEvents(lines []string) []Event {
 			continue
 		}
 		kind := classifyCrash(headerKind, message)
+		reportEnd := crashReportEnd(lines, i+1, message)
+		if kind == KindPanic && isNilReceiverCrash(message, lines[i+1:reportEnd]) {
+			// 疑似测试顺序依赖（见 KindTestOrderPanic），降级为非触发种类
+			kind = KindTestOrderPanic
+		}
 		frame, hasFrame := firstCrashApplicationFrame(lines, i+1, message)
 		key := string(kind) + "\n" + message
 		if hasFrame {
@@ -177,7 +184,6 @@ func parseCrashEvents(lines []string) []Event {
 			framedIdentities[identity] = struct{}{}
 		}
 
-		reportEnd := crashReportEnd(lines, i+1, message)
 		candidates = append(candidates, candidate{
 			event: Event{
 				Kind:      kind,
@@ -251,6 +257,22 @@ func classifyCrash(headerKind Kind, message string) Kind {
 		return KindHangCandidate
 	}
 	return headerKind
+}
+
+// isNilReceiverCrash 判断 panic 是否为 nil 接收者解引用：nil 指针消息 +
+// 栈帧中方法接收者显示为 0x0（如 (*BeeMap).Count(0x0)）。结合 GoPie 单独
+// 运行 _1 测试的调度方式，该模式通常是测试间顺序依赖（包级共享变量未初始化）
+// 而非被测代码缺陷。
+func isNilReceiverCrash(message string, report []string) bool {
+	if !strings.Contains(message, "invalid memory address or nil pointer dereference") {
+		return false
+	}
+	for _, line := range report {
+		if nilReceiverRE.MatchString(strings.TrimSpace(line)) {
+			return true
+		}
+	}
+	return false
 }
 
 func firstCrashApplicationFrame(lines []string, start int, message string) (stackFrame, bool) {

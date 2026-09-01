@@ -22,6 +22,7 @@ var opts struct {
 	Feature     string `long:"feature" description:"[full, fb (without feedback), mu (without mutation)]"`
 	LeakCheck   string `long:"check" description:"the position of leakcheck [inside, outside]"`
 	Output      string `long:"output" short:"o" description:"output directory for binary files"`
+	OutDir      string `long:"outdir" description:"directory for aggregated bug reports (allpanic.txt / alldatarace.txt), default gopieRes"`
 	Granularity string `long:"granularity" description:"fuzzing granularity [goroutine, function]. Overrides FUZZ_MODE env var."`
 }
 
@@ -88,7 +89,7 @@ func main() {
 			max, _ := strconv.ParseInt(opts.MaxWoker, 10, 32)
 			maxworker = int(max)
 		}
-		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout), int(fuzztime), granularity)
+		Full(opts.PATH, opts.LL, opts.Feature, maxworker, int(timeout), int(rtimeout), int(fuzztime), granularity, opts.OutDir)
 	case "inst":
 		paths := cmd.ListFiles(opts.PATH, func(s string) bool {
 			return strings.HasSuffix(s, ".go")

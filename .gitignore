@@ -8,3 +8,5 @@
 testbins/
 testdata/
 zgortResult/
+race_results/
+.tmp/

@@ -3,6 +3,8 @@ package fuzzer
 import (
 	"os"
 	"strings"
+
+	"toolkit/pkg/bug"
 )
 
 // GranularityMode 定义 fuzzing 颗粒度级别。
@@ -61,6 +63,11 @@ type Config struct {
 	MaxPreExecRound int             // 预执行轮次上限
 	Phase           uint32          // 0=预执行种子收集, 1=fuzzing阶段 (CorpusGort/CorpusFunc写入, CorpusOp读取)
 	Granularity     GranularityMode // "goroutine" 或 "function"——调度哪种并发对
+
+	// SharedBugs 跨测试共享的 bug 集合（可选）：Monitor 除写入自身
+	// bugs 集外同时写入该集合，用于 fuzzing 结束后聚合输出
+	// panic/data race 报告（见 cmd/fuzz 的 dumpBugReports）。
+	SharedBugs *bug.Set
 
 	//BugSet *bug.BugSet
 }

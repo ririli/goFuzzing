@@ -52,7 +52,7 @@ $ProjectName = Split-Path $ProjectPath -Leaf
 
 if ($OutputDir -eq "") {
     $timestamp = Get-Date -Format "yyyyMMdd_HHmmss"
-    $OutputDir = Join-Path (Get-Location) "race_results" "$($ProjectName)_$timestamp"
+    $OutputDir = Join-Path (Join-Path (Get-Location) "race_results") "$($ProjectName)_$timestamp"
 }
 New-Item -ItemType Directory -Force -Path $OutputDir | Out-Null
 

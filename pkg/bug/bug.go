@@ -16,6 +16,10 @@ const (
 	KindPanic         Kind = "panic"
 	KindFatal         Kind = "fatal"
 	KindHangCandidate Kind = "hang_candidate"
+	// KindTestOrderPanic 疑似测试顺序依赖导致的 nil 接收者 panic：
+	// GoPie 单独运行 _1 测试时，依赖其他测试初始化包级共享变量的测试
+	// 会因变量未初始化而 nil 解引用。不计为可触发 bug，仅记录供人工甄别。
+	KindTestOrderPanic Kind = "test_order_panic"
 )
 
 // Pair 记录一个成功的调度信号，不导入 feedback 包。
@@ -51,6 +55,10 @@ func (e Event) Triggered() bool {
 type Evidence struct {
 	ExecutionID uint64
 	Mode        string
+	// Bin/Fn 记录产生该事件的测试二进制与测试函数，
+	// 用于跨测试聚合报告（allpanic/alldatarace）中的来源定位。
+	Bin string
+	Fn  string
 	// PairInput/PairCovered 为中性的并发对字段，
 	// goroutine 与 function 两种粒度共用。
 	PairInput   string

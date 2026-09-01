@@ -7,9 +7,32 @@ import (
 	"go/token"
 	"io/fs"
 	"os"
+	"strings"
 
 	"golang.org/x/tools/go/ast/astutil"
 )
+
+// keepDirectiveComments 仅保留 //go: 编译指令注释（如 //go:build），
+// 其余注释全部丢弃，避免打印器把残留注释织入注入语句。
+func keepDirectiveComments(comments []*ast.CommentGroup) []*ast.CommentGroup {
+	if len(comments) == 0 {
+		return nil
+	}
+	kept := make([]*ast.CommentGroup, 0, len(comments))
+	for _, cg := range comments {
+		directives := make([]*ast.Comment, 0, len(cg.List))
+		for _, c := range cg.List {
+			if strings.HasPrefix(c.Text, "//go:") {
+				directives = append(directives, c)
+			}
+		}
+		if len(directives) > 0 {
+			cg.List = directives
+			kept = append(kept, cg)
+		}
+	}
+	return kept
+}
 
 func AddImport(fs *token.FileSet, ast *ast.File, name string, path string) error {
 	for _, vecImportSpec := range astutil.Imports(fs, ast) {
@@ -39,6 +62,12 @@ func DumpAstFile(fset *token.FileSet, astFile *ast.File, dstFile string) error {
 	if astFile == nil {
 		return fmt.Errorf("found nil ast file for %s", dstFile)
 	}
+	// 剥离原始注释：注入节点的 Position 为 NoPos，打印器按位置安放注释时
+	// 会把原代码注释插进注入语句中间（如 defer xxx.Trace(...) 被注释截断）。
+	// 打印器仅依据 File.Comments 列表输出注释；插桩输出不需要保留注释，
+	// 但必须保留 //go: 编译指令（如 //go:build，否则带 build tag 的
+	// 同名文件会同时参与编译，造成重复声明）。
+	astFile.Comments = keepDirectiveComments(astFile.Comments)
 	fi, err := os.Stat(dstFile)
 	var mode fs.FileMode
 	if err != nil {

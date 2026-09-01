@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 	"strings"
 	"toolkit/cmd"
 	"toolkit/pkg/inst"
@@ -19,6 +20,7 @@ func main() {
 			return strings.Contains(s, ".go")
 		})
 
+		failed := 0
 		for _, file := range files {
 			reg := inst.NewPassRegistry()
 
@@ -36,7 +38,12 @@ func main() {
 			log.Println("Inst " + file)
 			if err != nil {
 				log.Printf("error %v", err.Error())
+				failed++
 			}
+		}
+		// 有失败文件时以非零退出码结束，避免调度方误判全部成功
+		if failed > 0 {
+			os.Exit(1)
 		}
 	} else {
 		if cmd.Opts.File == "" {
@@ -54,6 +61,9 @@ func main() {
 		reg.Register("waitgroup", func() inst.InstPass { return &passes.WgPass{} })
 		reg.Register("test", func() inst.InstPass { return &passes.TestPass{Pos: cmd.Opts.Pos, Granularity: granularity} })
 
-		cmd.HandleSrcFile(cmd.Opts.File, reg, reg.ListOfPassNames())
+		if err := cmd.HandleSrcFile(cmd.Opts.File, reg, reg.ListOfPassNames()); err != nil {
+			log.Printf("error %v", err.Error())
+			os.Exit(1)
+		}
 	}
 }

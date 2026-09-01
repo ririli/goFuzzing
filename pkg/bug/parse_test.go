@@ -357,3 +357,52 @@ func TestPlainTimeoutSignalsAreNotBugs(t *testing.T) {
 		t.Fatalf("Parse() returned timeout events as bugs: %#v", events)
 	}
 }
+
+// 疑似测试顺序依赖：单独运行 _1 测试时包级共享变量未初始化，
+// 栈帧中方法接收者为 0x0（如 (*BeeMap).Count(0x0)）。
+const nilReceiverPanicReport = `panic: runtime error: invalid memory address or nil pointer dereference [recovered, repanicked]
+[signal 0xc0000005 code=0x0 addr=0x0 pc=0x1403e7825]
+
+goroutine 18 [running]:
+testing.tRunner.func1.2({0x14057eee0, 0x14052d140})
+    D:/Program Files/GO/go1.25.1/src/testing/testing.go:1872 +0x3fc
+panic({0x14057eee0?, 0x14052d140?})
+    D:/Program Files/GO/go1.25.1/src/runtime/panic.go:783 +0x132
+github.com/beego/beego/v2/core/utils.(*BeeMap).Count(0x0)
+    D:/gopath/src/real-projects/BEEGO/beegoF/core/utils/safemap.go:105 +0x65
+github.com/beego/beego/v2/core/utils.TestCount_1(0xc000086380)
+    D:/gopath/src/real-projects/BEEGO/beegoF/core/utils/safemap_test.go:230 +0xb3
+`
+
+func TestNilReceiverPanicClassifiedAsTestOrderSuspect(t *testing.T) {
+	events := Parse("", nilReceiverPanicReport)
+	if len(events) != 1 {
+		t.Fatalf("Parse() returned %d events, want 1", len(events))
+	}
+	if events[0].Kind != KindTestOrderPanic {
+		t.Fatalf("Kind = %q, want %q", events[0].Kind, KindTestOrderPanic)
+	}
+	if events[0].Triggered() {
+		t.Fatal("test-order suspect panic must not trigger the bug oracle")
+	}
+}
+
+func TestPlainNilPointerPanicStaysPanic(t *testing.T) {
+	// 同样是 nil 解引用，但栈帧中无 0x0 接收者特征 → 保持普通 panic
+	input := `panic: runtime error: invalid memory address or nil pointer dereference
+
+goroutine 1 [running]:
+example.com/pkg.Do(0xc0000abc)
+    /work/a.go:10 +0x5
+`
+	events := Parse("", input)
+	if len(events) != 1 {
+		t.Fatalf("Parse() returned %d events, want 1", len(events))
+	}
+	if events[0].Kind != KindPanic {
+		t.Fatalf("Kind = %q, want %q", events[0].Kind, KindPanic)
+	}
+	if !events[0].Triggered() {
+		t.Fatal("plain nil pointer panic must still trigger the bug oracle")
+	}
+}

@@ -44,7 +44,10 @@ type runAnalysis struct {
 	triggered        bool
 }
 
-func analyzeRun(ctx RunContext, executionID uint64, bugs *bug.Set) runAnalysis {
+// analyzeRun 解析一次执行的输出：信号与 bug 事件。
+// bugs 为本 Monitor 私有集合（驱动 fuzzing 进展判断）；shared 为可选的
+// 跨测试共享集合（非 nil 时同步写入，用于聚合报告）；bin/fn 记入证据供来源定位。
+func analyzeRun(ctx RunContext, executionID uint64, bugs, shared *bug.Set, bin, fn string) runAnalysis {
 	pairSignals, opSignals := feedback.ParseSignals(ctx.Out.O)
 	result := runAnalysis{
 		pairSignals: pairSignals,
@@ -54,6 +57,8 @@ func analyzeRun(ctx RunContext, executionID uint64, bugs *bug.Set) runAnalysis {
 	evidence := bug.Evidence{
 		ExecutionID: executionID,
 		Mode:        "preexec",
+		Bin:         bin,
+		Fn:          fn,
 		PairCovered: coveredPairs(pairSignals),
 		OpCovered:   coveredPairs(opSignals),
 		Duration:    ctx.Out.Time,
@@ -84,6 +89,9 @@ func analyzeRun(ctx RunContext, executionID uint64, bugs *bug.Set) runAnalysis {
 
 	for _, event := range bug.Parse(ctx.Out.O, ctx.Out.Trace) {
 		record, isNew := bugs.Add(event, evidence)
+		if shared != nil {
+			shared.Add(event, evidence)
+		}
 		result.findings = append(result.findings, bugFinding{
 			event:  event,
 			record: record,
@@ -326,7 +334,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Input: %s", time.Now().String(), wid, inputc))
 		}
 
-		analysis := analyzeRun(ctx, executionID, m.bugs)
+		analysis := analyzeRun(ctx, executionID, m.bugs, cfg.SharedBugs, cfg.Bin, cfg.Fn)
 		logBugFindings(cfg.LogCh, wid, executionID, analysis.findings)
 
 		// stderr → 种子信息（通过 GranularityAdapter 解析，按颗粒度分发）
