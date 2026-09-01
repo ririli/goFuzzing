@@ -3,8 +3,9 @@
     对 Go 项目中所有测试包运行 go test -race，收集 race detector 警告和 panic 信息。
 .DESCRIPTION
     本脚本执行以下步骤:
-      1. 通过 'go list ./...' 发现所有测试包
-      2. 按顺序对每个包运行 'go test -race -json'
+      1. 递归发现项目内所有 Go 模块（go.mod，排除 vendor/testdata 目录），
+         逐模块通过 'go list' 收集测试包；项目无 go.mod 时按单模块处理
+      2. 在每个包所属模块的目录下按顺序运行 'go test -race -json'
       3. 将每个包的 JSON 输出保存到带时间戳的结果目录
       4. 生成汇总报告，列出所有包含 DATA RACE 警告和 panic 的包
 .PARAMETER ProjectPath
@@ -70,40 +71,53 @@ Write-Host ""
 $globalSW = [System.Diagnostics.Stopwatch]::StartNew()
 
 # ============================================================
-# 1. Discover test packages
+# 1. Discover modules and test packages
 # ============================================================
-Write-Host "[1/4] Discovering test packages..." -ForegroundColor Yellow
+Write-Host "[1/4] Discovering modules and test packages..." -ForegroundColor Yellow
 
-Push-Location $ProjectPath
-try {
-    $allPkgsRaw = go list ./... 2>&1
-} finally {
-    Pop-Location
+# Multi-module support: find every go.mod in the project (skipping vendor and
+# testdata trees) and discover packages per module. A project without go.mod
+# (e.g. GOPATH mode) is treated as a single module rooted at $ProjectPath.
+$moduleDirs = @(
+    Get-ChildItem -Path $ProjectPath -Recurse -Filter "go.mod" -File -ErrorAction SilentlyContinue |
+        Where-Object { $_.FullName -notmatch "[/\\](vendor|testdata)[/\\]" } |
+        ForEach-Object { $_.Directory.FullName } |
+        Sort-Object
+)
+if ($moduleDirs.Count -eq 0) {
+    $moduleDirs = @("$ProjectPath")
 }
+Write-Host "  Found $($moduleDirs.Count) Go module(s)." -ForegroundColor Green
 
-if ($LASTEXITCODE -ne 0 -and $allPkgsRaw -is [string] -and $allPkgsRaw -match "^(go: )") {
-    Write-Error "[ERROR] go list failed: $allPkgsRaw"
-    exit 1
-}
+$testPkgs = [System.Collections.ArrayList]::new()
 
-$testPkgs = @()
-foreach ($line in $allPkgsRaw) {
-    $pkg = $line.Trim()
-    if ($pkg -eq "") { continue }
-    # Skip vendor packages (external dependencies)
-    if ($pkg -match "(^|/)vendor/") { continue }
-
-    Push-Location $ProjectPath
+foreach ($modDir in $moduleDirs) {
+    Push-Location $modDir
     try {
-        $testFiles = go list -f "{{.TestGoFiles}}" $pkg 2>&1
+        # -e keeps scanning even if individual packages fail to load.
+        # One call per module replaces the old per-package TestGoFiles query.
+        $modTestPkgsRaw = go list -e -f "{{if or .TestGoFiles .XTestGoFiles}}{{.ImportPath}}{{end}}" ./... 2>&1
+        $listExit = $LASTEXITCODE
     } finally {
         Pop-Location
     }
 
-    # TestGoFiles is empty "[]" when no _test.go files exist
-    if ($testFiles -is [array]) { $testFiles = $testFiles -join "" }
-    if ($testFiles -and $testFiles.Trim() -notmatch "^\[\]$") {
-        $testPkgs += $pkg
+    if ($listExit -ne 0) {
+        Write-Warning "[WARN] go list failed in module '$modDir' (exit code $listExit), skipping it."
+        continue
+    }
+
+    foreach ($line in $modTestPkgsRaw) {
+        $pkg = ("$line").Trim()
+        if ($pkg -eq "" -or $pkg -match "^go: ") { continue }
+        # Package import paths never contain whitespace; skip stray tool output
+        if ($pkg -match "\s") { continue }
+        # Skip vendor packages (external dependencies)
+        if ($pkg -match "(^|/)vendor/") { continue }
+        [void]$testPkgs.Add([PSCustomObject]@{
+            Module  = "$modDir"
+            Package = $pkg
+        })
     }
 }
 
@@ -128,12 +142,25 @@ $currentIdx = 0
 
 $timeoutFlag = "${TimeoutMinutes}m"
 
-foreach ($pkg in $testPkgs) {
+$projRootStr = "$ProjectPath"
+
+foreach ($entry in $testPkgs) {
     $currentIdx++
+    $pkg = $entry.Package
 
-    Write-Host "  [$currentIdx/$totalPkgs] $pkg " -NoNewline
+    if ($moduleDirs.Count -gt 1) {
+        $relMod = $entry.Module
+        if ($relMod.StartsWith($projRootStr, [StringComparison]::OrdinalIgnoreCase)) {
+            $relMod = $relMod.Substring($projRootStr.Length).TrimStart('\', '/')
+        }
+        if ($relMod -eq "") { $relMod = "." }
+        Write-Host "  [$currentIdx/$totalPkgs] $pkg " -NoNewline
+        Write-Host "[$relMod] " -NoNewline -ForegroundColor DarkGray
+    } else {
+        Write-Host "  [$currentIdx/$totalPkgs] $pkg " -NoNewline
+    }
 
-    Push-Location $ProjectPath
+    Push-Location $entry.Module
     try {
         $sw = [System.Diagnostics.Stopwatch]::StartNew()
         $testOutput = go test -race -json -count $($Count) -timeout $timeoutFlag $pkg 2>&1

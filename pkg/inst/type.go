@@ -4,8 +4,9 @@ import (
 	"go/ast"
 	"go/token"
 	"go/types"
-	"golang.org/x/tools/go/ast/astutil"
 	"sync/atomic"
+
+	"golang.org/x/tools/go/ast/astutil"
 )
 
 // InstContext 包含对单个 Golang 源码文件进行插桩所需的全部信息。

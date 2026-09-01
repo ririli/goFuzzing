@@ -56,30 +56,44 @@ func (p *FunctionPass) injectAtBody(body *ast.BlockStmt, iCtx *inst.InstContext)
 	id := iCtx.GetNewOpId()
 	Add(body.Pos(), id)
 
-	idLit := &ast.BasicLit{
-		Kind:  token.INT,
-		Value: strconv.FormatUint(id, 10),
+	// 以原第一条语句的位置作为插入语句的位置：无位置（NoPos）节点会让
+	// go/printer 把函数体开头的注释锚点漂移，错位打印到 selector 中间
+	// （defer gopie_function.\n// comment\nTrace(...)），生成代码不整洁且
+	// 可能移动 //go: 指令类注释。见 .tmp/panic_analysis_safemap_20260818.md。
+	pos := body.List[0].Pos()
+
+	idLit := func() *ast.BasicLit {
+		return &ast.BasicLit{
+			ValuePos: pos,
+			Kind:     token.INT,
+			Value:    strconv.FormatUint(id, 10),
+		}
 	}
 
 	// gopie_function.PointControl(id)
 	pcStmt := &ast.ExprStmt{
 		X: &ast.CallExpr{
+			Lparen: pos,
 			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: FuncImportName},
-				Sel: &ast.Ident{Name: "PointControl"},
+				X:   &ast.Ident{NamePos: pos, Name: FuncImportName},
+				Sel: &ast.Ident{NamePos: pos, Name: "PointControl"},
 			},
-			Args: []ast.Expr{idLit},
+			Args:   []ast.Expr{idLit()},
+			Rparen: pos,
 		},
 	}
 
 	// defer gopie_function.Trace(id)()
 	traceDefer := &ast.DeferStmt{
+		Defer: pos,
 		Call: &ast.CallExpr{
+			Lparen: pos,
 			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{Name: FuncImportName},
-				Sel: &ast.Ident{Name: "Trace"},
+				X:   &ast.Ident{NamePos: pos, Name: FuncImportName},
+				Sel: &ast.Ident{NamePos: pos, Name: "Trace"},
 			},
-			Args: []ast.Expr{idLit},
+			Args:   []ast.Expr{idLit()},
+			Rparen: pos,
 		},
 	}
 

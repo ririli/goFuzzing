@@ -148,3 +148,40 @@ func TestGoroutinePass_PackageQualifiedCallUntouched(t *testing.T) {
 		t.Errorf("package-qualified call should keep fmt selector, got:\n%s", out)
 	}
 }
+
+// ---------- FunctionPass：函数体开头 //go: 指令不得被插入语句打断 ----------
+
+const funcDirectiveSample = `package sample
+
+type BeeMap struct{}
+
+func (m *BeeMap) Delete(k interface{}) {
+	//go:noinline
+	m.lock()
+}
+
+func (m *BeeMap) lock() {}
+`
+
+func TestFunctionPass_GoDirectiveStaysBeforeInsertedStmts(t *testing.T) {
+	out := instrumentSource(t, funcDirectiveSample, &FunctionPass{})
+
+	// 旧缺陷：无位置节点导致保留的 //go: 指令被打进 selector 中间
+	// （defer gopie_function.\n//go:noinline\nTrace(...)），指令失效并改变语义
+	if strings.Contains(out, "gopie_function.\n") || strings.Contains(out, "gopie_function.\r\n") {
+		t.Errorf("//go: directive split the selector (gopie_function.\\n...), got:\n%s", out)
+	}
+	// //go: 指令必须打印在插入的 PointControl/Trace 语句之前
+	directiveIdx := strings.Index(out, "//go:noinline")
+	pcIdx := strings.Index(out, "gopie_function.PointControl(")
+	traceIdx := strings.Index(out, "gopie_function.Trace(")
+	if directiveIdx == -1 {
+		t.Fatalf("//go: directive lost after instrumentation, got:\n%s", out)
+	}
+	if pcIdx == -1 || traceIdx == -1 {
+		t.Fatalf("inserted hooks missing, got:\n%s", out)
+	}
+	if directiveIdx > pcIdx || directiveIdx > traceIdx {
+		t.Errorf("//go: directive should precede inserted hooks, got:\n%s", out)
+	}
+}
