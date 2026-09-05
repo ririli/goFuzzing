@@ -20,7 +20,6 @@ type InstContext struct {
 	opid            uint64
 }
 
-// TODO : 将 opid 改为全局唯一，用于跨文件操作
 func (i *InstContext) GetNewOpId() uint64 {
 	return atomic.AddUint64(&i.opid, 1)
 }
