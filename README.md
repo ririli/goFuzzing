@@ -3,7 +3,7 @@
 GoPie 是 Go 并发缺陷实验的研究原型，通过 AST 插桩 + 调度搜索来发现数据竞争、panic 等并发 bug。不修改 Go runtime，不变异普通函数参数。
 
 ## Usage
-
+下述是项目的用法，跑实验时请使用scripts中的脚本
 1. `GoPie` 基于 `Go 1.25.1` 实现，请先安装对应版本的 Go：
 
     https://go.dev/doc/install
@@ -13,6 +13,8 @@ GoPie 是 Go 并发缺陷实验的研究原型，通过 AST 插桩 + 调度搜�
     ~~~shell
     go build -o ./bin ./cmd/...
     ~~~
+
+   Linux 下的产物不带 `.exe` 后缀，并且应在 Linux 文件系统（如 `~/projects/gopie`）中进行实验，避免 `/mnt/c`、`/mnt/d` 挂载目录带来权限和 I/O 差异。
 
 3. 插桩待测项目并编译（插桩会原地覆盖源码，请先备份）：
 
@@ -61,5 +63,22 @@ OP（操作对）仅在预执行种子收集结束后一次性生成，fuzzing �
 FUZZ_MODE=function ./bin/fuzz --task inst --path your_project_to_be_tested
 FUZZ_MODE=function ./bin/fuzz --task full --path path_of_test_binaries
 ~~~
+
+## Linux 批量实验
+
+先在 Linux 下编译 GoPie，再通过 `run_full.sh` 递归运行已编译的测试二进制：
+
+~~~shell
+go build -o ./bin ./cmd/...
+bash scripts/run_full.sh \
+  --bin-dir testbins/nonblocking \
+  --out-dir zgortResult/nonblocking \
+  --granularity goroutine \
+  --timeout 60 \
+  --fuzz-time 0 \
+  --recover-timeout 200
+~~~
+
+`--bin-dir` 中只有带 Unix 执行权限的普通文件会被当作测试二进制。每个二进制的完整输出会写入指定的结果目录，同时聚合 `allpanic.txt` 和 `alldatarace.txt`。
 
 参数大小写不敏感，支持 `function`/`func` 别名；非法值或未指定时回退为 `goroutine`。

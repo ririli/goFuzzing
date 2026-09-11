@@ -1,7 +1,17 @@
 package main
 
-import "testing"
+import (
+	"os"
+	"testing"
+)
 
-func TestLite(t *testing.T) {
-	Lite("D:\\Program Files\\goProjects\\src\\gopie\\testdata\\gobench\\src\\goker\\nonblocking\\etcd\\3077\\3077.exe", "", "debug", 5, 50, 0, 2, "goroutine")
+func TestLiteIntegration(t *testing.T) {
+	bin := os.Getenv("GOPIE_INTEGRATION_BIN")
+	if bin == "" {
+		t.Skip("set GOPIE_INTEGRATION_BIN to run the external fuzz integration test")
+	}
+	if _, err := os.Stat(bin); err != nil {
+		t.Fatalf("GOPIE_INTEGRATION_BIN: %v", err)
+	}
+	Lite(bin, "", "debug", 5, 50, 0, 2, "goroutine")
 }

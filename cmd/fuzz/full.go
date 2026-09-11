@@ -49,9 +49,7 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 
 	//bugset := bug.NewBugSet()
 
-	bins := cmd.ListFiles(path, func(s string) bool {
-		return true
-	})
+	bins := cmd.ListFiles(path, cmd.IsExecutable)
 
 	// 将测试与 visitor 绑定到各二进制文件
 	total := 0

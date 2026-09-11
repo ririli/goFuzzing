@@ -6,7 +6,15 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 )
+
+func executableName(name string) string {
+	if runtime.GOOS == "windows" {
+		return name + ".exe"
+	}
+	return name
+}
 
 // getInstPath 查找 inst 工具路径，优先在可执行文件同目录下查找，
 // 失败时回退到 ./bin/inst（适用于 go run 场景）
@@ -14,17 +22,13 @@ func getInstPath() string {
 	// 先尝试相对于可执行文件的路径
 	if exePath, err := os.Executable(); err == nil {
 		exeDir := filepath.Dir(exePath)
-		instPath := filepath.Join(exeDir, "inst")
+		instPath := filepath.Join(exeDir, executableName("inst"))
 		if _, err := os.Stat(instPath); err == nil {
 			return instPath
 		}
-		// Windows 平台也检查 .exe 后缀
-		if _, err := os.Stat(instPath + ".exe"); err == nil {
-			return instPath + ".exe"
-		}
 	}
 	// 回退：相对于当前工作目录
-	return filepath.Join("bin", "inst")
+	return filepath.Join("bin", executableName("inst"))
 }
 
 func Inst(paths []string, check_pos string, granularity string) {

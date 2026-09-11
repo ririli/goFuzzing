@@ -6,7 +6,6 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
-	"runtime"
 	"strings"
 	"sync"
 	"toolkit/cmd"
@@ -56,12 +55,7 @@ func Bins(paths []string, outputDir string) {
 			absDir, _ := filepath.Abs(dir)
 			replacedDir = filepath.Base(absDir)
 		}
-		opath := filepath.Join(workpath, outputDir, replacedDir)
-		// 在 Windows 上 go 工具会生成 .exe 文件。让输出文件名显式带上
-		// 该后缀，以便下游尝试执行二进制文件的调用方能够可靠地找到它。
-		if runtime.GOOS == "windows" {
-			opath = opath + ".exe"
-		}
+		opath := filepath.Join(workpath, outputDir, executableName(replacedDir))
 		command := exec.Command(goPath, "test", "-race", "-o", opath, "-c", ".")
 		command.Dir = dir
 		var out, out2 bytes.Buffer

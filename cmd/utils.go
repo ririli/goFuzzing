@@ -8,6 +8,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"toolkit/pkg/inst"
 	"toolkit/pkg/utils/gofmt"
@@ -17,11 +18,17 @@ func ListFiles(d string, f func(s string) bool) []string {
 	var files []string
 
 	err := filepath.Walk(d, func(path string, info os.FileInfo, err error) error {
-		if info == nil {
+		if err != nil {
 			return err
 		}
-		if info.IsDir() && info.Name() == "vendor" {
-			return filepath.SkipDir
+		if info == nil {
+			return nil
+		}
+		if info.IsDir() {
+			if info.Name() == "vendor" {
+				return filepath.SkipDir
+			}
+			return nil
 		}
 		if f(path) {
 			files = append(files, path)
@@ -32,6 +39,19 @@ func ListFiles(d string, f func(s string) bool) []string {
 		panic(err)
 	}
 	return files
+}
+
+// IsExecutable 判断 path 是否是当前平台可执行的普通文件。
+// Windows 上 Go 测试二进制使用 .exe 后缀；Unix 上以执行权限位为准。
+func IsExecutable(path string) bool {
+	info, err := os.Stat(path)
+	if err != nil || !info.Mode().IsRegular() {
+		return false
+	}
+	if runtime.GOOS == "windows" {
+		return strings.EqualFold(filepath.Ext(path), ".exe")
+	}
+	return info.Mode().Perm()&0111 != 0
 }
 
 // ListTests 返回测试用例列表
