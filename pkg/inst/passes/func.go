@@ -84,15 +84,23 @@ func (p *FunctionPass) injectAtBody(body *ast.BlockStmt, iCtx *inst.InstContext)
 	}
 
 	// defer gopie_function.Trace(id)()
+	// 外层必须是「对 Trace 返回值的调用」：Trace 在入口求值并返回闭包，
+	// 闭包才在函数退出时回填 EndTime。若只写 defer Trace(id)，
+	// Trace 本身会被推迟到退出时才调用，返回的闭包被丢弃，
+	// 所有实例的 EndTime 恒为 0，detectOverlaps 产不出任何配对。
 	traceDefer := &ast.DeferStmt{
 		Defer: pos,
 		Call: &ast.CallExpr{
 			Lparen: pos,
-			Fun: &ast.SelectorExpr{
-				X:   &ast.Ident{NamePos: pos, Name: FuncImportName},
-				Sel: &ast.Ident{NamePos: pos, Name: "Trace"},
+			Fun: &ast.CallExpr{
+				Lparen: pos,
+				Fun: &ast.SelectorExpr{
+					X:   &ast.Ident{NamePos: pos, Name: FuncImportName},
+					Sel: &ast.Ident{NamePos: pos, Name: "Trace"},
+				},
+				Args:   []ast.Expr{idLit()},
+				Rparen: pos,
 			},
-			Args:   []ast.Expr{idLit()},
 			Rparen: pos,
 		},
 	}
