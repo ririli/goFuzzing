@@ -289,7 +289,7 @@ func TestCorpusFunc_TryEndPreExec_StableThreshold(t *testing.T) {
 	}
 	cf.AddPair([]*feedback.SuspiciousPairInfo{pair})
 
-	// 阈值=3，首轮因 total 变化 reset，需要 threshold+1 次调用
+	// 阈值=5，首轮因 total 变化 reset，需要 threshold+1 次调用
 	for i := 0; i <= funcDefaultStableThreshold; i++ {
 		cf.TryEndPreExec(100)
 		cf.prevPairTotal = len(cf.CoveredConPairs) + len(cf.SusConPairs)
@@ -438,7 +438,6 @@ func TestCorpusFunc_ApplySignals_InfersFromCachedTopology(t *testing.T) {
 	}
 
 	assertFuncCandidate(t, cf, 11, 20, 0.3, "fuzz_inferred_adjacent")
-	assertFuncCandidate(t, cf, 12, 20, 0.5, "fuzz_inferred_sibling")
 	assertFuncCandidate(t, cf, 2, 10, 0.5, "fuzz_inferred_adjacent")
 	if len(cf.TryPairs) == 0 {
 		t.Error("inferred candidates should refill TryPairs")

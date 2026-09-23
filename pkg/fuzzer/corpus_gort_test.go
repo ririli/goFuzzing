@@ -335,8 +335,8 @@ func TestCorpusGort_TryEndPreExec_StableThreshold(t *testing.T) {
 	}
 	cg.AddPair([]*feedback.GortPairInfo{pair})
 
-	// 阈值=3，但首轮因 prevPairTotal 从 0→1 会 reset stableCount，
-	// 需要 4 次调用才能使 stableCount >= 3
+	// 阈值=5，但首轮因 prevPairTotal 从 0→1 会 reset stableCount，
+	// 需要 6 次调用才能使 stableCount >= 5
 	for i := 0; i <= gortDefaultStableThreshold; i++ {
 		cg.TryEndPreExec(100)
 		cg.prevPairTotal = len(cg.CoveredConPairs) + len(cg.SusConPairs)

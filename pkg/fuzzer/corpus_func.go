@@ -45,7 +45,7 @@ type CorpusFunc struct {
 }
 
 const (
-	funcDefaultStableThreshold = 3
+	funcDefaultStableThreshold = 5
 	funcMaxTimeouts            = 5
 	funcMaxSelectNum           = 64
 )
@@ -394,14 +394,6 @@ func (p *CorpusFunc) inferFromAnchorLocked(anchor *feedback.SuspiciousPairInfo) 
 		for caller := range p.callers[fid] {
 			if p.addInferredPairLocked(caller, other, 0.5, "fuzz_inferred_adjacent") {
 				changed++
-			}
-			for sibling := range p.callees[caller] {
-				if sibling == fid {
-					continue
-				}
-				if p.addInferredPairLocked(sibling, other, 0.5, "fuzz_inferred_sibling") {
-					changed++
-				}
 			}
 		}
 		for callee := range p.callees[fid] {

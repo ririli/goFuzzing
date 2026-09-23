@@ -24,3 +24,4 @@ GoPie 是 Go 并发缺陷实验的研究原型以及是我的课题（目标是�
 - 原生 race 基线使用 `bash scripts/run_project_allRaceTest.sh --project-path /home/riri/realProjects/<项目目录>/<原始名称>`；例如 Beego 使用 `/home/riri/realProjects/BEEGO/beego`。
 - GoPie fuzz 实验使用 `bash scripts/run_full.sh`；需要并行启动 function/goroutine 两组长跑实验时，使用项目目录名运行 `bash scripts/do_run_full.sh <项目目录>`，例如 `bash scripts/do_run_full.sh BEEGO`。
 - 完整实验顺序为：Windows 端提交并 push GoPie → WSL 端 `git pull --ff-only` 拉取最新 GoPie → 准备被测项目的三个干净副本 → 在 WSL 中编译 GoPie → 在原始副本上运行原生 race 基线 → 在 `G`、`F` 副本的相关 `go.mod` 中加入指向本地 GoPie 的 `toolkit` replace → 分别对 `G`、`F` 副本进行 goroutine、function 颗粒度插桩 → 分别生成测试二进制 → 使用 `scripts/do_run_full.sh <项目目录>` 并行长跑 → 检查运行日志和两个副本中的 `gopieRes`。
+- 实验结果写入C:\Users\riri\Desktop\硕士课题（fuzzing）\真实项目实验结果\realProject.docx中。

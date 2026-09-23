@@ -243,7 +243,7 @@ func (p *CorpusGort) AddGortEdges(edges []*feedback.GortEdge) int {
 	return newEdges
 }
 
-const gortDefaultStableThreshold = 3
+const gortDefaultStableThreshold = 5
 
 // TryEndPreExec 判断预执行是否结束
 func (p *CorpusGort) TryEndPreExec(maxRounds int) {
