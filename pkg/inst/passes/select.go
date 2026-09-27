@@ -1,7 +1,9 @@
 package passes
 
 import (
+	"fmt"
 	"go/ast"
+	"go/token"
 	"io/ioutil"
 	"log"
 	"toolkit/pkg/inst"
@@ -75,8 +77,16 @@ func (p *SelectPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) b
 				case *ast.SendStmt: // send
 					id := iCtx.GetNewOpId()
 					Add(concrete.Pos(), id)
-					ch := concrete.Chan
-					newCall := GenInstCallWithType("InstChSelectAF", ch, id, "send")
+					// Capture the address while Go evaluates this select operand.
+					// Re-evaluating the channel in the chosen body changes side effects.
+					addr := ast.NewIdent(fmt.Sprintf("_select_addr_%d", id))
+					c.InsertBefore(&ast.DeclStmt{Decl: &ast.GenDecl{Tok: token.VAR, Specs: []ast.Spec{
+						&ast.ValueSpec{Names: []*ast.Ident{addr}, Type: ast.NewIdent("uint64")},
+					}}})
+					concrete.Chan = NewArgCall(OperationImportName, "CaptureSelectChannel", []ast.Expr{
+						concrete.Chan, &ast.UnaryExpr{Op: token.AND, X: addr},
+					})
+					newCall := GenInstCallWithType("InstChSelectAFAddr", addr, id, "send")
 					comm.Body = append([]ast.Stmt{newCall}, comm.Body...)
 					iCtx.SetMetadata(SelectInstNeed, true)
 				}

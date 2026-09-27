@@ -99,9 +99,12 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 			id := iCtx.GetNewOpId()
 			Add(concrete.Pos(), id)
 			wg := selectorExpr.X
+			tmp := ast.NewIdent(fmt.Sprintf("_wg_%d", id))
+			c.InsertBefore(&ast.AssignStmt{Tok: token.DEFINE, Lhs: []ast.Expr{tmp}, Rhs: []ast.Expr{wgReceiverArg(iCtx, wg, wg)}})
+			selectorExpr.X = tmp
 			before := GenInstCallBF("InstWgBF", id)
 			c.InsertBefore(before)
-			after := GenInstCallWithType("InstWgAF", wgReceiverArg(iCtx, wg, wg), id, opType)
+			after := GenInstCallWithType("InstWgAF", tmp, id, opType)
 			c.InsertAfter(after)
 			iCtx.SetMetadata(WgNeedInst, true)
 
@@ -146,6 +149,12 @@ func (p *WgPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) bool 
 				Rhs: []ast.Expr{recvExpr},
 			}
 			c.InsertBefore(tmpAssign)
+			// defer evaluates Add's argument at registration, not at return.
+			if opType == "add" && len(callExpr.Args) == 1 {
+				delta := ast.NewIdent(fmt.Sprintf("_delta_%d", id))
+				c.InsertBefore(&ast.AssignStmt{Tok: token.DEFINE, Lhs: []ast.Expr{delta}, Rhs: callExpr.Args})
+				callExpr.Args = []ast.Expr{delta}
+			}
 
 			// 重建方法调用：_wg_N.Done() 或 _wg_N.Add(args...)
 			tmpSelector := &ast.SelectorExpr{

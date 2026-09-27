@@ -34,8 +34,9 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 	}()
 	resCh := make(chan string, 100000)
 	logCh := make(chan string, 100000)
-	// 并发控制
-	max := 12
+	// 并发控制：max 是同时 fuzz 的测试函数数，每个测试再起 MaxWorker 个子进程，
+	// 两者乘积即被测进程总数，需与逻辑核数对齐（超卖会让 barrier 误判 infeasible）。
+	max := 4
 	if maxworker != 0 {
 		max = maxworker
 	}
@@ -74,7 +75,7 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 				cfg.RecoverTimeOut = rtimeout
 				cfg.MaxFuzzTime = fuzztime
 				cfg.LogCh = logCh
-				cfg.MaxQuit = 200 // 退出循环次数
+				cfg.MaxQuit = 32 // 连续无进展的执行次数上限
 				cfg.MaxExecution = 250
 				cfg.LogLevel = llevel
 				cfg.Granularity = fuzzer.ParseGranularity(granularity)
@@ -123,7 +124,6 @@ func Full(path string, llevel string, feature string, maxworker int, timeout, rt
 			}
 		case v := <-logCh:
 			fmt.Printf("%v [WORKER] %s\n", time.Now().String(), v)
-		default:
 		}
 	}
 }

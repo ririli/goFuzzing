@@ -122,8 +122,8 @@ func TestPointControl_RendezvousReleasesBoth(t *testing.T) {
 	}
 
 	gate := cfg.barriers[10][0]
-	if atomic.LoadInt32(&gate.arrived) != 2 {
-		t.Errorf("gate.arrived = %d, want 2", gate.arrived)
+	if atomic.LoadInt32(&gate.arrived) != 3 {
+		t.Errorf("gate.arrived = %d, want 3", gate.arrived)
 	}
 	if atomic.LoadInt32(&gate.expired) != 0 {
 		t.Error("gate should not expire on successful rendezvous")

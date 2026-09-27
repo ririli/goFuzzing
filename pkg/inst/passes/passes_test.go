@@ -135,7 +135,7 @@ func TestGoroutinePass_MethodReceiverHoistedToParent(t *testing.T) {
 		// _recv_N 出现在赋值与调用两处，恰好 2 次；多于 2 次说明包调用被误提取
 		t.Errorf("_recv_ occurrences = %d, want 2 (one assign + one use)", n)
 	}
-	if !strings.Contains(out, ".run(_arg_") {
+	if !strings.Contains(out, ":= t.keeper.run") || !strings.Contains(out, "(_arg_") {
 		t.Errorf("inner call should use hoisted receiver and args, got:\n%s", out)
 	}
 }

@@ -1,7 +1,6 @@
 package fuzzer
 
 import (
-	"bufio"
 	"bytes"
 	"context"
 	"fmt"
@@ -43,6 +42,11 @@ var bufferPool = sync.Pool{
 }
 
 func (e *Executor) Run(in Input) Output {
+	return e.RunContext(context.Background(), in)
+}
+
+// RunContext ties each child process to the lifetime of its fuzzing session.
+func (e *Executor) RunContext(parent context.Context, in Input) Output {
 	// 1. 从池中获取缓冲区（用于小数据场景）
 	stdoutBuf := bufferPool.Get().(*bytes.Buffer)
 	stderrBuf := bufferPool.Get().(*bytes.Buffer)
@@ -55,7 +59,7 @@ func (e *Executor) Run(in Input) Output {
 	}()
 
 	// 2. 创建上下文：timeout<=0 表示不限单次执行时长
-	ctx := context.Background()
+	ctx := parent
 	var cancel context.CancelFunc
 	if in.timeout > 0 {
 		ctx, cancel = context.WithTimeout(ctx, time.Duration(in.timeout)*time.Second)
@@ -66,6 +70,8 @@ func (e *Executor) Run(in Input) Output {
 
 	// 3. 执行命令并绑定上下文
 	command := exec.CommandContext(ctx, in.cmd, in.args...)
+	// Bound draining if a descendant inherits the output handles.
+	command.WaitDelay = time.Second
 
 	var strPair string
 	if in.pairInput != nil && !in.pairInput.IsEmpty() {
@@ -91,28 +97,17 @@ func (e *Executor) Run(in Input) Output {
 		command.Env = append(command.Env, "RECORD_STACK=1")
 		command.Env = append(command.Env, "SCHED_DEBUG=1")
 	}
-	// 4. 使用管道流式读取输出（避免全量加载）
-	stdoutPipe, _ := command.StdoutPipe()
-	stderrPipe, _ := command.StderrPipe()
-
-	// 5. 启动异步流式处理
-	stdoutDone := make(chan struct{})
-	stderrDone := make(chan struct{})
-
-	// 流式处理标准输出（按行处理）
-	go streamProcess(stdoutPipe, stdoutBuf, stdoutDone)
-	go streamProcess(stderrPipe, stderrBuf, stderrDone)
+	// Let os/exec drain both streams before Wait returns. Scanner's default
+	// token limit and Run with externally read pipes can lose oracle reports.
+	command.Stdout = stdoutBuf
+	command.Stderr = stderrBuf
 
 	// 6. 启动命令并等待结束
 	start := time.Now()
 	err := command.Run()
 
-	// 7. 等待流式处理完成
-	<-stdoutDone
-	<-stderrDone
-
 	// 8. 如果执行因超时被杀，追加标记
-	if ctx.Err() == context.DeadlineExceeded {
+	if ctx.Err() == context.DeadlineExceeded && parent.Err() == nil {
 		fmt.Fprintf(stdoutBuf, "{TIMEOUT_EXEC} execution timed out after %ds\n", in.timeout)
 	}
 
@@ -128,9 +123,8 @@ func (e *Executor) Run(in Input) Output {
 
 func streamProcess(reader io.Reader, buf *bytes.Buffer, done chan struct{}) {
 	defer close(done)
-	scanner := bufio.NewScanner(reader)
-	for scanner.Scan() {
-		buf.Write(scanner.Bytes())
+	_, _ = io.Copy(buf, reader)
+	if buf.Len() > 0 && buf.Bytes()[buf.Len()-1] != '\n' {
 		buf.WriteByte('\n')
 	}
 }

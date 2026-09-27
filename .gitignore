@@ -7,7 +7,8 @@
 *.exe
 bin/
 testbins/
-testdata/
+testdata/*
+!testdata/audit/
 zgortResult/
 race_results/
 .tmp/

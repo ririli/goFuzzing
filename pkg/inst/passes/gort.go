@@ -29,7 +29,7 @@ import (
 //	}(gopie_goroutine.CurrentGid())
 //
 // 对方法调用 go recvExpr.Method(args)，接收者表达式与实参一样
-// 提前到父 goroutine 求值（_recv_N := recvExpr），保持与原始 go 语句
+// 提前到父 goroutine 求值（_recv_N := recvExpr.Method），保持与原始 go 语句
 // 一致的求值时机；否则接收者读会被搬进子 goroutine，破坏原有的
 // 同步关系（如锁内读字段）并引入插桩独有的 data race。
 var (
@@ -74,9 +74,25 @@ func (p *GoroutinePass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor
 				c.InsertBefore(&ast.AssignStmt{
 					Tok: token.DEFINE,
 					Lhs: []ast.Expr{tmp},
-					Rhs: []ast.Expr{sel.X},
+					Rhs: []ast.Expr{concrete.Call.Fun},
 				})
 				recvIdent = tmp
+			}
+			// Function variables and factory/index expressions are also evaluated
+			// by the parent. Capture the callable, not a copy of a value receiver.
+			if recvIdent == nil {
+				capture := false
+				switch fun := concrete.Call.Fun.(type) {
+				case *ast.Ident:
+					_, capture = iCtx.Type.Uses[fun].(*types.Var)
+				case *ast.CallExpr, *ast.IndexExpr, *ast.ParenExpr:
+					capture = true
+				}
+				if capture {
+					tmp := &ast.Ident{Name: fmt.Sprintf("_recv_%d", id)}
+					c.InsertBefore(&ast.AssignStmt{Tok: token.DEFINE, Lhs: []ast.Expr{tmp}, Rhs: []ast.Expr{concrete.Call.Fun}})
+					recvIdent = tmp
+				}
 			}
 
 			// 提取 go 语句的参数到临时变量（在父 goroutine 中求值）
@@ -84,6 +100,12 @@ func (p *GoroutinePass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor
 			var argIdents []ast.Expr
 			if len(args) > 0 {
 				for i, arg := range args {
+					// Keep constants in their original argument context: := would
+					// default untyped 1 to int and break calls expecting e.g. int64.
+					if tv, ok := iCtx.Type.Types[arg]; ok && tv.Value != nil {
+						argIdents = append(argIdents, arg)
+						continue
+					}
 					// 裸 nil 无法参与短变量声明（_arg := nil 会报
 					// use of untyped nil），且作为常量无需提前求值，直接内联
 					if ident, ok := arg.(*ast.Ident); ok && ident.Name == "nil" {
@@ -133,7 +155,7 @@ func isRuntimeValueExpr(iCtx *inst.InstContext, x ast.Expr) bool {
 // wrapGoStmt 将go语句包装为带生命周期hook的匿名函数调用
 // 统一处理 go f(args) 和 go func(){body}() 两种形式
 // argIdents: 已在父 goroutine 求值的临时变量引用，用于替换原始参数
-// recvIdent: 已在父 goroutine 求值的接收者临时变量（非方法调用时为 nil）
+// recvIdent: 已在父 goroutine 求值的可调用值（无需捕获时为 nil）
 func wrapGoStmt(goStmt *ast.GoStmt, id uint64, argIdents []ast.Expr, recvIdent ast.Expr) *ast.GoStmt {
 	// _parentGid 形参
 	parentGidIdent := &ast.Ident{Name: "_parentGid"}
@@ -167,9 +189,7 @@ func wrapGoStmt(goStmt *ast.GoStmt, id uint64, argIdents []ast.Expr, recvIdent a
 	// 保留 Ellipsis，避免 go f(args...) 丢失 ... 导致变参编译错误
 	fun := goStmt.Call.Fun
 	if recvIdent != nil {
-		if sel, ok := fun.(*ast.SelectorExpr); ok {
-			fun = &ast.SelectorExpr{X: recvIdent, Sel: sel.Sel}
-		}
+		fun = recvIdent
 	}
 	args := goStmt.Call.Args
 	if len(argIdents) > 0 {

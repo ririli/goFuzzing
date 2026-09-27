@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Recursively run GoPie full fuzzing for Linux test binaries.
 
-set -uo pipefail
+set -euo pipefail
 
 usage() {
     cat <<'EOF'
@@ -52,7 +52,10 @@ fi
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 root_dir=$(cd -- "$script_dir/.." && pwd)
 fuzz_bin="$root_dir/bin/fuzz"
-cd -- "$root_dir"
+for value in "$timeout_seconds" "$recover_timeout_seconds"; do
+    [[ "$value" =~ ^[1-9][0-9]*$ ]] || { echo "ERROR: timeouts must be positive integers" >&2; exit 2; }
+done
+[[ "$fuzz_time_seconds" =~ ^(0|[1-9][0-9]*)$ ]] || { echo "ERROR: --fuzz-time must be a nonnegative integer" >&2; exit 2; }
 
 if [[ ! -d "$bin_dir" ]]; then
     echo "ERROR: binary directory not found: $bin_dir" >&2
@@ -65,13 +68,15 @@ if [[ ! -x "$fuzz_bin" ]]; then
 fi
 
 mkdir -p -- "$out_dir"
-rm -f -- "$out_dir/allpanic.txt" "$out_dir/alldatarace.txt"
+bin_dir=$(realpath -- "$bin_dir")
+out_dir=$(realpath -- "$out_dir")
 
 mapfile -d '' bins < <(find "$bin_dir" -type f -perm /111 -print0 | sort -z)
 if ((${#bins[@]} == 0)); then
     echo "No executable files found in $bin_dir"
-    exit 0
+    exit 1
 fi
+rm -f -- "$out_dir/allpanic.txt" "$out_dir/alldatarace.txt"
 
 echo "BinDir: $bin_dir"
 echo "OutDir: $out_dir"
@@ -86,10 +91,12 @@ failed=0
 for bin in "${bins[@]}"; do
     relative=${bin#"$bin_dir"/}
     safe_name=${relative//\//__}
+    safe_name="$((ok + failed + 1))_$safe_name"
     out_file="$out_dir/${safe_name}.txt"
     index=$((ok + failed + 1))
     echo "[$index/${#bins[@]}] $relative -> $out_file"
 
+    rc=0
     "$fuzz_bin" \
         --task full \
         --path "$bin" \
@@ -97,8 +104,7 @@ for bin in "${bins[@]}"; do
         --timeout "$timeout_seconds" \
         --fuzztime "$fuzz_time_seconds" \
         --recovertimeout "$recover_timeout_seconds" \
-        --outdir "$out_dir" >"$out_file" 2>&1
-    rc=$?
+        --outdir "$out_dir" >"$out_file" 2>&1 || rc=$?
     if ((rc == 0)); then
         ok=$((ok + 1))
     else

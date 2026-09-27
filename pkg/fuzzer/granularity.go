@@ -75,14 +75,11 @@ func wrapGortPairParser(stderr string) ([]ConcurrentPair, []*feedback.OpInfo, er
 
 func wrapGortEdgeParser(stderr string) ([]TopologyEdge, error) {
 	gortEdges, err := feedback.ParseGortEdges(stderr)
-	if err != nil {
-		return nil, err
-	}
 	edges := make([]TopologyEdge, len(gortEdges))
 	for i, e := range gortEdges {
 		edges[i] = e
 	}
-	return edges, nil
+	return edges, err
 }
 
 func wrapFuncPairParser(stderr string) ([]ConcurrentPair, []*feedback.OpInfo, error) {
@@ -99,12 +96,9 @@ func wrapFuncPairParser(stderr string) ([]ConcurrentPair, []*feedback.OpInfo, er
 
 func wrapFuncEdgeParser(stderr string) ([]TopologyEdge, error) {
 	funcEdges, err := feedback.ParseFuncEdges(stderr)
-	if err != nil {
-		return nil, err
-	}
 	edges := make([]TopologyEdge, len(funcEdges))
 	for i, e := range funcEdges {
 		edges[i] = e
 	}
-	return edges, nil
+	return edges, err
 }

@@ -28,6 +28,7 @@ type CorpusGort struct {
 	InfeasiblePairs map[string]*feedback.GortPairInfo // 无法覆盖的goroutine并发对 (超时过多或已完成)
 	TryPairs        map[string]*feedback.GortPairInfo // 本轮fuzzing输入的goroutine并发对
 	pairTimeouts    map[string]int                    // pairKey -> 累计超时次数
+	attempts        map[string]uint64                 // dispatch count, including executions without signals
 	selectNum       int                               // 从 SusConPairs 选取的数量，初始=1，自适应调整（上限64）
 	parents         map[uint64]map[uint64]struct{}    // child gid -> observed parent gids
 	children        map[uint64]map[uint64]struct{}    // parent gid -> observed child gids
@@ -69,9 +70,16 @@ func (p *CorpusGort) Get() *feedback.InputGortPair {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
+	if p.attempts == nil {
+		p.attempts = make(map[string]uint64)
+	}
+	if len(p.SusConPairs) > 0 {
+		p.RefillTryPairs()
+	}
 	result := make([]*feedback.GortPairInfo, 0, len(p.TryPairs))
-	for _, pair := range p.TryPairs {
+	for key, pair := range p.TryPairs {
 		result = append(result, pair)
+		p.attempts[key]++
 	}
 
 	return &feedback.InputGortPair{
@@ -318,7 +326,7 @@ func (p *CorpusGort) gortScore(key string) float64 {
 	if !ok {
 		return -1
 	}
-	return pair.Confidence*10 - float64(p.pairTimeouts[key])*2
+	return pair.Confidence*10 - float64(p.pairTimeouts[key])*2 - float64(p.attempts[key])*0.25
 }
 
 func hasGortSignalPair(pairs map[string]*feedback.GortPairInfo, signalKey string) bool {
@@ -459,7 +467,10 @@ func (p *CorpusGort) ApplySignals(signals []*feedback.CoverageSignal) []*feedbac
 
 	// 超时计数
 	for sk := range timeoutSigKeys {
-		for tryKey, tryPair := range p.TryPairs {
+		if _, covered := coveredSigKeys[sk]; covered {
+			continue
+		}
+		for tryKey, tryPair := range p.SusConPairs {
 			if gortSignalKey(tryPair.Gid1, tryPair.Gid2) != sk {
 				continue
 			}
@@ -477,9 +488,9 @@ func (p *CorpusGort) ApplySignals(signals []*feedback.CoverageSignal) []*feedbac
 		}
 	}
 
-	// 计算 COVERED ∩ TryPairs
+	// Match pending candidates: another worker may have replaced TryPairs.
 	intersection := make(map[string]*feedback.GortPairInfo)
-	for tryKey, tryPair := range p.TryPairs {
+	for tryKey, tryPair := range p.SusConPairs {
 		if _, ok := coveredSigKeys[gortSignalKey(tryPair.Gid1, tryPair.Gid2)]; ok {
 			intersection[tryKey] = tryPair
 		}

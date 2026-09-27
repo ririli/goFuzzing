@@ -374,16 +374,16 @@ github.com/beego/beego/v2/core/utils.TestCount_1(0xc000086380)
     D:/gopath/src/real-projects/BEEGO/beegoF/core/utils/safemap_test.go:230 +0xb3
 `
 
-func TestNilReceiverPanicClassifiedAsTestOrderSuspect(t *testing.T) {
+func TestNilReceiverPanicRemainsFinding(t *testing.T) {
 	events := Parse("", nilReceiverPanicReport)
 	if len(events) != 1 {
 		t.Fatalf("Parse() returned %d events, want 1", len(events))
 	}
-	if events[0].Kind != KindTestOrderPanic {
-		t.Fatalf("Kind = %q, want %q", events[0].Kind, KindTestOrderPanic)
+	if events[0].Kind != KindPanic {
+		t.Fatalf("Kind = %q, want %q", events[0].Kind, KindPanic)
 	}
-	if events[0].Triggered() {
-		t.Fatal("test-order suspect panic must not trigger the bug oracle")
+	if !events[0].Triggered() {
+		t.Fatal("nil receiver panic must remain visible without replay evidence")
 	}
 }
 

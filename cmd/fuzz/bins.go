@@ -35,7 +35,10 @@ func Bins(paths []string, outputDir string) {
 	}
 
 	// 确保输出目录存在，如果不存在则创建
-	outputPath := filepath.Join(workpath, outputDir)
+	outputPath := outputDir
+	if !filepath.IsAbs(outputPath) {
+		outputPath = filepath.Join(workpath, outputPath)
+	}
 	if err := os.MkdirAll(outputPath, 0755); err != nil {
 		fmt.Printf("Error creating output directory %s: %v\n", outputPath, err)
 		return
@@ -55,7 +58,7 @@ func Bins(paths []string, outputDir string) {
 			absDir, _ := filepath.Abs(dir)
 			replacedDir = filepath.Base(absDir)
 		}
-		opath := filepath.Join(workpath, outputDir, executableName(replacedDir))
+		opath := filepath.Join(outputPath, executableName(replacedDir))
 		command := exec.Command(goPath, "test", "-race", "-o", opath, "-c", ".")
 		command.Dir = dir
 		var out, out2 bytes.Buffer
@@ -137,7 +140,6 @@ func Bins(paths []string, outputDir string) {
 				}
 				return
 			}
-		default:
 		}
 	}
 }

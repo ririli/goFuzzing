@@ -30,6 +30,7 @@ type CorpusFunc struct {
 	InfeasiblePairs map[string]*feedback.SuspiciousPairInfo
 	TryPairs        map[string]*feedback.SuspiciousPairInfo
 	pairTimeouts    map[string]int
+	attempts        map[string]uint64 // dispatch count, including executions without signals
 	selectNum       int
 
 	callers  map[uint64]map[uint64]struct{} // callee -> set of callers
@@ -75,9 +76,16 @@ func (p *CorpusFunc) Get() *feedback.InputPair {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 
+	if p.attempts == nil {
+		p.attempts = make(map[string]uint64)
+	}
+	if len(p.SusConPairs) > 0 {
+		p.RefillTryPairs()
+	}
 	result := make([]*feedback.SuspiciousPairInfo, 0, len(p.TryPairs))
-	for _, pair := range p.TryPairs {
+	for key, pair := range p.TryPairs {
 		result = append(result, pair)
+		p.attempts[key]++
 	}
 	return &feedback.InputPair{TryPair: result}
 }
@@ -311,7 +319,7 @@ func (p *CorpusFunc) funcScore(key string) float64 {
 	if !ok {
 		return -1
 	}
-	return pair.Confidence*10 - float64(p.pairTimeouts[key])*2
+	return pair.Confidence*10 - float64(p.pairTimeouts[key])*2 - float64(p.attempts[key])*0.25
 }
 
 func hasFuncSignalPair(pairs map[string]*feedback.SuspiciousPairInfo, signalKey string) bool {
@@ -439,7 +447,10 @@ func (p *CorpusFunc) ApplySignals(signals []*feedback.CoverageSignal) []*feedbac
 	}
 
 	for sk := range timeoutSigKeys {
-		for tryKey, tryPair := range p.TryPairs {
+		if _, covered := coveredSigKeys[sk]; covered {
+			continue
+		}
+		for tryKey, tryPair := range p.SusConPairs {
 			if tryPair.SignalKey() != sk {
 				continue
 			}
@@ -455,7 +466,7 @@ func (p *CorpusFunc) ApplySignals(signals []*feedback.CoverageSignal) []*feedbac
 	}
 
 	intersection := make(map[string]*feedback.SuspiciousPairInfo)
-	for tryKey, tryPair := range p.TryPairs {
+	for tryKey, tryPair := range p.SusConPairs {
 		if _, ok := coveredSigKeys[tryPair.SignalKey()]; ok {
 			intersection[tryKey] = tryPair
 		}

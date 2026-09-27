@@ -13,6 +13,8 @@ func ParseInput() {
 	if input_susPairs != "" {
 		ParsePairs(input_susPairs)
 	}
+	cfg.mu.RLock()
+	defer cfg.mu.RUnlock()
 	if len(cfg.activeMap) > 0 {
 		atomic.StoreUint32(&cfg.hasActive, 1)
 	}
@@ -40,7 +42,7 @@ func ParsePairs(s string) {
 
 		var id1, id2 uint64
 		_, err := fmt.Sscanf(pairStr, "%d,%d", &id1, &id2)
-		if err == nil {
+		if err == nil && id1 != 0 && id2 != 0 && id1 != id2 {
 			cfg.activeMap[id1] = struct{}{}
 			cfg.activeMap[id2] = struct{}{}
 

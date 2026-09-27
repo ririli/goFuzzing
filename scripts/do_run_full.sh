@@ -74,6 +74,12 @@ if [[ ! -d "$gopie_root" ]]; then
 fi
 
 copy_name=${copy_name:-"${project_dir_name,,}"}
+for value in "$timeout_seconds" "$recover_timeout_seconds"; do
+    [[ "$value" =~ ^[1-9][0-9]*$ ]] || { echo "ERROR: timeouts must be positive integers" >&2; exit 2; }
+done
+[[ "$fuzz_time_seconds" =~ ^(0|[1-9][0-9]*)$ ]] || { echo "ERROR: --fuzz-time must be a nonnegative integer" >&2; exit 2; }
+gopie_root=$(realpath -- "$gopie_root")
+projects_root=$(realpath -- "$projects_root")
 bin_dir_f=${bin_dir_f:-"$gopie_root/testbins/${copy_name}F"}
 bin_dir_g=${bin_dir_g:-"$gopie_root/testbins/${copy_name}G"}
 project_dir="$projects_root/$project_dir_name"
@@ -95,6 +101,12 @@ if [[ ! -d "$project_dir/$copy_name" || ! -d "$project_dir/${copy_name}F" || ! -
 fi
 
 mkdir -p -- "$out_dir_f" "$out_dir_g"
+bin_dir_f=$(realpath -- "$bin_dir_f")
+bin_dir_g=$(realpath -- "$bin_dir_g")
+if [[ "$bin_dir_f" == "$bin_dir_g" ]]; then
+    echo "ERROR: function and goroutine binary directories must be independent" >&2
+    exit 1
+fi
 
 nohup bash "$run_script" \
     --bin-dir "$bin_dir_f" \
@@ -103,7 +115,7 @@ nohup bash "$run_script" \
     --timeout "$timeout_seconds" \
     --fuzz-time "$fuzz_time_seconds" \
     --recover-timeout "$recover_timeout_seconds" \
-    >"$gopie_root/runF.log" 2>"$gopie_root/runF.err.log" &
+    >"$out_dir_f/run.log" 2>"$out_dir_f/run.err.log" &
 pid_f=$!
 echo "run_full(F) launched: PID=$pid_f"
 
@@ -114,8 +126,8 @@ nohup bash "$run_script" \
     --timeout "$timeout_seconds" \
     --fuzz-time "$fuzz_time_seconds" \
     --recover-timeout "$recover_timeout_seconds" \
-    >"$gopie_root/runG.log" 2>"$gopie_root/runG.err.log" &
+    >"$out_dir_g/run.log" 2>"$out_dir_g/run.err.log" &
 pid_g=$!
 echo "run_full(G) launched: PID=$pid_g"
 
-printf 'Logs: %s, %s\n' "$gopie_root/runF.log" "$gopie_root/runG.log"
+printf 'Logs: %s, %s\n' "$out_dir_f/run.log" "$out_dir_g/run.log"

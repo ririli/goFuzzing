@@ -62,7 +62,7 @@ func (p *TestPass) GetPreApply(iCtx *inst.InstContext) func(*astutil.Cursor) boo
 
 			check_ok := false
 			names := params[0].Names
-			if len(names) != 1 || names[0].Name != "t" {
+			if len(names) > 1 || concrete.Body == nil {
 				return false
 			}
 
@@ -116,6 +116,10 @@ func cloneBody(fset *token.FileSet, body *ast.BlockStmt) []ast.Stmt {
 // genTestDecl 根据 Granularity 生成模式专用的 TestXxx_1 包装函数。
 func (p *TestPass) genTestDecl(iCtx *inst.InstContext, name string, fn *ast.FuncDecl) *ast.FuncDecl {
 	testname := name + "_1"
+	paramName := "_"
+	if names := fn.Type.Params.List[0].Names; len(names) == 1 {
+		paramName = names[0].Name
+	}
 
 	// 深拷贝原始函数体语句（避免与原函数共享 AST 节点）
 	testbodylst := cloneBody(iCtx.FS, fn.Body)
@@ -232,7 +236,7 @@ func (p *TestPass) genTestDecl(iCtx *inst.InstContext, name string, fn *ast.Func
 			Params: &ast.FieldList{
 				List: []*ast.Field{
 					&ast.Field{
-						Names: []*ast.Ident{&ast.Ident{Name: "t"}},
+						Names: []*ast.Ident{&ast.Ident{Name: paramName}},
 						Type: &ast.StarExpr{
 							X: &ast.SelectorExpr{
 								X:   &ast.Ident{Name: "testing"},

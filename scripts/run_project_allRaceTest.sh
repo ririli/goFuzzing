@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # 对 Go 项目的所有测试包运行 go test -race，并汇总 race 与 panic。
 
-set -uo pipefail
+set -euo pipefail
 
 usage() {
     cat <<'EOF'
@@ -88,9 +88,10 @@ echo "  Found ${#module_dirs[@]} Go module(s)."
 
 declare -a package_modules=()
 declare -a packages=()
+discovery_failed=0
 for module_dir in "${module_dirs[@]}"; do
     list_file=$(mktemp)
-    if (cd -- "$module_dir" && go list -e -f '{{if or .TestGoFiles .XTestGoFiles}}{{.ImportPath}}{{end}}' ./...) >"$list_file" 2>&1; then
+    if (cd -- "$module_dir" && go list -f '{{if or .TestGoFiles .XTestGoFiles}}{{.ImportPath}}{{end}}' ./...) >"$list_file"; then
         while IFS= read -r pkg; do
             [[ -z "$pkg" || "$pkg" == go:\ * || "$pkg" =~ [[:space:]] || "$pkg" == */vendor/* ]] && continue
             package_modules+=("$module_dir")
@@ -98,6 +99,7 @@ for module_dir in "${module_dirs[@]}"; do
         done <"$list_file"
     else
         echo "  [WARN] go list failed in module '$module_dir'; skipping it." >&2
+        discovery_failed=$((discovery_failed + 1))
         sed 's/^/    /' "$list_file" >&2
     fi
     rm -f -- "$list_file"
@@ -106,7 +108,7 @@ done
 total_packages=${#packages[@]}
 if ((total_packages == 0)); then
     echo "[WARN] No test packages found in $project_path" >&2
-    exit 0
+    exit 1
 fi
 echo "  Found $total_packages test package(s)."
 echo
@@ -134,17 +136,17 @@ for ((i = 0; i < total_packages; i++)); do
     relative_module=${relative_module#/}
     [[ -z "$relative_module" ]] && relative_module="."
     safe_name=$(printf '%s__%s' "$relative_module" "$pkg" | tr '/:' '__' | tr -cd '[:alnum:]_.-')
-    package_log="$output_dir/package_logs/${safe_name}.json"
+    package_log="$output_dir/package_logs/${i}_${safe_name}.json"
 
     printf '  [%d/%d] %s [%s] ' "$((i + 1))" "$total_packages" "$pkg" "$relative_module"
     package_start=$(date +%s)
-    (cd -- "$module_dir" && go test -race -json -count "$count" -timeout "${timeout_minutes}m" "$pkg") >"$package_log" 2>&1
-    rc=$?
+    rc=0
+    (cd -- "$module_dir" && go test -race -json -count "$count" -timeout "${timeout_minutes}m" "$pkg") >"$package_log" 2>&1 || rc=$?
     elapsed=$(( $(date +%s) - package_start ))
     test_time_seconds=$((test_time_seconds + elapsed))
 
     race_count=$(grep -c 'WARNING: DATA RACE' "$package_log" || true)
-    panic_count=$(grep -Ec '(^|"Output":"[[:space:]]*)panic:' "$package_log" || true)
+    panic_count=$(grep -Ec '(^|"Output":"[[:space:]]*)(panic:|fatal error:)' "$package_log" || true)
     result="PASS"
     if ((rc != 0)); then
         result="FAIL"
@@ -200,6 +202,7 @@ summary_file="$output_dir/summary.txt"
     echo "  Total packages   : $total_packages"
     echo "  Pass (clean)     : $pass_count"
     echo "  Failed           : $fail_count"
+    echo "  Discovery failed : $discovery_failed"
     echo "  Race detected    : $race_package_count"
     echo "  Panic detected   : $panic_package_count"
     echo "  Total race blocks: $total_races"
@@ -218,7 +221,7 @@ echo "  Race warnings: $race_file"
 echo "  Panic warnings: $panic_file"
 echo "  Per-package logs: $output_dir/package_logs"
 
-if ((race_package_count > 0 || panic_package_count > 0)); then
+if ((fail_count > 0 || discovery_failed > 0 || race_package_count > 0 || panic_package_count > 0)); then
     exit 1
 fi
 exit 0

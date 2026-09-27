@@ -14,6 +14,22 @@ import (
 )
 
 var event sync.Map
+
+type completion struct {
+	once sync.Once
+	done chan struct{}
+}
+
+func operationCompletion(id uint64) *completion {
+	value, _ := event.LoadOrStore(id, &completion{done: make(chan struct{})})
+	return value.(*completion)
+}
+
+func completeOperation(id uint64) {
+	c := operationCompletion(id)
+	c.once.Do(func() { close(c.done) })
+}
+
 var timeout, recovertimeout time.Duration
 
 var config *Config
@@ -117,31 +133,23 @@ func (c *Config) waitDec(id uint64) {
 
 // InstChBF channel 操作前拦截，根据调度配置决定是否等待前置 opId 完成
 func InstChBF(opId uint64) {
-
 	if !config.doWait(opId) {
 		return
 	}
-	preIds := config.findPrev(opId)
-	if len(preIds) == 0 {
-		return
-	}
-	for _, preId := range preIds {
-		timer := time.After(timeout / 5)
-		for {
-			if _, ok := event.LoadAndDelete(preId); ok {
-				config.waitDec(opId)
-				fmt.Printf("{COVERED_OP} {%v, %v}\n", preId, opId)
-				break
-			}
-			select {
-			case <-cancel:
-				return
-			case <-timer:
-				fmt.Printf("{TIMEOUT_OP} {%v, %v}\n", preId, opId)
-				return
-				//	default:
-			}
+	for _, preID := range config.findPrev(opId) {
+		timer := time.NewTimer(timeout / 5)
+		select {
+		case <-operationCompletion(preID).done:
+			config.waitDec(opId)
+			fmt.Printf("{COVERED_OP} {%v, %v}\n", preID, opId)
+		case <-cancel:
+			timer.Stop()
+			return
+		case <-timer.C:
+			fmt.Printf("{TIMEOUT_OP} {%v, %v}\n", preID, opId)
+			return
 		}
+		timer.Stop()
 	}
 }
 
@@ -167,7 +175,7 @@ func InstChAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, opType str
 		gid := goroutine.CurrentGid()
 		print("[FB]chan: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, ";", formatFidsField(), "\n")
 	}
-	event.Store(opId, struct{}{})
+	completeOperation(opId)
 }
 
 // formatFidsField 返回 [FB] 日志中的 fids 字段（含分号），栈为空时返回空串。
@@ -181,42 +189,25 @@ func formatFidsField() string {
 // InstChSelectAF select 中的 channel 操作后记录（仅 AF，无 BF）
 // 与 InstChAF 的区别：输出 select=1 标记，fuzzer 据此限制该操作只能做 Op1（pre）
 func InstChSelectAF[T any | chan T | <-chan T | chan<- T](opId uint64, o T, opType string) {
+	InstChSelectAFAddr(opId, uint64(reflect.ValueOf(o).Pointer()), opType)
+}
+
+// CaptureSelectChannel preserves Go's select operand evaluation order.
+func CaptureSelectChannel[T any](ch T, addr *uint64) T {
+	*addr = uint64(reflect.ValueOf(ch).Pointer())
+	return ch
+}
+
+func InstChSelectAFAddr(opId uint64, addr uint64, opType string) {
 	if debugSched {
-		addr := uint64(reflect.ValueOf(o).Pointer())
 		gid := goroutine.CurrentGid()
 		print("[FB]chan: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, "; select=1;", formatFidsField(), "\n")
 	}
-	event.Store(opId, struct{}{})
+	completeOperation(opId)
 }
 
 // InstWgBF WaitGroup 操作前拦截（Add/Done/Wait）
-func InstWgBF(opId uint64) {
-	if !config.doWait(opId) {
-		return
-	}
-	preIds := config.findPrev(opId)
-	if len(preIds) == 0 {
-		return
-	}
-	for _, preId := range preIds {
-		timer := time.After(timeout / 5)
-		for {
-			if _, ok := event.LoadAndDelete(preId); ok {
-				config.waitDec(opId)
-				fmt.Printf("{COVERED_OP} {%v, %v}\n", preId, opId)
-				break
-			}
-			select {
-			case <-cancel:
-				return
-			case <-timer:
-				fmt.Printf("{TIMEOUT_OP} {%v, %v}\n", preId, opId)
-				return
-				//default:
-			}
-		}
-	}
-}
+func InstWgBF(opId uint64) { InstChBF(opId) }
 
 // InstWgAF WaitGroup 操作后记录
 func InstWgAF(opId uint64, wg any, opType string) {
@@ -225,5 +216,5 @@ func InstWgAF(opId uint64, wg any, opType string) {
 		gid := goroutine.CurrentGid()
 		print("[FB]wg: obj=", addr, "; opId=", opId, "; gid=", gid, "; op=", opType, ";", formatFidsField(), "\n")
 	}
-	event.Store(opId, struct{}{})
+	completeOperation(opId)
 }

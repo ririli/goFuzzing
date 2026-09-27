@@ -27,7 +27,7 @@ type BarrierConfig struct {
 // 两个函数都到达时 release channel 被关闭，同时放行。
 type barrierGate struct {
 	id1, id2 uint64        // 该 barrier 对应的两个函数 ID
-	arrived  int32         // 原子计数：0 → 1 → 2
+	arrived  int32         // 位图：1/2=各侧到达，3=覆盖，4=超时
 	release  chan struct{} // 计数到 2 时关闭
 	timedOut int32         // 原子标志：0=活跃，1=已超时
 }
@@ -60,6 +60,8 @@ func (b *BarrierConfig) ParseInput() {
 	if inputSusPairs != "" {
 		b.ParseSusPairs(inputSusPairs)
 	}
+	b.mu.RLock()
+	defer b.mu.RUnlock()
 	if len(b.activeFunc) > 0 {
 		atomic.StoreUint32(&b.hasActive, 1)
 	}
@@ -87,7 +89,7 @@ func (b *BarrierConfig) ParseSusPairs(s string) {
 
 		var id1, id2 uint64
 		_, err := fmt.Sscanf(pairStr, "%d,%d", &id1, &id2)
-		if err == nil {
+		if err == nil && id1 != 0 && id2 != 0 && id1 != id2 {
 			b.activeFunc[id1] = struct{}{}
 			b.activeFunc[id2] = struct{}{}
 
@@ -105,13 +107,7 @@ func (b *BarrierConfig) ParseSusPairs(s string) {
 	}
 }
 
-// PointControl 双栏断点控制。
-//
-// 对于 funcId 参与的每一个 barrier：
-//   - 原子递增 arrived 计数
-//   - 如果计数达到 2（第二个到达）→ 关闭 release channel，打印 {COVERED}
-//   - 如果计数为 1（第一个到达）→ 阻塞等待 release 或超时
-//   - 超时时设置 timedOut 标志，后续到达者不再操作
+// PointControl requires one arrival from each distinct side, once per execution.
 func (b *BarrierConfig) PointControl(funcId uint64) {
 	if !b.HasActive() {
 		return
@@ -121,27 +117,41 @@ func (b *BarrierConfig) PointControl(funcId uint64) {
 	}
 
 	b.mu.RLock()
-	gates := b.barriers[funcId]
+	gates := append([]*barrierGate(nil), b.barriers[funcId]...)
 	b.mu.RUnlock()
 
 	for _, gate := range gates {
-		count := atomic.AddInt32(&gate.arrived, 1)
-
-		if count == 2 {
-			// 第二个到达 → 释放栅栏
-			if atomic.LoadInt32(&gate.timedOut) == 0 {
+		bit := int32(1)
+		if funcId == gate.id2 {
+			bit = 2
+		}
+		for {
+			state := atomic.LoadInt32(&gate.arrived)
+			// Each side participates once; a completed gate never delays loops.
+			if state >= 3 || state&bit != 0 {
+				break
+			}
+			next := state | bit
+			if !atomic.CompareAndSwapInt32(&gate.arrived, state, next) {
+				continue
+			}
+			if next == 3 {
 				close(gate.release)
 				fmt.Printf("{COVERED} {%v, %v}\n", gate.id1, gate.id2)
+				break
 			}
-		} else {
-			// 第一个到达 → 等待伙伴
+			timer := time.NewTimer(b.Timeout)
 			select {
 			case <-gate.release:
-				// 被第二个到达者释放，已打印 {COVERED}
-			case <-time.After(b.Timeout):
-				atomic.StoreInt32(&gate.timedOut, 1)
-				fmt.Printf("{TIMEOUT} {%v, %v}\n", gate.id1, gate.id2)
+			case <-timer.C:
+				if atomic.CompareAndSwapInt32(&gate.arrived, bit, 4) {
+					atomic.StoreInt32(&gate.timedOut, 1)
+					close(gate.release)
+					fmt.Printf("{TIMEOUT} {%v, %v}\n", gate.id1, gate.id2)
+				}
 			}
+			timer.Stop()
+			break
 		}
 	}
 }

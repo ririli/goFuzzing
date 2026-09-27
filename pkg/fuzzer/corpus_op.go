@@ -28,10 +28,11 @@ type CorpusOp struct {
 	InfeasiblePairs map[string]*feedback.OpPair // 不可行操作对（超时过多）
 	TryPairs        map[string]*feedback.OpPair // 本轮 fuzzing 输入
 
-	pairTimeouts map[string]int // pairKey -> 累计超时次数
-	selectNum    int            // 从 SusConPairs 选取数量，初始=1，自适应调整（上限 64）
-	generated    bool           // 是否已从 goroutine 对生成过 OP 种子（只生成一次）
-	collected    bool           // 预执行阶段是否已成功收集过 OP 信息（只收集一次，避免跨运行 ObjAddr 不一致）
+	pairTimeouts map[string]int    // pairKey -> 累计超时次数
+	attempts     map[string]uint64 // dispatch count, including executions without signals
+	selectNum    int               // 从 SusConPairs 选取数量，初始=1，自适应调整（上限 64）
+	generated    bool              // 是否已从 goroutine 对生成过 OP 种子（只生成一次）
+	collected    bool              // 预执行阶段是否已成功收集过 OP 信息（只收集一次，避免跨运行 ObjAddr 不一致）
 
 	phase *uint32 // 指向 cfg.Phase，读取预执行/fuzzing 阶段状态
 }
@@ -248,16 +249,21 @@ func (co *CorpusOp) TryEndPreExecForFunc(cf *CorpusFunc) {
 // Get 返回 TryPairs 作为 InputOpPair
 // 预执行阶段（generated=false）返回 nil；fuzzing 阶段返回 TryPairs 副本
 func (co *CorpusOp) Get() *feedback.InputOpPair {
+	co.mu.Lock()
+	defer co.mu.Unlock()
 	if !co.generated {
 		return nil
 	}
-
-	co.mu.RLock()
-	defer co.mu.RUnlock()
-
+	if co.attempts == nil {
+		co.attempts = make(map[string]uint64)
+	}
+	if len(co.SusConPairs) > 0 {
+		co.RefillTryPairs()
+	}
 	result := make([]*feedback.OpPair, 0, len(co.TryPairs))
-	for _, pair := range co.TryPairs {
+	for key, pair := range co.TryPairs {
 		result = append(result, pair)
+		co.attempts[key]++
 	}
 
 	return &feedback.InputOpPair{TryPair: result}
@@ -353,7 +359,7 @@ func (co *CorpusOp) opScore(key string) float64 {
 	if _, ok := co.SusConPairs[key]; !ok {
 		return -1
 	}
-	return 0.5*10 - float64(co.pairTimeouts[key])*2
+	return 0.5*10 - float64(co.pairTimeouts[key])*2 - float64(co.attempts[key])*0.25
 }
 
 // ApplySignals 应用 OP 级别调度有效性信号
@@ -361,7 +367,7 @@ func (co *CorpusOp) opScore(key string) float64 {
 // COVERED_OP → SusConPairs → CoveredConPairs（验证成功）
 // TIMEOUT_OP → 累计超时 → >= opMaxTimeouts → InfeasiblePairs（淘汰）
 // 无 COVERED 但有 TIMEOUT → selectNum 翻倍扩大搜索范围
-func (co *CorpusOp) ApplySignals(signals []*feedback.CoverageSignal) {
+func (co *CorpusOp) ApplySignals(signals []*feedback.CoverageSignal) int {
 	co.mu.Lock()
 	defer co.mu.Unlock()
 
@@ -383,9 +389,12 @@ func (co *CorpusOp) ApplySignals(signals []*feedback.CoverageSignal) {
 		}
 	}
 
-	// 超时处理：匹配 TryPairs 中的对，累计超时
+	// Match pending candidates, including delayed worker results.
 	for sk := range timeoutSigKeys {
-		for tryKey, tryPair := range co.TryPairs {
+		if _, covered := coveredSigKeys[sk]; covered {
+			continue
+		}
+		for tryKey, tryPair := range co.SusConPairs {
 			if opSignalKey(tryPair.Op1.OpId, tryPair.Op2.OpId) != sk {
 				continue
 			}
@@ -400,9 +409,9 @@ func (co *CorpusOp) ApplySignals(signals []*feedback.CoverageSignal) {
 		}
 	}
 
-	// 计算 COVERED ∩ TryPairs
+	// Match pending candidates: another worker may have replaced TryPairs.
 	intersection := make(map[string]*feedback.OpPair)
-	for tryKey, tryPair := range co.TryPairs {
+	for tryKey, tryPair := range co.SusConPairs {
 		if _, ok := coveredSigKeys[opSignalKey(tryPair.Op1.OpId, tryPair.Op2.OpId)]; ok {
 			intersection[tryKey] = tryPair
 		}
@@ -425,4 +434,5 @@ func (co *CorpusOp) ApplySignals(signals []*feedback.CoverageSignal) {
 	}
 
 	co.RefillTryPairs()
+	return len(intersection)
 }

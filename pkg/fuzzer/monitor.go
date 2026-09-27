@@ -1,8 +1,11 @@
 package fuzzer
 
 import (
+	"context"
 	"fmt"
 	_ "net/http/pprof"
+	"regexp"
+	"sync"
 	"sync/atomic"
 	"time"
 	"toolkit/pkg/bug"
@@ -10,8 +13,6 @@ import (
 )
 
 var (
-	debug  = false
-	info   = false
 	normal = true
 )
 
@@ -210,7 +211,7 @@ func logBugFindings(logCh chan<- string, wid uint32, executionID uint64, finding
 				finding.isNew, finding.record.Count, finding.record.Last.Associated,
 				executionID, finding.event.Message))
 		}
-		if (finding.isNew || debug) && finding.event.Report != "" {
+		if finding.isNew && finding.event.Report != "" {
 			sendMonitorLog(logCh, fmt.Sprintf("%s\t[ORACLE REPORT] kind=%s signature=%s\n%s",
 				time.Now().String(), finding.event.Kind, finding.event.Signature, finding.event.Report))
 		}
@@ -227,15 +228,8 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	}
 	m.doinit = uint32(1)
 	m.bugs = bug.NewSet()
-	switch cfg.LogLevel {
-	case "debug":
-		debug = true
-		info = true
-	case "info":
-		info = true
-	default:
-	}
-
+	debug := cfg.LogLevel == "debug"
+	info := debug || cfg.LogLevel == "info"
 	// 根据颗粒度创建 adapter 与 PairCorpus（统一入口，避免多处模式分支）
 	adapter := GetAdapter(cfg.Granularity)
 	pairCorpus := adapter.NewCorpus(&cfg.Phase)
@@ -243,56 +237,33 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 	corpusOp := NewCorpusOp(&cfg.Phase)
 	wid := atomic.AddUint32(&workerID, 1)
 	ch := make(chan RunContext)
-	cancel := make(chan struct{})
+	session, stop := context.WithCancel(context.Background())
+	var workers sync.WaitGroup
+	defer func() {
+		stop()
+		workers.Wait()
+	}()
 	quit := cfg.MaxQuit
 	dowork := func() {
-		timeoutTimer := time.NewTimer(1 * time.Minute)
-		defer timeoutTimer.Stop()
+		defer workers.Done()
 		for {
-			timeoutTimer.Reset(1 * time.Minute)
-			select {
-			case <-cancel:
+			if session.Err() != nil {
 				return
-			default:
 			}
-
-			pairInput := pairCorpus.GetInput()
-			opPair := corpusOp.Get()
-			e := Executor{}
 			in := Input{
-				pairInput:      pairInput,
-				tryOpPair:      opPair,
+				pairInput:      pairCorpus.GetInput(),
+				tryOpPair:      corpusOp.Get(),
 				cmd:            cfg.Bin,
-				args:           []string{"-test.v", "-test.run", cfg.Fn},
+				args:           []string{"-test.v", "-test.run", "^" + regexp.QuoteMeta(cfg.Fn) + "$"},
 				timeout:        cfg.TimeOut,
 				recovertimeout: cfg.RecoverTimeOut,
 			}
-
-			var istimeout bool
-			done := make(chan int)
-			var o *Output
-			go func() {
-				t := e.Run(in)
-				o = &t
-				close(done)
-			}()
+			e := Executor{}
+			out := e.RunContext(session, in)
 			select {
-			case <-done:
-			case <-timeoutTimer.C:
-				istimeout = true
-			case <-cancel:
+			case <-session.Done():
 				return
-			}
-			if o == nil {
-				continue
-			}
-			if debug {
-				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[EXECUTOR] Finish, USE %s", time.Now().String(), o.Time.String()))
-			}
-			select {
-			case <-cancel:
-				return
-			case ch <- RunContext{In: in, Out: *o, timeout: istimeout}:
+			case ch <- RunContext{In: in, Out: out}:
 			}
 		}
 	}
@@ -300,15 +271,16 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 		cfg.MaxWorker = DefaultConfig().MaxWorker
 	}
 	for i := 0; i < cfg.MaxWorker; i++ {
+		workers.Add(1)
 		go dowork()
 	}
-	// 周期 tick：worker 无结果（如子进程挂起被 1 分钟兜底丢弃）时，
+	// 周期 tick：worker 尚无结果时，
 	// 主循环也能感知时间流逝并检查 MaxFuzzTime，否则会永远阻塞在 <-ch。
 	fuzzTick := time.NewTicker(time.Second)
 	defer fuzzTick.Stop()
 	for {
 		if m.etimes >= m.max {
-			close(cancel)
+			stop()
 			return monitorResult(m.bugs)
 		}
 		if shouldStopByFuzzTime(startTime, cfg.MaxFuzzTime) {
@@ -316,7 +288,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER] MaxFuzzTime %ds reached, elapsed %.3fs",
 					time.Now().String(), cfg.MaxFuzzTime, time.Since(startTime).Seconds()))
 			}
-			close(cancel)
+			stop()
 			return monitorResult(m.bugs)
 		}
 		var ctx RunContext
@@ -347,9 +319,10 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 				corpusOp.Add(opInfos)
 			}
 		}
+		newEdges := 0
 		edges, err := adapter.ParseEdges(ctx.Out.Trace)
 		if len(edges) > 0 {
-			pairCorpus.AddConcurrencyEdges(edges)
+			newEdges = pairCorpus.AddConcurrencyEdges(edges)
 		}
 		if err != nil && debug {
 			sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Failed to parse some topology edges: %v", time.Now().String(), wid, err))
@@ -367,7 +340,7 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Signals: pair=%d op=%d",
 				time.Now().String(), wid, len(pairSignals), len(opSignals)))
 		}
-		madeProgress := analysis.newOracleFinding
+		madeProgress := analysis.newOracleFinding || newEdges > 0 || pairCorpus.InPreExec()
 		if cfg.UseMutate {
 			if len(pairSignals) > 0 {
 				newlyCovered := pairCorpus.ApplyConcurrencySignals(pairSignals)
@@ -377,7 +350,9 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 				}
 			}
 			if len(opSignals) > 0 {
-				corpusOp.ApplySignals(opSignals)
+				if corpusOp.ApplySignals(opSignals) > 0 {
+					madeProgress = true
+				}
 			}
 		}
 
@@ -387,14 +362,14 @@ func (m *Monitor) Start(cfg *Config, ticket chan struct{}) (bool, []string) {
 			quit--
 		}
 		if shouldStopAfterRun(cfg.SingleCrash, analysis) {
-			close(cancel)
+			stop()
 			return monitorResult(m.bugs)
 		}
 		if quit <= 0 {
 			if info {
 				sendMonitorLog(cfg.LogCh, fmt.Sprintf("%s\t[WORKER %v] Fuzzing seems useless, QUIT", time.Now().String(), wid))
 			}
-			close(cancel)
+			stop()
 			return monitorResult(m.bugs)
 		}
 	}
