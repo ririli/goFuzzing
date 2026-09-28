@@ -56,6 +56,15 @@ if ! command -v go >/dev/null 2>&1; then
 fi
 
 project_name=$(basename -- "$project_path")
+script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
+decoder="$script_dir/decode_test_json.py"
+digest="$script_dir/race_digest.py"
+if command -v python3 >/dev/null 2>&1 && [[ -f "$decoder" ]]; then
+    have_python=1
+else
+    have_python=0
+    echo "[WARN] python3 or $decoder missing; aggregate files will hold raw go test -json lines." >&2
+fi
 if [[ -z "$output_dir" ]]; then
     output_dir="$PWD/race_results/${project_name}_$(date '+%Y%m%d_%H%M%S')"
 fi
@@ -121,6 +130,19 @@ panic_file="$output_dir/all_panics.txt"
 : >"$race_file"
 : >"$panic_file"
 
+# 把命中块写进聚合文件：有 python3 时解码成纯文本，否则退回原始 json 行。
+dump_hits() {
+    local kind=$1 log=$2 pkg=$3 sink=$4
+    {
+        printf '\n----------------------------------------\n  Package: %s\n  Full log: %s\n----------------------------------------\n' "$pkg" "$log"
+        if ((have_python)); then
+            python3 "$decoder" --kind "$kind" "$log"
+        else
+            cat -- "$log"
+        fi
+    } >>"$sink"
+}
+
 race_package_count=0
 panic_package_count=0
 total_races=0
@@ -158,18 +180,12 @@ for ((i = 0; i < total_packages; i++)); do
     if ((race_count > 0)); then
         race_package_count=$((race_package_count + 1))
         total_races=$((total_races + race_count))
-        {
-            printf '\n----------------------------------------\n  Package: %s\n  Full log: %s\n----------------------------------------\n' "$pkg" "$package_log"
-            cat -- "$package_log"
-        } >>"$race_file"
+        dump_hits race "$package_log" "$pkg" "$race_file"
     fi
     if ((panic_count > 0)); then
         panic_package_count=$((panic_package_count + 1))
         total_panics=$((total_panics + panic_count))
-        {
-            printf '\n----------------------------------------\n  Package: %s\n  Full log: %s\n----------------------------------------\n' "$pkg" "$package_log"
-            cat -- "$package_log"
-        } >>"$panic_file"
+        dump_hits panic "$package_log" "$pkg" "$panic_file"
     fi
 
     status="OK"
@@ -216,9 +232,24 @@ summary_file="$output_dir/summary.txt"
     done <"$results_file"
 } >"$summary_file"
 
+csv_file="$output_dir/summary.csv"
+{
+    echo package,result,races,panics,seconds
+    tr '\t' ',' <"$results_file"
+} >"$csv_file"
+
+report_file="$output_dir/REPORT.md"
+if ((have_python)) && [[ -f "$digest" ]]; then
+    python3 "$digest" "$output_dir" "$project_name" || {
+        echo "[WARN] $digest failed; $report_file may be missing." >&2
+    }
+fi
+
 echo "[4/4] Summary written to $summary_file"
 echo "  Race warnings: $race_file"
 echo "  Panic warnings: $panic_file"
+echo "  Machine-readable table: $csv_file"
+echo "  Readable report: $report_file"
 echo "  Per-package logs: $output_dir/package_logs"
 
 if ((fail_count > 0 || discovery_failed > 0 || race_package_count > 0 || panic_package_count > 0)); then
