@@ -26,6 +26,16 @@ GoPie 是 Go 并发缺陷实验的研究原型以及是我的课题（目标是�
 - 完整实验顺序为：Windows 端提交并 push GoPie → WSL 端 `git pull --ff-only` 拉取最新 GoPie → 准备被测项目的三个干净副本 → 在 WSL 中编译 GoPie → 在原始副本上运行原生 race 基线 → 在 `G`、`F` 副本的相关 `go.mod` 中加入指向本地 GoPie 的 `toolkit` replace → 分别对 `G`、`F` 副本进行 goroutine、function 颗粒度插桩 → 分别生成测试二进制 → 使用 `scripts/do_run_full.sh <项目目录>` 并行长跑 → 检查运行日志和两个副本中的 `gopieRes`。
 - 实验结果写入C:\Users\riri\Desktop\硕士课题（fuzzing）\真实项目实验结果\realProject.docx中。
 
+### 串行重跑实验（serial chain，2026-09-30 起）
+
+重跑全项目集时用这套脚本，不要再手工拼 `do_run_full.sh` 的双组并行：
+
+- `scripts/serial_queue.sh` 是唯一的队列定义：顺序 `websocket→gin→gorums→fiber→beego→etcd→prometheus→grpc`，每个项目先 `G`（goroutine）后 `F`（function），共 16 步；小项目在前是因为 function 模式实测慢 30~78 倍，长尾要留到最后。改顺序/改项目集只改这里。
+- `scripts/prepare_copy.sh` 重建单个副本：把旧 `G`/`F` 副本 `mv` 到 `/home/riri/retired/` → 从原始副本 `cp -a` → 移走无测试包的嵌套 module → 每个 `go.mod` 先加 `replace` → `bin/fuzz --task inst` → 再加 `require toolkit v0.0.0` → `go mod tidy` → `bin/fuzz --task bins`。**脚本里不允许出现 `rm -rf`**，所有「删」都是可回滚的 mv；旧 `testbins/<step>` 也会先 mv 走，防止陈旧二进制混入长跑。
+- `scripts/serial_chain.sh` 是常驻状态机，串行推队列，一步跑完才进下一步；`state/<step>.prepared` 表示已插桩+已编译（插桩不幂等，靠它避免二次覆盖），`state/<step>.done` 表示该步长跑跑满全部二进制；二进制级别由 `run_full.sh --resume` 的 `gopieRes/.done/` 标记续跑。任一步失败就写 `HALTED` 并退出，不自动往下跑，等人工判断。
+- `scripts/serial_tick.sh` 给小时级自动化调用：查活、必要时用 `systemd-run --user` 把驱动拉回来、打印 `STATUS`；`--report-only` 只看状态不动手。
+- **`systemd-run --user` 不继承调用方环境变量**（2026-09-30 实测踩坑：沙箱自测的 tick 拉起驱动时丢掉了我 `export` 的根路径，驱动静默回落到 `/home/riri/realProjects`，把真实的 `GORILLA/websocketG` 重新插桩了一遍）。因此根路径一律经 `require_roots` 校验：要么四个根全是真实默认值，要么显式 `GOPIE_SANDBOX=/tmp/xxx` 让四个根一起派生且必须在 `/tmp` 下；只改单个根的混合状态直接拒绝运行。拉起时还要用 `--setenv` 把根路径显式传进单元。
+
 ## 实验时间标准
 
 fuzz 与原生 race 基线统一按下述参数取值，beego、grpc 均按此口径跑，不要在单次实验里私自改数。
@@ -51,8 +61,10 @@ fuzz 与原生 race 基线统一按下述参数取值，beego、grpc 均按此�
 - 单二进制耗时由并发度决定而非时间参数：`cmd/fuzz/full.go` 的 `max`（同时 fuzz 的测试函数数，默认 4）× `MaxWorker=4`（`full.go:72` 硬编码）= 被测进程总数；`--max` 未被 `run_full.sh` 透传。**并发超卖会污染结论**：barrier 等待窗口硬编码 10ms，进程排队导致对端迟迟不到，pair 连续 5 次超时即被永久标为 infeasible 并从候选集删除（`corpus_gort.go:478-487`、`corpus_func.go:458-464`、`corpus_op.go:402-408`），搜索空间被提前砍小。
 - 收敛还受非时间闸门影响：`MaxExecution=250`、`MaxQuit=32`（`full.go:77-78`）、`MaxPreExecRound=30`（`config.go:92`）。注意 `MaxQuit` 的「进展」判据是 `newOracleFinding || newEdges>0 || InPreExec()`（`monitor.go:343`），function 模式拓扑边极多、几乎每轮都有新边，因此 `MaxQuit` 很难触发、单个测试通常跑到 1800s 上限才停；`SingleCrash` 在 `full` 路径下为 false（`config.go:79`），发现 bug 后不会提前收尾。
 - `--count` 与 `--timeout-minutes` 必须成对放大：`-timeout` 是**整包 30 轮共享**的闸，按单轮耗时 ×30 估算。fabio 实测单轮 `config` 40s、`cert` 35s、`admin` 19s，若沿用 5min 会在 30 轮中途被杀，且超时产生的 `panic: test timed out after Xm0s` 会被 `run_project_allRaceTest.sh:149` 的 panic 正则计入，凭空造出假 panic。25min 是给单轮 ≤50s 的包留余量。
-- c30 口径实测成本（单线程串行、WSL 16 线程机器，2026-09-27~28）：beego 53 包 **112min**、fabio 16 包 **38min**、grpc 151 包 **147min**，三阶段串跑约 5h。规划新项目的基线预算按这个量级估。
-- 25min 闸仍会截断慢包：beego 的 `task`、`client/httplib/mock`、`server/web/session/ssdb` 未跑满 30 轮，检出数属**欠采样**，成表时要注明；截断还会附带假 panic，统计真实 panic 前先剔除 `panic: test timed out`。
+- c30 口径实测成本（单线程串行、WSL 16 线程机器）：beego 53 包 **112min**、fabio 16 包 **38min**、grpc 151 包 **147min**（以上 2026-09-27~28 首跑）；etcd 94 包 / 12 module **178min**、websocket 1 包 **52s**（2026-09-29 首跑）。规划新项目预算按这个量级估，多 module 项目的集成测试（etcd 的 `tests/v3/integration*`）是主要成本来源。
+- **墙钟对构建缓存极敏感，别直接跨项目比**：beego 同一份代码同一口径，09-27 首跑 112min、09-29 复跑 60.5min（约 2×），而检出数逐条相同（7 对去重竞争、7 条真实 panic）。新项目首跑一律是冷缓存，墙钟里含大量编译时间；要用「每 1000 CPU 秒去重检出数」就得统一注明缓存状态，或先预热再计时。
+- 25min 闸仍会截断慢包：beego 的 `task`、`client/httplib/mock`、`server/web/session/ssdb`，etcd 的 `tests/v3/integration`、`integration/clientv3`、`integration/clientv3/connectivity`、`integration/clientv3/lease`（后 4 个各跑满 26min 仍未完成 30 轮）都没跑满，检出数属**欠采样**，成表时要注明；截断还会附带假 panic，统计真实 panic 前先剔除 `panic: test timed out`。
+- **已定口径：被 25min 闸截断的包不放大 timeout 重跑**（2026-09-29 决定）。为几个包单开 60min 闸会破坏「全项目统一 c30/25min」的可比性，成本也不成比例；处理方式是成表时标欠采样或直接排除，并在正文写明这些包的 0 检出不能作为「无竞争」的证据。
 - grpc 原始副本按整份（7 个 module、151 个含测试包）跑，而 fuzz 侧只在根模块插桩；对比时取 summary 表里的根模块行，别把嵌套 module 的成本算进同一栏。
 
 - beego 的历史数据是在 `max=12`（48 进程）+ `MaxQuit=200` 下跑出来的，与新口径不同；跨项目对比要么重跑 beego，要么在结果表里分栏注明。

@@ -15,6 +15,7 @@ Options:
   --timeout SECONDS         Per-execution timeout (default: 60)
   --fuzz-time SECONDS       Per-test fuzzing session limit (default: 0, unlimited)
   --recover-timeout SECONDS Recovery timeout (default: 200)
+  --resume                  Skip binaries that already have a completion marker in <out-dir>/.done
   -h, --help                Show this help
 EOF
 }
@@ -25,6 +26,7 @@ granularity="goroutine"
 timeout_seconds=60
 fuzz_time_seconds=0
 recover_timeout_seconds=200
+resume=false
 
 while (($# > 0)); do
     case "$1" in
@@ -34,6 +36,7 @@ while (($# > 0)); do
         --timeout) timeout_seconds=${2:?missing value for --timeout}; shift 2 ;;
         --fuzz-time) fuzz_time_seconds=${2:?missing value for --fuzz-time}; shift 2 ;;
         --recover-timeout) recover_timeout_seconds=${2:?missing value for --recover-timeout}; shift 2 ;;
+        --resume) resume=true; shift ;;
         -h|--help) usage; exit 0 ;;
         *) echo "ERROR: unknown argument: $1" >&2; usage >&2; exit 2 ;;
     esac
@@ -70,30 +73,53 @@ fi
 mkdir -p -- "$out_dir"
 bin_dir=$(realpath -- "$bin_dir")
 out_dir=$(realpath -- "$out_dir")
+done_dir="$out_dir/.done"
 
 mapfile -d '' bins < <(find "$bin_dir" -type f -perm /111 -print0 | sort -z)
 if ((${#bins[@]} == 0)); then
     echo "No executable files found in $bin_dir"
     exit 1
 fi
-rm -f -- "$out_dir/allpanic.txt" "$out_dir/alldatarace.txt"
+
+if $resume && [[ -f "$out_dir/PROJECT_COMPLETE" ]]; then
+    echo "Already complete: $out_dir/PROJECT_COMPLETE"
+    echo "All ${#bins[@]} binaries were processed in a previous run; drop PROJECT_COMPLETE to force a re-run."
+    exit 0
+fi
+
+if $resume; then
+    # keep aggregated reports from previous (interrupted) passes
+    mkdir -p -- "$done_dir"
+else
+    rm -rf -- "$done_dir"
+    mkdir -p -- "$done_dir"
+    rm -f -- "$out_dir/allpanic.txt" "$out_dir/alldatarace.txt" "$out_dir/PROJECT_COMPLETE"
+fi
 
 echo "BinDir: $bin_dir"
 echo "OutDir: $out_dir"
 echo "Granularity: $granularity, Timeout: ${timeout_seconds}s, FuzzTime: ${fuzz_time_seconds}s, RecoverTimeout: ${recover_timeout_seconds}s"
+echo "Resume: $resume"
 echo "Found ${#bins[@]} binaries"
 echo
 
 project_start=$(date +%s)
 ok=0
 failed=0
+skipped=0
 
 for bin in "${bins[@]}"; do
     relative=${bin#"$bin_dir"/}
     safe_name=${relative//\//__}
-    safe_name="$((ok + failed + 1))_$safe_name"
     out_file="$out_dir/${safe_name}.txt"
-    index=$((ok + failed + 1))
+
+    if $resume && [[ -f "$done_dir/$safe_name" ]]; then
+        skipped=$((skipped + 1))
+        echo "[$((ok + failed + skipped))/${#bins[@]}] SKIP (done) $relative"
+        continue
+    fi
+
+    index=$((ok + failed + skipped + 1))
     echo "[$index/${#bins[@]}] $relative -> $out_file"
 
     rc=0
@@ -111,22 +137,19 @@ for bin in "${bins[@]}"; do
         failed=$((failed + 1))
         echo "  WARNING: exit code $rc"
     fi
+    date '+%Y-%m-%d %H:%M:%S rc='"$rc" >"$done_dir/$safe_name"
 done
 
 elapsed=$(( $(date +%s) - project_start ))
 elapsed_text=$(printf '%d.%02d:%02d:%02d' "$((elapsed / 86400))" "$((elapsed / 3600 % 24))" "$((elapsed / 60 % 60))" "$((elapsed % 60))")
 race_file="$out_dir/alldatarace.txt"
-header_file=$(mktemp "$out_dir/.alldatarace.XXXXXX")
-printf '==== Project total elapsed: %s | BinDir: %s | binaries: %d (ok=%d, fail=%d) | granularity: %s | finished: %s ====\n' \
-    "$elapsed_text" "$bin_dir" "${#bins[@]}" "$ok" "$failed" "$granularity" "$(date '+%Y-%m-%d %H:%M:%S')" >"$header_file"
-if [[ -f "$race_file" ]]; then
-    cat -- "$race_file" >>"$header_file"
-fi
-mv -- "$header_file" "$race_file"
+printf 'completed: %s\nbin_dir: %s\nout_dir: %s\ngranularity: %s\nbinaries: %s\nok: %s\nfailed: %s\nresumed_skipped: %s\nelapsed: %s\n' \
+    "$(date '+%Y-%m-%d %H:%M:%S')" "$bin_dir" "$out_dir" "$granularity" "${#bins[@]}" "$ok" "$failed" "$skipped" "$elapsed_text" >"$out_dir/PROJECT_COMPLETE"
 
 echo
-echo "Done: $ok ok, $failed failed, ${#bins[@]} total"
+echo "Done: $ok ok, $failed failed, $skipped resumed, ${#bins[@]} total"
 echo "Aggregated reports: $out_dir/allpanic.txt / $race_file"
+echo "Completion marker: $out_dir/PROJECT_COMPLETE"
 echo "Project total elapsed: $elapsed_text"
 
 ((failed == 0))
