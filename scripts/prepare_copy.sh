@@ -4,7 +4,7 @@
 #   bash scripts/prepare_copy.sh --project-dir GORILLA --copy-name websocket --mode G
 #
 # 动作顺序（与 memory/AGENTS.md 的接线坑一致）：
-#   留档旧副本 -> cp -a 原始副本 -> 移走嵌套 module -> 每个 go.mod 加 replace
+#   留档旧副本 -> cp -a 原始副本 -> 移走嵌套 module -> 移走 go.work -> 每个 go.mod 加 replace
 #   -> bin/fuzz --task inst -> 每个 go.mod 追加 require toolkit -> go mod tidy
 #   -> bin/fuzz --task bins -> 落 <step>.prepared 标记
 #
@@ -105,6 +105,30 @@ if [[ -n "$prune_list" ]]; then
         fi
     done
 fi
+
+# 3b) go.work 会让 workspace 覆盖整棵副本：剪掉 module 后 use 条目指向不存在的目录，
+#     Go 连根 module 都编译不了（gorumsG 首轮 12/12 目录全挂在
+#     "cannot load module examples listed in go.work file" -> 0 个测试二进制）。
+#     本 harness 的接线模型是「每个 go.mod 各自 replace/require」，workspace 属多余概念，
+#     所以把副本里的 go.work 一并 mv 留档，让副本退化成与其它 6 个项目一致的单 module 视图。
+gw_scan_root=$copy
+$dry && [[ ! -d "$copy" ]] && gw_scan_root=$orig
+while IFS= read -r gw; do
+    [[ -n "$gw" ]] || continue
+    flat=${gw#"$gw_scan_root/"}
+    flat=${flat//\//_}
+    if $dry; then
+        echo "DRY: retire go.work $gw -> $RETIRED_ROOT/gowork-${step}-*/$flat" | tee -a "$prep_log"
+        continue
+    fi
+    gw_dest="$RETIRED_ROOT/gowork-${step}-$(date '+%Y%m%dT%H%M%S')"
+    mkdir -p -- "$gw_dest"
+    if mv -- "$gw" "$gw_dest/$flat"; then
+        echo "retire go.work: $gw -> $gw_dest/$flat" | tee -a "$prep_log"
+    else
+        echo "GOWORK_RETIRE_FAIL $gw rc=$?" | tee -a "$prep_log"
+    fi
+done < <(find "$gw_scan_root" -name go.work -not -path '*/vendor/*' 2>/dev/null | sort)
 
 # 4) 每个 module 先加 replace（插桩前）
 scan_root=$copy
