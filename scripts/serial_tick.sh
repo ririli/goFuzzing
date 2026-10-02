@@ -62,6 +62,12 @@ if [[ -z "$cur_project" ]]; then
     exit 0
 fi
 
+# 长跑会在 /tmp 漏临时目录（etcd 的 tests/* 实测一小时 40G），看门狗顺手回收 30 分钟没写过的。
+# 单次被测执行受 --timeout 300 约束最多活 5 分钟，所以 30 分钟未写入的条目一定是孤儿目录。
+if [[ -f "$script_dir/clean_tmp.sh" ]]; then
+    bash "$script_dir/clean_tmp.sh" --run --min-age-min 30 | tail -2
+fi
+
 cur_step=$(step_id "$cur_copy" "$cur_mode")
 resolve_paths "$cur_project" "$cur_copy" "$cur_mode" || {
     echo "RESULT HALTED"
